@@ -1,0 +1,897 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/%E4%B8%AA%E4%BA%BA%E5%A4%B4%E5%83%8F%E6%97%A0%E8%83%8C%E6%99%AF.png">
+  <link rel="icon" href="https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/%E4%B8%AA%E4%BA%BA%E5%A4%B4%E5%83%8F%E6%97%A0%E8%83%8C%E6%99%AF.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="DuRuofu">
+  <meta name="keywords" content="嵌入式,个人博客">
+  
+    <meta name="description" content="第三部分 流程控制语句Python代码在执行时是按照自上向下顺序执行的。通过流程控制语句，可以改变程序的执行顺序，也可以让指定的程序反复执行多次流程控制语句分成两大类：条件判断语句，循环语句 条件判断语句（if语句）if语句1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python笔记(3.流程控制语句)">
+<meta property="og:url" content="https://www.duruofu.xyz/2023/06/06/3.%E8%BD%AF%E4%BB%B6%E7%9B%B8%E5%85%B3/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/python/3.%E7%AC%AC%E4%B8%89%E9%83%A8%E5%88%86%20%E6%B5%81%E7%A8%8B%E6%8E%A7%E5%88%B6%E8%AF%AD%E5%8F%A5/index.html">
+<meta property="og:site_name" content="Duruofu&#39;s personal blog">
+<meta property="og:description" content="第三部分 流程控制语句Python代码在执行时是按照自上向下顺序执行的。通过流程控制语句，可以改变程序的执行顺序，也可以让指定的程序反复执行多次流程控制语句分成两大类：条件判断语句，循环语句 条件判断语句（if语句）if语句1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.duruofu.xyz/%5Cimg%5C%E6%96%87%E7%AB%A0%E5%B0%81%E9%9D%A2%5Cpython.jpg">
+<meta property="article:published_time" content="2023-06-06T03:30:00.612Z">
+<meta property="article:modified_time" content="2023-06-06T03:49:21.918Z">
+<meta property="article:author" content="DuRuofu">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="编程语言">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://www.duruofu.xyz/%5Cimg%5C%E6%96%87%E7%AB%A0%E5%B0%81%E9%9D%A2%5Cpython.jpg">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>python笔记(3.流程控制语句) - Duruofu&#39;s personal blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/cust/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"www.duruofu.xyz","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":80,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":true,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":5},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>DuRuofu</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/%5Cimg%5C%E6%96%87%E7%AB%A0%E5%B0%81%E9%9D%A2%5Cpython.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="python笔记(3.流程控制语句)"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        DuRuofu
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-06-06 11:30" pubdate>
+          2023年6月6日 中午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          13k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          106 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">python笔记(3.流程控制语句)</h1>
+            
+              <p class="note note-info">
+                
+                  
+                    本文最后更新于：7 个月前
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="第三部分-流程控制语句"><a href="#第三部分-流程控制语句" class="headerlink" title="第三部分 流程控制语句"></a>第三部分 流程控制语句</h2><p>Python代码在执行时是按照自上向下顺序执行的。通过流程控制语句，可以改变程序的执行顺序，也可以让指定的程序反复执行多次<br>流程控制语句分成两大类：条件判断语句，循环语句</p>
+<h3 id="条件判断语句（if语句）"><a href="#条件判断语句（if语句）" class="headerlink" title="条件判断语句（if语句）"></a>条件判断语句（if语句）</h3><h4 id="if语句"><a href="#if语句" class="headerlink" title="if语句"></a>if语句</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 条件判断语句（if语句）</span><br><span class="hljs-comment"># 语法：if 条件表达式 : </span><br><span class="hljs-comment">#           代码块</span><br><span class="hljs-comment"># 执行的流程：if语句在执行时，会先对条件表达式进行求值判断，</span><br><span class="hljs-comment">#   如果为True，则执行if后的语句</span><br><span class="hljs-comment">#   如果为False，则不执行</span><br><span class="hljs-comment"># 默认情况下，if语句只会控制紧随其后的那条语句，如果希望if可以控制多条语句，</span><br><span class="hljs-comment">#   则可以在if后跟着一个代码块</span><br><span class="hljs-comment"># 代码块</span><br><span class="hljs-comment">#   代码块中保存着一组代码，同一个代码块中的代码，要么都执行要么都不执行</span><br><span class="hljs-comment">#   代码块就是一种为代码分组的机制</span><br><span class="hljs-comment">#   如果要编写代码块，语句就不能紧随在:后边，而是要写在下一行</span><br><span class="hljs-comment">#   代码块以缩进开始，直到代码恢复到之前的缩进级别时结束</span><br><span class="hljs-comment">#   鲁迅说过：</span><br><span class="hljs-comment">#       世上本来没有路，走的人多了自然就有了！</span><br><span class="hljs-comment">#       xxxx</span><br><span class="hljs-comment">#   yyyy....</span><br><span class="hljs-comment"># 缩进有两种方式，一种是使用tab键，一种是使用空格（四个）</span><br><span class="hljs-comment">#   Python的官方文档中推荐我们使用空格来缩进</span><br><span class="hljs-comment">#   Python代码中使用的缩进方式必须统一</span><br><span class="hljs-comment">#   &quot;translate_tabs_to_spaces&quot;: true,     </span><br><br><span class="hljs-comment"># if False : print(&#x27;你猜我出来么？&#x27;)</span><br><br>num = <span class="hljs-number">10</span><br><span class="hljs-comment"># if num &gt; 10 : print(&#x27;num比10大！&#x27;)</span><br><span class="hljs-comment"># print(&#x27;谁也管不了我&#x27;)</span><br><span class="hljs-keyword">if</span> <span class="hljs-literal">False</span> :<br>    <span class="hljs-built_in">print</span>(<span class="hljs-number">123</span>)<br>    <span class="hljs-built_in">print</span>(<span class="hljs-number">456</span>)<br>    <span class="hljs-built_in">print</span>(<span class="hljs-number">789</span>)<br>    <span class="hljs-built_in">print</span>(<span class="hljs-number">101112</span>)<br><br><span class="hljs-comment"># print(&#x27;hello&#x27;)</span><br><br>num = <span class="hljs-number">28</span><br><br><span class="hljs-comment"># 可以使用逻辑运算符来连接多个条件，</span><br><span class="hljs-comment">#   如果希望所有条件同时满足，则需要使用and</span><br><span class="hljs-comment">#   如果希望只要有一个条件满足即可，则需要使用or</span><br><span class="hljs-comment"># if num &gt; 10 and num &lt; 20 :</span><br><span class="hljs-comment">#     print(&#x27;num比10大,num比20小！&#x27;)</span><br><br><span class="hljs-comment"># if 10 &lt; num &lt; 20 :</span><br><span class="hljs-comment">#     print(&#x27;num比10大,num比20小！&#x27;)</span><br><br><span class="hljs-comment"># 在命令行让用户输入一个用户名，获取用户输入，并进行判断</span><br><span class="hljs-comment"># 如果用户输入的用户名是admin，则显示欢迎管理员光临</span><br><span class="hljs-comment"># 如果用户输入的是其他的用户名，则什么也不做</span><br>username=<span class="hljs-built_in">input</span>(<span class="hljs-string">&quot;输入用户名&quot;</span>)<br><span class="hljs-keyword">if</span> username==<span class="hljs-string">&quot;admin&quot;</span>:<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;欢迎管理员光临&quot;</span>)<br></code></pre></td></tr></table></figure>
+
+<h4 id="input函数"><a href="#input函数" class="headerlink" title="input函数"></a>input函数</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># input()函数</span><br><span class="hljs-comment"># 该函数用来获取用户的输入</span><br><span class="hljs-comment"># input()调用后，程序会立即暂停，等待用户输入</span><br><span class="hljs-comment">#   用户输入完内容以后，点击回车程序才会继续向下执行</span><br><span class="hljs-comment">#   用户输入完成以后，其所输入的的内容会以返回值得形式返回</span><br><span class="hljs-comment">#   注意：input()的返回值是一个字符串</span><br><span class="hljs-comment">#   input()函数中可以设置一个字符串作为参数，这个字符串将会作为提示文字显示</span><br><span class="hljs-comment"># a = input(&#x27;请输入任意内容：&#x27;)</span><br><span class="hljs-comment"># print(&#x27;用户输入的内容是:&#x27;,a) </span><br><span class="hljs-comment"># input()也可以用于暂时阻止程序结束</span><br><br><span class="hljs-comment"># 获取用户输入的用户名</span><br>username = <span class="hljs-built_in">input</span>(<span class="hljs-string">&#x27;请输入你的用户名:&#x27;</span>)<br><span class="hljs-comment"># 判断用户名是否是admin</span><br><span class="hljs-keyword">if</span> username == <span class="hljs-string">&#x27;admin&#x27;</span> :<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;欢迎管理员光临！&#x27;</span>)<br></code></pre></td></tr></table></figure>
+
+<h4 id="if-else语句"><a href="#if-else语句" class="headerlink" title="if-else语句"></a>if-else语句</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs python"> 让用户在控制台中输入一个年龄<br><span class="hljs-comment"># age = int(input(&#x27;请输入你的年龄：&#x27;))</span><br><br><span class="hljs-comment"># 如果用户的年龄大于18岁，则显示你已经成年了</span><br><span class="hljs-comment"># if age &gt;= 18 :</span><br><span class="hljs-comment">#     print(&#x27;你已经成年了~~~&#x27;)</span><br><br><span class="hljs-comment"># if-else语句</span><br><span class="hljs-comment"># 语法： </span><br><span class="hljs-comment">#   if 条件表达式 :</span><br><span class="hljs-comment">#       代码块</span><br><span class="hljs-comment">#   else :</span><br><span class="hljs-comment">#       代码块</span><br><span class="hljs-comment"># 执行流程：</span><br><span class="hljs-comment">#   if-else语句在执行时，先对if后的条件表达式进行求值判断</span><br><span class="hljs-comment">#       如果为True，则执行if后的代码块</span><br><span class="hljs-comment">#       如果为False，则执行else后的代码块</span><br><br>age = <span class="hljs-number">7</span><br><span class="hljs-keyword">if</span> age &gt; <span class="hljs-number">17</span> :<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;你已经成年了~~&#x27;</span>)<br><span class="hljs-keyword">else</span> :<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;你还未成年~~&#x27;</span>)<br></code></pre></td></tr></table></figure>
+
+<h4 id="if-elif-else语句"><a href="#if-elif-else语句" class="headerlink" title="if-elif-else语句"></a>if-elif-else语句</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># if-elif-else语句</span><br><span class="hljs-comment"># 语法：</span><br><span class="hljs-comment">#   if 条件表达式 :</span><br><span class="hljs-comment">#       代码块</span><br><span class="hljs-comment">#   elif 条件表达式 :</span><br><span class="hljs-comment">#       代码块</span><br><span class="hljs-comment">#   elif 条件表达式 :</span><br><span class="hljs-comment">#       代码块</span><br><span class="hljs-comment">#   elif 条件表达式 :</span><br><span class="hljs-comment">#       代码块</span><br><span class="hljs-comment">#   else :</span><br><span class="hljs-comment">#       代码块</span><br><span class="hljs-comment">#       </span><br><span class="hljs-comment"># 执行流程：</span><br><span class="hljs-comment">#   if-elif-else语句在执行时，会自上向下依次对条件表达式进行求值判断，</span><br><span class="hljs-comment">#       如果表达式的结果为True，则执行当前代码块，然后语句结束</span><br><span class="hljs-comment">#       如果表达式的结果为False，则继续向下判断，直到找到True为止</span><br><span class="hljs-comment">#       如果所有的表达式都是False，则执行else后的代码块</span><br><span class="hljs-comment">#   if-elif-else中只会有一个代码块会执行</span><br><br>age = <span class="hljs-number">210</span><br><br><span class="hljs-comment"># if age &gt; 200 :</span><br><span class="hljs-comment">#     print(&#x27;活着可真没劲呢！&#x27;)</span><br><span class="hljs-comment"># elif age &gt; 100 :</span><br><span class="hljs-comment">#     print(&#x27;你也是老大不小了！&#x27;)</span><br><span class="hljs-comment"># elif age &gt;= 60 :</span><br><span class="hljs-comment">#     print(&#x27;你已经退休了！&#x27;)</span><br><span class="hljs-comment"># elif age &gt;= 30 :</span><br><span class="hljs-comment">#     print(&#x27;你已经是中年了！&#x27;)</span><br><span class="hljs-comment"># elif age &gt;= 18 :</span><br><span class="hljs-comment">#     print(&#x27;你已经成年了！&#x27;)</span><br><span class="hljs-comment"># else :</span><br><span class="hljs-comment">#     print(&#x27;你还是个小孩！&#x27;)</span><br><br>age = <span class="hljs-number">68</span><br><br><span class="hljs-keyword">if</span> age &gt;= <span class="hljs-number">18</span> <span class="hljs-keyword">and</span> age &lt; <span class="hljs-number">30</span> :<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;你已经成年了！&#x27;</span>)<br><span class="hljs-keyword">elif</span> age &gt;= <span class="hljs-number">30</span> <span class="hljs-keyword">and</span> age &lt; <span class="hljs-number">60</span> :<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;你已经中年了！&#x27;</span>)<br><span class="hljs-keyword">elif</span> age &gt;= <span class="hljs-number">60</span> :<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;你已经退休了！&#x27;</span>)<br></code></pre></td></tr></table></figure>
+
+<h4 id="练习"><a href="#练习" class="headerlink" title="练习"></a>练习</h4><h5 id="练习1："><a href="#练习1：" class="headerlink" title="练习1："></a>练习1：</h5><p>​    编写一个程序，获取一个用户输入的整数。然后通过程序显示这个数是奇数还是偶数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> cgi <span class="hljs-keyword">import</span> print_form<br>enter_an_integer = <span class="hljs-built_in">int</span>(<span class="hljs-built_in">input</span>(<span class="hljs-string">&#x27;输入一个整数:&#x27;</span>))<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;你输入的整数是：&#x27;</span>,enter_an_integer)<br><span class="hljs-keyword">if</span> enter_an_integer % <span class="hljs-number">2</span> == <span class="hljs-number">0</span>:<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;这个数是偶数&#x27;</span>)<br><span class="hljs-keyword">if</span> enter_an_integer % <span class="hljs-number">2</span> == <span class="hljs-number">1</span>:<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;这个数是奇数&#x27;</span>)<br><br><span class="hljs-comment"># 优化：</span><br><span class="hljs-comment"># 获取用户输入的整数</span><br><span class="hljs-comment"># num = int(input(&#x27;请输入一个任意的整数：&#x27;))</span><br><span class="hljs-comment"># print(&#x27;你输入的整数是：&#x27;,enter_an_integer)</span><br><span class="hljs-comment"># # 显示num是奇数还是偶数</span><br><span class="hljs-comment"># if num % 2 == 0 :</span><br><span class="hljs-comment">#     print(num , &quot;是偶数&quot;) </span><br><span class="hljs-comment"># else :</span><br><span class="hljs-comment">#     print(num , &#x27;是奇数&#x27;)</span><br></code></pre></td></tr></table></figure>
+
+<h5 id="练习2："><a href="#练习2：" class="headerlink" title="练习2："></a>练习2：</h5><p>​    编写一个程序，检查任意一个年份是否是闰年。<br>​    如果一个年份可以被4整除不能被100整除，或者可以被400整除，这个年份就是闰年</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs python">year = <span class="hljs-built_in">int</span>(<span class="hljs-built_in">input</span>(<span class="hljs-string">&#x27;输入一个年份&#x27;</span>))<br><span class="hljs-comment">#print(&#x27;你输入的是&#x27;,year)</span><br><span class="hljs-keyword">if</span> year % <span class="hljs-number">4</span> == <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> year %<span class="hljs-number">100</span>!=<span class="hljs-number">0</span> <span class="hljs-keyword">or</span> year %<span class="hljs-number">400</span> == <span class="hljs-number">0</span>:<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;这个年份是闰年&#x27;</span>)<br><span class="hljs-keyword">else</span>:<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;这个年份不是闰年&#x27;</span>)<br><br></code></pre></td></tr></table></figure>
+
+<h5 id="练习3："><a href="#练习3：" class="headerlink" title="练习3："></a>练习3：</h5><p>​    我家的狗5岁了，5岁的狗相当于多大年龄的人呢？<br>​    其实非常简单，狗的前两年每一年相当于人类的10.5岁，然后每增加一年就增加四岁。<br>​    那么5岁的狗相等于人类的年龄就应该是10.5+10.5+4+4+4 &#x3D; 33岁<br>​	编写一个程序，获取用户输入的狗的年龄，然后通过程序显示其相当于人类的年龄。<br>​	如果用户输入负数，请显示一个提示信息</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><code class="hljs python">dog_age = <span class="hljs-built_in">float</span>(<span class="hljs-built_in">input</span>(<span class="hljs-string">&#x27;请输入狗的年龄:&#x27;</span>))<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;狗的年龄是：&#x27;</span>,dog_age)<br><span class="hljs-keyword">if</span>  dog_age &lt; <span class="hljs-number">0</span> :<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;你输入的&#x27;</span>,dog_age,<span class="hljs-string">&#x27;不是正确的年龄&#x27;</span>)<br><span class="hljs-keyword">elif</span> dog_age &lt;= <span class="hljs-number">2</span> :<br>    dog_age = <span class="hljs-number">10.5</span><br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;狗的年龄是：&#x27;</span>,dog_age)<br><span class="hljs-keyword">else</span> :<br>    dog_age = <span class="hljs-number">21</span>+(dog_age-<span class="hljs-number">2</span>)*<span class="hljs-number">4</span><br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;狗的年龄是&#x27;</span>,dog_age)<br><br><br><span class="hljs-comment"># 优化解答</span><br><span class="hljs-comment"># dog_age = float(input(&#x27;请输入狗的年龄：&#x27;))</span><br><span class="hljs-comment"># like_person_age = 0</span><br><span class="hljs-comment"># 检查用户输入的是否是负数</span><br><span class="hljs-comment"># if dog_age &lt; 0 :</span><br><span class="hljs-comment">#     print(&#x27;你的输入不合法！&#x27;)</span><br><span class="hljs-comment"># # 如果狗的年龄在两岁以下（包含两岁）</span><br><span class="hljs-comment"># elif dog_age &lt;= 2 :</span><br><span class="hljs-comment">#     # 直接将当前的年龄乘以10.5</span><br><span class="hljs-comment">#     like_person_age = dog_age * 10.5</span><br><span class="hljs-comment"># # 如果狗的年龄在两岁以上</span><br><span class="hljs-comment"># else :</span><br><span class="hljs-comment">#     # 计算前两岁相当于人类的年纪</span><br><span class="hljs-comment">#     like_person_age = 2 * 10.5</span><br><span class="hljs-comment">#     # 计算超过两岁的部分相对于人类的年纪，并进行相加</span><br><span class="hljs-comment">#     like_person_age += ( dog_age - 2 ) * 4</span><br><br><span class="hljs-comment"># if dog_age &gt; 0 :</span><br><span class="hljs-comment">#     print(dog_age,&#x27;岁的狗，年纪相当于&#x27;,like_person_age,&#x27;岁的人&#x27;)</span><br><span class="hljs-comment">#     </span><br><br><span class="hljs-comment"># 在if也可以去嵌套if，代码块是可以嵌套的，每增加一个缩进的级别，代码块就低一级</span><br><span class="hljs-comment"># 检查用户的输入是否合法</span><br><span class="hljs-comment"># if dog_age &gt; 0 :</span><br><span class="hljs-comment">#     # 如果狗的年龄在两岁以下（包含两岁）</span><br><span class="hljs-comment">#     if dog_age &lt;= 2 :</span><br><span class="hljs-comment">#         # 直接将当前的年龄乘以10.5</span><br><span class="hljs-comment">#         like_person_age = dog_age * 10.5</span><br><span class="hljs-comment">#     # 如果狗的年龄在两岁以上</span><br><span class="hljs-comment">#     else :</span><br><span class="hljs-comment">#         # 计算前两岁相当于人类的年纪</span><br><span class="hljs-comment">#         like_person_age = 2 * 10.5</span><br><span class="hljs-comment">#         # 计算超过两岁的部分相对于人类的年纪，并进行相加</span><br><span class="hljs-comment">#         like_person_age += ( dog_age - 2 ) * 4</span><br><br><span class="hljs-comment">#     print(dog_age,&#x27;岁的狗，年纪相当于&#x27;,like_person_age,&#x27;岁的人&#x27;)</span><br><span class="hljs-comment"># else :</span><br><span class="hljs-comment">#     print(&#x27;请输入一个合法的年龄！&#x27;)</span><br></code></pre></td></tr></table></figure>
+
+<h5 id="练习4："><a href="#练习4：" class="headerlink" title="练习4："></a>练习4：</h5><p>​    从键盘输入小明的期末成绩:<br>​        当成绩为100时，’奖励一辆BMW’<br>​        当成绩为[80-99]时，’奖励一台iphone’<br>​        当成绩为[60-79]时，’奖励一本参考书’<br>​        其他时，什么奖励也没有</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs python">final_result = <span class="hljs-built_in">float</span>(<span class="hljs-built_in">input</span>(<span class="hljs-string">&#x27;请输入期末成绩：&#x27;</span>))<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;你的期末成绩是：&#x27;</span>,final_result)<br><span class="hljs-keyword">if</span> final_result == <span class="hljs-number">100</span> :<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;奖励一辆BMW&#x27;</span>)<br><span class="hljs-keyword">elif</span> final_result &gt;= <span class="hljs-number">80</span> <span class="hljs-keyword">and</span> final_result&lt;=<span class="hljs-number">99</span> :<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;奖励一台iphone&#x27;</span>)<br><span class="hljs-keyword">elif</span> final_result &gt;= <span class="hljs-number">60</span> <span class="hljs-keyword">and</span> final_result &lt;= <span class="hljs-number">79</span> :<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;奖励一本参考书&#x27;</span>)<br><span class="hljs-keyword">else</span> :<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;没有奖励&#x27;</span>)<br><br><br><span class="hljs-comment"># 优化结果</span><br><span class="hljs-comment"># 获取小明的成绩</span><br><span class="hljs-comment"># score = float(input(&#x27;请输入你的期末成绩(0-100)：&#x27;))</span><br><br><span class="hljs-comment"># # 打印分割线</span><br><span class="hljs-comment"># print(&quot;=&quot;*40)</span><br><br><span class="hljs-comment"># # 检查用户的输入是否合法</span><br><span class="hljs-comment"># if 0 &lt;= score &lt;= 100 :</span><br><span class="hljs-comment">#     # 判断发给的奖励</span><br><span class="hljs-comment">#     if score == 100 :</span><br><span class="hljs-comment">#         print(&#x27;宝马，拿去玩！&#x27;)</span><br><span class="hljs-comment">#     elif score &gt;= 80 :</span><br><span class="hljs-comment">#         print(&#x27;苹果手机，拿去玩！&#x27;)</span><br><span class="hljs-comment">#     elif score &gt;= 60 :</span><br><span class="hljs-comment">#         print(&#x27;参考书，拿去玩！&#x27;)</span><br><span class="hljs-comment">#     else :</span><br><span class="hljs-comment">#         print(&#x27;棍子一根！&#x27;)</span><br><span class="hljs-comment"># else :</span><br><span class="hljs-comment">#     # 用户输入的不合法，弹出一个友好提示</span><br><span class="hljs-comment">#     print(&#x27;你输入的内容不合法，拉出去毙了！&#x27;)</span><br></code></pre></td></tr></table></figure>
+
+<h5 id="练习5："><a href="#练习5：" class="headerlink" title="练习5："></a>练习5：</h5><p>​    大家都知道，男大当婚，女大当嫁。那么女方家长要嫁女儿，当然要提出一定的条件：<br>​        高：180cm以上; 富:1000万以上; 帅:500以上;<br>​        如果这三个条件同时满足，则:’我一定要嫁给他’<br>​        如果三个条件有为真的情况，则:’嫁吧，比上不足，比下有余。’<br>​        如果三个条件都不满足，则:’不嫁！’</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs python">height = <span class="hljs-built_in">float</span>(<span class="hljs-built_in">input</span>(<span class="hljs-string">&#x27;请输入身高(0-300)c:&#x27;</span>))<br>wealth = <span class="hljs-built_in">float</span>(<span class="hljs-built_in">input</span>(<span class="hljs-string">&#x27;请输入财富xxx万元:&#x27;</span>))<br>face= <span class="hljs-built_in">float</span>(<span class="hljs-built_in">input</span>(<span class="hljs-string">&#x27;请输入颜值(0-800)cm:&#x27;</span>))<br><span class="hljs-keyword">if</span> height &gt; <span class="hljs-number">180</span> <span class="hljs-keyword">and</span> wealth &gt; <span class="hljs-number">1000</span> <span class="hljs-keyword">and</span> face &gt; <span class="hljs-number">500</span>:<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;我一定要嫁给他&#x27;</span>)<br><span class="hljs-keyword">elif</span> height &gt; <span class="hljs-number">180</span> <span class="hljs-keyword">or</span> wealth &gt;<span class="hljs-number">1000</span> <span class="hljs-keyword">or</span> height &gt; <span class="hljs-number">180</span> :<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;嫁吧，比上不足，比下有余。&#x27;</span>)<br><span class="hljs-keyword">else</span>:<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;不嫁！&#x27;</span>)<br><br></code></pre></td></tr></table></figure>
+
+<h3 id="循环语句"><a href="#循环语句" class="headerlink" title="循环语句"></a>循环语句</h3><p>循环语句可以使指定的代码块重复指定的次数<br>循环语句分成两种，while循环 和 for循环</p>
+<h4 id="while循环"><a href="#while循环" class="headerlink" title="while循环"></a>while循环</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><code class="hljs python"><br><span class="hljs-comment"># while循环</span><br><span class="hljs-comment"># 语法：</span><br><span class="hljs-comment">#   while 条件表达式 :</span><br><span class="hljs-comment">#       代码块</span><br><span class="hljs-comment">#   else :</span><br><span class="hljs-comment">#       代码块</span><br><span class="hljs-comment"># 执行流程：</span><br><span class="hljs-comment">#   while语句在执行时，会先对while后的条件表达式进行求值判断，</span><br><span class="hljs-comment">#       如果判断结果为True，则执行循环体（代码块），</span><br><span class="hljs-comment">#       循环体执行完毕，继续对条件表达式进行求值判断，以此类推，</span><br><span class="hljs-comment">#       直到判断结果为False，则循环终止，如果循环有对应的else，则执行else后的代码块</span><br><br><span class="hljs-comment"># 条件表达式恒为True的循环语句，称为死循环，它会一直运行，慎用！</span><br><span class="hljs-comment"># while True :</span><br><span class="hljs-comment">#     print(&#x27;hello&#x27;)</span><br><br><span class="hljs-comment"># 循环的三个要件（表达式）</span><br><span class="hljs-comment"># 初始化表达式，通过初始化表达式初始化一个变量</span><br><span class="hljs-comment"># i = 0</span><br><br><span class="hljs-comment"># # 条件表达式，条件表达式用来设置循环执行的条件</span><br><span class="hljs-comment"># while i &lt; 10 :</span><br><span class="hljs-comment">#     print(i)</span><br><span class="hljs-comment">#     # 更新表达式，修改初始化变量的值</span><br><span class="hljs-comment">#     i += 1</span><br><br><span class="hljs-comment"># 创建一个执行十次的循环</span><br>i = <span class="hljs-number">0</span><br><span class="hljs-keyword">while</span> i &lt; <span class="hljs-number">10</span> :<br>    i += <span class="hljs-number">1</span><br>    <span class="hljs-built_in">print</span>(i,<span class="hljs-string">&#x27;hello&#x27;</span>)<br><span class="hljs-keyword">else</span> :<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;else中的代码块&#x27;</span>)<br></code></pre></td></tr></table></figure>
+
+<h4 id="break-continue-pass"><a href="#break-continue-pass" class="headerlink" title="break  \ continue \ pass"></a>break  \ continue \ pass</h4><p>break:<br>可以用来立即退出循环语句（包括else）</p>
+<p>continue:<br>可以用来跳过当次循环<br>break和continue都是只对离他最近的循环起作用</p>
+<p>pass:<br>是用来在判断或循环语句中占位的</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs python">例子：<br><span class="hljs-comment"># 创建一个5次的循环</span><br> i = <span class="hljs-number">0</span><br> <span class="hljs-keyword">while</span> i &lt; <span class="hljs-number">5</span>:<br>     <span class="hljs-keyword">if</span> i == <span class="hljs-number">3</span>:<br>         <span class="hljs-keyword">break</span><br>     <span class="hljs-built_in">print</span>(i)<br>     i += <span class="hljs-number">1</span><br> <span class="hljs-keyword">else</span> :<br>     <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;循环结束&#x27;</span>)<br><br><span class="hljs-comment"># i = 0</span><br><span class="hljs-comment"># while i &lt; 5:</span><br><span class="hljs-comment">#     i += 1</span><br><span class="hljs-comment">#     if i == 2:</span><br><span class="hljs-comment">#         continue</span><br><span class="hljs-comment">#     print(i)</span><br><span class="hljs-comment"># else :</span><br><span class="hljs-comment">#     print(&#x27;循环结束&#x27;)</span><br><br>i = <span class="hljs-number">0</span><br><span class="hljs-keyword">if</span> i &lt; <span class="hljs-number">5</span>:<br>    <span class="hljs-keyword">pass</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="练习-1"><a href="#练习-1" class="headerlink" title="练习"></a>练习</h4><h5 id="练习1：求100以内所有的奇数之和"><a href="#练习1：求100以内所有的奇数之和" class="headerlink" title="练习1：求100以内所有的奇数之和"></a>练习1：求100以内所有的奇数之和</h5><p>​    求100以内所有的奇数之和</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 求100以内所有的奇数之和</span><br>result = <span class="hljs-number">0</span><br>i = <span class="hljs-number">0</span><br><span class="hljs-keyword">while</span> i &lt;= <span class="hljs-number">100</span> :<br>    i += <span class="hljs-number">1</span><br>    <span class="hljs-keyword">if</span> i % <span class="hljs-number">2</span> == <span class="hljs-number">1</span> :<br>        result = result + i<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;100以内所有奇数和为:&quot;</span>,result)<br><br><span class="hljs-comment">#优化</span><br><span class="hljs-comment"># 获取所有100以内数</span><br><span class="hljs-comment"># i = 0</span><br><span class="hljs-comment"># # 创建一个变量，用来保存结果</span><br><span class="hljs-comment"># result = 0</span><br><span class="hljs-comment"># while i &lt; 100 :</span><br><span class="hljs-comment">#     i += 1</span><br><span class="hljs-comment">#     # 判断i是否是奇数</span><br><span class="hljs-comment">#     if i % 2 != 0:</span><br><span class="hljs-comment">#         result += i</span><br><br><span class="hljs-comment"># print(&#x27;result =&#x27;,result)</span><br><br><br></code></pre></td></tr></table></figure>
+
+
+
+<h5 id="练习2：-求100以内所有7的倍数之和，以及个数"><a href="#练习2：-求100以内所有7的倍数之和，以及个数" class="headerlink" title="练习2： 求100以内所有7的倍数之和，以及个数"></a>练习2： 求100以内所有7的倍数之和，以及个数</h5><p>​    求100以内所有7的倍数之和，以及个数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 求100以内所有7的倍数之和，以及个数</span><br>result = <span class="hljs-number">0</span><br>i = <span class="hljs-number">7</span><br>count = <span class="hljs-number">0</span><br><span class="hljs-keyword">while</span> i &lt; <span class="hljs-number">100</span>:<br>    count += <span class="hljs-number">1</span><br>    i += <span class="hljs-number">7</span><br>    result = result + i<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;result=&#x27;</span>,result)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;j=&#x27;</span>,count)<br><br><span class="hljs-comment">#优化结果</span><br><span class="hljs-comment">#  求100以内所有7的倍数之和，以及个数</span><br><span class="hljs-comment"># i = 7 </span><br><span class="hljs-comment">#  创建一个变量，来保存结果</span><br><span class="hljs-comment"># result = 0</span><br><span class="hljs-comment">#  创建一个计数器，用来记录循环执行的次数</span><br><span class="hljs-comment">#  计数器就是一个变量，专门用来记录次数的变量</span><br><span class="hljs-comment"># count = 0</span><br><span class="hljs-comment"># while i &lt; 100:</span><br><span class="hljs-comment">#     为计数器加1</span><br><span class="hljs-comment">#     count += 1</span><br><span class="hljs-comment">#     result += i</span><br><span class="hljs-comment">#     i += 7    </span><br><br><span class="hljs-comment"># print(&#x27;总和为：&#x27;,result,&#x27;总数量为:&#x27;,count)</span><br><br></code></pre></td></tr></table></figure>
+
+
+
+<h5 id="练习3：求1000以内所有的水仙花数"><a href="#练习3：求1000以内所有的水仙花数" class="headerlink" title="练习3：求1000以内所有的水仙花数"></a>练习3：求1000以内所有的水仙花数</h5><p>​    水仙花数是指一个 n 位数（n≥3 ），它的每个位上的数字的 n 次幂之和等于它本身（例如：1<strong>3 + 5</strong>3 + 3**3 &#x3D; 153）。<br>​    求1000以内所有的水仙花数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 获取1000以内的三位数</span><br>i = <span class="hljs-number">100</span><br><span class="hljs-keyword">while</span> i &lt; <span class="hljs-number">1000</span>:<br><br>    <span class="hljs-comment"># 假设，i的百位数是a，十位数b，个位数c</span><br>    <span class="hljs-comment"># 求i的百位数</span><br>    a = i // <span class="hljs-number">100</span><br>    <span class="hljs-comment"># 求i的十位数</span><br>    <span class="hljs-comment"># b = i // 10 % 10</span><br>    b = (i - a * <span class="hljs-number">100</span>) // <span class="hljs-number">10</span><br>    <span class="hljs-comment"># 求i的个位数字</span><br>    c = i % <span class="hljs-number">10</span><br>    <span class="hljs-comment"># print(i , a , b , c)</span><br>    <br>    <span class="hljs-comment"># 判断i是否是水仙花数</span><br>    <span class="hljs-keyword">if</span> a**<span class="hljs-number">3</span> + b**<span class="hljs-number">3</span> + c**<span class="hljs-number">3</span> == i :<br>        <span class="hljs-built_in">print</span>(i)<br>    i += <span class="hljs-number">1</span><br></code></pre></td></tr></table></figure>
+
+<h5 id="练习4：判断是否是质数"><a href="#练习4：判断是否是质数" class="headerlink" title="练习4：判断是否是质数"></a>练习4：判断是否是质数</h5><p>​	获取用户输入的任意数，判断其是否是质数。质数是只能被1和它自身整除的数，1不是质数也不是合数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 获取用户输入的任意数，判断其是否是质数。</span><br>num = <span class="hljs-built_in">int</span>(<span class="hljs-built_in">input</span>(<span class="hljs-string">&#x27;输入一个任意的大于1的整数：&#x27;</span>))<br><br><span class="hljs-comment"># 判断num是否是质数，只能被1和它自身整除的数就是质数</span><br><span class="hljs-comment"># 获取到所有的可能整除num的整数</span><br>i = <span class="hljs-number">2</span><br><span class="hljs-comment"># 创建一个变量，用来记录num是否是质数，默认认为num是质数</span><br>flag = <span class="hljs-literal">True</span><br><span class="hljs-keyword">while</span> i &lt; num:<br>    <span class="hljs-comment"># 判断num能否被i整除</span><br>    <span class="hljs-comment"># 如果num能被i整除，则说明num一定不是质</span><br>    <span class="hljs-keyword">if</span> num % i == <span class="hljs-number">0</span> :<br>        <span class="hljs-comment"># 一旦进入判断，则证明num不是质数，则需要将flag修改为false</span><br>        flag = <span class="hljs-literal">False</span><br>    i += <span class="hljs-number">1</span><br><br><span class="hljs-keyword">if</span> flag :<br>    <span class="hljs-built_in">print</span>(num,<span class="hljs-string">&#x27;是质数&#x27;</span>)<br><span class="hljs-keyword">else</span> :<br>    <span class="hljs-built_in">print</span>(num,<span class="hljs-string">&#x27;不是质数&#x27;</span>)<br></code></pre></td></tr></table></figure>
+
+<h4 id="循环嵌套"><a href="#循环嵌套" class="headerlink" title="循环嵌套"></a>循环嵌套</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 在控制台中打印如下图形</span><br><span class="hljs-comment"># *****</span><br><span class="hljs-comment"># *****</span><br><span class="hljs-comment"># *****</span><br><span class="hljs-comment"># ***** </span><br><span class="hljs-comment"># *****</span><br><span class="hljs-comment"># </span><br><br><span class="hljs-comment"># 创建一个循环来控制图形的高度</span><br><span class="hljs-comment"># 循环嵌套时，外层循环没执行一次，内存循环就要执行一圈</span><br><span class="hljs-comment"># i = 0</span><br><span class="hljs-comment"># while i &lt; 5:</span><br><span class="hljs-comment">#     # 创建一个内层循环来控制图形的宽度</span><br><span class="hljs-comment">#     j = 0</span><br><span class="hljs-comment">#     while j &lt; 5:</span><br><span class="hljs-comment">#         print(&quot;* &quot;,end=&#x27;&#x27;)</span><br><span class="hljs-comment">#         j += 1</span><br><span class="hljs-comment">#     print()</span><br><span class="hljs-comment">#     i += 1</span><br><br><span class="hljs-comment">#</span><br><span class="hljs-comment"># *     j&lt;1   i=0</span><br><span class="hljs-comment"># **    j&lt;2   i=1   </span><br><span class="hljs-comment"># ***   j&lt;3   i=2</span><br><span class="hljs-comment"># ****  j&lt;4   i=3</span><br><span class="hljs-comment"># ***** j&lt;5   i=4</span><br><span class="hljs-comment"># </span><br><span class="hljs-comment"># *****</span><br><span class="hljs-comment"># ****</span><br><span class="hljs-comment"># ***</span><br><span class="hljs-comment"># **</span><br><span class="hljs-comment"># *</span><br>i = <span class="hljs-number">0</span><br><span class="hljs-keyword">while</span> i &lt; <span class="hljs-number">5</span>:<br>    j = <span class="hljs-number">0</span><br>    <span class="hljs-keyword">while</span> j &lt; i + <span class="hljs-number">1</span>:<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;* &quot;</span>,end=<span class="hljs-string">&#x27;&#x27;</span>)<span class="hljs-comment">#这里的end=&#x27;&#x27;是为了使print输出内容不换行</span><br>        j += <span class="hljs-number">1</span><br>    <span class="hljs-built_in">print</span>()<br>    i += <span class="hljs-number">1</span><br><br><br></code></pre></td></tr></table></figure>
+
+<h5 id="练习-2"><a href="#练习-2" class="headerlink" title="练习"></a>练习</h5><h6 id="练习1：-打印99乘法表"><a href="#练习1：-打印99乘法表" class="headerlink" title="练习1： 打印99乘法表"></a>练习1： 打印99乘法表</h6><p>​    打印99乘法表<br>​    1<em>1&#x3D;1<br>​    1</em>2&#x3D;2 2<em>2&#x3D;4<br>​    1</em>3&#x3D;3 2<em>3&#x3D;6 3</em>3&#x3D;9<br>​    …                 9*9&#x3D;81</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 创建一个外层循环来控制图形的高度</span><br>i = <span class="hljs-number">0</span><br><span class="hljs-keyword">while</span> i &lt; <span class="hljs-number">9</span>:<br>    i += <span class="hljs-number">1</span><br>    <br>    <span class="hljs-comment"># 创建一个内层循环来控制图形的宽度</span><br>    j = <span class="hljs-number">0</span><br>    <span class="hljs-keyword">while</span> j &lt; i:<br>        j += <span class="hljs-number">1</span><br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;<span class="hljs-subst">&#123;j&#125;</span>*<span class="hljs-subst">&#123;i&#125;</span>=<span class="hljs-subst">&#123;i*j&#125;</span> &quot;</span>,end=<span class="hljs-string">&quot;&quot;</span>)<br>    <span class="hljs-built_in">print</span>()<br><br></code></pre></td></tr></table></figure>
+
+<h6 id="练习2：求100以内所有的质数"><a href="#练习2：求100以内所有的质数" class="headerlink" title="练习2：求100以内所有的质数"></a>练习2：求100以内所有的质数</h6><p>​    求100以内所有的质数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 求100以内所有的质数</span><br><span class="hljs-comment"># 创建一个循环，求1-100以内所有的数</span><br>i = <span class="hljs-number">2</span><br><span class="hljs-keyword">while</span> i &lt;= <span class="hljs-number">100</span>:<br>    <br>    <span class="hljs-comment"># 创建一个变量，记录i的状态，默认认为i是质数</span><br>    flag = <span class="hljs-literal">True</span><br><br>    <span class="hljs-comment"># 判断i是否是质数</span><br>    <span class="hljs-comment"># 获取所有可能成为i的因数的数</span><br>    j = <span class="hljs-number">2</span> <br>    <span class="hljs-keyword">while</span> j &lt; i:<br>        <span class="hljs-comment"># 判断i能否被j整除</span><br>        <span class="hljs-keyword">if</span> i % j == <span class="hljs-number">0</span>:<br>            <span class="hljs-comment"># i能被j整除，证明i不是质数，修改flag为False</span><br>            flag = <span class="hljs-literal">False</span><br>        j += <span class="hljs-number">1</span><br>    <span class="hljs-comment"># 验证结果并输出</span><br>    <span class="hljs-keyword">if</span> flag :<br>        <span class="hljs-built_in">print</span>(i)   <br><br>    i += <span class="hljs-number">1</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="练习优化示例：模块的引入"><a href="#练习优化示例：模块的引入" class="headerlink" title="练习优化示例：模块的引入"></a>练习优化示例：模块的引入</h4><p>模块，通过模块可以对Python进行扩展<br>引入一个time模块，来统计程序执行的时间。time()函数可以用来获取当前的时间，返回的单位是秒</p>
+<p>优化前：<br>求100000以内所有的质数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> time <span class="hljs-keyword">import</span> *<br>begin = time()<br>i = <span class="hljs-number">2</span><br><span class="hljs-keyword">while</span> i &lt;= <span class="hljs-number">10000</span>:<br>    flag = <span class="hljs-literal">True</span><br>    j = <span class="hljs-number">2</span> <br>    <span class="hljs-keyword">while</span> j &lt; i:<br>        <span class="hljs-keyword">if</span> i % j == <span class="hljs-number">0</span>:<br>            flag = <span class="hljs-literal">False</span><br>        j += <span class="hljs-number">1</span><br>    <span class="hljs-keyword">if</span> flag :<br>       <span class="hljs-comment">#print(i)   </span><br>    i += <span class="hljs-number">1</span><br>end = time()<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;程序执行花费了：&quot;</span>,end - begin , <span class="hljs-string">&quot;秒&quot;</span>)<br></code></pre></td></tr></table></figure>
+
+<p>结果：程序执行花费了： 8.352874279022217 秒</p>
+<p>第一次优化：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> time <span class="hljs-keyword">import</span> *<br><span class="hljs-comment"># 获取程序开始的时间 </span><br>begin = time()<br>i = <span class="hljs-number">2</span><br><span class="hljs-keyword">while</span> i &lt;= <span class="hljs-number">10000</span>:<br>    flag = <span class="hljs-literal">True</span><br>    j = <span class="hljs-number">2</span> <br>    <span class="hljs-keyword">while</span> j &lt; i:<br>        <span class="hljs-keyword">if</span> i % j == <span class="hljs-number">0</span>:<br>            flag = <span class="hljs-literal">False</span><br>            <span class="hljs-comment"># 一旦进入判断，则证明i一定不是质数，此时内层循环没有继续执行的必要</span><br>            <span class="hljs-comment"># 使用break来退出内层的循环</span><br>            <span class="hljs-keyword">break</span><br>        j += <span class="hljs-number">1</span><br>    <span class="hljs-keyword">if</span> flag :<br>        <span class="hljs-comment"># print(i)  </span><br>        <span class="hljs-keyword">pass</span><br>    i += <span class="hljs-number">1</span><br><span class="hljs-comment"># 获取程序结束的时间</span><br>end = time()<br><span class="hljs-comment"># 计算程序执行的时间</span><br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;程序执行花费了：&quot;</span>,end - begin , <span class="hljs-string">&quot;秒&quot;</span>)<br></code></pre></td></tr></table></figure>
+
+<p>结果：程序执行花费了： 0.9832208156585693 秒</p>
+<p>第二次优化：</p>
+<p>算法优化：一个数的因数最大是其本身的算术平方根</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> time <span class="hljs-keyword">import</span> *<br>begin = time()<br>i = <span class="hljs-number">2</span><br><span class="hljs-keyword">while</span> i &lt;= <span class="hljs-number">10000</span>:<br>    flag = <span class="hljs-literal">True</span><br>    j = <span class="hljs-number">2</span> <br>    <span class="hljs-keyword">while</span> j &lt;= i ** <span class="hljs-number">0.5</span>:<span class="hljs-comment">#这里进行优化</span><br>        <span class="hljs-keyword">if</span> i % j == <span class="hljs-number">0</span>:<br>            flag = <span class="hljs-literal">False</span><br>            <span class="hljs-keyword">break</span><br>        j += <span class="hljs-number">1</span><br>    <span class="hljs-keyword">if</span> flag :<br>        <span class="hljs-comment"># print(i)  </span><br>        <span class="hljs-keyword">pass</span><br>    i += <span class="hljs-number">1</span><br>end = time()<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;程序执行花费了：&quot;</span>,end - begin , <span class="hljs-string">&quot;秒&quot;</span>)<br></code></pre></td></tr></table></figure>
+
+<p>结果： 程序执行花费了： 0.040992021560668945 秒</p>
+<p>可见优化程序对提高程序运行效率十分重要。</p>
+<h3 id="总练习-小游戏"><a href="#总练习-小游戏" class="headerlink" title="总练习 小游戏"></a>总练习 小游戏</h3><p> <strong>小游戏 《唐僧大战白骨精》</strong></p>
+<p>内容：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-number">1</span>、身份选择<br>    ① 显示提示信息<br>        欢迎光临 xxx 游戏！<br>        请选择你的身份：<br>            <span class="hljs-number">1.</span>xxx<br>            <span class="hljs-number">2.</span>xxx<br>        请选择：x<br>    ② 根据用户选择来分配身份（显示不同的提示消息）  <br>        <span class="hljs-number">1.</span>---<br>        <span class="hljs-number">2.</span>---<br>        <span class="hljs-number">3.</span>---  <br><br><span class="hljs-number">2</span>、游戏进行<br>    ① 显示玩家的基本信息（攻击力 生命值）<br>    ② 显示玩家可以进行的操作：<br>        <span class="hljs-number">1</span>、练级<br>            - 提升玩家的攻击力和生命值<br>        <span class="hljs-number">2</span>、打BOSS<br>            - 玩家对BOSS进行攻击，玩家要攻击BOSS，BOSS对玩家进行反击<br>            - 计算BOSS是否被玩家消灭，玩家是否被BOSS消灭<br>            - 游戏结束<br>        <span class="hljs-number">3</span>、逃跑<br>            - 退出游戏，显示提示信息，游戏结束！<br></code></pre></td></tr></table></figure>
+
+<p>代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 显示欢迎信息</span><br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;-&#x27;</span>*<span class="hljs-number">20</span>,<span class="hljs-string">&#x27;欢迎光临《唐僧大战白骨精》&#x27;</span>,<span class="hljs-string">&#x27;-&#x27;</span>*<span class="hljs-number">20</span>)<br><span class="hljs-comment"># 显示身份选择的信息</span><br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;请选择你的身份：&#x27;</span>)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;\t1.唐僧&#x27;</span>)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;\t2.白骨精&#x27;</span>)<br><span class="hljs-comment"># 游戏的身份选择</span><br>player_choose = <span class="hljs-built_in">input</span>(<span class="hljs-string">&#x27;请选择[1-2]：&#x27;</span>)<br><br><span class="hljs-comment"># 打印一条分割线</span><br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;-&#x27;</span>*<span class="hljs-number">66</span>)<br><br><span class="hljs-comment"># 根据用户的选择来显示不同的提示信息</span><br><span class="hljs-keyword">if</span> player_choose == <span class="hljs-string">&#x27;1&#x27;</span>:<br>    <span class="hljs-comment"># 选择1</span><br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;你已经选择了1，你将以-&gt;唐僧&lt;-的身份来进行游戏！&#x27;</span>)<br><span class="hljs-keyword">elif</span> player_choose == <span class="hljs-string">&#x27;2&#x27;</span>:<br>    <span class="hljs-comment"># 选择2</span><br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;你竟然选择了白骨精，太不要脸了，你将以-&gt;唐僧&lt;-的身份来进行游戏！&#x27;</span>)<br><span class="hljs-keyword">else</span> :<br>    <span class="hljs-comment"># 选择3</span><br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;你的输入有误，系统将自动分配身份，你将以-&gt;唐僧&lt;-的身份来进行游戏！&#x27;</span>)<br><span class="hljs-comment"># 进入游戏</span><br><span class="hljs-comment"># 创建变量，来保存玩家的生命值和攻击力</span><br>player_life = <span class="hljs-number">2</span> <span class="hljs-comment"># 生命值</span><br>player_attack = <span class="hljs-number">2</span> <span class="hljs-comment"># 攻击力</span><br><br><span class="hljs-comment"># 创建一个变量，保存boss的生命值和攻击力</span><br>boss_life = <span class="hljs-number">10</span><br>boss_attack = <span class="hljs-number">10</span><br><span class="hljs-comment"># 打印一条分割线</span><br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;-&#x27;</span>*<span class="hljs-number">66</span>)<br><span class="hljs-comment"># 显示玩家的信息（攻击力、生命值）</span><br><span class="hljs-built_in">print</span>(<span class="hljs-string">f&#x27;唐僧，你的生命值是 <span class="hljs-subst">&#123;player_life&#125;</span> , 你的攻击力是 <span class="hljs-subst">&#123;player_attack&#125;</span>&#x27;</span>)<br><span class="hljs-comment"># 由于游戏选项是需要反复显示的，所以必须将其编写到一个循环中</span><br><span class="hljs-keyword">while</span> <span class="hljs-literal">True</span> :<br>    <span class="hljs-comment"># 打印一条分割线</span><br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;-&#x27;</span>*<span class="hljs-number">66</span>)<br>    <span class="hljs-comment"># 显示游戏选项，游戏正式开始</span><br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;请选择你要进行的操作：&#x27;</span>)<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;\t1.练级&#x27;</span>)<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;\t2.打BOSS&#x27;</span>)<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;\t3.逃跑&#x27;</span>)<br>    game_choose = <span class="hljs-built_in">input</span>(<span class="hljs-string">&#x27;请选择要做的操作[1-3]：&#x27;</span>)<br>    <span class="hljs-comment"># 处理用户的选择</span><br>    <span class="hljs-keyword">if</span> game_choose == <span class="hljs-string">&#x27;1&#x27;</span> :<br>        <span class="hljs-comment"># 增加玩家的生命值和攻击力</span><br>        player_life += <span class="hljs-number">2</span><br>        player_attack += <span class="hljs-number">2</span><br>        <span class="hljs-comment"># 显示最新的信息</span><br>        <span class="hljs-comment"># 打印一条分割线</span><br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;-&#x27;</span>*<span class="hljs-number">66</span>)<br>        <span class="hljs-comment"># 显示玩家的信息（攻击力、生命值）</span><br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">f&#x27;恭喜你升级了！，你现在的生命值是 <span class="hljs-subst">&#123;player_life&#125;</span> , 你的攻击力是 <span class="hljs-subst">&#123;player_attack&#125;</span>&#x27;</span>)<br>    <span class="hljs-keyword">elif</span> game_choose == <span class="hljs-string">&#x27;2&#x27;</span> :<br>        <span class="hljs-comment"># 玩家攻击boss</span><br>        <span class="hljs-comment"># 减去boss的生命值，减去的生命值应该等于玩家的攻击力</span><br>        boss_life -= player_attack <br><br>        <span class="hljs-comment"># 打印一条分割线</span><br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;-&#x27;</span>*<span class="hljs-number">66</span>)<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;-&gt;唐僧&lt;- 攻击了 -&gt;白骨精&lt;-&#x27;</span>)<br>        <span class="hljs-comment"># 检查boss是否死亡</span><br>        <span class="hljs-keyword">if</span> boss_life &lt;= <span class="hljs-number">0</span> :<br>            <span class="hljs-comment"># boss死亡，player胜利，游戏结束</span><br>            <span class="hljs-built_in">print</span>(<span class="hljs-string">f&#x27;-&gt;白骨精&lt;-受到了 <span class="hljs-subst">&#123;player_attack&#125;</span> 点伤害，重伤不治死了，-&gt;唐僧&lt;-赢得了胜利！&#x27;</span>)<br>            <span class="hljs-comment"># 游戏结束</span><br>            <span class="hljs-keyword">break</span><br>        <span class="hljs-comment"># boss要反击玩家</span><br>        <span class="hljs-comment"># 减去玩家的生命值</span><br>        player_life -= boss_attack <br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27; -&gt;白骨精&lt;- 攻击了 -&gt;唐僧&lt;-&#x27;</span>)<br>        <span class="hljs-comment"># 检查玩家是否死亡</span><br>        <span class="hljs-keyword">if</span> player_life &lt;= <span class="hljs-number">0</span> :<br>            <span class="hljs-comment"># 玩家死亡</span><br>            <span class="hljs-built_in">print</span>(<span class="hljs-string">f&#x27;你受到了 <span class="hljs-subst">&#123;boss_attack&#125;</span> 点伤害，重伤不治死了！GAME OVER&#x27;</span>)<br>            <span class="hljs-comment"># 游戏结束</span><br>            <span class="hljs-keyword">break</span><br>    <span class="hljs-keyword">elif</span> game_choose == <span class="hljs-string">&#x27;3&#x27;</span> :<br>        <span class="hljs-comment"># 打印一条分割线</span><br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;-&#x27;</span>*<span class="hljs-number">66</span>)<br>        <span class="hljs-comment"># 逃跑，退出游戏</span><br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;-&gt;唐僧&lt;-一扭头，撒腿就跑！GAME OVER&#x27;</span>)<br>        <span class="hljs-keyword">break</span><br>    <span class="hljs-keyword">else</span> :<br>        <span class="hljs-comment"># 打印一条分割线</span><br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;-&#x27;</span>*<span class="hljs-number">66</span>)<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;你的输入有误，请重新输入！&#x27;</span>)<br></code></pre></td></tr></table></figure>
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%8F%8A%E5%B5%8C%E5%85%A5%E5%BC%8F%E8%BD%AF%E4%BB%B6/" class="category-chain-item">计算机及嵌入式软件</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%8F%8A%E5%B5%8C%E5%85%A5%E5%BC%8F%E8%BD%AF%E4%BB%B6/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/" class="category-chain-item">编程语言</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%8F%8A%E5%B5%8C%E5%85%A5%E5%BC%8F%E8%BD%AF%E4%BB%B6/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/python/" class="category-chain-item">python</a>
+  
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/python/">#python</a>
+      
+        <a href="/tags/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">#编程语言</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>python笔记(3.流程控制语句)</div>
+      <div>https://www.duruofu.xyz/2023/06/06/3.软件相关/编程语言/python/3.第三部分 流程控制语句/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>DuRuofu</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年6月6日</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>更新于</div>
+          <div>2023年6月6日</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
+                    <i class="iconfont icon-nc"></i>
+                  </span>
+                </a>
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="SA - 相同方式共享">
+                    <i class="iconfont icon-sa"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/06/06/3.%E8%BD%AF%E4%BB%B6%E7%9B%B8%E5%85%B3/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/python/4.%E7%AC%AC%E5%9B%9B%E9%83%A8%E5%88%86%20%E5%BA%8F%E5%88%97/" title="python笔记(4.序列)">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">python笔记(4.序列)</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/06/06/3.%E8%BD%AF%E4%BB%B6%E7%9B%B8%E5%85%B3/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/python/2.%E7%AC%AC%E4%BA%8C%E9%83%A8%E5%88%86%20python%E5%85%A5%E9%97%A8/" title="python笔记(2.Python入门)">
+                        <span class="hidden-mobile">python笔记(2.Python入门)</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#gitalk-container', function() {
+      Fluid.utils.createCssLink('/css/gitalk.css')
+      Fluid.utils.createScript('https://lib.baomitu.com/gitalk/1.8.0/gitalk.min.js', function() {
+        var options = Object.assign(
+          {"clientID":"c9ac06d5413a9d613a1e","clientSecret":"a44f5c72589eb090876cc64067db28fbfdf4747c","repo":"Blog-comments-gitalk","owner":"DuRuofu","admin":["DuRuofu"],"language":"zh-CN","labels":["Gitalk"],"perPage":15,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":false,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token"},
+          {
+            id: '490db05c56a742b31e8874b3abbbc199'
+          }
+        )
+        var gitalk = new Gitalk(options);
+        gitalk.render('gitalk-container');
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <br><span id="timeDate">天数载入中</span><span id="times">...</span><br> <span>总有读不懂的诗和到达不了的远方</span> <p>Copyright © 2023 - <span id="currentYear"></span> All Rights Reserved.</p> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      陕ICP备2022007454号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=2022007454"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>陕ICP备2022007454号-1</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":true,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/cust/custom.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

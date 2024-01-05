@@ -1,0 +1,883 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/%E4%B8%AA%E4%BA%BA%E5%A4%B4%E5%83%8F%E6%97%A0%E8%83%8C%E6%99%AF.png">
+  <link rel="icon" href="https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/%E4%B8%AA%E4%BA%BA%E5%A4%B4%E5%83%8F%E6%97%A0%E8%83%8C%E6%99%AF.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="DuRuofu">
+  <meta name="keywords" content="嵌入式,个人博客">
+  
+    <meta name="description" content="第七部分 异常和文件异常什么是异常程序在运行过程当中，不可避免的会出现一些错误，比如：        使用了没有赋值过的变量        使用了不存在的索引        除0        … 这些错误在程序中，我们称其为异常。 程序运行过程中，一旦出现异常将会导致程序立即终止，异常以后的代码全部都不会执行！     处理异常程序运行时出现异常，目的并不是让我们的程序直接终止！Python是希">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python笔记(7.异常和文件)">
+<meta property="og:url" content="https://www.duruofu.xyz/2023/06/06/3.%E8%BD%AF%E4%BB%B6%E7%9B%B8%E5%85%B3/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/python/7.%E7%AC%AC%E4%B8%83%E9%83%A8%E5%88%86%20%E5%BC%82%E5%B8%B8%E5%92%8C%E6%96%87%E4%BB%B6/index.html">
+<meta property="og:site_name" content="Duruofu&#39;s personal blog">
+<meta property="og:description" content="第七部分 异常和文件异常什么是异常程序在运行过程当中，不可避免的会出现一些错误，比如：        使用了没有赋值过的变量        使用了不存在的索引        除0        … 这些错误在程序中，我们称其为异常。 程序运行过程中，一旦出现异常将会导致程序立即终止，异常以后的代码全部都不会执行！     处理异常程序运行时出现异常，目的并不是让我们的程序直接终止！Python是希">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.duruofu.xyz/%5Cimg%5C%E6%96%87%E7%AB%A0%E5%B0%81%E9%9D%A2%5Cpython.jpg">
+<meta property="article:published_time" content="2023-06-06T03:29:59.671Z">
+<meta property="article:modified_time" content="2023-06-06T03:49:34.894Z">
+<meta property="article:author" content="DuRuofu">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="编程语言">
+<meta property="article:tag" content="异常和文件">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://www.duruofu.xyz/%5Cimg%5C%E6%96%87%E7%AB%A0%E5%B0%81%E9%9D%A2%5Cpython.jpg">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>python笔记(7.异常和文件) - Duruofu&#39;s personal blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/cust/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"www.duruofu.xyz","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":80,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":true,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":5},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>DuRuofu</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/%5Cimg%5C%E6%96%87%E7%AB%A0%E5%B0%81%E9%9D%A2%5Cpython.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="python笔记(7.异常和文件)"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        DuRuofu
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-06-06 11:29" pubdate>
+          2023年6月6日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          7.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          64 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">python笔记(7.异常和文件)</h1>
+            
+              <p class="note note-info">
+                
+                  
+                    本文最后更新于：7 个月前
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="第七部分-异常和文件"><a href="#第七部分-异常和文件" class="headerlink" title="第七部分 异常和文件"></a>第七部分 异常和文件</h2><h3 id="异常"><a href="#异常" class="headerlink" title="异常"></a>异常</h3><h4 id="什么是异常"><a href="#什么是异常" class="headerlink" title="什么是异常"></a>什么是异常</h4><p>程序在运行过程当中，不可避免的会出现一些错误，比如：<br>        使用了没有赋值过的变量<br>        使用了不存在的索引<br>        除0<br>        …<br> 这些错误在程序中，我们称其为异常。<br> 程序运行过程中，一旦出现异常将会导致程序立即终止，异常以后的代码全部都不会执行！    </p>
+<h4 id="处理异常"><a href="#处理异常" class="headerlink" title="处理异常"></a>处理异常</h4><p>程序运行时出现异常，目的并不是让我们的程序直接终止！<br>Python是希望在出现异常时，我们可以编写代码来对异常进行处理！</p>
+<h5 id="try语句"><a href="#try语句" class="headerlink" title="try语句"></a>try语句</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">try</span>语句<br>    <span class="hljs-keyword">try</span>:<br>        代码块（可能出现错误的语句）<br>    <span class="hljs-keyword">except</span> 异常类型 <span class="hljs-keyword">as</span> 异常名:<br>        代码块（出现错误以后的处理方式）<br>    <span class="hljs-keyword">except</span> 异常类型 <span class="hljs-keyword">as</span> 异常名:<br>        代码块（出现错误以后的处理方式）<br>    <span class="hljs-keyword">except</span> 异常类型 <span class="hljs-keyword">as</span> 异常名:<br>        代码块（出现错误以后的处理方式）<br>    <span class="hljs-keyword">else</span>：<br>        代码块（没出错时要执行的语句）    <br>    <span class="hljs-keyword">finally</span>:<br>        代码块（该代码块总会执行）   <br>   <span class="hljs-comment"># try是必须的 else语句有没有都行      except和finally至少有一个  </span><br></code></pre></td></tr></table></figure>
+
+<p>如果出现错误，则会执行expect子句中的代码，这样我们就可以通过代码来处理异常<br>避免因为一个异常导致整个程序的终止 </p>
+<h4 id="异常的传播"><a href="#异常的传播" class="headerlink" title="异常的传播"></a>异常的传播</h4><p>当在函数中出现异常时，如果在函数中对异常进行了处理，则异常不会再继续传播,。如果函数中没有对异常进行处理，则异常会继续向函数调用处传播,</p>
+<p> 如果函数调用处处理了异常，则不再传播，如果没有处理则继续向调用处传播，直到传递到全局作用域（主模块）如果依然没有处理，则程序终止，并且显示异常信息。</p>
+<h4 id="异常的对象"><a href="#异常的对象" class="headerlink" title="异常的对象"></a>异常的对象</h4><p>当程序运行过程中出现异常以后，所有的异常信息会被保存一个专门的异常对象中，而异常传播时，实际上就是异常对象抛给了调用处<br>比如 ： ZeroDivisionError类的对象专门用来表示除0的异常， NameError类的对象专门用来处理变量错误的异常（在Python为我们提供了多个异常对象  ）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;异常出现前&#x27;</span>)<br>l = []<br><span class="hljs-keyword">try</span>:<br>    <span class="hljs-comment"># print(c)</span><br>    <span class="hljs-comment"># l[10]</span><br>    <span class="hljs-comment"># 1 + &#x27;hello&#x27;</span><br>    <span class="hljs-built_in">print</span>(<span class="hljs-number">10</span>/<span class="hljs-number">0</span>)<br><span class="hljs-keyword">except</span> NameError:<br>    <span class="hljs-comment"># 如果except后不跟任何的内容，则此时它会捕获到所有的异常</span><br>    <span class="hljs-comment"># 如果在except后跟着一个异常的类型，那么此时它只会捕获该类型的异常</span><br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;出现 NameError 异常&#x27;</span>)<br><span class="hljs-keyword">except</span> ZeroDivisionError:<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;出现 ZeroDivisionError 异常&#x27;</span>)<br><span class="hljs-keyword">except</span> IndexError:<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;出现 IndexError 异常&#x27;</span>)<br><span class="hljs-comment"># Exception 是所有异常类的父类，所以如果except后跟的是Exception，他也会捕获到所有的异常</span><br><span class="hljs-comment"># 可以在异常类后边跟着一个 as xx 此时xx就是异常对象</span><br><span class="hljs-keyword">except</span> Exception <span class="hljs-keyword">as</span> e :<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;未知异常&#x27;</span>,e,<span class="hljs-built_in">type</span>(e))<br><span class="hljs-keyword">finally</span> :<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;无论是否出现异常，该子句都会执行&#x27;</span>)<br><br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;异常出现后&#x27;</span>)<br></code></pre></td></tr></table></figure>
+
+<h4 id="抛出异常"><a href="#抛出异常" class="headerlink" title="抛出异常"></a>抛出异常</h4><p>可以使用 raise 语句来抛出异常，raise语句后需要跟一个异常类 或 异常的实例</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">MyError</span>(<span class="hljs-title class_ inherited__">Exception</span>):<br>    <span class="hljs-keyword">pass</span><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">add</span>(<span class="hljs-params">a,b</span>):<br>    <span class="hljs-comment"># 如果a和b中有负数，就向调用处抛出异常</span><br>    <span class="hljs-keyword">if</span> a &lt; <span class="hljs-number">0</span> <span class="hljs-keyword">or</span> b &lt; <span class="hljs-number">0</span>:<br>        <span class="hljs-comment"># raise用于向外部抛出异常，后边可以跟一个异常类，或异常类的实例</span><br>        <span class="hljs-comment"># raise Exception    </span><br>        <span class="hljs-comment"># 抛出异常的目的，告诉调用者这里调用时出现问题，希望你自己处理一下</span><br>        <span class="hljs-comment"># raise Exception(&#x27;两个参数中不能有负数！&#x27;)  </span><br>        <span class="hljs-keyword">raise</span> MyError(<span class="hljs-string">&#x27;自定义的异常&#x27;</span>)<br>        <br>        <span class="hljs-comment"># 也可以通过if else来代替异常的处理</span><br>        <span class="hljs-comment"># return None</span><br>    r = a + b<br>    <span class="hljs-keyword">return</span> r<br><br><span class="hljs-built_in">print</span>(add(-<span class="hljs-number">123</span>,<span class="hljs-number">456</span>))    <br></code></pre></td></tr></table></figure>
+
+<h3 id="文件（File）"><a href="#文件（File）" class="headerlink" title="文件（File）"></a>文件（File）</h3><p>通过Python程序来对计算机中的各种文件进行增删改查的操作   I&#x2F;O(Input &#x2F; Output)</p>
+<p>操作文件的步骤：</p>
+<p>​	    ① 打开文件<br>​        ② 对文件进行各种操作（读、写），然后保存<br>​        ③ 关闭文件</p>
+<h4 id="打开文件"><a href="#打开文件" class="headerlink" title="打开文件"></a>打开文件</h4><p>当前文件结构：</p>
+<img src="https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/1651048473327.png" srcset="/img/loading.gif" lazyload style="zoom:67%;">
+
+<p>使用open函数来打开一个文件:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-built_in">open</span>(file, mode=<span class="hljs-string">&#x27;r&#x27;</span>, buffering=-<span class="hljs-number">1</span>, encoding_=<span class="hljs-literal">None</span>, errors=<span class="hljs-literal">None</span>, newline=<span class="hljs-literal">None</span>, closefd=<span class="hljs-literal">True</span>, opener=<span class="hljs-literal">None</span>)<br><span class="hljs-comment"># 使用open函数来打开一个文件</span><br><span class="hljs-comment"># 参数：</span><br><span class="hljs-comment">#   file 要打开的文件的名字（路径）</span><br><span class="hljs-comment"># 返回值：</span><br><span class="hljs-comment">#   返回一个对象，这个对象就代表了当前打开的文件</span><br><br><span class="hljs-comment"># 创建一个变量，来保存文件的名字</span><br><span class="hljs-comment"># 如果目标文件和当前文件在同一级目录下，则直接使用文件名即可</span><br>file_name = <span class="hljs-string">&#x27;demo.txt&#x27;</span><br><br><span class="hljs-comment"># 在windows系统使用路径时，可以使用/来代替 \</span><br><span class="hljs-comment"># 或者可以使用 \\ 来代替 \</span><br><span class="hljs-comment"># 或者也可以使用原始字符串(加r)</span><br>file_name = <span class="hljs-string">&#x27;hello\\demo.txt&#x27;</span><br>file_name = <span class="hljs-string">r&#x27;hello\demo.txt&#x27;</span><br><br><span class="hljs-comment"># 表示路径，可以使用..来返回一级目录</span><br>file_name = <span class="hljs-string">&#x27;../hello/demo.txt&#x27;</span><br><br><span class="hljs-comment"># 如果目标文件距离当前文件比较远，此时可以使用绝对路径</span><br><span class="hljs-comment"># 绝对路径应该从磁盘的根目录开始书写</span><br>file_name = <span class="hljs-string">r&#x27;C:\Users\lilichao\Desktop\hello.txt&#x27;</span><br><br>file_obj = <span class="hljs-built_in">open</span>(file_name) <span class="hljs-comment"># 打开 file_name 对应的文件</span><br><br><span class="hljs-built_in">print</span>(file_obj)<br></code></pre></td></tr></table></figure>
+
+<p><strong>打开文件代码基本结构：</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 打开文件</span><br>file_name = <span class="hljs-string">&#x27;demo.txt&#x27;</span><br><br><span class="hljs-comment"># 调用open()来打开文件</span><br>file_obj = <span class="hljs-built_in">open</span>(file_name)<br><br><span class="hljs-comment"># # 当我们获取了文件对象以后，所有的对文件的操作都应该通过对象来进行</span><br><span class="hljs-comment"># # 读取文件中的内容</span><br><span class="hljs-comment"># # read()方法，用来读取文件中的内容，它会将内容全部保存为一个字符串返回</span><br>content = file_obj.read()<br><br><span class="hljs-built_in">print</span>(content)<br></code></pre></td></tr></table></figure>
+
+<h4 id="关闭文件"><a href="#关闭文件" class="headerlink" title="关闭文件"></a>关闭文件</h4><p>调用close()方法来关闭文件</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># # 关闭文件</span><br><span class="hljs-comment"># # 调用close()方法来关闭文件</span><br>file_obj.close()  <span class="hljs-comment">#不常用</span><br><br><span class="hljs-comment"># with ... as 语句</span><br><span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(file_name) <span class="hljs-keyword">as</span> file_obj :<br><span class="hljs-comment">#     # 在with语句中可以直接使用file_obj来做文件操作</span><br><span class="hljs-comment">#     # 此时这个文件只能在with中使用，一旦with结束则文件会自动close()</span><br><span class="hljs-comment">#     print(file_obj.read())</span><br></code></pre></td></tr></table></figure>
+
+<p>完善结构：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs python">file_name = <span class="hljs-string">&#x27;hello&#x27;</span><br><br><span class="hljs-keyword">try</span>:<br>    <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(file_name) <span class="hljs-keyword">as</span> file_obj :<br>        <span class="hljs-built_in">print</span>(file_obj.read())<br><span class="hljs-keyword">except</span> FileNotFoundError:<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&#x27;<span class="hljs-subst">&#123;file_name&#125;</span> 文件不存在~~&#x27;</span>)<br></code></pre></td></tr></table></figure>
+
+<h4 id="文件读取"><a href="#文件读取" class="headerlink" title="文件读取"></a>文件读取</h4><p><strong>注意：</strong><br>调用open()来打开一个文件，可以将文件分成两种类型:<br> 一种，是纯文本文件（使用utf-8等编码编写的文本文件）<br>一种，是二进制文件（图片、mp3、ppt等这些文件）</p>
+<p>open()打开文件时，默认是以文本文件的形式打开的，但是open()默认的编码为None<br>所以处理文本文件时，必须要指定文件的编码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(file_name,encoding=<span class="hljs-string">&#x27;utf-8&#x27;</span>) <span class="hljs-keyword">as</span> file_obj:<br></code></pre></td></tr></table></figure>
+
+<h5 id="通过-read-来读取文件中的内容"><a href="#通过-read-来读取文件中的内容" class="headerlink" title="通过 read() 来读取文件中的内容"></a><strong>通过 read() 来读取文件中的内容</strong></h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs python">content = file_obj.read(<span class="hljs-number">6</span>)<br>content = file_obj.read(-<span class="hljs-number">1</span>)<br></code></pre></td></tr></table></figure>
+
+<p>如果直接调用read()它会将文本文件的所有内容全部都读取出来，如果要读取的文件较大的话，会一次性将文件的内容加载到内存中，容易导致内存泄漏，所以对于较大的文件，不要直接调用read()</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs python">file_name = <span class="hljs-string">&#x27;demo2.txt&#x27;</span><br><span class="hljs-keyword">try</span>:<br>    <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(file_name,encoding=<span class="hljs-string">&#x27;utf-8&#x27;</span>) <span class="hljs-keyword">as</span> file_obj:<br>        <span class="hljs-comment"># content = file_obj.read(-1)</span><br>        content = file_obj.read(<span class="hljs-number">6</span>)<br>        content = file_obj.read(<span class="hljs-number">6</span>)<br>        content = file_obj.read(<span class="hljs-number">6</span>)<br>        content = file_obj.read(<span class="hljs-number">6</span>)<br>        <span class="hljs-comment"># print(content)</span><br>        <span class="hljs-comment"># print(len(content))</span><br><span class="hljs-keyword">except</span> FileNotFoundError :<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&#x27;<span class="hljs-subst">&#123;file_name&#125;</span> 这个文件不存在！&#x27;</span>)<br></code></pre></td></tr></table></figure>
+
+<p>read()可以接收一个size作为参数，该参数用来指定要读取的字符的数量， 默认值为-1，它会读取文件中的所有字符，可以为size指定一个值，这样read()会读取指定数量的字符。</p>
+<p>每一次读取都是从上次读取到位置开始读取的，如果字符的数量小于size，则会读取剩余所有的，如果已经读取到了文件的最后了，则会返回’’空串</p>
+<h5 id="读取大文件的方式"><a href="#读取大文件的方式" class="headerlink" title="读取大文件的方式"></a><strong>读取大文件的方式</strong></h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 读取大文件的方式</span><br>file_name = <span class="hljs-string">&#x27;demo.txt&#x27;</span><br><br><span class="hljs-keyword">try</span>:<br>    <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(file_name,encoding=<span class="hljs-string">&#x27;utf-8&#x27;</span>) <span class="hljs-keyword">as</span> file_obj:<br>        <span class="hljs-comment"># 定义一个变量，来保存文件的内容</span><br>        file_content = <span class="hljs-string">&#x27;&#x27;</span><br>        <span class="hljs-comment"># 定义一个变量，来指定每次读取的大小</span><br>        chunk = <span class="hljs-number">100</span><br>        <span class="hljs-comment"># 创建一个循环来读取文件内容</span><br>        <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:<br>            <span class="hljs-comment"># 读取chunk大小的内容</span><br>            content = file_obj.read(chunk)<br><br>            <span class="hljs-comment"># 检查是否读取到了内容</span><br>            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> content:<br>                <span class="hljs-comment"># 内容读取完毕，退出循环</span><br>                <span class="hljs-keyword">break</span><br><br>            <span class="hljs-comment"># 输出内容</span><br>            <span class="hljs-comment"># print(content,end=&#x27;&#x27;)</span><br>            file_content += content<br><br><span class="hljs-keyword">except</span> FileNotFoundError :<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&#x27;<span class="hljs-subst">&#123;file_name&#125;</span> 这个文件不存在！&#x27;</span>)<br><br><span class="hljs-built_in">print</span>(file_content)<br></code></pre></td></tr></table></figure>
+
+<h5 id="其它读取方式："><a href="#其它读取方式：" class="headerlink" title="其它读取方式："></a><strong>其它读取方式：</strong></h5><p><strong>readline()</strong>   <strong>readlines()</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> pprint<br><span class="hljs-keyword">import</span> os<br>file_name = <span class="hljs-string">&#x27;demo.txt&#x27;</span><br><br><span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(file_name , encoding=<span class="hljs-string">&#x27;utf-8&#x27;</span>) <span class="hljs-keyword">as</span> file_obj:<br>    <span class="hljs-comment"># readline()</span><br>    <span class="hljs-comment"># 该方法可以用来读取一行内容</span><br>     <span class="hljs-built_in">print</span>(file_obj.readline(),end=<span class="hljs-string">&#x27;&#x27;</span>)<br>    <span class="hljs-comment"># print(file_obj.readline())</span><br>    <span class="hljs-comment"># print(file_obj.readline())</span><br><br>    <span class="hljs-comment"># readlines()</span><br>    <span class="hljs-comment"># 该方法用于一行一行的读取内容，它会一次性将读取到的内容封装到一个列表中返回</span><br>     r = file_obj.readlines()<br>     pprint.pprint(r[<span class="hljs-number">0</span>])<br>    <span class="hljs-comment"># pprint.pprint(r[1])</span><br>    <span class="hljs-comment"># pprint.pprint(r[2])</span><br><br>    <span class="hljs-keyword">for</span> t <span class="hljs-keyword">in</span> file_obj:<br>        <span class="hljs-built_in">print</span>(t)d<br></code></pre></td></tr></table></figure>
+
+<h5 id="二进制文件的读取"><a href="#二进制文件的读取" class="headerlink" title="二进制文件的读取"></a>二进制文件的读取</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs python">file_name = <span class="hljs-string">&#x27;c:/Users/lilichao/Desktop/告白气球.flac&#x27;</span><span class="hljs-comment">#读取一个音乐文件</span><br><br><span class="hljs-comment"># 读取模式</span><br><span class="hljs-comment"># t 读取文本文件（默认值）</span><br><span class="hljs-comment"># b 读取二进制文件</span><br><br><span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(file_name , <span class="hljs-string">&#x27;rb&#x27;</span>) <span class="hljs-keyword">as</span> file_obj:<br>    <span class="hljs-comment"># 读取文本文件时，size是以字符为单位的</span><br>    <span class="hljs-comment"># 读取二进制文件时，size是以字节为单位</span><br>    <span class="hljs-comment"># print(file_obj.read(100))</span><br></code></pre></td></tr></table></figure>
+
+<p> 将读取到的内容写出来</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 将读取到的内容写出来</span><br><span class="hljs-comment"># 定义一个新的文件</span><br>new_name = <span class="hljs-string">&#x27;aa.flac&#x27;</span><br><br><span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(new_name , <span class="hljs-string">&#x27;wb&#x27;</span>) <span class="hljs-keyword">as</span> new_obj:<br><br>    <span class="hljs-comment"># 定义每次读取的大小</span><br>    chunk = <span class="hljs-number">1024</span> * <span class="hljs-number">100</span>  <span class="hljs-comment">#每次读取100K</span><br><br>    <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span> :<br>        <span class="hljs-comment"># 从已有的对象中读取数据</span><br>        content = file_obj.read(chunk)<br><br>        <span class="hljs-comment"># 内容读取完毕，终止循环</span><br>        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> content :<br>            <span class="hljs-keyword">break</span><br><br>        <span class="hljs-comment"># 将读取到的数据写入到新对象中</span><br>        new_obj.write(content)<br></code></pre></td></tr></table></figure>
+
+<h4 id="文件的写入"><a href="#文件的写入" class="headerlink" title="文件的写入"></a>文件的写入</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs python">file_name = <span class="hljs-string">&#x27;demo5.txt&#x27;</span><br><span class="hljs-comment"># 使用open()打开文件时必须要指定打开文件所要做的操作（读、写、追加）</span><br><span class="hljs-comment"># 如果不指定操作类型，则默认是 读取文件 ， 而读取文件时是不能向文件中写入的</span><br><span class="hljs-comment"># r 表示只读的 (默认值)</span><br><span class="hljs-comment"># w 表示是可写的，使用w来写入文件时，如果文件不存在会创建文件，如果文件存在则会截断文件</span><br><span class="hljs-comment">#   截断文件指删除原来文件中的所有内容</span><br><span class="hljs-comment"># a 表示追加内容，如果文件不存在会创建文件，如果文件存在则会向文件中追加内容</span><br><span class="hljs-comment"># x 用来新建文件，如果文件不存在则创建，存在则报错</span><br><span class="hljs-comment"># + 为操作符增加功能</span><br><span class="hljs-comment">#   r+ 即可读又可写，文件不存在会报错</span><br><span class="hljs-comment">#   w+</span><br><span class="hljs-comment">#   a+</span><br><span class="hljs-comment"># with open(file_name , &#x27;w&#x27; , encoding=&#x27;utf-8&#x27;) as file_obj:</span><br><span class="hljs-comment"># with open(file_name , &#x27;r+&#x27; , encoding=&#x27;utf-8&#x27;) as file_obj:</span><br><br><br><span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(file_name , <span class="hljs-string">&#x27;x&#x27;</span> , encoding=<span class="hljs-string">&#x27;utf-8&#x27;</span>) <span class="hljs-keyword">as</span> file_obj:<br>    <span class="hljs-comment"># write()来向文件中写入内容，</span><br>    <span class="hljs-comment"># 如果操作的是一个文本文件的话，则write()需要传递一个字符串作为参数</span><br>    <span class="hljs-comment"># 该方法会可以分多次向文件中写入内容</span><br>    <span class="hljs-comment"># 写入完成以后，该方法会返回写入的字符的个数</span><br>    file_obj.write(<span class="hljs-string">&#x27;aaa\n&#x27;</span>)<br>    file_obj.write(<span class="hljs-string">&#x27;bbb\n&#x27;</span>)<br>    file_obj.write(<span class="hljs-string">&#x27;ccc\n&#x27;</span>)<br>    r = file_obj.write(<span class="hljs-built_in">str</span>(<span class="hljs-number">123</span>)+<span class="hljs-string">&#x27;123123\n&#x27;</span>)<br>    r = file_obj.write(<span class="hljs-string">&#x27;今天天气真不错&#x27;</span>)<br>    <span class="hljs-built_in">print</span>(r)<br><br></code></pre></td></tr></table></figure>
+
+<h4 id="读取文件的位置"><a href="#读取文件的位置" class="headerlink" title="读取文件的位置"></a>读取文件的位置</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># with open(&#x27;demo.txt&#x27;,&#x27;rb&#x27;) as file_obj:</span><br><span class="hljs-comment">#     # print(file_obj.read(100))</span><br><span class="hljs-comment">#     # print(file_obj.read(30))</span><br><br><span class="hljs-comment">#     # seek() 可以修改当前读取的位置</span><br><span class="hljs-comment">#     file_obj.seek(55)</span><br><span class="hljs-comment">#     file_obj.seek(80,0)</span><br><span class="hljs-comment">#     file_obj.seek(70,1)</span><br><span class="hljs-comment">#     file_obj.seek(-10,2)</span><br><span class="hljs-comment">#     # seek()需要两个参数</span><br><span class="hljs-comment">#     #   第一个 是要切换到的位置</span><br><span class="hljs-comment">#     #   第二个 计算位置方式</span><br><span class="hljs-comment">#     #       可选值：</span><br><span class="hljs-comment">#     #           0 从头计算，默认值</span><br><span class="hljs-comment">#     #           1 从当前位置计算</span><br><span class="hljs-comment">#     #           2 从最后位置开始计算</span><br><br><span class="hljs-comment">#     print(file_obj.read())</span><br><br><span class="hljs-comment">#     # tell() 方法用来查看当前读取的位置</span><br><span class="hljs-comment">#     print(&#x27;当前读取到了 --&gt;&#x27;,file_obj.tell())</span><br><br><span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">&#x27;demo2.txt&#x27;</span>,<span class="hljs-string">&#x27;rt&#x27;</span> , encoding=<span class="hljs-string">&#x27;utf-8&#x27;</span>) <span class="hljs-keyword">as</span> file_obj:<br>    <span class="hljs-comment"># print(file_obj.read(100))</span><br>    <span class="hljs-comment"># print(file_obj.read(30))</span><br><br>    <span class="hljs-comment"># seek() 可以修改当前读取的位置</span><br>    file_obj.seek(<span class="hljs-number">9</span>)<br>    <span class="hljs-comment"># seek()需要两个参数</span><br>    <span class="hljs-comment">#   第一个 是要切换到的位置</span><br>    <span class="hljs-comment">#   第二个 计算位置方式</span><br>    <span class="hljs-comment">#       可选值：</span><br>    <span class="hljs-comment">#           0 从头计算，默认值</span><br>    <span class="hljs-comment">#           1 从当前位置计算</span><br>    <span class="hljs-comment">#           2 从最后位置开始计算</span><br><br>    <span class="hljs-built_in">print</span>(file_obj.read())<br><br>    <span class="hljs-comment"># tell() 方法用来查看当前读取的位置</span><br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;当前读取到了 --&gt;&#x27;</span>,file_obj.tell())<br></code></pre></td></tr></table></figure>
+
+<h4 id="文件的其他操作-和操作系统命令行相似"><a href="#文件的其他操作-和操作系统命令行相似" class="headerlink" title="文件的其他操作(和操作系统命令行相似)"></a>文件的其他操作(和操作系统命令行相似)</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> os<br><span class="hljs-keyword">from</span> pprint <span class="hljs-keyword">import</span> pprint<br><br><span class="hljs-comment"># os.listdir() 获取指定目录的目录结构</span><br><span class="hljs-comment"># 需要一个路径作为参数，会获取到该路径下的目录结构，默认路径为 . 当前目录</span><br><span class="hljs-comment"># 该方法会返回一个列表，目录中的每一个文件（夹）的名字都是列表中的一个元素</span><br>r = os.listdir()<br><br><span class="hljs-comment"># os.getcwd() 获取当前所在的目录</span><br>r = os.getcwd()<br><br><span class="hljs-comment"># os.chdir() 切换当前所在的目录 作用相当于 cd</span><br><span class="hljs-comment"># os.chdir(&#x27;c:/&#x27;)</span><br><br><span class="hljs-comment"># r = os.getcwd()</span><br><br><span class="hljs-comment"># 创建目录</span><br><span class="hljs-comment"># os.mkdir(&quot;aaa&quot;) # 在当前目录下创建一个名字为 aaa 的目录</span><br><br><span class="hljs-comment"># 删除目录</span><br><span class="hljs-comment"># os.rmdir(&#x27;abc&#x27;)</span><br><br><span class="hljs-comment"># open(&#x27;aa.txt&#x27;,&#x27;w&#x27;)</span><br><span class="hljs-comment"># 删除文件</span><br><span class="hljs-comment"># os.remove(&#x27;aa.txt&#x27;)</span><br><br><span class="hljs-comment"># os.rename(&#x27;旧名字&#x27;,&#x27;新名字&#x27;) 可以对一个文件进行重命名，也可以用来移动一个文件</span><br><span class="hljs-comment"># os.rename(&#x27;aa.txt&#x27;,&#x27;bb.txt&#x27;)</span><br>os.rename(<span class="hljs-string">&#x27;bb.txt&#x27;</span>,<span class="hljs-string">&#x27;c:/users/lilichao/desktop/bb.txt&#x27;</span>)<br><br>pprint(r)<br></code></pre></td></tr></table></figure>
+
+<p>END：Duruofu 2022.4.27于西安理工大学</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%8F%8A%E5%B5%8C%E5%85%A5%E5%BC%8F%E8%BD%AF%E4%BB%B6/" class="category-chain-item">计算机及嵌入式软件</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%8F%8A%E5%B5%8C%E5%85%A5%E5%BC%8F%E8%BD%AF%E4%BB%B6/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/" class="category-chain-item">编程语言</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%8F%8A%E5%B5%8C%E5%85%A5%E5%BC%8F%E8%BD%AF%E4%BB%B6/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/python/" class="category-chain-item">python</a>
+  
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/python/">#python</a>
+      
+        <a href="/tags/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">#编程语言</a>
+      
+        <a href="/tags/%E5%BC%82%E5%B8%B8%E5%92%8C%E6%96%87%E4%BB%B6/">#异常和文件</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>python笔记(7.异常和文件)</div>
+      <div>https://www.duruofu.xyz/2023/06/06/3.软件相关/编程语言/python/7.第七部分 异常和文件/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>DuRuofu</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年6月6日</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>更新于</div>
+          <div>2023年6月6日</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
+                    <i class="iconfont icon-nc"></i>
+                  </span>
+                </a>
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="SA - 相同方式共享">
+                    <i class="iconfont icon-sa"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/06/06/3.%E8%BD%AF%E4%BB%B6%E7%9B%B8%E5%85%B3/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/python/1.%E7%AC%AC%E4%B8%80%E9%83%A8%E5%88%86%20%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" title="python笔记(1.计算机基础知识)">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">python笔记(1.计算机基础知识)</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/06/06/3.%E8%BD%AF%E4%BB%B6%E7%9B%B8%E5%85%B3/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/python/6.%E7%AC%AC%E5%85%AD%E9%83%A8%E5%88%86%20%E5%AF%B9%E8%B1%A1/" title="python笔记(6.对象)">
+                        <span class="hidden-mobile">python笔记(6.对象)</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#gitalk-container', function() {
+      Fluid.utils.createCssLink('/css/gitalk.css')
+      Fluid.utils.createScript('https://lib.baomitu.com/gitalk/1.8.0/gitalk.min.js', function() {
+        var options = Object.assign(
+          {"clientID":"c9ac06d5413a9d613a1e","clientSecret":"a44f5c72589eb090876cc64067db28fbfdf4747c","repo":"Blog-comments-gitalk","owner":"DuRuofu","admin":["DuRuofu"],"language":"zh-CN","labels":["Gitalk"],"perPage":15,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":false,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token"},
+          {
+            id: '70c7053f317cd220669f1a6a4dde640e'
+          }
+        )
+        var gitalk = new Gitalk(options);
+        gitalk.render('gitalk-container');
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <br><span id="timeDate">天数载入中</span><span id="times">...</span><br> <span>总有读不懂的诗和到达不了的远方</span> <p>Copyright © 2023 - <span id="currentYear"></span> All Rights Reserved.</p> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      陕ICP备2022007454号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=2022007454"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>陕ICP备2022007454号-1</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":true,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/cust/custom.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

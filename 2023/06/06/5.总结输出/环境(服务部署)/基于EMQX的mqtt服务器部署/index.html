@@ -1,0 +1,893 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/%E4%B8%AA%E4%BA%BA%E5%A4%B4%E5%83%8F%E6%97%A0%E8%83%8C%E6%99%AF.png">
+  <link rel="icon" href="https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/%E4%B8%AA%E4%BA%BA%E5%A4%B4%E5%83%8F%E6%97%A0%E8%83%8C%E6%99%AF.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="DuRuofu">
+  <meta name="keywords" content="嵌入式,个人博客">
+  
+    <meta name="description" content="EMQX 是一款大规模可弹性伸缩的云原生分布式物联网 MQTT 消息服务器。 作为全球最具扩展性的 MQTT 消息服务器，EMQX 提供了高效可靠海量物联网设备连接，能够高性能实时移动与处理消息和事件流数据，帮助快速构建关键业务的物联网平台与应用。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于EMQX的mqtt服务器部署">
+<meta property="og:url" content="https://www.duruofu.xyz/2023/06/06/5.%E6%80%BB%E7%BB%93%E8%BE%93%E5%87%BA/%E7%8E%AF%E5%A2%83(%E6%9C%8D%E5%8A%A1%E9%83%A8%E7%BD%B2)/%E5%9F%BA%E4%BA%8EEMQX%E7%9A%84mqtt%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%83%A8%E7%BD%B2/index.html">
+<meta property="og:site_name" content="Duruofu&#39;s personal blog">
+<meta property="og:description" content="EMQX 是一款大规模可弹性伸缩的云原生分布式物联网 MQTT 消息服务器。 作为全球最具扩展性的 MQTT 消息服务器，EMQX 提供了高效可靠海量物联网设备连接，能够高性能实时移动与处理消息和事件流数据，帮助快速构建关键业务的物联网平台与应用。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.duruofu.xyz/%5Cimg%5C%E6%96%87%E7%AB%A0%E5%B0%81%E9%9D%A2%5Cmqtt.png">
+<meta property="article:published_time" content="2023-06-06T07:40:53.000Z">
+<meta property="article:modified_time" content="2024-01-05T03:45:39.864Z">
+<meta property="article:author" content="DuRuofu">
+<meta property="article:tag" content="EMQX">
+<meta property="article:tag" content="MQTT">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://www.duruofu.xyz/%5Cimg%5C%E6%96%87%E7%AB%A0%E5%B0%81%E9%9D%A2%5Cmqtt.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>基于EMQX的mqtt服务器部署 - Duruofu&#39;s personal blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/cust/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"www.duruofu.xyz","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":80,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":true,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":5},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>DuRuofu</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="基于EMQX的mqtt服务器部署"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        DuRuofu
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-06-06 15:40" pubdate>
+          2023年6月6日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          20 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">基于EMQX的mqtt服务器部署</h1>
+            
+              <p class="note note-info">
+                
+                  
+                    本文最后更新于：11 分钟前
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>EMQX 是一款大规模可弹性伸缩的云原生分布式物联网 MQTT 消息服务器。</p>
+<p>作为全球最具扩展性的 MQTT 消息服务器，EMQX 提供了高效可靠海量物联网设备连接，能够高性能实时移动与处理消息和事件流数据，帮助快速构建关键业务的物联网平台与应用。</p>
+<span id="more"></span>
+<h1 id="mqtt部署"><a href="#mqtt部署" class="headerlink" title="mqtt部署"></a>mqtt部署</h1><h4 id="说明："><a href="#说明：" class="headerlink" title="说明："></a>说明：</h4><ol>
+<li>本文档由杜若甫撰写，由杜若甫负责解释及执行。</li>
+<li>本文用以记录基于EMQX的mqtt服务器部署过程，一方面替自己记忆细节，一方面方便向别人传播。</li>
+</ol>
+<h4 id="修订历史："><a href="#修订历史：" class="headerlink" title="修订历史："></a>修订历史：</h4><table>
+<thead>
+<tr>
+<th align="center">文档名称</th>
+<th align="center">版本</th>
+<th align="center">作者</th>
+<th align="center">时间</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">基于EMQX的mqtt服务器部署</td>
+<td align="center">DuRuofu</td>
+<td align="center">2023-04-28</td>
+<td align="center">首次建立</td>
+<td></td>
+</tr>
+<tr>
+<td align="center">基于EMQX的mqtt服务器部署以及ws+wss支持</td>
+<td align="center">DuRuofu</td>
+<td align="center">2023-05-05</td>
+<td align="center">完成编写</td>
+<td></td>
+</tr>
+</tbody></table>
+<h2 id="基于EMQX的mqtt服务器部署"><a href="#基于EMQX的mqtt服务器部署" class="headerlink" title="基于EMQX的mqtt服务器部署"></a>基于EMQX的mqtt服务器部署</h2><h3 id="一、EMQX介绍"><a href="#一、EMQX介绍" class="headerlink" title="一、EMQX介绍"></a>一、EMQX介绍</h3><p>EMQ X 基于 Erlang&#x2F;OTP 平台开发的 MQTT 消息服务器，是开源社区中最流行的 MQTT 消息服务器。</p>
+<p>MQTT属于是物联网的通信协议，在MQTT协议中有两大角色：客户端（发布者&#x2F;订阅者），服务端（Mqtt broker）；针对客户端和服务端需要有遵循该协议的的具体实现，EMQ&#x2F;EMQ X就是MQTT Broker的一种实现。</p>
+<p>EMQ X 是开源百万级分布式 MQTT 消息服务器（MQTT Messaging Broker），用于支持各种接入标准 MQTT 协议的设备，实现从设备端到服务器端的消息传递，以及从服务器端到设备端的设备控制消息转发。从而实现物联 网设备的数据采集，和对设备的操作和控制。</p>
+<p>EMQX官网：<a target="_blank" rel="noopener" href="https://www.emqx.io/zh">www.emqx.io/cn/</a><br>EMQX文档:   <a target="_blank" rel="noopener" href="https://www.emqx.io/docs/zh/v5.0/getting-started/getting-started.html#%E5%90%AF%E5%8A%A8-emqx">文档快速入门</a></p>
+<h3 id="二、部署过程-以windows为例"><a href="#二、部署过程-以windows为例" class="headerlink" title="二、部署过程(以windows为例)"></a>二、部署过程(以windows为例)</h3><h4 id="1-下载服务器代码："><a href="#1-下载服务器代码：" class="headerlink" title="1.下载服务器代码："></a>1.下载服务器代码：</h4><p><img src="/2023/06/06/5.%E6%80%BB%E7%BB%93%E8%BE%93%E5%87%BA/%E7%8E%AF%E5%A2%83(%E6%9C%8D%E5%8A%A1%E9%83%A8%E7%BD%B2)/%E5%9F%BA%E4%BA%8EEMQX%E7%9A%84mqtt%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%83%A8%E7%BD%B2/0505202035.png" srcset="/img/loading.gif" lazyload><br>移动到服务器：<br><img src="/2023/06/06/5.%E6%80%BB%E7%BB%93%E8%BE%93%E5%87%BA/%E7%8E%AF%E5%A2%83(%E6%9C%8D%E5%8A%A1%E9%83%A8%E7%BD%B2)/%E5%9F%BA%E4%BA%8EEMQX%E7%9A%84mqtt%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%83%A8%E7%BD%B2/0505202408.png" srcset="/img/loading.gif" lazyload></p>
+<h4 id="2-解压，运行启动命令："><a href="#2-解压，运行启动命令：" class="headerlink" title="2. 解压，运行启动命令："></a>2. 解压，运行启动命令：</h4><p>使用命令行进入服务器源代码bin目录：<br><img src="/2023/06/06/5.%E6%80%BB%E7%BB%93%E8%BE%93%E5%87%BA/%E7%8E%AF%E5%A2%83(%E6%9C%8D%E5%8A%A1%E9%83%A8%E7%BD%B2)/%E5%9F%BA%E4%BA%8EEMQX%E7%9A%84mqtt%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%83%A8%E7%BD%B2/0505202737.png" srcset="/img/loading.gif" lazyload><br>输入服务器启动命令：</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmd">emqx <span class="hljs-built_in">start</span><br></code></pre></td></tr></table></figure>
+<p>如下便启动成功：<br><img src="/2023/06/06/5.%E6%80%BB%E7%BB%93%E8%BE%93%E5%87%BA/%E7%8E%AF%E5%A2%83(%E6%9C%8D%E5%8A%A1%E9%83%A8%E7%BD%B2)/%E5%9F%BA%E4%BA%8EEMQX%E7%9A%84mqtt%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%83%A8%E7%BD%B2/0505202852.png" srcset="/img/loading.gif" lazyload></p>
+<h4 id="3-验证启动是否成功"><a href="#3-验证启动是否成功" class="headerlink" title="3.验证启动是否成功"></a>3.验证启动是否成功</h4><p>可以尝试访问服务器18083端口，服务器的后端管理网页运行于这个端口<br><img src="/2023/06/06/5.%E6%80%BB%E7%BB%93%E8%BE%93%E5%87%BA/%E7%8E%AF%E5%A2%83(%E6%9C%8D%E5%8A%A1%E9%83%A8%E7%BD%B2)/%E5%9F%BA%E4%BA%8EEMQX%E7%9A%84mqtt%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%83%A8%E7%BD%B2/0505203255.png" srcset="/img/loading.gif" lazyload><br>无法访问可能是服务器防火墙规则为放行对应端口，需要自行修改（云服务器如下图）。<br><img src="/2023/06/06/5.%E6%80%BB%E7%BB%93%E8%BE%93%E5%87%BA/%E7%8E%AF%E5%A2%83(%E6%9C%8D%E5%8A%A1%E9%83%A8%E7%BD%B2)/%E5%9F%BA%E4%BA%8EEMQX%E7%9A%84mqtt%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%83%A8%E7%BD%B2/0505203522.png" srcset="/img/loading.gif" lazyload><br>端口放行后可正常打开，默认用户名为：admin     密码：public</p>
+<p><img src="/2023/06/06/5.%E6%80%BB%E7%BB%93%E8%BE%93%E5%87%BA/%E7%8E%AF%E5%A2%83(%E6%9C%8D%E5%8A%A1%E9%83%A8%E7%BD%B2)/%E5%9F%BA%E4%BA%8EEMQX%E7%9A%84mqtt%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%83%A8%E7%BD%B2/0505203702.png" srcset="/img/loading.gif" lazyload><br>第一次登录会要求更改管理员密码，建议修改<br><img src="/2023/06/06/5.%E6%80%BB%E7%BB%93%E8%BE%93%E5%87%BA/%E7%8E%AF%E5%A2%83(%E6%9C%8D%E5%8A%A1%E9%83%A8%E7%BD%B2)/%E5%9F%BA%E4%BA%8EEMQX%E7%9A%84mqtt%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%83%A8%E7%BD%B2/0505204035.png" srcset="/img/loading.gif" lazyload><br>如上mqtt服务就部署成功了。<br>可以连接进行测试:<br>使用客户端测试工具进行连接测试：<br><img src="/2023/06/06/5.%E6%80%BB%E7%BB%93%E8%BE%93%E5%87%BA/%E7%8E%AF%E5%A2%83(%E6%9C%8D%E5%8A%A1%E9%83%A8%E7%BD%B2)/%E5%9F%BA%E4%BA%8EEMQX%E7%9A%84mqtt%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%83%A8%E7%BD%B2/0505204418.png" srcset="/img/loading.gif" lazyload><br><img src="/2023/06/06/5.%E6%80%BB%E7%BB%93%E8%BE%93%E5%87%BA/%E7%8E%AF%E5%A2%83(%E6%9C%8D%E5%8A%A1%E9%83%A8%E7%BD%B2)/%E5%9F%BA%E4%BA%8EEMQX%E7%9A%84mqtt%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%83%A8%E7%BD%B2/0505204253.png" srcset="/img/loading.gif" lazyload><br>后台也可以看到连接对象：<br><img src="/2023/06/06/5.%E6%80%BB%E7%BB%93%E8%BE%93%E5%87%BA/%E7%8E%AF%E5%A2%83(%E6%9C%8D%E5%8A%A1%E9%83%A8%E7%BD%B2)/%E5%9F%BA%E4%BA%8EEMQX%E7%9A%84mqtt%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%83%A8%E7%BD%B2/0505204312.png" srcset="/img/loading.gif" lazyload><br>此上，mqtt的基本部署完成，如果没有加密传输的需求，到这就结束了。（ps：如果连接失败，建议查看服务器是否开启对应端口，比如mqtt连接使用的1883端口）</p>
+<h4 id="4-服务证书配置"><a href="#4-服务证书配置" class="headerlink" title="4. 服务证书配置"></a>4. 服务证书配置</h4><p>在一些应用开发里，必须使用WebSocket&#x2F;TLS 协议进行通信，不能使用单纯的TCP连接。比如微信小程序：</p>
+<p>微信小程序仅支持通过 WebSocket 进行即时通信，EMQ X 的 MQTT Over WebSocket 能够完全兼容使用在微信小程序上。但由于微信小程序的规范限制，EMQX 使用微信小程序接入时需要注意以下几点：</p>
+<ul>
+<li>使用已经通过<a href="https://link.zhihu.com/?target=https://baike.baidu.com/item/%25E5%259F%259F%25E5%2590%258D%25E5%25A4%2587%25E6%25A1%2588">域名备案</a>的<strong>域名</strong>接入</li>
+<li>域名需要<a href="https://link.zhihu.com/?target=https://mp.weixin.qq.com/">微信公众平台</a>登录后在主页面的服务器域名下添加配置服务器域名地址</li>
+<li><strong>仅支持 WebSocket&#x2F;TLS 协议，需要为域名分配受信任 CA 颁发的证书</strong></li>
+<li>由于微信小程序 BUG，安卓真机必须使用 TLS&#x2F;443 端口，否则会连接失败（即连接地址不能带端口）<br>对应第三点，要使微信小程序通过 WSS 连接到 EMQX，我们需要给服务配置证书。</li>
+</ul>
+<h5 id="1-下载证书："><a href="#1-下载证书：" class="headerlink" title="1.下载证书："></a>1.下载证书：</h5><p>找到服务器域名证书选项（）<br><img src="/2023/06/06/5.%E6%80%BB%E7%BB%93%E8%BE%93%E5%87%BA/%E7%8E%AF%E5%A2%83(%E6%9C%8D%E5%8A%A1%E9%83%A8%E7%BD%B2)/%E5%9F%BA%E4%BA%8EEMQX%E7%9A%84mqtt%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%83%A8%E7%BD%B2/0505205635.png" srcset="/img/loading.gif" lazyload></p>
+<p>下载nginx格式证书：<br><img src="/2023/06/06/5.%E6%80%BB%E7%BB%93%E8%BE%93%E5%87%BA/%E7%8E%AF%E5%A2%83(%E6%9C%8D%E5%8A%A1%E9%83%A8%E7%BD%B2)/%E5%9F%BA%E4%BA%8EEMQX%E7%9A%84mqtt%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%83%A8%E7%BD%B2/0505215345.png" srcset="/img/loading.gif" lazyload></p>
+<h5 id="2-配置证书："><a href="#2-配置证书：" class="headerlink" title="2.配置证书："></a>2.配置证书：</h5><p>将证书文件夹放入服务器根目录：<br><img src="/2023/06/06/5.%E6%80%BB%E7%BB%93%E8%BE%93%E5%87%BA/%E7%8E%AF%E5%A2%83(%E6%9C%8D%E5%8A%A1%E9%83%A8%E7%BD%B2)/%E5%9F%BA%E4%BA%8EEMQX%E7%9A%84mqtt%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%83%A8%E7%BD%B2/0505215618.png" srcset="/img/loading.gif" lazyload></p>
+<p>将证书文件移入默认的证书文件夹“<br><img src="/2023/06/06/5.%E6%80%BB%E7%BB%93%E8%BE%93%E5%87%BA/%E7%8E%AF%E5%A2%83(%E6%9C%8D%E5%8A%A1%E9%83%A8%E7%BD%B2)/%E5%9F%BA%E4%BA%8EEMQX%E7%9A%84mqtt%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%83%A8%E7%BD%B2/0505220108.png" srcset="/img/loading.gif" lazyload><br>移动到：<br><img src="/2023/06/06/5.%E6%80%BB%E7%BB%93%E8%BE%93%E5%87%BA/%E7%8E%AF%E5%A2%83(%E6%9C%8D%E5%8A%A1%E9%83%A8%E7%BD%B2)/%E5%9F%BA%E4%BA%8EEMQX%E7%9A%84mqtt%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%83%A8%E7%BD%B2/0505220133.png" srcset="/img/loading.gif" lazyload></p>
+<p>打开配置文件：etc&#x2F;emqx.conf    到配置文件中修改<br>listener.wss.external.keyfile &#x3D; &#x2F;etc&#x2F;emqx&#x2F;certs&#x2F;你的域名.key<br>listener.wss.external.certfile &#x3D; &#x2F;etc&#x2F;emqx&#x2F;certs&#x2F;你的域名_bundle.pem<br>未配置前<br><img src="/2023/06/06/5.%E6%80%BB%E7%BB%93%E8%BE%93%E5%87%BA/%E7%8E%AF%E5%A2%83(%E6%9C%8D%E5%8A%A1%E9%83%A8%E7%BD%B2)/%E5%9F%BA%E4%BA%8EEMQX%E7%9A%84mqtt%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%83%A8%E7%BD%B2/0505220909.png" srcset="/img/loading.gif" lazyload><br>修改框选位置为自己的证书文件：<br><img src="/2023/06/06/5.%E6%80%BB%E7%BB%93%E8%BE%93%E5%87%BA/%E7%8E%AF%E5%A2%83(%E6%9C%8D%E5%8A%A1%E9%83%A8%E7%BD%B2)/%E5%9F%BA%E4%BA%8EEMQX%E7%9A%84mqtt%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%83%A8%E7%BD%B2/0505221124.png" srcset="/img/loading.gif" lazyload><br>修改完保存即可（重启mqtt服务器，记得开启对应端口防火墙）。</p>
+<pre><code class="hljs">需要注意的是EMQX默认使用的是8084端口，需要在代码中指定端口，且小程序后台开放wss://你的域名:8084才行  
+或者修改emqx的8084端口为443也可以
+</code></pre>
+<h5 id="3-测试"><a href="#3-测试" class="headerlink" title="3.测试"></a>3.测试</h5><p>配置好证书后可以用dash检测下websocket加上tls能否连接，也可以用检测工具<a target="_blank" rel="noopener" href="https://myssl.com/ssl.html">https://myssl.com/ssl.html</a><br>使用检测工具可以检测到证书信息可用即说明证书部署成功：<br><img src="/2023/06/06/5.%E6%80%BB%E7%BB%93%E8%BE%93%E5%87%BA/%E7%8E%AF%E5%A2%83(%E6%9C%8D%E5%8A%A1%E9%83%A8%E7%BD%B2)/%E5%9F%BA%E4%BA%8EEMQX%E7%9A%84mqtt%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%83%A8%E7%BD%B2/0505222107.png" srcset="/img/loading.gif" lazyload></p>
+<p>也可以使用测试工具测试wws连接：</p>
+<p><img src="/2023/06/06/5.%E6%80%BB%E7%BB%93%E8%BE%93%E5%87%BA/%E7%8E%AF%E5%A2%83(%E6%9C%8D%E5%8A%A1%E9%83%A8%E7%BD%B2)/%E5%9F%BA%E4%BA%8EEMQX%E7%9A%84mqtt%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%83%A8%E7%BD%B2/0505222711.png" srcset="/img/loading.gif" lazyload><br>发现可以连接成功：<br><img src="/2023/06/06/5.%E6%80%BB%E7%BB%93%E8%BE%93%E5%87%BA/%E7%8E%AF%E5%A2%83(%E6%9C%8D%E5%8A%A1%E9%83%A8%E7%BD%B2)/%E5%9F%BA%E4%BA%8EEMQX%E7%9A%84mqtt%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%83%A8%E7%BD%B2/0505222734.png" srcset="/img/loading.gif" lazyload></p>
+<p>至此整个mqtt部署完成。</p>
+<h4 id="5-其他"><a href="#5-其他" class="headerlink" title="5.其他"></a>5.其他</h4><blockquote>
+<p><strong>由于微信小程序 BUG，安卓真机必须使用 TLS&#x2F;443 端口，否则会连接失败（即连接地址不能带端口）</strong></p>
+</blockquote>
+<p>对这个问题  我们需要使用<a target="_blank" rel="noopener" href="http://nginx.org/en/download.html">nginx</a>代理，监听端口443并代理转发给EMQX的8084端口。由于本文主要记录mqtt服务器的部署，在此不再赘述。</p>
+<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><ol>
+<li><p>微信小程序整合MQTT - keitsi - 博客园<br> <a target="_blank" rel="noopener" href="https://www.cnblogs.com/keitsi/p/12571383.html">cnblogs.com</a></p>
+</li>
+<li><p>【经验分享】微信小程序连接 EMQX 的证书配置问题 - EMQX - EMQ 问答社区<br> <a target="_blank" rel="noopener" href="https://askemq.com/t/topic/1652">askemq.com</a></p>
+</li>
+<li><p>微信小程序连接MQTT服务器全过程_白白的昕的博客-CSDN博客_微�<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_43554847/article/details/108587422">csdn.net</a></p>
+</li>
+<li><h1 id="物联网系列-EMQ-X简介与安装"><a href="#物联网系列-EMQ-X简介与安装" class="headerlink" title="物联网系列 - EMQ X简介与安装"></a>物联网系列 - EMQ X简介与安装</h1><p> <a target="_blank" rel="noopener" href="https://juejin.cn/post/7026170795386732581">https://juejin.cn/post/7026170795386732581</a></p>
+</li>
+<li><p>小程序使用mqtt连接WebSocket调试工具可以正常连接，真机不行<br> <a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/community/develop/doc/00082ca48ec8b00ecc3895ceb53c00?highLine=mqtt">https://developers.weixin.qq.com/community/develop/doc/00082ca48ec8b00ecc3895ceb53c00?highLine=mqtt</a></p>
+</li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%88%96%E9%A1%B9%E7%9B%AE%E7%9B%B8%E5%85%B3/" class="category-chain-item">工作或项目相关</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%88%96%E9%A1%B9%E7%9B%AE%E7%9B%B8%E5%85%B3/%E7%8E%AF%E5%A2%83%E9%83%A8%E7%BD%B2%E6%90%AD%E5%BB%BA/" class="category-chain-item">环境部署搭建</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%88%96%E9%A1%B9%E7%9B%AE%E7%9B%B8%E5%85%B3/%E7%8E%AF%E5%A2%83%E9%83%A8%E7%BD%B2%E6%90%AD%E5%BB%BA/MQTT/" class="category-chain-item">MQTT</a>
+  
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/EMQX/">#EMQX</a>
+      
+        <a href="/tags/MQTT/">#MQTT</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>基于EMQX的mqtt服务器部署</div>
+      <div>https://www.duruofu.xyz/2023/06/06/5.总结输出/环境(服务部署)/基于EMQX的mqtt服务器部署/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>DuRuofu</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年6月6日</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>更新于</div>
+          <div>2024年1月5日</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
+                    <i class="iconfont icon-nc"></i>
+                  </span>
+                </a>
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="SA - 相同方式共享">
+                    <i class="iconfont icon-sa"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/06/06/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/STM32/STM32F1%E7%B3%BB%E5%88%97%E7%A7%BB%E6%A4%8Dfreertos/" title="ESP32wSTM32F1系列移植freertos">
+                        <span class="hidden-mobile">ESP32wSTM32F1系列移植freertos</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#gitalk-container', function() {
+      Fluid.utils.createCssLink('/css/gitalk.css')
+      Fluid.utils.createScript('https://lib.baomitu.com/gitalk/1.8.0/gitalk.min.js', function() {
+        var options = Object.assign(
+          {"clientID":"c9ac06d5413a9d613a1e","clientSecret":"a44f5c72589eb090876cc64067db28fbfdf4747c","repo":"Blog-comments-gitalk","owner":"DuRuofu","admin":["DuRuofu"],"language":"zh-CN","labels":["Gitalk"],"perPage":15,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":false,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token"},
+          {
+            id: '4a625c29d98c1bfce552790a654b4c5f'
+          }
+        )
+        var gitalk = new Gitalk(options);
+        gitalk.render('gitalk-container');
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <br><span id="timeDate">天数载入中</span><span id="times">...</span><br> <span>总有读不懂的诗和到达不了的远方</span> <p>Copyright © 2023 - <span id="currentYear"></span> All Rights Reserved.</p> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      陕ICP备2022007454号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=2022007454"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>陕ICP备2022007454号-1</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":true,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/cust/custom.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

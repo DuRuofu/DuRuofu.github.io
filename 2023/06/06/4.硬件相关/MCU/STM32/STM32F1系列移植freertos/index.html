@@ -1,0 +1,878 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/%E4%B8%AA%E4%BA%BA%E5%A4%B4%E5%83%8F%E6%97%A0%E8%83%8C%E6%99%AF.png">
+  <link rel="icon" href="https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/%E4%B8%AA%E4%BA%BA%E5%A4%B4%E5%83%8F%E6%97%A0%E8%83%8C%E6%99%AF.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="DuRuofu">
+  <meta name="keywords" content="嵌入式,个人博客">
+  
+    <meta name="description" content="FreeRTOS 是一个可裁剪的小型 RTOS 系统，其特点包括： ● FreeRTOS 的内核支持抢占式，合作式和时间片调度。 ● SafeRTOS 衍生自 FreeRTOS，SafeRTOS 在代码完整性上相比 FreeRTOS 更胜一筹。 ● 提供了一个用于低功耗的 Tickless 模式。 ● 系统的组件在创建时可以选择动态或者静态的 RAM，比如任务、消息队列、信号量、 软件定时器等等。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ESP32wSTM32F1系列移植freertos">
+<meta property="og:url" content="https://www.duruofu.xyz/2023/06/06/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/STM32/STM32F1%E7%B3%BB%E5%88%97%E7%A7%BB%E6%A4%8Dfreertos/index.html">
+<meta property="og:site_name" content="Duruofu&#39;s personal blog">
+<meta property="og:description" content="FreeRTOS 是一个可裁剪的小型 RTOS 系统，其特点包括： ● FreeRTOS 的内核支持抢占式，合作式和时间片调度。 ● SafeRTOS 衍生自 FreeRTOS，SafeRTOS 在代码完整性上相比 FreeRTOS 更胜一筹。 ● 提供了一个用于低功耗的 Tickless 模式。 ● 系统的组件在创建时可以选择动态或者静态的 RAM，比如任务、消息队列、信号量、 软件定时器等等。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.duruofu.xyz/%5Cimg%5C%E6%96%87%E7%AB%A0%E5%B0%81%E9%9D%A2%5Cstm32.jpg">
+<meta property="article:published_time" content="2023-06-06T06:40:53.000Z">
+<meta property="article:modified_time" content="2023-06-06T07:43:06.611Z">
+<meta property="article:author" content="DuRuofu">
+<meta property="article:tag" content="STM32">
+<meta property="article:tag" content="MCU">
+<meta property="article:tag" content="freeRTOS">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://www.duruofu.xyz/%5Cimg%5C%E6%96%87%E7%AB%A0%E5%B0%81%E9%9D%A2%5Cstm32.jpg">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>ESP32wSTM32F1系列移植freertos - Duruofu&#39;s personal blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/cust/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"www.duruofu.xyz","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":80,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":true,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":5},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>DuRuofu</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="ESP32wSTM32F1系列移植freertos"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        DuRuofu
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-06-06 14:40" pubdate>
+          2023年6月6日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          5.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          46 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">ESP32wSTM32F1系列移植freertos</h1>
+            
+              <p class="note note-info">
+                
+                  
+                    本文最后更新于：7 个月前
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>FreeRTOS 是一个可裁剪的小型 RTOS 系统，其特点包括：</p>
+<p>● FreeRTOS 的内核支持抢占式，合作式和时间片调度。</p>
+<p>● SafeRTOS 衍生自 FreeRTOS，SafeRTOS 在代码完整性上相比 FreeRTOS 更胜一筹。</p>
+<p>● 提供了一个用于低功耗的 Tickless 模式。</p>
+<p>● 系统的组件在创建时可以选择动态或者静态的 RAM，比如任务、消息队列、信号量、 软件定时器等等。</p>
+<p>● 已经在超过 30 种架构的芯片上进行了移植。</p>
+<p>● FreeRTOS-MPU 支持 Corex-M 系列中的 MPU 单元，如 STM32F103。</p>
+<p>● FreeRTOS 系统简单、小巧、易用，通常情况下内核占用 4k-9k 字节的空间。</p>
+<p>● 高可移植性，代码主要 C 语言编写。</p>
+<p>● 支持实时任务和协程(co-routines 也有称为合作式、协同程序，本教程均成为协程)。</p>
+<p>● 任务与任务、任务与中断之间可以使用任务通知、消息队列、二值信号量、数值型信 号量、递归互斥信号量和互斥信号量进行通信和同步。</p>
+<p>● 创新的事件组(或者事件标志)。</p>
+<p>● 具有优先级继承特性的互斥信号量。</p>
+<p>● 高效的软件定时器。</p>
+<p>● 强大的跟踪执行功能。</p>
+<p>● 堆栈溢出检测功能。</p>
+<p>● 任务数量不限。</p>
+<p>● 任务优先级不限。</p>
+<span id="more"></span>
+
+
+
+<h1 id="STM32F1系列移植freertos"><a href="#STM32F1系列移植freertos" class="headerlink" title="STM32F1系列移植freertos"></a>STM32F1系列移植freertos</h1><h2 id="以STM32F103ZET6为例："><a href="#以STM32F103ZET6为例：" class="headerlink" title="以STM32F103ZET6为例："></a>以STM32F103ZET6为例：</h2><h3 id="1-准备空白工程"><a href="#1-准备空白工程" class="headerlink" title="1. 准备空白工程"></a>1. 准备空白工程</h3><p>这里使用STM32cudemx生成示例代码（点灯代码）：<br><img src="/2023/06/06/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/STM32/STM32F1%E7%B3%BB%E5%88%97%E7%A7%BB%E6%A4%8Dfreertos/0529182242.png" srcset="/img/loading.gif" lazyload><br>生成代码如下：<br><img src="/2023/06/06/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/STM32/STM32F1%E7%B3%BB%E5%88%97%E7%A7%BB%E6%A4%8Dfreertos/0529182408.png" srcset="/img/loading.gif" lazyload><br><img src="/2023/06/06/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/STM32/STM32F1%E7%B3%BB%E5%88%97%E7%A7%BB%E6%A4%8Dfreertos/0529182424.png" srcset="/img/loading.gif" lazyload></p>
+<h4 id="注意事项："><a href="#注意事项：" class="headerlink" title="注意事项："></a>注意事项：</h4><p>由于<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=FreeRTOS&spm=1001.2101.3001.7020">FreeRTOS</a>使用系统嘀嗒定时器当作心跳，HAL库也使用了这个定时器当作超时计数用，FreeRTOS和HAL库不能同时使用SysTick定时器，所在在这里将HAL库的定时器改为其他的定时器，这里改成了定时器4：<br><img src="/2023/06/06/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/STM32/STM32F1%E7%B3%BB%E5%88%97%E7%A7%BB%E6%A4%8Dfreertos/0529202102.png" srcset="/img/loading.gif" lazyload></p>
+<p>配置中断，注意这里一定要选择组4，也就是全部为抢占优先级：<br><img src="/2023/06/06/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/STM32/STM32F1%E7%B3%BB%E5%88%97%E7%A7%BB%E6%A4%8Dfreertos/0529202123.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="2-准备freertos源码"><a href="#2-准备freertos源码" class="headerlink" title="2. 准备freertos源码"></a>2. 准备freertos源码</h3><p>去freertos官网下载源码：<a target="_blank" rel="noopener" href="https://www.freertos.org/zh-cn-cmn-s/a00104.html">https://www.freertos.org/zh-cn-cmn-s/a00104.html</a><br><img src="/2023/06/06/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/STM32/STM32F1%E7%B3%BB%E5%88%97%E7%A7%BB%E6%A4%8Dfreertos/0529183846.png" srcset="/img/loading.gif" lazyload><br>内容如下：<br><img src="/2023/06/06/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/STM32/STM32F1%E7%B3%BB%E5%88%97%E7%A7%BB%E6%A4%8Dfreertos/0529184132.png" srcset="/img/loading.gif" lazyload><br><img src="/2023/06/06/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/STM32/STM32F1%E7%B3%BB%E5%88%97%E7%A7%BB%E6%A4%8Dfreertos/0529184333.png" srcset="/img/loading.gif" lazyload><br><img src="/2023/06/06/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/STM32/STM32F1%E7%B3%BB%E5%88%97%E7%A7%BB%E6%A4%8Dfreertos/0529184422.png" srcset="/img/loading.gif" lazyload><br><img src="/2023/06/06/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/STM32/STM32F1%E7%B3%BB%E5%88%97%E7%A7%BB%E6%A4%8Dfreertos/0529184457.png" srcset="/img/loading.gif" lazyload><br><img src="/2023/06/06/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/STM32/STM32F1%E7%B3%BB%E5%88%97%E7%A7%BB%E6%A4%8Dfreertos/0529184524.png" srcset="/img/loading.gif" lazyload><br><img src="/2023/06/06/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/STM32/STM32F1%E7%B3%BB%E5%88%97%E7%A7%BB%E6%A4%8Dfreertos/0529184734.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="3-进行代码裁剪："><a href="#3-进行代码裁剪：" class="headerlink" title="3.进行代码裁剪："></a>3.进行代码裁剪：</h3><p>删除不必要的文件：<br><strong>portable文件夹：</strong><br><img src="/2023/06/06/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/STM32/STM32F1%E7%B3%BB%E5%88%97%E7%A7%BB%E6%A4%8Dfreertos/0529185245.png" srcset="/img/loading.gif" lazyload><br><img src="/2023/06/06/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/STM32/STM32F1%E7%B3%BB%E5%88%97%E7%A7%BB%E6%A4%8Dfreertos/0529185516.png" srcset="/img/loading.gif" lazyload><br><strong>MemMang文件夹：</strong><br><img src="/2023/06/06/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/STM32/STM32F1%E7%B3%BB%E5%88%97%E7%A7%BB%E6%A4%8Dfreertos/0529185416.png" srcset="/img/loading.gif" lazyload><br><img src="/2023/06/06/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/STM32/STM32F1%E7%B3%BB%E5%88%97%E7%A7%BB%E6%A4%8Dfreertos/0529185501.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="4-将文件添加到工程："><a href="#4-将文件添加到工程：" class="headerlink" title="4. 将文件添加到工程："></a>4. 将文件添加到工程：</h3><p>在项目里新建文件夹：根目录&#x2F;Middlewares &#x2F;FreeRTOS<br><img src="/2023/06/06/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/STM32/STM32F1%E7%B3%BB%E5%88%97%E7%A7%BB%E6%A4%8Dfreertos/0529185926.png" srcset="/img/loading.gif" lazyload><br>将 FreeRTOS  内核源码的 Source 文件夹下的所有文件添加到工程的 FreeRTOS 文件夹中<br><img src="/2023/06/06/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/STM32/STM32F1%E7%B3%BB%E5%88%97%E7%A7%BB%E6%A4%8Dfreertos/0529190714.png" srcset="/img/loading.gif" lazyload></p>
+<p>在工程分组里添加新的分组，分 别 为 Middlewares&#x2F;FreeRTOS_CORE 和  Middlewares&#x2F;FreeRTOS_PORT，如下图所示：<br><img src="/2023/06/06/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/STM32/STM32F1%E7%B3%BB%E5%88%97%E7%A7%BB%E6%A4%8Dfreertos/0529190427.png" srcset="/img/loading.gif" lazyload><br>Middlewares&#x2F;FreeRTOS_CORE 分组用于存放 FreeRTOS 的内核 C 源码文件， 将 FreeRTOS 目录下所有的 FreeRTOS 的内核 C 源文件添加到  Middlewares&#x2F;FreeRTOS_CORE 分组中。  </p>
+<p>Middlewares&#x2F;FreeRTOS_PORT 分组用于存放 FreeRTOS 内核的移植文件，需要添加两个文件到这个分组，分别为 heap_x.c 和 port.c。<br>首先是 heap_x.c， 在路径 FreeRTOS&#x2F;portable&#x2F;MemMang 下有五个 C 源文件，这五个 C 源文  件对应了五种 FreeRTOS 提供的内存管理算法，读者在进行 FreeRTOS 移植的时候可以根据需  求选择合适的方法，具体这五种内存管理的算法，在后续 FreeRTOS 内存管理章节会具体分析，  这里就先使用 heap_4.c，将 heap_4.c 添加到 Middlewares&#x2F;FreeRTOS_PORT 分组中。<br>接着是 port.c， port.c 是 FreeRTOS 这个软件与 MCU 这个硬件连接的桥梁，因此对于 STM32 系列不同的开发板，所使用的 port.c 文件是不同的。 port.c 文件的路径在  FreeRTOS&#x2F;portable&#x2F;RVDS 下。进入到 FreeRTOS&#x2F;portable&#x2F;RVDS，可以看到 FreeRTOS 针对不同  的 MCU 提供了不同的 port.c 文件，具体STM32 系列开发板与不同 port.c 的对应关 系如下表所示：<br><img src="/2023/06/06/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/STM32/STM32F1%E7%B3%BB%E5%88%97%E7%A7%BB%E6%A4%8Dfreertos/0529190854.png" srcset="/img/loading.gif" lazyload><br>将所有 FreeRTOS 相关的所需文件添加到工程后，如下图所示：<br><img src="/2023/06/06/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/STM32/STM32F1%E7%B3%BB%E5%88%97%E7%A7%BB%E6%A4%8Dfreertos/0529191013.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="5-添加头文件路径"><a href="#5-添加头文件路径" class="headerlink" title="5.添加头文件路径"></a>5.添加头文件路径</h3><p><img src="/2023/06/06/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/STM32/STM32F1%E7%B3%BB%E5%88%97%E7%A7%BB%E6%A4%8Dfreertos/0529191219.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="6-添加并修改-FreeRTOSConfig-h-文件"><a href="#6-添加并修改-FreeRTOSConfig-h-文件" class="headerlink" title="6.添加并修改 FreeRTOSConfig.h 文件"></a>6.添加并修改 FreeRTOSConfig.h 文件</h3><p>FreeRTOSConfig.h 是 FreeRTOS 操作系统的配置文件， FreeRTOS 操作系统是可裁剪的，用  户可以根据需求对 FreeRTOS 进行裁剪，裁剪掉不需要用到的 FreeRTOS 功能.</p>
+<p>新建空白的FreeRTOSConfig.h到core&#x2F;inc文件夹；<br><img src="/2023/06/06/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/STM32/STM32F1%E7%B3%BB%E5%88%97%E7%A7%BB%E6%A4%8Dfreertos/0529192131.png" srcset="/img/loading.gif" lazyload></p>
+<p><strong>修改FreeRTOSConfig.h</strong>：<br>添加代码：</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br></pre></td><td class="code"><pre><code class="hljs awk"><br><span class="hljs-comment">#ifndef FREERTOS_CONFIG_H__</span><br><span class="hljs-comment">#define FREERTOS_CONFIG_H__</span><br><br>/*<br> * 关于本文件宏的详细说明可参考：https:<span class="hljs-regexp">//</span>blog.csdn.net<span class="hljs-regexp">/zhzht19861011/</span>article<span class="hljs-regexp">/details/</span><span class="hljs-number">50134883</span><span class="hljs-comment">#</span><br> */<br><br><span class="hljs-regexp">//</span> 设置为<span class="hljs-number">1</span>使用抢占式，为<span class="hljs-number">0</span>使用时间片轮转调度。<br><span class="hljs-comment">#define configUSE_PREEMPTION                    1</span><br><br><span class="hljs-regexp">//</span> 设置为<span class="hljs-number">1</span>使能低功耗tickless模式，为<span class="hljs-number">0</span>保持系统节拍（tick）中断一直运行。<br><span class="hljs-comment">#define configUSE_TICKLESS_IDLE                 0</span><br><br><span class="hljs-regexp">//</span> 系统时钟主频<br><span class="hljs-comment">#define configCPU_CLOCK_HZ                      72000000</span><br><br><span class="hljs-regexp">//</span> 系统节拍中断的频率，即<span class="hljs-number">1</span>s进中断的次数，配置为<span class="hljs-number">1000</span>就是一秒进<span class="hljs-number">1000</span>次中断，系统节拍就是<span class="hljs-number">1</span>s。<br><span class="hljs-comment">#define configTICK_RATE_HZ                      1000</span><br><br><span class="hljs-regexp">//</span> 任务最大优先级，对于STM32来说最大不要超过<span class="hljs-number">32</span><br><span class="hljs-comment">#define configMAX_PRIORITIES                    32</span><br><br><span class="hljs-regexp">//</span> 任务最小栈大小<br><span class="hljs-comment">#define configMINIMAL_STACK_SIZE                64</span><br><br><span class="hljs-regexp">//</span> FreeRTOR堆空间大小<br><span class="hljs-comment">#define configTOTAL_HEAP_SIZE                   8192</span><br><br><span class="hljs-regexp">//</span> 任务名称最大长度<br><span class="hljs-comment">#define configMAX_TASK_NAME_LEN                 16</span><br><br><span class="hljs-regexp">//</span> 系统节拍计数器的变量类型，即定义portTickType是表示<span class="hljs-number">16</span>位变量还是<span class="hljs-number">32</span>位变量。<br><span class="hljs-comment">#define configUSE_16_BIT_TICKS                  0</span><br><br><span class="hljs-regexp">//</span> 设置为<span class="hljs-number">1</span>允许任务调度，为<span class="hljs-number">0</span>不允许(时间片耗尽才让出CPU使用权)，该参数抢占式方式下才生效<br><span class="hljs-comment">#define configIDLE_SHOULD_YIELD                 1</span><br><br><span class="hljs-regexp">//</span> 设置是否使用互斥量<br><span class="hljs-comment">#define configUSE_MUTEXES                       1</span><br><br><span class="hljs-regexp">//</span> 设置是否使用递归互斥量<br><span class="hljs-comment">#define configUSE_RECURSIVE_MUTEXES             0</span><br><br><span class="hljs-regexp">//</span> 设置是否使用计数信号量<br><span class="hljs-comment">#define configUSE_COUNTING_SEMAPHORES           0</span><br><br><span class="hljs-regexp">//</span> 设置可以记录的队列和信号量的最大数目<br><span class="hljs-comment">#define configQUEUE_REGISTRY_SIZE               10</span><br><br><span class="hljs-regexp">//</span> 是否使用空闲钩子函数<br><span class="hljs-comment">#define configUSE_IDLE_HOOK                     0</span><br><br><span class="hljs-regexp">//</span> 是否使用TICK嘀嗒钩子函数<br><span class="hljs-comment">#define configUSE_TICK_HOOK                     0</span><br><br><span class="hljs-regexp">//</span> 是否使用栈溢出检查<br><span class="hljs-comment">#define configCHECK_FOR_STACK_OVERFLOW          0</span><br><br><span class="hljs-regexp">//</span> 是否使用内存申请失败钩子函数<br><span class="hljs-comment">#define configUSE_MALLOC_FAILED_HOOK            0</span><br><br><span class="hljs-regexp">//</span> 是否使用软件定时器<br><span class="hljs-comment">#define configUSE_TIMERS                        1</span><br><br><span class="hljs-regexp">//</span> 设置软件定时器服务/守护进程的优先级<br><span class="hljs-comment">#define configTIMER_TASK_PRIORITY               3</span><br><br><span class="hljs-regexp">//</span> 设置软件定时器命令队列的长度<br><span class="hljs-comment">#define configTIMER_QUEUE_LENGTH                10</span><br><br><span class="hljs-regexp">//</span> 设置软件定时器服务/守护进程任务的堆栈深度<br><span class="hljs-comment">#define configTIMER_TASK_STACK_DEPTH            configMINIMAL_STACK_SIZE</span><br><br><span class="hljs-regexp">//</span> STM32的最低优先级<br><span class="hljs-comment">#define configLIBRARY_LOWEST_INTERRUPT_PRIORITY   15</span><br><br><span class="hljs-regexp">//</span> 能够在中断服务函数中安全调用FreeRTOS API的中断最低优先级<br><span class="hljs-comment">#define configLIBRARY_MAX_SYSCALL_INTERRUPT_PRIORITY 1</span><br><br><span class="hljs-comment">#define configKERNEL_INTERRUPT_PRIORITY 		( configLIBRARY_LOWEST_INTERRUPT_PRIORITY &lt;&lt; 4 )</span><br><span class="hljs-comment">#define configMAX_SYSCALL_INTERRUPT_PRIORITY 	( configLIBRARY_MAX_SYSCALL_INTERRUPT_PRIORITY &lt;&lt; 4 )</span><br><br><br><span class="hljs-regexp">//</span> 将以下定义设置为<span class="hljs-number">1</span>以包含API函数，或设置为<span class="hljs-number">0</span>排除API函数<br><span class="hljs-comment">#define INCLUDE_vTaskPrioritySet                1</span><br><span class="hljs-comment">#define INCLUDE_uxTaskPriorityGet               1</span><br><span class="hljs-comment">#define INCLUDE_vTaskDelete                     1</span><br><span class="hljs-comment">#define INCLUDE_vTaskSuspend                    1</span><br><span class="hljs-comment">#define INCLUDE_xResumeFromISR                  1</span><br><span class="hljs-comment">#define INCLUDE_vTaskDelayUntil                 1</span><br><span class="hljs-comment">#define INCLUDE_vTaskDelay                      1</span><br><span class="hljs-comment">#define INCLUDE_xTaskGetSchedulerState          1</span><br><span class="hljs-comment">#define INCLUDE_xTaskGetCurrentTaskHandle       1</span><br><span class="hljs-comment">#define INCLUDE_uxTaskGetStackHighWaterMark     0</span><br><span class="hljs-comment">#define INCLUDE_xTaskGetIdleTaskHandle          0</span><br><span class="hljs-comment">#define INCLUDE_xTimerGetTimerDaemonTaskHandle  0</span><br><span class="hljs-comment">#define INCLUDE_pcTaskGetTaskName               0</span><br><span class="hljs-comment">#define INCLUDE_eTaskGetState                   0</span><br><span class="hljs-comment">#define INCLUDE_xEventGroupSetBitFromISR        1</span><br><span class="hljs-comment">#define INCLUDE_xTimerPendFunctionCall          0</span><br><br><span class="hljs-comment">#endif  /* FREERTOS_CONFIG_H__ */</span><br><br><br><br><br></code></pre></td></tr></table></figure>
+
+<h3 id="7-修改-stm32f1xx-it-c文件"><a href="#7-修改-stm32f1xx-it-c文件" class="headerlink" title="7.修改 stm32f1xx_it.c文件"></a>7.修改 stm32f1xx_it.c文件</h3><p>打开<code>stm32f1xx_it.c</code>文件，在头部添加FreeRTOS的三个函数导入：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">extern</span> <span class="hljs-type">void</span> <span class="hljs-title function_">xPortPendSVHandler</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span>;<br><span class="hljs-keyword">extern</span> <span class="hljs-type">void</span> <span class="hljs-title function_">xPortSysTickHandler</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span>;<br><span class="hljs-keyword">extern</span> <span class="hljs-type">void</span> <span class="hljs-title function_">vPortSVCHandler</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span>;<br></code></pre></td></tr></table></figure>
+<p><img src="/2023/06/06/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/STM32/STM32F1%E7%B3%BB%E5%88%97%E7%A7%BB%E6%A4%8Dfreertos/0529201451.png" srcset="/img/loading.gif" lazyload><br>在函数<code>SVC_Handler</code>中添加函数调用：<br><img src="/2023/06/06/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/STM32/STM32F1%E7%B3%BB%E5%88%97%E7%A7%BB%E6%A4%8Dfreertos/0529201504.png" srcset="/img/loading.gif" lazyload><br>在函数<code>PendSV_Handler</code>中添加函数调用：<br><img src="/2023/06/06/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/STM32/STM32F1%E7%B3%BB%E5%88%97%E7%A7%BB%E6%A4%8Dfreertos/0529201514.png" srcset="/img/loading.gif" lazyload><br>在函数<code>SysTick_Handler</code>中添加函数调用：<br><img src="/2023/06/06/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/STM32/STM32F1%E7%B3%BB%E5%88%97%E7%A7%BB%E6%A4%8Dfreertos/0529201526.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="8-建立工程进行测试"><a href="#8-建立工程进行测试" class="headerlink" title="8.建立工程进行测试"></a>8.建立工程进行测试</h3><p>main.c里添加头文件：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;FreeRTOSConfig.h&quot;</span> </span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;FreeRTOS.h&quot;</span> </span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;task.h&quot;</span></span><br></code></pre></td></tr></table></figure>
+<p>新建两个点灯任务：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">LED1Tesk</span><span class="hljs-params">(<span class="hljs-type">void</span> *p)</span><br>&#123;<br>    <span class="hljs-keyword">while</span>(<span class="hljs-number">1</span>)<br>    &#123;<br>        <span class="hljs-comment">//功能</span><br>        HAL_GPIO_WritePin(GPIOB,GPIO_PIN_5,GPIO_PIN_SET);<br>        vTaskDelay(<span class="hljs-number">1000</span>);<br>        HAL_GPIO_WritePin(GPIOB,GPIO_PIN_5,GPIO_PIN_RESET); <br>        vTaskDelay(<span class="hljs-number">1000</span>);<br>	&#125;<br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">LED2Tesk</span><span class="hljs-params">(<span class="hljs-type">void</span> *p)</span><br>&#123;<br>    <span class="hljs-keyword">while</span>(<span class="hljs-number">1</span>)<br>    &#123;<br>        <span class="hljs-comment">//功能</span><br>        HAL_GPIO_WritePin(GPIOE,GPIO_PIN_5,GPIO_PIN_SET);<br>        vTaskDelay(<span class="hljs-number">500</span>);<br>        HAL_GPIO_WritePin(GPIOE,GPIO_PIN_5,GPIO_PIN_RESET); <br>        vTaskDelay(<span class="hljs-number">500</span>);<br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>开启任务：<br><img src="/2023/06/06/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/STM32/STM32F1%E7%B3%BB%E5%88%97%E7%A7%BB%E6%A4%8Dfreertos/0529201902.png" srcset="/img/loading.gif" lazyload><br>两个灯交替闪烁，移植成功！</p>
+<p>总结：移植FreeRTOS还是相对简单的，主要是配置文件<code>FreeRTOSConfig.h</code>的配置，每个宏定义所代表的意思需要好好查阅！</p>
+<h1 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h1><p>FreeRTOS之在STM32F103移植<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/m0_37895576/article/details/120435482">https://blog.csdn.net/m0_37895576/article/details/120435482</a></p>
+<p>STM32CubeMX | STM32使用HAL库手动移植FreeRTOS10.4.1<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq153471503/article/details/108999523">https://blog.csdn.net/qq153471503/article/details/108999523</a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%94%B5%E5%AD%90%E4%BF%A1%E6%81%AF%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/" class="category-chain-item">电子信息硬件相关</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E7%94%B5%E5%AD%90%E4%BF%A1%E6%81%AF%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/" class="category-chain-item">MCU</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E7%94%B5%E5%AD%90%E4%BF%A1%E6%81%AF%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/STM32/" class="category-chain-item">STM32</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E7%94%B5%E5%AD%90%E4%BF%A1%E6%81%AF%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/STM32/freeRTOS/" class="category-chain-item">freeRTOS</a>
+  
+  
+
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/STM32/">#STM32</a>
+      
+        <a href="/tags/MCU/">#MCU</a>
+      
+        <a href="/tags/freeRTOS/">#freeRTOS</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>ESP32wSTM32F1系列移植freertos</div>
+      <div>https://www.duruofu.xyz/2023/06/06/4.硬件相关/MCU/STM32/STM32F1系列移植freertos/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>DuRuofu</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年6月6日</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>更新于</div>
+          <div>2023年6月6日</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
+                    <i class="iconfont icon-nc"></i>
+                  </span>
+                </a>
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="SA - 相同方式共享">
+                    <i class="iconfont icon-sa"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/06/06/5.%E6%80%BB%E7%BB%93%E8%BE%93%E5%87%BA/%E7%8E%AF%E5%A2%83(%E6%9C%8D%E5%8A%A1%E9%83%A8%E7%BD%B2)/%E5%9F%BA%E4%BA%8EEMQX%E7%9A%84mqtt%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%83%A8%E7%BD%B2/" title="基于EMQX的mqtt服务器部署">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">基于EMQX的mqtt服务器部署</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/06/06/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/ESP32wifi%E5%85%A5%E9%97%A8/" title="ESP32wifi入门">
+                        <span class="hidden-mobile">ESP32wifi入门</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#gitalk-container', function() {
+      Fluid.utils.createCssLink('/css/gitalk.css')
+      Fluid.utils.createScript('https://lib.baomitu.com/gitalk/1.8.0/gitalk.min.js', function() {
+        var options = Object.assign(
+          {"clientID":"c9ac06d5413a9d613a1e","clientSecret":"a44f5c72589eb090876cc64067db28fbfdf4747c","repo":"Blog-comments-gitalk","owner":"DuRuofu","admin":["DuRuofu"],"language":"zh-CN","labels":["Gitalk"],"perPage":15,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":false,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token"},
+          {
+            id: '16894b5586d6830489671a286bf0a760'
+          }
+        )
+        var gitalk = new Gitalk(options);
+        gitalk.render('gitalk-container');
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <br><span id="timeDate">天数载入中</span><span id="times">...</span><br> <span>总有读不懂的诗和到达不了的远方</span> <p>Copyright © 2023 - <span id="currentYear"></span> All Rights Reserved.</p> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      陕ICP备2022007454号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=2022007454"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>陕ICP备2022007454号-1</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":true,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/cust/custom.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

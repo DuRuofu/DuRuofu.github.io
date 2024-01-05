@@ -1,0 +1,948 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/%E4%B8%AA%E4%BA%BA%E5%A4%B4%E5%83%8F%E6%97%A0%E8%83%8C%E6%99%AF.png">
+  <link rel="icon" href="https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/%E4%B8%AA%E4%BA%BA%E5%A4%B4%E5%83%8F%E6%97%A0%E8%83%8C%E6%99%AF.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="DuRuofu">
+  <meta name="keywords" content="嵌入式,个人博客">
+  
+    <meta name="description" content="小程序 - 视图与逻辑页面导航1.什么是页面导航页面导航指的是页面之间的相互跳转。例如，浏览器中实现页面导航的方式有如下两种：①  链接② location.href   2. 小程序中实现页面导航的两种方式① 声明式导航 在页面上声明一个  导航组件 通过点击  组件实现页面跳转② 编程式导航 调用小程序的导航 API，实现页面的跳转   页面导航 - 声明式导航1.导航到 tabBar 页面t">
+<meta property="og:type" content="article">
+<meta property="og:title" content="微信小程序笔记 (6.微信小程序视图与逻辑)">
+<meta property="og:url" content="https://www.duruofu.xyz/2023/06/06/3.%E8%BD%AF%E4%BB%B6%E7%9B%B8%E5%85%B3/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%89%8D%E7%AB%AF/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F/06.%E5%B0%8F%E7%A8%8B%E5%BA%8F%20-%20%E8%A7%86%E5%9B%BE%E4%B8%8E%E9%80%BB%E8%BE%91/index.html">
+<meta property="og:site_name" content="Duruofu&#39;s personal blog">
+<meta property="og:description" content="小程序 - 视图与逻辑页面导航1.什么是页面导航页面导航指的是页面之间的相互跳转。例如，浏览器中实现页面导航的方式有如下两种：①  链接② location.href   2. 小程序中实现页面导航的两种方式① 声明式导航 在页面上声明一个  导航组件 通过点击  组件实现页面跳转② 编程式导航 调用小程序的导航 API，实现页面的跳转   页面导航 - 声明式导航1.导航到 tabBar 页面t">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.duruofu.xyz/%5Cimg%5C%E6%96%87%E7%AB%A0%E5%B0%81%E9%9D%A2%5C%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F.jpg">
+<meta property="article:published_time" content="2023-06-06T03:46:53.000Z">
+<meta property="article:modified_time" content="2023-06-06T03:59:47.016Z">
+<meta property="article:author" content="DuRuofu">
+<meta property="article:tag" content="微信小程序">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://www.duruofu.xyz/%5Cimg%5C%E6%96%87%E7%AB%A0%E5%B0%81%E9%9D%A2%5C%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F.jpg">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>微信小程序笔记 (6.微信小程序视图与逻辑) - Duruofu&#39;s personal blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/cust/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"www.duruofu.xyz","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":80,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":true,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":5},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>DuRuofu</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/%5Cimg%5C%E6%96%87%E7%AB%A0%E5%B0%81%E9%9D%A2%5C%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="微信小程序笔记 (6.微信小程序视图与逻辑)"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        DuRuofu
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-06-06 11:46" pubdate>
+          2023年6月6日 中午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          9.9k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          83 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">微信小程序笔记 (6.微信小程序视图与逻辑)</h1>
+            
+              <p class="note note-info">
+                
+                  
+                    本文最后更新于：7 个月前
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="小程序-视图与逻辑"><a href="#小程序-视图与逻辑" class="headerlink" title="小程序 - 视图与逻辑"></a>小程序 - 视图与逻辑</h2><h3 id="页面导航"><a href="#页面导航" class="headerlink" title="页面导航"></a>页面导航</h3><h4 id="1-什么是页面导航"><a href="#1-什么是页面导航" class="headerlink" title="1.什么是页面导航"></a>1.什么是页面导航</h4><p>页面导航指的是页面之间的相互跳转。例如，浏览器中实现页面导航的方式有如下两种：<br>① <a> 链接<br>② location.href  </a></p>
+<h4 id="2-小程序中实现页面导航的两种方式"><a href="#2-小程序中实现页面导航的两种方式" class="headerlink" title="2. 小程序中实现页面导航的两种方式"></a>2. 小程序中实现页面导航的两种方式</h4><p>① 声明式导航<br> 在页面上声明一个 <navigator> 导航组件<br> 通过点击 <navigator> 组件实现页面跳转<br>② 编程式导航<br> 调用小程序的导航 API，实现页面的跳转  </navigator></navigator></p>
+<h4 id="页面导航-声明式导航"><a href="#页面导航-声明式导航" class="headerlink" title="页面导航 - 声明式导航"></a>页面导航 - 声明式导航</h4><h5 id="1-导航到-tabBar-页面"><a href="#1-导航到-tabBar-页面" class="headerlink" title="1.导航到 tabBar 页面"></a>1.导航到 tabBar 页面</h5><p>tabBar 页面指的是被配置为 tabBar 的页面。<br>在使用 <navigator> 组件跳转到指定的 tabBar 页面时，需要指定 url 属性和 open-type 属性，其中：<br> url 表示要跳转的页面的地址，必须以 &#x2F; 开头<br> open-type 表示跳转的方式，必须为 switchTab<br>示例代码如下：  </navigator></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">navigator</span> <span class="hljs-attr">url</span>=<span class="hljs-string">&quot;/pages/message/message&quot;</span><span class="hljs-attr">open-type</span>=<span class="hljs-string">&quot;switchTab&quot;</span>&gt;</span>导航到消息页面<span class="hljs-tag">&lt;/<span class="hljs-name">navigator</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h5 id="2-导航到非-tabBar-页面"><a href="#2-导航到非-tabBar-页面" class="headerlink" title="2.导航到非 tabBar 页面"></a>2.导航到非 tabBar 页面</h5><p>非 tabBar 页面指的是没有被配置为 tabBar 的页面。<br>在使用 <navigator> 组件跳转到普通的非 tabBar 页面时，则需要指定 url 属性和 open-type 属性，其中：<br> url 表示要跳转的页面的地址，必须以 &#x2F; 开头<br> open-type 表示跳转的方式，必须为 navigate<br>示例代码如下：  </navigator></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">navigator</span> <span class="hljs-attr">url</span>=<span class="hljs-string">&quot;/pages/info/info&quot;</span><span class="hljs-attr">open-type</span>=<span class="hljs-string">&quot;navigate&quot;</span>&gt;</span>导航到info页面<span class="hljs-tag">&lt;/<span class="hljs-name">navigator</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>注意：为了简便，在导航到非 tabBar 页面时，open-type&#x3D;”navigate” 属性可以省略。  </p>
+<h5 id="3-后退导航"><a href="#3-后退导航" class="headerlink" title="3.后退导航"></a>3.后退导航</h5><p>如果要后退到上一页面或多级页面，则需要指定 open-type 属性和 delta 属性，其中：<br> open-type 的值必须是 navigateBack，表示要进行后退导航<br> delta 的值必须是数字，表示要后退的层级<br>示例代码如下：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">navigator</span> <span class="hljs-attr">open-type</span>=<span class="hljs-string">&#x27;navigateBack&#x27;</span><span class="hljs-attr">delta-</span>&#x27;<span class="hljs-attr">1</span>&#x27;&gt;</span>返▣上一页<span class="hljs-tag">&lt;/<span class="hljs-name">navigator</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>注意：为了简便，如果只是后退到上一页面，则可以省略 delta 属性，因为其默认值就是 1。  </p>
+<h4 id="页面导航-编程式导航"><a href="#页面导航-编程式导航" class="headerlink" title="页面导航 - 编程式导航"></a>页面导航 - 编程式导航</h4><h5 id="导航到-tabBar-页面"><a href="#导航到-tabBar-页面" class="headerlink" title="导航到 tabBar 页面"></a>导航到 tabBar 页面</h5><p>调用 wx.switchTab(Object object) 方法，可以跳转到 tabBar 页面。其中 Object 参数对象的属性列表如下：  </p>
+<p><img src="https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/1650428622847.png" srcset="/img/loading.gif" lazyload></p>
+<p>示例代码：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs html">//页面结构<br><span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">bindtap</span>=<span class="hljs-string">&quot;gotoMessage&quot;</span>&gt;</span>跳转到消息页面<span class="hljs-tag">&lt;<span class="hljs-name">button</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">//通过编程式导航，跳转到message页面</span><br> <span class="hljs-title function_">gotoMessage</span>(<span class="hljs-params"></span>) &#123;<br>   wx.<span class="hljs-title function_">switchTab</span>(&#123;<br>      <span class="hljs-attr">url</span>:<span class="hljs-string">&#x27;/pages/message/message&#x27;</span><br> &#125;)<br> &#125;,<br></code></pre></td></tr></table></figure>
+
+<h5 id="导航到非-tabBar-页面"><a href="#导航到非-tabBar-页面" class="headerlink" title="导航到非 tabBar 页面"></a>导航到非 tabBar 页面</h5><p>调用 wx.navigateTo(Object object) 方法，可以跳转到非 tabBar 的页面。其中 Object 参数对象的属性列表如下：  </p>
+<p><img src="https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/1650429017745.png" srcset="/img/loading.gif" lazyload></p>
+<p>示例代码：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs html">//页面结构<br><span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">bindtap</span>=<span class="hljs-string">&quot;gotoInfo&quot;</span>&gt;</span>跳转到info页面<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">//通过编程式导航，跳转到info页面</span><br><span class="hljs-title function_">gotoInfo</span>(<span class="hljs-params"></span>)&#123;<br>  wx.<span class="hljs-title function_">navigateTo</span>(&#123;<br>    <span class="hljs-attr">url</span>: <span class="hljs-string">&#x27;/pages/info/info&#x27;</span>,<br>  &#125;)<br>&#125;,<br></code></pre></td></tr></table></figure>
+
+<h5 id="后退导航"><a href="#后退导航" class="headerlink" title="后退导航"></a>后退导航</h5><p>调用 wx.navigateBack(Object object) 方法，可以返回上一页面或多级页面。其中 Object 参数对象可选的<br>属性列表如下：</p>
+<img src="https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/1650429378222.png" srcset="/img/loading.gif" lazyload style="zoom:67%;">
+
+<p>示例代码：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">bindtap</span>=<span class="hljs-string">&quot;goBack&quot;</span>&gt;</span>后退<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">//通过编程式导航，进行后退</span><br><span class="hljs-title function_">goBack</span>(<span class="hljs-params"></span>)&#123;<br>  wx.<span class="hljs-title function_">navigateBack</span>(&#123;<br>    <span class="hljs-attr">delta</span>: <span class="hljs-number">1</span>,<br>  &#125;)<br>&#125;,<br></code></pre></td></tr></table></figure>
+
+<h4 id="页面导航-导航传参"><a href="#页面导航-导航传参" class="headerlink" title="页面导航 - 导航传参"></a>页面导航 - 导航传参</h4><h5 id="1-声明式导航传参"><a href="#1-声明式导航传参" class="headerlink" title="1.声明式导航传参"></a>1.声明式导航传参</h5><p>navigator 组件的 url 属性用来指定将要跳转到的页面的路径。同时，路径的后面还可以携带参数：<br> 参数与路径之间使用 ? 分隔<br> 参数键与参数值用 &#x3D; 相连<br> 不同参数用 &amp; 分隔<br>代码示例如下：  </p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs html">x 1<span class="hljs-tag">&lt;<span class="hljs-name">navigator</span> <span class="hljs-attr">url</span>=<span class="hljs-string">&quot;/pages/info/info?name=zs&amp;age=20&quot;</span>&gt;</span>跳转到info页面<span class="hljs-tag">&lt;/<span class="hljs-name">navigator</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h5 id="2-编程式导航传参"><a href="#2-编程式导航传参" class="headerlink" title="2.编程式导航传参"></a>2.编程式导航传参</h5><p>调用 wx.navigateTo(Object object) 方法跳转页面时，也可以携带参数，代码示例如下：  </p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs html">//页面结构<br><span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">bindtap</span>=<span class="hljs-string">&quot;gotoInfo.2&quot;</span>&gt;</span>跳转到info页面<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">//通过编程式导航，跳转到info页面，并携带参数</span><br><span class="hljs-title function_">gotoInfo2</span>(<span class="hljs-params"></span>)&#123;<br>    wx.<span class="hljs-title function_">navigateTo</span>(&#123;<br>        <span class="hljs-attr">url</span>: <span class="hljs-string">&#x27;/pages/info/info?name=zs&amp;age=20&#x27;</span>,<br>    &#125;)<br>&#125;,<br></code></pre></td></tr></table></figure>
+
+
+
+<h5 id="3-x2F-在-onLoad-中接收导航参数"><a href="#3-x2F-在-onLoad-中接收导航参数" class="headerlink" title="3&#x2F;在 onLoad 中接收导航参数"></a>3&#x2F;在 onLoad 中接收导航参数</h5><p>通过声明式导航传参或编程式导航传参所携带的参数，可以直接在 onLoad 事件中直接获取到，示例代码如下：  </p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs js"> <span class="hljs-comment">/**</span><br><span class="hljs-comment">   * 页面的初始数据</span><br><span class="hljs-comment">   */</span><br>  <span class="hljs-attr">data</span>: &#123;<br>    <span class="hljs-attr">query</span>:&#123;&#125;<span class="hljs-comment">//定义一个用来保存传参的变量</span><br>  &#125;,<br><span class="hljs-comment">/**</span><br><span class="hljs-comment">* 生命周期函数--监听页面加载</span><br><span class="hljs-comment">*/</span><br><span class="hljs-attr">onLoad</span>: <span class="hljs-keyword">function</span> (<span class="hljs-params">options</span>) &#123;<br>    <span class="hljs-comment">//options就是导航传递过来的参数对象</span><br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(options)<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">setData</span>(&#123;<br>        <span class="hljs-attr">query</span>:options<span class="hljs-comment">//将得到的值赋值给变量query</span><br>    &#125;)<br>&#125;,<br></code></pre></td></tr></table></figure>
+
+<h3 id="页面事件"><a href="#页面事件" class="headerlink" title="页面事件"></a>页面事件</h3><h4 id="下拉刷新"><a href="#下拉刷新" class="headerlink" title="下拉刷新"></a>下拉刷新</h4><h5 id="1-什么是下拉刷新"><a href="#1-什么是下拉刷新" class="headerlink" title="1.什么是下拉刷新"></a>1.什么是下拉刷新</h5><p>下拉刷新是移动端的专有名词，指的是通过手指在屏幕上的下拉滑动操作，从而重新加载页面数据的行为。  </p>
+<h5 id="2-启用下拉刷新"><a href="#2-启用下拉刷新" class="headerlink" title="2. 启用下拉刷新"></a>2. 启用下拉刷新</h5><p>启用下拉刷新有两种方式：<br>① 全局开启下拉刷新<br> 在 app.json 的 window 节点中，将 enablePullDownRefresh 设置为 true<br>② 局部开启下拉刷新<br> 在页面的 .json 配置文件中，将 enablePullDownRefresh 设置为 true<br>在实际开发中，推荐使用第 2 种方式，为需要的页面单独开启下拉刷新的效果。  </p>
+<h5 id="3-配置下拉刷新窗口的样式"><a href="#3-配置下拉刷新窗口的样式" class="headerlink" title="3.配置下拉刷新窗口的样式"></a>3.配置下拉刷新窗口的样式</h5><p>在全局或页面的 .json 配置文件中，通过 backgroundColor 和 backgroundTextStyle 来配置下拉刷新窗口<br>的样式，其中：<br> backgroundColor 用来配置下拉刷新窗口的背景颜色，仅支持16 进制的颜色值<br> backgroundTextStyle 用来配置下拉刷新 loading 的样式，仅支持 dark 和 light  </p>
+<h5 id="4-监听页面的下拉刷新事件"><a href="#4-监听页面的下拉刷新事件" class="headerlink" title="4.监听页面的下拉刷新事件"></a>4.监听页面的下拉刷新事件</h5><p>在页面的 .js 文件中，通过 onPullDownRefresh() 函数即可监听当前页面的下拉刷新事件。<br>例如，在页面的 wxml 中有如下的 UI 结构，点击按钮可以让 count 值自增 +1：  </p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-comment">&lt;!--pages/message/message.wxml--&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">view</span>&gt;</span>count值为：&#123;&#123;count&#125;&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">view</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">bindtap</span>=<span class="hljs-string">&quot;countAdd&quot;</span>&gt;</span>+1<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// pages/message/message.js</span><br><span class="hljs-comment">//+1按钮的点击事件处理函数,count要在data里先定义</span><br><span class="hljs-title function_">countAdd</span>(<span class="hljs-params"></span>)&#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">setData</span>(&#123;<br>    <span class="hljs-attr">count</span>:<span class="hljs-variable language_">this</span>.<span class="hljs-property">data</span>.<span class="hljs-property">count</span> <span class="hljs-number">1</span><br>    &#125;)<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>在触发页面的下拉刷新事件的时候，如果要把 count 的值重置为 0，示例代码如下：  </p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// pages/message/message.js</span><br><span class="hljs-comment">/**</span><br><span class="hljs-comment">   * 页面相关事件处理函数--监听用户下拉动作</span><br><span class="hljs-comment">   */</span><br>  <span class="hljs-attr">onPullDownRefresh</span>: <span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-comment">//触发消息页面的下拉刷新</span><br>    <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">setData</span>(&#123;<br>      <span class="hljs-attr">count</span>:<span class="hljs-number">0</span><br>    &#125;)<br>  &#125;,<br></code></pre></td></tr></table></figure>
+
+<h5 id="5-停止下拉刷新的效果"><a href="#5-停止下拉刷新的效果" class="headerlink" title="5. 停止下拉刷新的效果"></a>5. 停止下拉刷新的效果</h5><p>当处理完下拉刷新后，下拉刷新的 loading 效果会一直显示，不会主动消失，所以需要手动隐藏下拉刷新的<br>loading 效果。此时，调用 wx.stopPullDownRefresh() 可以停止当前页面的下拉刷新。示例代码如下：  </p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// pages/message/message.js</span><br><span class="hljs-comment">/**</span><br><span class="hljs-comment">* 页面相关事件处理函数--监听用户下拉动作</span><br><span class="hljs-comment">*/</span><br><span class="hljs-attr">onPullDownRefresh</span>: <span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-comment">//触发消息页面的下拉刷新</span><br>    <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">setData</span>(&#123;<br>        <span class="hljs-attr">count</span>:<span class="hljs-number">0</span><br>    &#125;)<br>    wx.<span class="hljs-title function_">stopPullDownRefresh</span>()<br>&#125;,<br></code></pre></td></tr></table></figure>
+
+<h4 id="上拉触底"><a href="#上拉触底" class="headerlink" title="上拉触底"></a>上拉触底</h4><h5 id="1-什么是上拉触底"><a href="#1-什么是上拉触底" class="headerlink" title="1.什么是上拉触底"></a>1.什么是上拉触底</h5><p>上拉触底是移动端的专有名词，通过手指在屏幕上的上拉滑动操作，从而加载更多数据的行为。</p>
+<h5 id="2-监听页面的上拉触底事件"><a href="#2-监听页面的上拉触底事件" class="headerlink" title="2. 监听页面的上拉触底事件"></a>2. 监听页面的上拉触底事件</h5><p>在页面的 .js 文件中，通过 onReachBottom() 函数即可监听当前页面的上拉触底事件。示例代码如下：   </p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 页面上拉触底事件的处理函数</span><br><span class="hljs-comment"> */</span><br><span class="hljs-attr">onReachBottom</span>: <span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;触发了上拉触底的事件&quot;</span>)<br>&#125;,<br></code></pre></td></tr></table></figure>
+
+<h5 id="3-配置上拉触底距离"><a href="#3-配置上拉触底距离" class="headerlink" title="3.配置上拉触底距离"></a>3.配置上拉触底距离</h5><p>上拉触底距离指的是触发上拉触底事件时，滚动条距离页面底部的距离。<br>可以在全局或页面的 .json 配置文件中，通过 onReachBottomDistance 属性来配置上拉触底的距离。<br>小程序默认的触底距离是 50px，在实际开发中，可以根据自己的需求修改这个默认值。  </p>
+<h5 id="4-上拉触底案例"><a href="#4-上拉触底案例" class="headerlink" title="4.上拉触底案例"></a>4.上拉触底案例</h5><h6 id="1、示例效果："><a href="#1、示例效果：" class="headerlink" title="1、示例效果："></a>1、示例效果：</h6>  <img src="https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/1650535113574.png" srcset="/img/loading.gif" lazyload style="zoom:67%;">
+
+<h6 id="2-案例的实现步骤"><a href="#2-案例的实现步骤" class="headerlink" title="2.案例的实现步骤"></a>2.案例的实现步骤</h6><p>① 定义获取随机颜色的方法<br>② 在页面加载时获取初始数据<br>③ 渲染 UI 结构并美化页面效果<br>④ 在上拉触底时调用获取随机颜色的方法<br>⑤ 添加 loading 提示效果<br>⑥ 对上拉触底进行节流处理  </p>
+<h6 id="3-步骤1-定义获取随机颜色的方法"><a href="#3-步骤1-定义获取随机颜色的方法" class="headerlink" title="3. 步骤1 - 定义获取随机颜色的方法"></a>3. 步骤1 - 定义获取随机颜色的方法</h6><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-attr">data</span>: &#123;<br>  <span class="hljs-attr">colorlsit</span>:[]<span class="hljs-comment">//随机颜色列表</span><br>&#125;,<br><span class="hljs-title function_">getClors</span>(<span class="hljs-params"></span>)&#123;	<span class="hljs-comment">//获取颜色的方法</span><br>  wx.<span class="hljs-title function_">request</span>(&#123;<span class="hljs-comment">//发起请求</span><br>    <span class="hljs-attr">url</span>: <span class="hljs-string">&#x27;https://www.escook.cn/api/color&#x27;</span>,<br>    <span class="hljs-attr">method</span>:<span class="hljs-string">&quot;GET&quot;</span>,<br>    <span class="hljs-attr">success</span>:<span class="hljs-function">(<span class="hljs-params">&#123;data:res&#125;</span>)=&gt;</span>&#123;<br>      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(res)<br>      <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">setData</span>(&#123;<br>        <span class="hljs-attr">colorlsit</span>:[...<span class="hljs-variable language_">this</span>.<span class="hljs-property">data</span>.<span class="hljs-property">colorlsit</span>,...res.<span class="hljs-property">data</span>]<span class="hljs-comment">//将获取到的新数组和原数组通过展开运算符进行拼接</span><br>      &#125;)<br>    &#125;,<br>  &#125;)<br>&#125;,<br></code></pre></td></tr></table></figure>
+
+<h6 id="3-步骤2-在页面加载时获取初始数据"><a href="#3-步骤2-在页面加载时获取初始数据" class="headerlink" title="3. 步骤2 - 在页面加载时获取初始数据"></a>3. 步骤2 - 在页面加载时获取初始数据</h6><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 生命周期函数--监听页面加载</span><br><span class="hljs-comment"> */</span><br><span class="hljs-attr">onLoad</span>: <span class="hljs-keyword">function</span> (<span class="hljs-params">options</span>) &#123;<br>  <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">getClors</span>()<br>&#125;,<br><br></code></pre></td></tr></table></figure>
+
+<h6 id="3-步骤3-渲染-UI-结构并美化页面效果"><a href="#3-步骤3-渲染-UI-结构并美化页面效果" class="headerlink" title="3. 步骤3 - 渲染 UI 结构并美化页面效果"></a>3. 步骤3 - 渲染 UI 结构并美化页面效果</h6><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-comment">&lt;!--pages/contact/contact.wxml--&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">view</span> <span class="hljs-attr">wx:for</span>=<span class="hljs-string">&quot;&#123;&#123;colorlsit&#125;&#125;&quot;</span> <span class="hljs-attr">wx:key</span>=<span class="hljs-string">&quot;index&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;num-iten&quot;</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;background-color: rgba(&#123;&#123;item&#125;&#125;);&quot;</span>&gt;</span>&#123;&#123;item&#125;&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">view</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs css"><span class="hljs-comment">/* pages/contact/contact.wxss */</span><br><span class="hljs-selector-class">.num-iten</span>&#123;<br>  <span class="hljs-attribute">border</span>: <span class="hljs-number">1</span>rpx solid <span class="hljs-number">#efefef</span>;<br>  <span class="hljs-attribute">border-radius</span>: <span class="hljs-number">8</span>rpx;<br>  <span class="hljs-attribute">line-height</span>: <span class="hljs-number">200</span>rpx;<br>  <span class="hljs-attribute">margin</span>: <span class="hljs-number">15</span>rpx;<br>  <span class="hljs-attribute">text-align</span>: center;<br>  <span class="hljs-attribute">text-shadow</span>: <span class="hljs-number">0</span>rpx  <span class="hljs-number">0</span>rpx  <span class="hljs-number">5</span>rpx <span class="hljs-number">#fff</span>;<br>  <span class="hljs-attribute">box-shadow</span>:<span class="hljs-number">1</span>rpx  <span class="hljs-number">1</span>rpx  <span class="hljs-number">6</span>rpx <span class="hljs-number">#aaa</span> ;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h6 id="3-步骤4-上拉触底时获取随机颜色"><a href="#3-步骤4-上拉触底时获取随机颜色" class="headerlink" title="3. 步骤4 - 上拉触底时获取随机颜色"></a>3. 步骤4 - 上拉触底时获取随机颜色</h6><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 页面上拉触底事件的处理函数</span><br><span class="hljs-comment"> */</span><br><span class="hljs-attr">onReachBottom</span>: <span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-comment">//调用获取随机颜色的方法</span><br>  <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">getClors</span>()<br>&#125;,<br></code></pre></td></tr></table></figure>
+
+<h6 id="3-步骤5-添加-loading-提示效果"><a href="#3-步骤5-添加-loading-提示效果" class="headerlink" title="3. 步骤5 - 添加 loading 提示效果"></a>3. 步骤5 - 添加 loading 提示效果</h6><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-title function_">getClors</span>(<span class="hljs-params"></span>)&#123;<br>  <span class="hljs-comment">//展示loading效果</span><br>  wx.<span class="hljs-title function_">showLoading</span>(&#123;<br>    <span class="hljs-attr">title</span>: <span class="hljs-string">&#x27;数据加载中...&#x27;</span>,<br>  &#125;)<br>  wx.<span class="hljs-title function_">request</span>(&#123;<br>    <span class="hljs-attr">url</span>: <span class="hljs-string">&#x27;https://www.escook.cn/api/color&#x27;</span>,<br>    <span class="hljs-attr">method</span>:<span class="hljs-string">&quot;GET&quot;</span>,<br>    <span class="hljs-attr">success</span>:<span class="hljs-function">(<span class="hljs-params">&#123;data:res&#125;</span>)=&gt;</span>&#123;<br>      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(res)<br>      <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">setData</span>(&#123;<br>        <span class="hljs-attr">colorlsit</span>:[...<span class="hljs-variable language_">this</span>.<span class="hljs-property">data</span>.<span class="hljs-property">colorlsit</span>,...res.<span class="hljs-property">data</span>]<br>      &#125;)<br>    &#125;,<br>    <span class="hljs-attr">complete</span>:<span class="hljs-function">()=&gt;</span>&#123;<br>      wx.<span class="hljs-title function_">hideLoading</span>()<span class="hljs-comment">//关闭loading效果</span><br>    &#125;<br>  &#125;)<br>&#125;,<br></code></pre></td></tr></table></figure>
+
+<h6 id="3-步骤6-对上拉触底进行节流处理"><a href="#3-步骤6-对上拉触底进行节流处理" class="headerlink" title="3. 步骤6 - 对上拉触底进行节流处理"></a>3. 步骤6 - 对上拉触底进行节流处理</h6><p>① 在 data 中定义 isloading 节流阀<br> false 表示当前没有进行任何数据请求<br> true 表示当前正在进行数据请求</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-attr">data</span>: &#123;<br>  <span class="hljs-attr">colorlsit</span>:[],<br>  <span class="hljs-attr">isloding</span>:<span class="hljs-literal">false</span><span class="hljs-comment">//节流阀</span><br>&#125;,<br></code></pre></td></tr></table></figure>
+
+<p>② 在 getColors() 方法中修改 isloading 节流阀的值<br> 在刚调用 getColors 时将节流阀设置 true<br> 在网络请求的 complete 回调函数中，将节流阀重置为 false</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-title function_">getClors</span>(<span class="hljs-params"></span>)&#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">setData</span>(&#123;<span class="hljs-comment">//节流阀</span><br>      <span class="hljs-attr">isloding</span>:<span class="hljs-literal">true</span><br>    &#125;),<br>    <span class="hljs-comment">//需要展示loading效果</span><br>    wx.<span class="hljs-title function_">showLoading</span>(&#123;<br>      <span class="hljs-attr">title</span>: <span class="hljs-string">&#x27;数据加载中...&#x27;</span>,<br>    &#125;)<br>    wx.<span class="hljs-title function_">request</span>(&#123;<br>      <span class="hljs-attr">url</span>: <span class="hljs-string">&#x27;https://www.escook.cn/api/color&#x27;</span>,<br>      <span class="hljs-attr">method</span>:<span class="hljs-string">&quot;GET&quot;</span>,<br>      <span class="hljs-attr">success</span>:<span class="hljs-function">(<span class="hljs-params">&#123;data:res&#125;</span>)=&gt;</span>&#123;<br>        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(res)<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">setData</span>(&#123;<br>          <span class="hljs-attr">colorlsit</span>:[...<span class="hljs-variable language_">this</span>.<span class="hljs-property">data</span>.<span class="hljs-property">colorlsit</span>,...res.<span class="hljs-property">data</span>]<br>        &#125;)<br>      &#125;,<br>      <span class="hljs-attr">complete</span>:<span class="hljs-function">()=&gt;</span>&#123;<br>        wx.<span class="hljs-title function_">hideLoading</span>(),<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">setData</span>(&#123;<br>          <span class="hljs-attr">isloding</span>:<span class="hljs-literal">false</span><span class="hljs-comment">//节流阀</span><br>        &#125;)<br>      &#125;<br>    &#125;)<br>  &#125;,<br></code></pre></td></tr></table></figure>
+
+<p>③ 在 onReachBottom 中判断节流阀的值，从而对数据请求进行节流控制<br> 如果节流阀的值为 true，则阻止当前请求<br> 如果节流阀的值为 false，则发起数据请求  </p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">/**</span><br><span class="hljs-comment">  * 页面上拉触底事件的处理函数</span><br><span class="hljs-comment">  */</span><br> <span class="hljs-attr">onReachBottom</span>: <span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;<br>   <span class="hljs-comment">//调用获取随机颜色的方法</span><br>   <span class="hljs-keyword">if</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">data</span>.<span class="hljs-property">isloding</span>)<span class="hljs-keyword">return</span><span class="hljs-comment">//判断节流阀</span><br>   <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">getClors</span>()<br> &#125;,<br></code></pre></td></tr></table></figure>
+
+<h3 id="生命周期"><a href="#生命周期" class="headerlink" title="生命周期"></a>生命周期</h3><h4 id="1-什么是生命周期"><a href="#1-什么是生命周期" class="headerlink" title="1.什么是生命周期"></a>1.什么是生命周期</h4><p>生命周期（Life Cycle）是指一个对象从创建 -&gt; 运行 -&gt; 销毁的整个阶段，强调的是一个时间段。例如：<br> 张三出生，表示这个人生命周期的开始<br> 张三离世，表示这个人生命周期的结束<br> 中间张三的一生，就是张三的生命周期<br>我们可以把每个小程序运行的过程，也概括为生命周期：<br> 小程序的启动，表示生命周期的开始<br> 小程序的关闭，表示生命周期的结束<br> 中间小程序运行的过程，就是小程序的生命周期  </p>
+<h4 id="2-生命周期的分类"><a href="#2-生命周期的分类" class="headerlink" title="2.生命周期的分类"></a>2.生命周期的分类</h4><p>在小程序中，生命周期分为两类，分别是：<br>① 应用生命周期<br> 特指小程序从启动 -&gt; 运行 -&gt; 销毁的过程<br>② 页面生命周期<br> 特指小程序中，每个页面的加载 -&gt; 渲染 -&gt; 销毁的过程<br>其中，页面的生命周期范围较小，应用程序的生命周期范围较大，如图所示：  </p>
+<img src="https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/1650543517547.png" srcset="/img/loading.gif" lazyload style="zoom:67%;">
+
+<h4 id="3-什么是生命周期函数"><a href="#3-什么是生命周期函数" class="headerlink" title="3.什么是生命周期函数"></a>3.什么是生命周期函数</h4><p>生命周期函数：是由小程序框架提供的内置函数，会伴随着生命周期，自动按次序执行。<br>生命周期函数的作用：允许程序员在特定的时间点，执行某些特定的操作。例如，页面刚加载的时候，可以在<br>onLoad 生命周期函数中初始化页面的数据。<br>注意：生命周期强调的是时间段，生命周期函数强调的是时间点。  </p>
+<h4 id="4-生命周期函数的分类"><a href="#4-生命周期函数的分类" class="headerlink" title="4.. 生命周期函数的分类"></a>4.. 生命周期函数的分类</h4><p>小程序中的生命周期函数分为两类，分别是：<br>① 应用的生命周期函数<br> 特指小程序从启动 -&gt; 运行 -&gt; 销毁期间依次调用的那些函数<br>② 页面的生命周期函数<br> 特指小程序中，每个页面从加载 -&gt; 渲染 -&gt; 销毁期间依次调用的那些函数  </p>
+<h4 id="5-应用的生命周期函数"><a href="#5-应用的生命周期函数" class="headerlink" title="5.应用的生命周期函数"></a>5.应用的生命周期函数</h4><p>小程序的应用生命周期函数需要在 app.js 中进行声明，示例代码如下：  </p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs JS"><span class="hljs-comment">//app.js文件</span><br><span class="hljs-title class_">App</span>(&#123;<br>ithe<br><span class="hljs-comment">//小程序初始化完成时，执行此函数，全局只触发一次。可以做些初始化的工作。</span><br><span class="hljs-attr">onLaunch</span>:<span class="hljs-keyword">function</span>(<span class="hljs-params">options</span>)&#123;&#125;<br><span class="hljs-comment">//小程序启动，或从后台进入前台显示时触发。</span><br>onShow <span class="hljs-keyword">function</span>(<span class="hljs-params">options</span>)&#123;&#125;,<br><span class="hljs-comment">//小程序从前台进入后台时触发。</span><br>onHide <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)&#123;&#125;<br>&#125;)<br></code></pre></td></tr></table></figure>
+
+<h4 id="6-页面的生命周期函数"><a href="#6-页面的生命周期函数" class="headerlink" title="6. 页面的生命周期函数"></a>6. 页面的生命周期函数</h4><p>小程序的页面生命周期函数需要在页面的 .js 文件中进行声明，示例代码如下：  </p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs JS"><span class="hljs-comment">//页面的.js文件</span><br><span class="hljs-title class_">Page</span>(&#123;<br>onLoad	:<span class="hljs-keyword">function</span>(<span class="hljs-params">options</span>)&#123;&#125;,<span class="hljs-comment">//监听页面加载，一个页面只调用1次</span><br>onShow 	:<span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)&#123;&#125;,<span class="hljs-comment">//监听页面显示</span><br>onReady	: <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)&#123;&#125;<span class="hljs-comment">//监听页面初次渲染完成，一个页面只调用1次</span><br>onHide	:<span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)&#123;&#125;<span class="hljs-comment">//监听页面隐藏</span><br><span class="hljs-attr">onUnload</span>:<span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)&#123;&#125;<span class="hljs-comment">//监听页面卸载，一个页面只调用1次</span><br>&#125;)<br></code></pre></td></tr></table></figure>
+
+<h3 id="WXS-脚本"><a href="#WXS-脚本" class="headerlink" title="WXS 脚本"></a>WXS 脚本</h3><h4 id="1-什么是-wxs"><a href="#1-什么是-wxs" class="headerlink" title="1.什么是 wxs"></a>1.什么是 wxs</h4><p>WXS（WeiXin Script）是小程序独有的一套脚本语言，结合 WXML，可以构建出页面的结构。</p>
+<h4 id="2-wxs-的应用场景"><a href="#2-wxs-的应用场景" class="headerlink" title="2. wxs 的应用场景"></a>2. wxs 的应用场景</h4><p>wxml 中无法调用在页面的 .js 中定义的函数，但是，wxml 中可以调用 wxs 中定义的函数。因此，小程序中<br>wxs 的典型应用场景就是“过滤器”。    </p>
+<h4 id="3-wxs-和-JavaScript-的关系"><a href="#3-wxs-和-JavaScript-的关系" class="headerlink" title="3.wxs 和 JavaScript 的关系*"></a>3.wxs 和 JavaScript 的关系*</h4><p>虽然 wxs 的语法类似于 JavaScript，但是 wxs 和 JavaScript 是完全不同的两种语言：</p>
+<p>① wxs 有自己的数据类型<br> number 数值类型、string 字符串类型、boolean 布尔类型、object 对象类型、<br> function 函数类型、array 数组类型、 date 日期类型、 regexp 正则</p>
+<p>② wxs 不支持类似于 ES6 及以上的语法形式<br> 不支持：let、const、解构赋值、展开运算符、箭头函数、对象属性简写、etc…<br> 支持：var 定义变量、普通 function 函数等类似于 ES5 的语法</p>
+<p>③ wxs 遵循 CommonJS 规范<br> module 对象<br> require() 函数<br> module.exports 对象  </p>
+<h4 id="WXS-脚本-基础语法"><a href="#WXS-脚本-基础语法" class="headerlink" title="WXS 脚本 - 基础语法"></a>WXS 脚本 - 基础语法</h4><h5 id="1-内嵌-wxs-脚本"><a href="#1-内嵌-wxs-脚本" class="headerlink" title="1. 内嵌 wxs 脚本"></a>1. 内嵌 wxs 脚本</h5><p>wxs 代码可以编写在 wxml 文件中的 <wxs> 标签内，就像 Javascript 代码可以编写在 html 文件中的 <script><br>标签内一样。<br>wxml 文件中的每个 <wxs></wxs> 标签，必须提供 module 属性，用来指定当前 wxs 的模块名称，方便在<br>wxml 中访问模块中的成员  ：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">view</span>&gt;</span>username为&#123;&#123;m1.toUpper(username)&#125;&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">view</span>&gt;</span><br><br><span class="hljs-tag">&lt;<span class="hljs-name">wxs</span> <span class="hljs-attr">module</span>=<span class="hljs-string">&quot;m1&quot;</span>&lt;<span class="hljs-attr">--将文本转换为大写形式--</span>&gt;</span><br>module.exports.toUpper = function(str)&#123;<br>  return str.toUpperCase()<br>&#125;<br><span class="hljs-tag">&lt;/<span class="hljs-name">wxs</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h5 id="2-定义外联的-wxs-脚本"><a href="#2-定义外联的-wxs-脚本" class="headerlink" title="2. 定义外联的 wxs 脚本"></a>2. 定义外联的 wxs 脚本</h5><p>wxs 代码还可以编写在以 .wxs 为后缀名的文件内，就像 javascript 代码可以编写在以 .js 为后缀名的文件中<br>一样。示例代码如下：  </p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">toLower</span>(<span class="hljs-params">str</span>)&#123;<br>  <span class="hljs-keyword">return</span> str.<span class="hljs-title function_">toLowerCase</span>()<br>&#125;<br><span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span>=&#123;<br>  <span class="hljs-attr">toLower</span>:toLower<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h5 id="3-使用外联的-wxs-脚本"><a href="#3-使用外联的-wxs-脚本" class="headerlink" title="3.使用外联的 wxs 脚本"></a>3.使用外联的 wxs 脚本</h5><p>在 wxml 中引入外联的 wxs 脚本时，必须为 <wxs> 标签添加 module 和 src 属性，其中：<br> module 用来指定模块的名称<br> src 用来指定要引入的脚本的路径，且必须是相对路径<br>示例代码如下：  </p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">view</span>&gt;</span>country为&#123;&#123;m2.toLower(country)&#125;&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">view</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">wxs</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;../../utils/tools.wxs&quot;</span> <span class="hljs-attr">module</span>=<span class="hljs-string">&quot;m2&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">wxs</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="WXS-脚本-WXS-的特点"><a href="#WXS-脚本-WXS-的特点" class="headerlink" title="WXS 脚本 - WXS 的特点"></a>WXS 脚本 - WXS 的特点</h4><h5 id="1-与-JavaScript-不同"><a href="#1-与-JavaScript-不同" class="headerlink" title="1. 与 JavaScript 不同"></a>1. 与 JavaScript 不同</h5><p>为了降低 wxs（WeiXin Script）的学习成本， wxs 语言在设计时借大量鉴了 JavaScript 的语法。但是本质上，<br>wxs 和 JavaScript 是完全不同的两种语言！  </p>
+<h5 id="2-不能作为组件的事件回调"><a href="#2-不能作为组件的事件回调" class="headerlink" title="2.不能作为组件的事件回调"></a>2.不能作为组件的事件回调</h5><p>wxs 典型的应用场景就是“过滤器”，经常配合 Mustache 语法进行使用，例如：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">view</span>&gt;</span>&#123;&#123;m2.toLower(country)&#125;&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">view</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>但是，在 wxs 中定义的函数不能作为组件的事件回调函数。例如，下面的用法是错误的： </p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">bindtaps</span>=<span class="hljs-string">&quot;m2.toLower&quot;</span>&gt;</span>按钮<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h5 id="3-隔离性"><a href="#3-隔离性" class="headerlink" title="3. 隔离性"></a>3. 隔离性</h5><p>隔离性指的是 wxs 的运行环境和其他 JavaScript 代码是隔离的。体现在如下两方面：<br>① wxs 不能调用 js 中定义的函数<br>② wxs 不能调用小程序提供的 API  </p>
+<h5 id="4-性能好"><a href="#4-性能好" class="headerlink" title="4. 性能好"></a>4. 性能好</h5><p> 在 iOS 设备上，小程序内的 WXS 会比 JavaScript 代码快 2 ~ 20 倍<br> 在 android 设备上，二者的运行效率无差异  </p>
+<h3 id="案例-本地生活（列表页面）"><a href="#案例-本地生活（列表页面）" class="headerlink" title="案例 - 本地生活（列表页面）"></a>案例 - 本地生活（列表页面）</h3><p><strong>注意：判断是否还有下一页数据</strong><br>如果下面的公式成立，则证明没有下一页数据了：<br>页码值 * 每页显示多少条数据 >= 总数据条数<br>page * pageSize >= total<br>案例1：总共有 77 条数据，如果每页显示 10 条数据，则总共分为 8 页，其中第 8 页只有 7 条数据<br>page（7）* pageSize（10） >= total（77）<br>page（8）* pageSize（10） >= total（77）<br>案例2：总共有 80 条数据，如果每页显示 10 条数据，则总共分为 8 页，其中第 8 页面有 10 条数据<br>page（7）* pageSize（10） >= total（80）<br>page（8）* pageSize（10） >= total（80）</p>
+</script></wxs></p>
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%8F%8A%E5%B5%8C%E5%85%A5%E5%BC%8F%E8%BD%AF%E4%BB%B6/" class="category-chain-item">计算机及嵌入式软件</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%8F%8A%E5%B5%8C%E5%85%A5%E5%BC%8F%E8%BD%AF%E4%BB%B6/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%89%8D%E7%AB%AF/" class="category-chain-item">计算机前端</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%8F%8A%E5%B5%8C%E5%85%A5%E5%BC%8F%E8%BD%AF%E4%BB%B6/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%89%8D%E7%AB%AF/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F/" class="category-chain-item">微信小程序</a>
+  
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F/">#微信小程序</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>微信小程序笔记 (6.微信小程序视图与逻辑)</div>
+      <div>https://www.duruofu.xyz/2023/06/06/3.软件相关/计算机前端/微信小程序/06.小程序 - 视图与逻辑/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>DuRuofu</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年6月6日</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>更新于</div>
+          <div>2023年6月6日</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
+                    <i class="iconfont icon-nc"></i>
+                  </span>
+                </a>
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="SA - 相同方式共享">
+                    <i class="iconfont icon-sa"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/06/06/3.%E8%BD%AF%E4%BB%B6%E7%9B%B8%E5%85%B3/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%89%8D%E7%AB%AF/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F/03.%E7%BB%84%E4%BB%B6/" title="微信小程序笔记 (3.微信小程序的组件)">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">微信小程序笔记 (3.微信小程序的组件)</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/06/06/3.%E8%BD%AF%E4%BB%B6%E7%9B%B8%E5%85%B3/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%89%8D%E7%AB%AF/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F/05.%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%A8%A1%E6%9D%BF%E4%B8%8E%E9%85%8D%E7%BD%AE/" title="微信小程序笔记 (5.微信小程序模板与配置)">
+                        <span class="hidden-mobile">微信小程序笔记 (5.微信小程序模板与配置)</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#gitalk-container', function() {
+      Fluid.utils.createCssLink('/css/gitalk.css')
+      Fluid.utils.createScript('https://lib.baomitu.com/gitalk/1.8.0/gitalk.min.js', function() {
+        var options = Object.assign(
+          {"clientID":"c9ac06d5413a9d613a1e","clientSecret":"a44f5c72589eb090876cc64067db28fbfdf4747c","repo":"Blog-comments-gitalk","owner":"DuRuofu","admin":["DuRuofu"],"language":"zh-CN","labels":["Gitalk"],"perPage":15,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":false,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token"},
+          {
+            id: '38a162d5774f2c2a9eaa149ad8deb298'
+          }
+        )
+        var gitalk = new Gitalk(options);
+        gitalk.render('gitalk-container');
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <br><span id="timeDate">天数载入中</span><span id="times">...</span><br> <span>总有读不懂的诗和到达不了的远方</span> <p>Copyright © 2023 - <span id="currentYear"></span> All Rights Reserved.</p> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      陕ICP备2022007454号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=2022007454"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>陕ICP备2022007454号-1</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":true,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/cust/custom.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
