@@ -371,7 +371,7 @@
 <h5 id="4-target-和-currentTarget-的区别"><a href="#4-target-和-currentTarget-的区别" class="headerlink" title="4. target 和 currentTarget 的区别"></a>4. target 和 currentTarget 的区别</h5><p>target 是触发该事件的源头组件，而 currentTarget 则是当前事件所绑定的组件。</p>
 <p> currentTarget 是绑定的那个，target 是实际被点击的那个。</p>
 <p>举例如下：  </p>
-<p><img src="/2023/06/06/3.%E8%BD%AF%E4%BB%B6%E7%9B%B8%E5%85%B3/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%89%8D%E7%AB%AF/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F/05.%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%A8%A1%E6%9D%BF%E4%B8%8E%E9%85%8D%E7%BD%AE/Users\xin\AppData\Roaming\Typora\typora-user-images\image-20220418232647920.png" srcset="/img/loading.gif" lazyload alt="image-20220418232647920"></p>
+<p><img src="Users\xin\AppData\Roaming\Typora\typora-user-images\image-20220418232647920.png" srcset="/img/loading.gif" lazyload alt="image-20220418232647920"></p>
 <p>点击内部的按钮时，点击事件以冒泡的方式向外扩散，也会触发外层 view 的 tap 事件处理函数。<br>此时，对于外层的 view 来说：<br> e.target 指向的是触发事件的源头组件，因此，e.target 是内部的按钮组件<br> e.currentTarget 指向的是当前正在触发事件的那个组件，因此，e.currentTarget 是当前的 view 组件  </p>
 <h5 id="5-bindtap-的语法格式"><a href="#5-bindtap-的语法格式" class="headerlink" title="5. bindtap 的语法格式"></a>5. bindtap 的语法格式</h5><p>在小程序中，不存在 HTML 中的 onclick 鼠标点击事件，而是通过 tap 事件来响应用户的触摸行为。<br>① 通过 bindtap，可以为组件绑定 tap 触摸事件，语法如下：  </p>
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-comment">&lt;!-- 绑定事件 --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;primary&quot;</span> <span class="hljs-attr">bindtap</span>=<span class="hljs-string">&quot;bthTapHandler&quot;</span>&gt;</span>按钮<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span><br></code></pre></td></tr></table></figure>
@@ -506,7 +506,7 @@
 <img src="https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/1650336417559.png" srcset="/img/loading.gif" lazyload style="zoom:67%;">
 
 <h5 id="8-设置下拉刷新时-loading-的样式"><a href="#8-设置下拉刷新时-loading-的样式" class="headerlink" title="8. 设置下拉刷新时 loading 的样式"></a>8. 设置下拉刷新时 loading 的样式</h5><p>当全局开启下拉刷新功能之后，默认窗口的 loading 样式为白色，如果要更改 loading 样式的效果，设置步<br>骤为 app.json -&gt; window -&gt; 为 backgroundTextStyle 指定 dark 值。效果如下：  </p>
-<img src="/2023/06/06/3.%E8%BD%AF%E4%BB%B6%E7%9B%B8%E5%85%B3/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%89%8D%E7%AB%AF/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F/05.%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%A8%A1%E6%9D%BF%E4%B8%8E%E9%85%8D%E7%BD%AE/Users\xin\AppData\Roaming\Typora\typora-user-images\image-20220419104857074.png" srcset="/img/loading.gif" lazyload alt="image-20220419104857074" style="zoom:67%;">
+<img src="Users\xin\AppData\Roaming\Typora\typora-user-images\image-20220419104857074.png" srcset="/img/loading.gif" lazyload alt="image-20220419104857074" style="zoom:67%;">
 
 <p>注意： backgroundTextStyle 的可选值只有 light 和 dark  </p>
 <h5 id="9-设置上拉触底的距离"><a href="#9-设置上拉触底的距离" class="headerlink" title="9.设置上拉触底的距离"></a>9.设置上拉触底的距离</h5><p>概念：上拉触底是移动端的专有名词，通过手指在屏幕上的上拉滑动操作，从而加载更多数据的行为。<br>设置步骤： app.json -&gt; window -&gt; 为 onReachBottomDistance 设置新的数值<br>注意：默认距离为50px，如果没有特殊需求，建议使用默认值即可。  </p>
@@ -696,8 +696,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2023/06/06/3.%E8%BD%AF%E4%BB%B6%E7%9B%B8%E5%85%B3/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%89%8D%E7%AB%AF/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F/06.%E5%B0%8F%E7%A8%8B%E5%BA%8F%20-%20%E8%A7%86%E5%9B%BE%E4%B8%8E%E9%80%BB%E8%BE%91/" title="微信小程序笔记 (6.微信小程序视图与逻辑)">
-                        <span class="hidden-mobile">微信小程序笔记 (6.微信小程序视图与逻辑)</span>
+                      <a href="/2023/06/06/3.%E8%BD%AF%E4%BB%B6%E7%9B%B8%E5%85%B3/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%89%8D%E7%AB%AF/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F/04.api/" title="微信小程序笔记 (4.微信小程序的API)">
+                        <span class="hidden-mobile">微信小程序笔记 (4.微信小程序的API)</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
