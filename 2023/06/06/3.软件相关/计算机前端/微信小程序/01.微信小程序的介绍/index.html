@@ -344,7 +344,7 @@
 <h5 id="sitemap-json文件"><a href="#sitemap-json文件" class="headerlink" title="sitemap.json文件"></a>sitemap.json文件</h5><p>用来配置小程序是否允许被其他微信搜索<br>微信现已开放小程序内搜索，效果类似于 PC 网页的 SEO。sitemap.json 文件用来配置小程序页面是否允许<br>微信索引。<br>当开发者允许微信索引时，微信会通过爬虫的形式，为小程序的页面内容建立索引。当用户的搜索关键字和页<br>面的索引匹配成功的时候，小程序的页面将可能展示在搜索结果中。<br>注意：sitemap 的索引提示是默认开启的，如需要关闭 sitemap 的索引提示，可在小程序项目配置文件<br>project.config.json 的 setting 中配置字段 checkSiteMap 为 false</p>
 <h5 id="页面的-json-配置文件"><a href="#页面的-json-配置文件" class="headerlink" title="页面的 .json 配置文件"></a>页面的 .json 配置文件</h5><p>小程序中的每一个页面，可以使用 .json 文件来对本页面的窗口外观进行配置，页面中的配置项会覆盖<br>app.json 的 window 中相同的配置项。（优先级更大）</p>
 <h4 id="新建小程序页面"><a href="#新建小程序页面" class="headerlink" title="新建小程序页面"></a>新建小程序页面</h4><p>在 app.json -&gt; pages 中新增页面的存放路径，小程序开发者工具即可帮我们自动创建对应的页面文件，如图所示：（这里添加一个页面a）</p>
-<img src="https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/1650266655180.png" srcset="/img/loading.gif" lazyload style="zoom:67%;">
+<img src="https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/1650266655180.png" srcset="/img/loading.gif" lazyload style="zoom:67%;" />
 
 <h4 id="修改项目首页"><a href="#修改项目首页" class="headerlink" title="修改项目首页"></a>修改项目首页</h4><p>只需要调整 app.json -&gt; pages 数组中页面路径的前后顺序，即可修改项目的首页。小程序会把排在第一位的页<br>面，当作项目首页进行渲染。</p>
 <h4 id="WXML模板"><a href="#WXML模板" class="headerlink" title="WXML模板"></a>WXML模板</h4><p>WXML（WeiXin Markup Language）是小程序框架设计的一套标签语言，用来构建小程序页面的结构，其作<br>用类似于网页开发中的 HTML。</p>
