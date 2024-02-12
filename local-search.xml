@@ -4,6 +4,37 @@
   
   
   <entry>
+    <title>STM32CubeMX项目标准化</title>
+    <link href="/2024/02/12/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/STM32/STM32CubeMX%E9%A1%B9%E7%9B%AE%E6%A0%87%E5%87%86%E5%8C%96/"/>
+    <url>/2024/02/12/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/STM32/STM32CubeMX%E9%A1%B9%E7%9B%AE%E6%A0%87%E5%87%86%E5%8C%96/</url>
+    
+    <content type="html"><![CDATA[<h3 id="说明："><a href="#说明：" class="headerlink" title="说明："></a>说明：</h3><ol><li>本文档由DuRuofu撰写，由DuRuofu负责解释及执行。</li><li>本文主要记录使用STM32CubeMX+keil建立标准化的项目结构。</li></ol><h3 id="修订历史："><a href="#修订历史：" class="headerlink" title="修订历史："></a>修订历史：</h3><table><thead><tr><th>文档名称</th><th>版本</th><th>作者</th><th>时间</th><th>备注</th></tr></thead><tbody><tr><td>STM32CubeMX+keil项目标准化</td><td>v1.0.0</td><td>DuRuofu</td><td>2023-06-12</td><td>首次建立</td></tr></tbody></table><div STYLE="page-break-after: always;"></div># STM32CubeMX+keil项目标准化<h2 id="一、使用STM32CubeMX生成keil项目"><a href="#一、使用STM32CubeMX生成keil项目" class="headerlink" title="一、使用STM32CubeMX生成keil项目"></a>一、使用STM32CubeMX生成keil项目</h2><blockquote><p>这里以一个串口项目为例：</p></blockquote><h4 id="1-设置RCC"><a href="#1-设置RCC" class="headerlink" title="1.设置RCC"></a>1.设置RCC</h4><p>设置高速外部时钟HSE 选择外部时钟源</p><p><img src="/2024/02/12/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/STM32/STM32CubeMX%E9%A1%B9%E7%9B%AE%E6%A0%87%E5%87%86%E5%8C%96/20230709112156.png"></p><h4 id="2-设置串口"><a href="#2-设置串口" class="headerlink" title="2.设置串口"></a>2.设置串口</h4><p><img src="/2024/02/12/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/STM32/STM32CubeMX%E9%A1%B9%E7%9B%AE%E6%A0%87%E5%87%86%E5%8C%96/20230709112203.png"></p><ol><li>点击USATR1   </li><li>设置MODE为异步通信(Asynchronous)       </li><li>基础参数：波特率为115200 Bits&#x2F;s。传输数据长度为8 Bit。奇偶检验无，停止位1      接收和发送都使能 </li><li>GPIO引脚设置 USART1_RX&#x2F;USART_TX</li><li>NVIC Settings 一栏使能接收中断</li></ol><p><img src="/2024/02/12/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/STM32/STM32CubeMX%E9%A1%B9%E7%9B%AE%E6%A0%87%E5%87%86%E5%8C%96/20230709112215.png"></p><h4 id="3-设置时钟"><a href="#3-设置时钟" class="headerlink" title="3.设置时钟"></a>3.设置时钟</h4><p><img src="/2024/02/12/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/STM32/STM32CubeMX%E9%A1%B9%E7%9B%AE%E6%A0%87%E5%87%86%E5%8C%96/20230709112227.png"></p><p>我的是  外部晶振为8MHz<br>1选择外部时钟HSE 8MHz<br>2PLL锁相环倍频72倍<br>3系统时钟来源选择为PLL<br>4设置APB1分频器为 &#x2F;2</p><h4 id="4-项目文件设置"><a href="#4-项目文件设置" class="headerlink" title="4.项目文件设置"></a>4.项目文件设置</h4><p><img src="/2024/02/12/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/STM32/STM32CubeMX%E9%A1%B9%E7%9B%AE%E6%A0%87%E5%87%86%E5%8C%96/20230709112235.png"></p><ol><li>设置项目名称</li><li>设置存储路径</li><li>选择所用IDE</li></ol><h4 id="5-创建工程文件"><a href="#5-创建工程文件" class="headerlink" title="5.创建工程文件"></a>5.创建工程文件</h4><p>然后点击<strong>GENERATE CODE</strong>  创建工程<br>配置下载工具<br>新建的工程所有配置都是默认的  我们需要自行选择下载模式，勾选上下载后复位运行<br><img src="/2024/02/12/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/STM32/STM32CubeMX%E9%A1%B9%E7%9B%AE%E6%A0%87%E5%87%86%E5%8C%96/20230709112243.png"></p><h2 id="二、规范目录结构"><a href="#二、规范目录结构" class="headerlink" title="二、规范目录结构"></a>二、规范目录结构</h2><p>默认情况下生成的项目结构如下：</p><p><img src="/2024/02/12/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/STM32/STM32CubeMX%E9%A1%B9%E7%9B%AE%E6%A0%87%E5%87%86%E5%8C%96/20240212144252.png"></p><p>我们需要自行添加Users文件夹用于存放我们自己编写的代码，添加Output文件夹用于存放编译产生的文件，如下：</p><p><img src="/2024/02/12/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/STM32/STM32CubeMX%E9%A1%B9%E7%9B%AE%E6%A0%87%E5%87%86%E5%8C%96/20240212144502.png"></p><p>并在Keil里设置编译输出文件路径：</p><p><img src="/2024/02/12/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/STM32/STM32CubeMX%E9%A1%B9%E7%9B%AE%E6%A0%87%E5%87%86%E5%8C%96/20240212144551.png"></p><h2 id="三、进行git版本管理："><a href="#三、进行git版本管理：" class="headerlink" title="三、进行git版本管理："></a>三、进行git版本管理：</h2><p>这里没什么好说的，主要是需要添加忽略文件<code>.gitignore</code>,内容建议如下：</p><figure class="highlight gams"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs gams"><span class="hljs-comment">*Output/*</span><br><span class="hljs-comment">*Output/*.hex</span><br><span class="hljs-comment">*.bak</span><br><span class="hljs-comment">*.scvd</span><br><span class="hljs-comment">*.ini</span><br><span class="hljs-comment">*.Administrator</span><br><span class="hljs-comment">*.hp</span><br><span class="hljs-comment">*.uvoptx</span><br><span class="hljs-comment">*DebugConfig/  </span><br><span class="hljs-comment">*OBJ/</span><br></code></pre></td></tr></table></figure><h2 id="四、项目代码结构及原则："><a href="#四、项目代码结构及原则：" class="headerlink" title="四、项目代码结构及原则："></a>四、项目代码结构及原则：</h2><p>尽量不再STM32CubeMX生成的文件里做任何修改，例如下面的usart.h</p><p><img src="/2024/02/12/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/STM32/STM32CubeMX%E9%A1%B9%E7%9B%AE%E6%A0%87%E5%87%86%E5%8C%96/20240212145107.png"></p><p>我们不会在生成的usart.c里编写我们的程序，而是会新建用户usart模块，在新建的模块里引入生成的代码头文件，来实现去耦。</p><p><img src="/2024/02/12/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/STM32/STM32CubeMX%E9%A1%B9%E7%9B%AE%E6%A0%87%E5%87%86%E5%8C%96/20240212145438.png"></p><p>以上图为例，只有红框内的代码为自行编写，这样这些模块可以得到很好的复用。</p><p><img src="/2024/02/12/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/STM32/STM32CubeMX%E9%A1%B9%E7%9B%AE%E6%A0%87%E5%87%86%E5%8C%96/20240212145655.png"></p><p>main.c模块也只向下依赖app模块，由app模块负责整个项目的逻辑。</p><p><img src="/2024/02/12/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/STM32/STM32CubeMX%E9%A1%B9%E7%9B%AE%E6%A0%87%E5%87%86%E5%8C%96/%E4%BB%A3%E7%A0%81%E7%BB%93%E6%9E%84.svg"></p><h1 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h1>]]></content>
+    
+    
+    <categories>
+      
+      <category>电子信息硬件相关</category>
+      
+      <category>MCU</category>
+      
+      <category>STM32</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>STM32</tag>
+      
+      <tag>STM32CubeMX</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>vscdoe+虚拟机开发ESP32</title>
     <link href="/2024/01/30/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/vscdoe+%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%BC%80%E5%8F%91ESP32/"/>
     <url>/2024/01/30/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/vscdoe+%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%BC%80%E5%8F%91ESP32/</url>
@@ -206,7 +237,7 @@
   
   
   <entry>
-    <title>ESP32wSTM32F1系列移植freertos</title>
+    <title>STM32F1系列移植freertos</title>
     <link href="/2023/06/06/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/STM32/STM32F1%E7%B3%BB%E5%88%97%E7%A7%BB%E6%A4%8Dfreertos/"/>
     <url>/2023/06/06/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/STM32/STM32F1%E7%B3%BB%E5%88%97%E7%A7%BB%E6%A4%8Dfreertos/</url>
     
