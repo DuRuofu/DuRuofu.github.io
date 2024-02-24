@@ -1,0 +1,897 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/%E4%B8%AA%E4%BA%BA%E5%A4%B4%E5%83%8F%E6%97%A0%E8%83%8C%E6%99%AF.png">
+  <link rel="icon" href="https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/%E4%B8%AA%E4%BA%BA%E5%A4%B4%E5%83%8F%E6%97%A0%E8%83%8C%E6%99%AF.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="DuRuofu">
+  <meta name="keywords" content="嵌入式,个人博客,个人测试">
+  
+    <meta name="description" content="本文记录使用FPGA实现简单UART串口通信-基于FIFO">
+<meta property="og:type" content="article">
+<meta property="og:title" content="UART串口通信-基于FIFO">
+<meta property="og:url" content="https://www.duruofu.xyz/2024/01/28/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/FPGA/FPGA%E5%AE%9E%E8%B7%B5/FPGA%E5%AE%9E%E7%8E%B0%E4%B8%B2%E5%8F%A3/UART%E4%B8%B2%E5%8F%A3%E9%80%9A%E4%BF%A1-%E5%9F%BA%E4%BA%8EFIFO/UART%E4%B8%B2%E5%8F%A3%E9%80%9A%E4%BF%A1-%E5%9F%BA%E4%BA%8EFIFO/index.html">
+<meta property="og:site_name" content="Duruofu&#39;s 个人测试">
+<meta property="og:description" content="本文记录使用FPGA实现简单UART串口通信-基于FIFO">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.duruofu.xyz/img/index_img/FPGA.jpg">
+<meta property="article:published_time" content="2024-01-28T02:48:19.000Z">
+<meta property="article:modified_time" content="2024-02-24T06:35:02.705Z">
+<meta property="article:author" content="DuRuofu">
+<meta property="article:tag" content="FPGA">
+<meta property="article:tag" content="vivado">
+<meta property="article:tag" content="UART">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://www.duruofu.xyz/img/index_img/FPGA.jpg">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>UART串口通信-基于FIFO - Duruofu&#39;s 个人测试</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/cust/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"www.duruofu.xyz","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":80,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":true,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":5},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>DuRuofu</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="UART串口通信-基于FIFO"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        DuRuofu
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-01-28 10:48" pubdate>
+          2024年1月28日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          13k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          110 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">UART串口通信-基于FIFO</h1>
+            
+              <p class="note note-info">
+                
+                  
+                    本文最后更新于：几秒前
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <h3 id="说明："><a href="#说明：" class="headerlink" title="说明："></a>说明：</h3><ol>
+<li>本文档由DuRuofu撰写，由DuRuofu负责解释及执行。</li>
+<li>本文记录使用FPGA实现简单UART串口通信-基于FIFO</li>
+</ol>
+<h3 id="修订历史："><a href="#修订历史：" class="headerlink" title="修订历史："></a>修订历史：</h3><table>
+<thead>
+<tr>
+<th>文档名称</th>
+<th>版本</th>
+<th>作者</th>
+<th>时间</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>UART串口通信-基于FIFO</td>
+<td>v1.0.0</td>
+<td>DuRuofu</td>
+<td>2024-01-28</td>
+<td>首次建立</td>
+</tr>
+</tbody></table>
+<h1 id="UART串口通信-基于FIFO"><a href="#UART串口通信-基于FIFO" class="headerlink" title="UART串口通信-基于FIFO"></a>UART串口通信-基于FIFO</h1><blockquote>
+<p>代码：<a target="_blank" rel="noopener" href="https://github.com/DuRuofu/FPGA_Learning/tree/master/06_uart_fifo">https://github.com/DuRuofu/FPGA_Learning/tree/master/06_uart_fifo</a></p>
+</blockquote>
+<h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><p>实现收发双缓冲的串口回环实验</p>
+<h2 id="一、整体框图"><a href="#一、整体框图" class="headerlink" title="一、整体框图"></a>一、整体框图</h2><p>顶层模块:</p>
+<p><img src="/2024/01/28/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/FPGA/FPGA%E5%AE%9E%E8%B7%B5/FPGA%E5%AE%9E%E7%8E%B0%E4%B8%B2%E5%8F%A3/UART%E4%B8%B2%E5%8F%A3%E9%80%9A%E4%BF%A1-%E5%9F%BA%E4%BA%8EFIFO/UART%E4%B8%B2%E5%8F%A3%E9%80%9A%E4%BF%A1-%E5%9F%BA%E4%BA%8EFIFO/%E9%A1%B6%E5%B1%82%E6%A1%86%E5%9B%BE.svg" srcset="/img/loading.gif" lazyload></p>
+<p>子模块模块:<br><img src="/2024/01/28/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/FPGA/FPGA%E5%AE%9E%E8%B7%B5/FPGA%E5%AE%9E%E7%8E%B0%E4%B8%B2%E5%8F%A3/UART%E4%B8%B2%E5%8F%A3%E9%80%9A%E4%BF%A1-%E5%9F%BA%E4%BA%8EFIFO/UART%E4%B8%B2%E5%8F%A3%E9%80%9A%E4%BF%A1-%E5%9F%BA%E4%BA%8EFIFO/%E5%AD%90%E6%A8%A1%E5%9D%97.svg" srcset="/img/loading.gif" lazyload></p>
+<p>整体框图:</p>
+<p><img src="/2024/01/28/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/FPGA/FPGA%E5%AE%9E%E8%B7%B5/FPGA%E5%AE%9E%E7%8E%B0%E4%B8%B2%E5%8F%A3/UART%E4%B8%B2%E5%8F%A3%E9%80%9A%E4%BF%A1-%E5%9F%BA%E4%BA%8EFIFO/UART%E4%B8%B2%E5%8F%A3%E9%80%9A%E4%BF%A1-%E5%9F%BA%E4%BA%8EFIFO/%E6%95%B4%E4%BD%93%E6%A1%86%E5%9B%BE.svg" srcset="/img/loading.gif" lazyload></p>
+<h2 id="二、模块波形图"><a href="#二、模块波形图" class="headerlink" title="二、模块波形图"></a>二、模块波形图</h2><blockquote>
+<p>以9600波特率为例。</p>
+</blockquote>
+<p>接收模块:<br><img src="/2024/01/28/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/FPGA/FPGA%E5%AE%9E%E8%B7%B5/FPGA%E5%AE%9E%E7%8E%B0%E4%B8%B2%E5%8F%A3/UART%E4%B8%B2%E5%8F%A3%E9%80%9A%E4%BF%A1-%E5%9F%BA%E4%BA%8EFIFO/UART%E4%B8%B2%E5%8F%A3%E9%80%9A%E4%BF%A1-%E5%9F%BA%E4%BA%8EFIFO/%E4%B8%B2%E5%8F%A3%E6%A8%A1%E5%9D%97%E6%B3%A2%E5%BD%A2%E5%9B%BE(rx).svg" srcset="/img/loading.gif" lazyload></p>
+<p>发送模块：<br><img src="/2024/01/28/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/FPGA/FPGA%E5%AE%9E%E8%B7%B5/FPGA%E5%AE%9E%E7%8E%B0%E4%B8%B2%E5%8F%A3/UART%E4%B8%B2%E5%8F%A3%E9%80%9A%E4%BF%A1-%E5%9F%BA%E4%BA%8EFIFO/UART%E4%B8%B2%E5%8F%A3%E9%80%9A%E4%BF%A1-%E5%9F%BA%E4%BA%8EFIFO/%E4%B8%B2%E5%8F%A3%E6%A8%A1%E5%9D%97%E6%B3%A2%E5%BD%A2%E5%9B%BE(tx).svg" srcset="/img/loading.gif" lazyload></p>
+<h2 id="三、代码编写"><a href="#三、代码编写" class="headerlink" title="三、代码编写"></a>三、代码编写</h2><h3 id="3-1-串口接收模块"><a href="#3-1-串口接收模块" class="headerlink" title="3.1 串口接收模块"></a>3.1 串口接收模块</h3><p>模块代码：</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-meta">`<span class="hljs-keyword">timescale</span> 1ns / 1ns</span><br><br><span class="hljs-comment">// 串口接收模块</span><br><span class="hljs-keyword">module</span> uart_rx<br>#(<br>    <span class="hljs-keyword">parameter</span> UART_BSP = <span class="hljs-number">&#x27;d9600</span>,        <span class="hljs-comment">// 波特率</span><br>    <span class="hljs-keyword">parameter</span> CLK_FREQ = <span class="hljs-number">&#x27;d50_000_000</span>   <span class="hljs-comment">// 时钟频率</span><br>)<br>(<br>    <span class="hljs-keyword">input</span> <span class="hljs-keyword">wire</span>  sys_clk,        <span class="hljs-comment">// 系统时钟</span><br>    <span class="hljs-keyword">input</span> <span class="hljs-keyword">wire</span>  sys_rst_n,      <span class="hljs-comment">// 系统复位信号</span><br>    <span class="hljs-keyword">input</span> <span class="hljs-keyword">wire</span>  rx,             <span class="hljs-comment">// 串口接收数据</span><br><br>    <span class="hljs-keyword">output</span> <span class="hljs-keyword">reg</span> [<span class="hljs-number">7</span>:<span class="hljs-number">0</span>] po_data,  <span class="hljs-comment">// 模块输出数据</span><br>    <span class="hljs-keyword">output</span> <span class="hljs-keyword">reg</span>       po_flag   <span class="hljs-comment">// 串口接收数据完成标志</span><br>);<br><br><span class="hljs-keyword">parameter</span> BAUD_CNT__MAX = CLK_FREQ/UART_BSP; <span class="hljs-comment">// 波特率计数器最大值</span><br><br><span class="hljs-comment">// 中间变量</span><br><span class="hljs-keyword">reg</span> rx_reg_1;       <span class="hljs-comment">// 用于同步数据</span><br><span class="hljs-keyword">reg</span> rx_reg_2;       <span class="hljs-comment">// 用于缓冲数据</span><br><span class="hljs-keyword">reg</span> rx_reg_3;       <span class="hljs-comment">// 用于缓冲数据</span><br><span class="hljs-keyword">reg</span> start_flag;     <span class="hljs-comment">// 用于判断起始位</span><br><span class="hljs-keyword">reg</span> work_en;        <span class="hljs-comment">// 用于使能接收模块</span><br><span class="hljs-keyword">reg</span> [<span class="hljs-number">15</span>:<span class="hljs-number">0</span>] baud_cnt;<span class="hljs-comment">// 用于计数波特率</span><br><span class="hljs-keyword">reg</span> bit_flag;       <span class="hljs-comment">// 读取标志</span><br><span class="hljs-keyword">reg</span> [<span class="hljs-number">3</span>:<span class="hljs-number">0</span>] bit_cnt;  <span class="hljs-comment">// 读取位数计数</span><br><span class="hljs-keyword">reg</span> [<span class="hljs-number">7</span>:<span class="hljs-number">0</span>] rx_data;  <span class="hljs-comment">// 读取到的数据</span><br><span class="hljs-keyword">reg</span> rx_flag ;       <span class="hljs-comment">// 读取完成标志</span><br><br><span class="hljs-comment">// 对输入信号进行同步</span><br><span class="hljs-keyword">always</span> @(<span class="hljs-keyword">posedge</span> sys_clk <span class="hljs-keyword">or</span> <span class="hljs-keyword">negedge</span> sys_rst_n) <span class="hljs-keyword">begin</span><br>    <span class="hljs-keyword">if</span>(!sys_rst_n)<span class="hljs-keyword">begin</span><br>       rx_reg_1 &lt;= <span class="hljs-number">1&#x27;b1</span>;  <span class="hljs-comment">// 初值为1</span><br>    <span class="hljs-keyword">end</span><br>   <span class="hljs-keyword">else</span> <span class="hljs-keyword">begin</span><br>        rx_reg_1 &lt;= rx;<br>    <span class="hljs-keyword">end</span><br><span class="hljs-keyword">end</span><br><br><span class="hljs-comment">// 用于同步数据</span><br><span class="hljs-keyword">always</span> @(<span class="hljs-keyword">posedge</span> sys_clk <span class="hljs-keyword">or</span> <span class="hljs-keyword">negedge</span> sys_rst_n) <span class="hljs-keyword">begin</span><br>    <span class="hljs-keyword">if</span>(!sys_rst_n)<span class="hljs-keyword">begin</span><br>       rx_reg_2 &lt;= <span class="hljs-number">1&#x27;b1</span>;  <span class="hljs-comment">// 初值为1</span><br>    <span class="hljs-keyword">end</span><br>   <span class="hljs-keyword">else</span> <span class="hljs-keyword">begin</span><br>        rx_reg_2 &lt;= rx_reg_1;<br>    <span class="hljs-keyword">end</span><br><span class="hljs-keyword">end</span><br><br><span class="hljs-comment">// 用于同步数据</span><br><span class="hljs-keyword">always</span> @(<span class="hljs-keyword">posedge</span> sys_clk <span class="hljs-keyword">or</span> <span class="hljs-keyword">negedge</span> sys_rst_n) <span class="hljs-keyword">begin</span><br>    <span class="hljs-keyword">if</span>(!sys_rst_n)<span class="hljs-keyword">begin</span><br>       rx_reg_3 &lt;= <span class="hljs-number">1&#x27;b1</span>;  <span class="hljs-comment">// 初值为1</span><br>    <span class="hljs-keyword">end</span><br>   <span class="hljs-keyword">else</span> <span class="hljs-keyword">begin</span><br>        rx_reg_3 &lt;= rx_reg_2;<br>    <span class="hljs-keyword">end</span><br><span class="hljs-keyword">end</span><br><br><span class="hljs-comment">// 开始标志信号 start_flag</span><br><span class="hljs-keyword">always</span> @(<span class="hljs-keyword">posedge</span> sys_clk <span class="hljs-keyword">or</span> <span class="hljs-keyword">negedge</span> sys_rst_n) <span class="hljs-keyword">begin</span><br>    <span class="hljs-keyword">if</span>(!sys_rst_n)<span class="hljs-keyword">begin</span><br>       start_flag &lt;= <span class="hljs-number">1&#x27;b0</span>;  <span class="hljs-comment">// 初值为0</span><br>    <span class="hljs-keyword">end</span><br>    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>((rx_reg_3 == <span class="hljs-number">1&#x27;b1</span>) &amp;&amp; (rx_reg_2== <span class="hljs-number">1&#x27;b0</span>) &amp;&amp; (work_en == <span class="hljs-number">1&#x27;b0</span>)) <span class="hljs-keyword">begin</span><br>        start_flag &lt;= <span class="hljs-number">1&#x27;b1</span>;<br>    <span class="hljs-keyword">end</span><br>    <span class="hljs-keyword">else</span> <span class="hljs-keyword">begin</span><br>        start_flag &lt;= <span class="hljs-number">1&#x27;b0</span>;<br>    <span class="hljs-keyword">end</span><br><span class="hljs-keyword">end</span><br><br><span class="hljs-comment">// 使能信号</span><br><span class="hljs-keyword">always</span> @(<span class="hljs-keyword">posedge</span> sys_clk <span class="hljs-keyword">or</span> <span class="hljs-keyword">negedge</span> sys_rst_n) <span class="hljs-keyword">begin</span><br>    <span class="hljs-keyword">if</span>(!sys_rst_n)<span class="hljs-keyword">begin</span><br>       work_en &lt;= <span class="hljs-number">1&#x27;b0</span>;  <span class="hljs-comment">// 初值为0</span><br>    <span class="hljs-keyword">end</span><br>    <span class="hljs-comment">// 开始接收拉高</span><br>    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(start_flag == <span class="hljs-number">1&#x27;b1</span>) <span class="hljs-keyword">begin</span><br>        work_en &lt;= <span class="hljs-number">1&#x27;b1</span>;<br>    <span class="hljs-keyword">end</span><br>    <span class="hljs-comment">// 接收结束拉低(比特计数器为8，且读取标志为高)</span><br>    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>((bit_cnt == <span class="hljs-number">4&#x27;d8</span>) &amp;&amp; (bit_flag == <span class="hljs-number">1&#x27;b1</span>)) <span class="hljs-keyword">begin</span><br>        work_en &lt;= <span class="hljs-number">1&#x27;b0</span>;<br>    <span class="hljs-keyword">end</span><br>    <span class="hljs-keyword">else</span> <span class="hljs-keyword">begin</span><br>        work_en &lt;= work_en;<br>    <span class="hljs-keyword">end</span><br><span class="hljs-keyword">end</span><br><br><span class="hljs-comment">// 波特计数器</span><br><span class="hljs-keyword">always</span> @(<span class="hljs-keyword">posedge</span> sys_clk <span class="hljs-keyword">or</span> <span class="hljs-keyword">negedge</span> sys_rst_n) <span class="hljs-keyword">begin</span><br>    <span class="hljs-keyword">if</span>(!sys_rst_n)<span class="hljs-keyword">begin</span><br>       baud_cnt &lt;= <span class="hljs-number">1&#x27;b0</span>;  <span class="hljs-comment">// 初值为0</span><br>    <span class="hljs-keyword">end</span><br>    <span class="hljs-comment">// 归零条件</span><br>    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>((baud_cnt == BAUD_CNT__MAX - <span class="hljs-number">1&#x27;b1</span>) || (work_en == <span class="hljs-number">1&#x27;b0</span>) ) <span class="hljs-keyword">begin</span><br>        baud_cnt &lt;= <span class="hljs-number">16&#x27;b0</span>;<br>    <span class="hljs-keyword">end</span><br>    <span class="hljs-comment">// 波特计数器递增</span><br>    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (work_en == <span class="hljs-number">1&#x27;b1</span>) <span class="hljs-keyword">begin</span><br>        baud_cnt &lt;= baud_cnt + <span class="hljs-number">1&#x27;b1</span>;<br>    <span class="hljs-keyword">end</span><br>    <span class="hljs-keyword">else</span> <span class="hljs-keyword">begin</span><br>        baud_cnt &lt;= baud_cnt;<br>    <span class="hljs-keyword">end</span><br><span class="hljs-keyword">end</span><br><br><span class="hljs-comment">// 比特标志信号</span><br><span class="hljs-keyword">always</span> @(<span class="hljs-keyword">posedge</span> sys_clk <span class="hljs-keyword">or</span> <span class="hljs-keyword">negedge</span> sys_rst_n) <span class="hljs-keyword">begin</span><br>    <span class="hljs-keyword">if</span>(!sys_rst_n)<span class="hljs-keyword">begin</span><br>       bit_flag &lt;= <span class="hljs-number">1&#x27;b0</span>;  <span class="hljs-comment">// 初值为0</span><br>    <span class="hljs-keyword">end</span><br>    <span class="hljs-comment">// 波特计数器达到波特率的一半时，比特标志拉高</span><br>    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(baud_cnt == BAUD_CNT__MAX/<span class="hljs-number">2</span> - <span class="hljs-number">1&#x27;b1</span>) <span class="hljs-keyword">begin</span><br>        bit_flag &lt;= <span class="hljs-number">1&#x27;b1</span>;<br>    <span class="hljs-keyword">end</span><br>    <span class="hljs-keyword">else</span> <span class="hljs-keyword">begin</span><br>        bit_flag &lt;= <span class="hljs-number">1&#x27;b0</span>;<br>    <span class="hljs-keyword">end</span><br><span class="hljs-keyword">end</span><br><br><span class="hljs-comment">// 比特计数器</span><br><span class="hljs-keyword">always</span> @(<span class="hljs-keyword">posedge</span> sys_clk <span class="hljs-keyword">or</span> <span class="hljs-keyword">negedge</span> sys_rst_n) <span class="hljs-keyword">begin</span><br>    <span class="hljs-keyword">if</span>(!sys_rst_n)<span class="hljs-keyword">begin</span><br>       bit_cnt &lt;= <span class="hljs-number">4&#x27;b0</span>;  <span class="hljs-comment">// 初值为0</span><br>    <span class="hljs-keyword">end</span><br>    <span class="hljs-comment">// 归零条件</span><br>    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>((bit_cnt == <span class="hljs-number">4&#x27;d8</span>) &amp;&amp; (bit_flag == <span class="hljs-number">1&#x27;b1</span>)) <span class="hljs-keyword">begin</span><br>        bit_cnt &lt;= <span class="hljs-number">4&#x27;b0</span>;<br>    <span class="hljs-keyword">end</span><br>    <span class="hljs-comment">// 比特计数器递增</span><br>    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (bit_flag == <span class="hljs-number">1&#x27;b1</span>) <span class="hljs-keyword">begin</span><br>        bit_cnt &lt;= bit_cnt + <span class="hljs-number">1&#x27;b1</span>;<br>    <span class="hljs-keyword">end</span><br>    <span class="hljs-keyword">else</span> <span class="hljs-keyword">begin</span><br>        bit_cnt &lt;= bit_cnt;<br>    <span class="hljs-keyword">end</span><br><span class="hljs-keyword">end</span><br><br><span class="hljs-comment">// 数据拼接</span><br><span class="hljs-keyword">always</span> @(<span class="hljs-keyword">posedge</span> sys_clk <span class="hljs-keyword">or</span> <span class="hljs-keyword">negedge</span> sys_rst_n) <span class="hljs-keyword">begin</span><br>    <span class="hljs-keyword">if</span>(!sys_rst_n)<span class="hljs-keyword">begin</span><br>       rx_data &lt;= <span class="hljs-number">8&#x27;d0</span>;  <span class="hljs-comment">// 初值为0</span><br>        <span class="hljs-keyword">end</span><br>    <span class="hljs-comment">// 数据拼接(串行转并行数据)</span><br>    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>((bit_cnt &gt;= <span class="hljs-number">4&#x27;d1</span>) &amp;&amp; (bit_cnt &lt;= <span class="hljs-number">4&#x27;d8</span>) &amp;&amp; (bit_flag == <span class="hljs-number">1&#x27;b1</span>)) <span class="hljs-keyword">begin</span><br>        rx_data &lt;= &#123;rx_reg_3, rx_data[<span class="hljs-number">7</span>:<span class="hljs-number">1</span>]&#125;;<br>    <span class="hljs-keyword">end</span><br>    <span class="hljs-keyword">else</span> <span class="hljs-keyword">begin</span><br>        rx_data &lt;= rx_data;<br>    <span class="hljs-keyword">end</span><br><span class="hljs-keyword">end</span><br><br><span class="hljs-comment">// rx标志信号</span><br><span class="hljs-keyword">always</span> @(<span class="hljs-keyword">posedge</span> sys_clk <span class="hljs-keyword">or</span> <span class="hljs-keyword">negedge</span> sys_rst_n) <span class="hljs-keyword">begin</span><br>    <span class="hljs-keyword">if</span>(!sys_rst_n)<span class="hljs-keyword">begin</span><br>       rx_flag &lt;= <span class="hljs-number">1&#x27;b0</span>;  <span class="hljs-comment">// 初值为0</span><br>    <span class="hljs-keyword">end</span><br>    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>((bit_cnt == <span class="hljs-number">4&#x27;d8</span>) &amp;&amp; (bit_flag == <span class="hljs-number">1&#x27;b1</span>)) <span class="hljs-keyword">begin</span><br>        rx_flag &lt;= <span class="hljs-number">1&#x27;b1</span>;<br>    <span class="hljs-keyword">end</span>   <br>    <span class="hljs-keyword">else</span> <span class="hljs-keyword">begin</span><br>        rx_flag &lt;= <span class="hljs-number">1&#x27;b0</span>;<br>    <span class="hljs-keyword">end</span><br><span class="hljs-keyword">end</span><br><br><span class="hljs-comment">// 输出数据</span><br><span class="hljs-keyword">always</span> @(<span class="hljs-keyword">posedge</span> sys_clk <span class="hljs-keyword">or</span> <span class="hljs-keyword">negedge</span> sys_rst_n) <span class="hljs-keyword">begin</span><br>    <span class="hljs-keyword">if</span>(!sys_rst_n)<span class="hljs-keyword">begin</span><br>       po_data &lt;= <span class="hljs-number">8&#x27;d0</span>;  <span class="hljs-comment">// 初值为0</span><br>    <span class="hljs-keyword">end</span><br>    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(rx_flag == <span class="hljs-number">1&#x27;b1</span>) <span class="hljs-keyword">begin</span><br>        po_data &lt;= rx_data;<br>    <span class="hljs-keyword">end</span><br>    <span class="hljs-keyword">else</span> <span class="hljs-keyword">begin</span><br>        po_data &lt;= po_data;<br>    <span class="hljs-keyword">end</span><br><span class="hljs-keyword">end</span><br><br><span class="hljs-comment">// 输出标志信号</span><br><span class="hljs-keyword">always</span> @(<span class="hljs-keyword">posedge</span> sys_clk <span class="hljs-keyword">or</span> <span class="hljs-keyword">negedge</span> sys_rst_n) <span class="hljs-keyword">begin</span><br>    <span class="hljs-keyword">if</span>(!sys_rst_n)<span class="hljs-keyword">begin</span><br>       po_flag &lt;= <span class="hljs-number">1&#x27;b0</span>;  <span class="hljs-comment">// 初值为0</span><br>    <span class="hljs-keyword">end</span><br>    <span class="hljs-keyword">else</span> <span class="hljs-keyword">begin</span><br>        po_flag &lt;= rx_flag;<br>    <span class="hljs-keyword">end</span><br><span class="hljs-keyword">end</span><br><span class="hljs-keyword">endmodule</span><br><br></code></pre></td></tr></table></figure>
+
+<p>模块测试：</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-meta">`<span class="hljs-keyword">timescale</span> 1ns / 1ns</span><br><br><span class="hljs-keyword">module</span> tb_uart_rx();<br><span class="hljs-keyword">reg</span> sys_clk;<br><span class="hljs-keyword">reg</span> sys_rst_n;<br><span class="hljs-keyword">reg</span> rx = <span class="hljs-number">1&#x27;b1</span>;<br><br><span class="hljs-keyword">wire</span> [<span class="hljs-number">7</span>:<span class="hljs-number">0</span>] po_data;<br><span class="hljs-keyword">wire</span> po_flag;<br><br><span class="hljs-keyword">initial</span> <span class="hljs-keyword">begin</span><br>    sys_clk = <span class="hljs-number">1&#x27;b0</span>;<br>    sys_rst_n = <span class="hljs-number">1&#x27;b0</span>;<br>    #<span class="hljs-number">20</span><br>    sys_rst_n = <span class="hljs-number">1&#x27;b1</span>;<br><span class="hljs-keyword">end</span><br><br><span class="hljs-comment">// 时钟信号</span><br><span class="hljs-keyword">always</span> #<span class="hljs-number">10</span> sys_clk = ~sys_clk;<br><br><span class="hljs-comment">// 测试</span><br><span class="hljs-keyword">initial</span> <span class="hljs-keyword">begin</span><br>    #<span class="hljs-number">200</span><br>    rx_bit(<span class="hljs-number">8&#x27;d0</span>);<br>    rx_bit(<span class="hljs-number">8&#x27;d1</span>);<br>    rx_bit(<span class="hljs-number">8&#x27;d2</span>);<br>    rx_bit(<span class="hljs-number">8&#x27;d3</span>);<br>    rx_bit(<span class="hljs-number">8&#x27;d4</span>);<br>    rx_bit(<span class="hljs-number">8&#x27;d5</span>);<br>    rx_bit(<span class="hljs-number">8&#x27;d6</span>);<br>    rx_bit(<span class="hljs-number">8&#x27;d7</span>);<br><span class="hljs-keyword">end</span><br><br><span class="hljs-comment">// 引出输出</span><br><br><br><br><span class="hljs-comment">// 模拟串口数据的任务</span><br><span class="hljs-keyword">task</span> rx_bit (<br>    <span class="hljs-keyword">input</span> [<span class="hljs-number">7</span>:<span class="hljs-number">0</span>] data<br>);<br><br><span class="hljs-keyword">integer</span> i;<br><span class="hljs-keyword">for</span>( i= <span class="hljs-number">0</span> ; i&lt;<span class="hljs-number">10</span> ; i=i+<span class="hljs-number">1</span> ) <span class="hljs-keyword">begin</span><br>    <span class="hljs-keyword">case</span> (i)<br>        <span class="hljs-number">0</span>: rx &lt;= <span class="hljs-number">1&#x27;b0</span>;<br>        <span class="hljs-number">1</span>: rx &lt;= data[<span class="hljs-number">0</span>];<br>        <span class="hljs-number">2</span>: rx &lt;= data[<span class="hljs-number">1</span>];<br>        <span class="hljs-number">3</span>: rx &lt;= data[<span class="hljs-number">2</span>];<br>        <span class="hljs-number">4</span>: rx &lt;= data[<span class="hljs-number">3</span>];<br>        <span class="hljs-number">5</span>: rx &lt;= data[<span class="hljs-number">4</span>];<br>        <span class="hljs-number">6</span>: rx &lt;= data[<span class="hljs-number">5</span>];<br>        <span class="hljs-number">7</span>: rx &lt;= data[<span class="hljs-number">6</span>];<br>        <span class="hljs-number">8</span>: rx &lt;= data[<span class="hljs-number">7</span>];<br>        <span class="hljs-number">9</span>: rx &lt;= <span class="hljs-number">1&#x27;b1</span>;<br>    <span class="hljs-keyword">endcase</span><br>    <span class="hljs-variable">#(5208*20)</span>;<br>    <span class="hljs-keyword">end</span><br><span class="hljs-keyword">endtask</span><br><br>uart_rx<br>#(<br>    <span class="hljs-variable">.UART_BSP</span>(<span class="hljs-number">9600</span>),   <span class="hljs-comment">// 波特率</span><br>    <span class="hljs-variable">.CLK_FREQ</span>(<span class="hljs-number">50_000_000</span>)   <span class="hljs-comment">// 时钟频率</span><br>)<br>uart_rx_inst<br>(<br>    <span class="hljs-variable">.sys_clk</span>            (sys_clk),        <span class="hljs-comment">// 系统时钟</span><br>    <span class="hljs-variable">.sys_rst_n</span>          (sys_rst_n),      <span class="hljs-comment">// 系统复位信号</span><br>    <span class="hljs-variable">.rx</span>                 (rx),             <span class="hljs-comment">// 串口接收数据</span><br><br>    <span class="hljs-variable">.po_data</span>            (po_data),  <span class="hljs-comment">// 模块输出数据</span><br>    <span class="hljs-variable">.po_flag</span>            (po_flag)   <span class="hljs-comment">// 串口接收数据完成标志</span><br>);<br><br><span class="hljs-keyword">endmodule</span><br><br></code></pre></td></tr></table></figure>
+
+<h3 id="3-2-串口发送模块"><a href="#3-2-串口发送模块" class="headerlink" title="3.2 串口发送模块"></a>3.2 串口发送模块</h3><p>模块代码：</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-meta">`<span class="hljs-keyword">timescale</span> 1ns / 1ns</span><br><span class="hljs-keyword">module</span> uart_tx<br>#(<br>    <span class="hljs-keyword">parameter</span> UART_BSP = <span class="hljs-number">&#x27;d9600</span>,        <span class="hljs-comment">// 波特率</span><br>    <span class="hljs-keyword">parameter</span> CLK_FREQ = <span class="hljs-number">&#x27;d50_000_000</span>   <span class="hljs-comment">// 时钟频率</span><br>)<br>(<br>    <span class="hljs-keyword">input</span> <span class="hljs-keyword">wire</span>          sys_clk,        <span class="hljs-comment">// 系统时钟</span><br>    <span class="hljs-keyword">input</span> <span class="hljs-keyword">wire</span>          sys_rst_n,      <span class="hljs-comment">// 系统复位信号</span><br>    <span class="hljs-keyword">input</span> <span class="hljs-keyword">wire</span>   [<span class="hljs-number">7</span>:<span class="hljs-number">0</span>]  pi_data,        <span class="hljs-comment">// 模块输入数据</span><br>    <span class="hljs-keyword">input</span> <span class="hljs-keyword">wire</span>          pi_flag,        <span class="hljs-comment">// 串口输入数据标志</span><br><br>    <span class="hljs-keyword">output</span> <span class="hljs-keyword">reg</span>  tx             <span class="hljs-comment">// 数据输出</span><br>);<br><br><span class="hljs-keyword">parameter</span> BAUD_CNT__MAX = CLK_FREQ/UART_BSP; <span class="hljs-comment">// 波特率计数器最大值</span><br><br><span class="hljs-keyword">reg</span>         work_en;  <span class="hljs-comment">// 工作使能</span><br><span class="hljs-keyword">reg</span> [<span class="hljs-number">15</span>:<span class="hljs-number">0</span>]  baud_cnt; <span class="hljs-comment">// 波特计数器</span><br><span class="hljs-keyword">reg</span>         bit_flag; <span class="hljs-comment">// 数据标志</span><br><span class="hljs-keyword">reg</span> [<span class="hljs-number">3</span>:<span class="hljs-number">0</span>]   bit_cnt;  <span class="hljs-comment">// 比特计数器</span><br><br><span class="hljs-comment">// 使能信号</span><br><span class="hljs-keyword">always</span> @(<span class="hljs-keyword">posedge</span> sys_clk <span class="hljs-keyword">or</span> <span class="hljs-keyword">negedge</span> sys_rst_n) <span class="hljs-keyword">begin</span><br>    <span class="hljs-keyword">if</span>(!sys_rst_n) <span class="hljs-keyword">begin</span><br>        work_en &lt;= <span class="hljs-number">1&#x27;b0</span>;<br>    <span class="hljs-keyword">end</span><br>    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(pi_flag == <span class="hljs-number">1&#x27;b1</span>) <span class="hljs-keyword">begin</span><br>        work_en &lt;= <span class="hljs-number">1&#x27;b1</span>;<br>    <span class="hljs-keyword">end</span><br>    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>((bit_cnt == <span class="hljs-number">4&#x27;d9</span>) &amp;&amp; (bit_flag == <span class="hljs-number">1&#x27;b1</span>)) <span class="hljs-keyword">begin</span><br>        work_en &lt;= <span class="hljs-number">1&#x27;b0</span>;<br>    <span class="hljs-keyword">end</span><br>    <span class="hljs-keyword">else</span> <br>        work_en &lt;= work_en;<br><span class="hljs-keyword">end</span><br><br><span class="hljs-comment">// 波特计数器</span><br><span class="hljs-keyword">always</span> @(<span class="hljs-keyword">posedge</span> sys_clk <span class="hljs-keyword">or</span> <span class="hljs-keyword">negedge</span> sys_rst_n) <span class="hljs-keyword">begin</span><br>    <span class="hljs-keyword">if</span>(!sys_rst_n) <span class="hljs-keyword">begin</span><br>        baud_cnt &lt;= <span class="hljs-number">16&#x27;d0</span>;<br>    <span class="hljs-keyword">end</span><br>    <span class="hljs-comment">// 归零条件</span><br>    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>((work_en == <span class="hljs-number">1&#x27;b0</span>) || (baud_cnt == BAUD_CNT__MAX - <span class="hljs-number">1&#x27;b1</span>)) <span class="hljs-keyword">begin</span><br>        baud_cnt &lt;= <span class="hljs-number">16&#x27;d0</span>;<br>    <span class="hljs-keyword">end</span><br>    <span class="hljs-comment">// 计数条件</span><br>    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(work_en == <span class="hljs-number">1&#x27;b1</span>) <span class="hljs-keyword">begin</span><br>        baud_cnt &lt;= baud_cnt + <span class="hljs-number">1&#x27;b1</span>;<br>    <span class="hljs-keyword">end</span><br>    <span class="hljs-keyword">else</span> <br>        baud_cnt &lt;= baud_cnt;<br><span class="hljs-keyword">end</span><br><br><span class="hljs-comment">// 比特标志信号</span><br><span class="hljs-keyword">always</span> @(<span class="hljs-keyword">posedge</span> sys_clk <span class="hljs-keyword">or</span> <span class="hljs-keyword">negedge</span> sys_rst_n) <span class="hljs-keyword">begin</span><br>    <span class="hljs-keyword">if</span>(!sys_rst_n) <span class="hljs-keyword">begin</span><br>        bit_flag &lt;= <span class="hljs-number">1&#x27;b0</span>;<br>    <span class="hljs-keyword">end</span><br>    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(baud_cnt == <span class="hljs-number">16&#x27;b1</span>) <span class="hljs-keyword">begin</span><br>        bit_flag &lt;= <span class="hljs-number">1&#x27;b1</span>;<br>    <span class="hljs-keyword">end</span><br>    <span class="hljs-keyword">else</span> <span class="hljs-keyword">begin</span><br>        bit_flag &lt;= <span class="hljs-number">1&#x27;b0</span>;<br>    <span class="hljs-keyword">end</span><br><span class="hljs-keyword">end</span><br><br><span class="hljs-comment">// 比特计数器</span><br><span class="hljs-keyword">always</span> @(<span class="hljs-keyword">posedge</span> sys_clk <span class="hljs-keyword">or</span> <span class="hljs-keyword">negedge</span> sys_rst_n) <span class="hljs-keyword">begin</span><br>    <span class="hljs-keyword">if</span>(!sys_rst_n) <span class="hljs-keyword">begin</span><br>        bit_cnt &lt;= <span class="hljs-number">4&#x27;d0</span>;<br>    <span class="hljs-keyword">end</span><br>    <span class="hljs-comment">// 归零条件</span><br>    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>((bit_flag == <span class="hljs-number">1&#x27;b1</span>) &amp;&amp; (bit_cnt == <span class="hljs-number">4&#x27;d9</span>)) <span class="hljs-keyword">begin</span><br>        bit_cnt &lt;= <span class="hljs-number">4&#x27;d0</span>;<br>    <span class="hljs-keyword">end</span><br>    <span class="hljs-comment">// 计数条件</span><br>    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>((bit_flag == <span class="hljs-number">1&#x27;b1</span>) &amp;&amp; (work_en == <span class="hljs-number">1&#x27;b1</span>)) <span class="hljs-keyword">begin</span><br>        bit_cnt &lt;= bit_cnt + <span class="hljs-number">1&#x27;b1</span>;<br>    <span class="hljs-keyword">end</span><br>    <span class="hljs-keyword">else</span> <span class="hljs-keyword">begin</span><br>        bit_cnt &lt;= bit_cnt;<br>    <span class="hljs-keyword">end</span><br><br><span class="hljs-keyword">end</span><br><br><span class="hljs-comment">// 输出信号</span><br><span class="hljs-keyword">always</span> @(<span class="hljs-keyword">posedge</span> sys_clk <span class="hljs-keyword">or</span> <span class="hljs-keyword">negedge</span> sys_rst_n) <span class="hljs-keyword">begin</span><br>    <span class="hljs-keyword">if</span>(!sys_rst_n) <span class="hljs-keyword">begin</span><br>        tx &lt;= <span class="hljs-number">1&#x27;b1</span>; <span class="hljs-comment">//空闲为高</span><br>    <span class="hljs-keyword">end</span><br>    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(bit_flag == <span class="hljs-number">1&#x27;b1</span>)<span class="hljs-keyword">begin</span><br>        <span class="hljs-keyword">case</span>(bit_cnt)<br>            <span class="hljs-number">4&#x27;d0</span>: tx &lt;= <span class="hljs-number">1&#x27;b0</span>; <span class="hljs-comment">//起始位为低</span><br>            <span class="hljs-number">4&#x27;d1</span>: tx &lt;= pi_data[<span class="hljs-number">0</span>];<br>            <span class="hljs-number">4&#x27;d2</span>: tx &lt;= pi_data[<span class="hljs-number">1</span>];<br>            <span class="hljs-number">4&#x27;d3</span>: tx &lt;= pi_data[<span class="hljs-number">2</span>];<br>            <span class="hljs-number">4&#x27;d4</span>: tx &lt;= pi_data[<span class="hljs-number">3</span>];<br>            <span class="hljs-number">4&#x27;d5</span>: tx &lt;= pi_data[<span class="hljs-number">4</span>];<br>            <span class="hljs-number">4&#x27;d6</span>: tx &lt;= pi_data[<span class="hljs-number">5</span>];<br>            <span class="hljs-number">4&#x27;d7</span>: tx &lt;= pi_data[<span class="hljs-number">6</span>];<br>            <span class="hljs-number">4&#x27;d8</span>: tx &lt;= pi_data[<span class="hljs-number">7</span>];<br>            <span class="hljs-number">4&#x27;d9</span>: tx &lt;= <span class="hljs-number">1&#x27;b1</span>; <span class="hljs-comment">//停止位为高</span><br>            <span class="hljs-keyword">default</span>: tx &lt;= <span class="hljs-number">1&#x27;b1</span>;<br>        <span class="hljs-keyword">endcase</span><br>    <span class="hljs-keyword">end</span><br><span class="hljs-keyword">end</span><br><br><span class="hljs-keyword">endmodule</span><br><br><br></code></pre></td></tr></table></figure>
+
+<p>仿真代码</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-meta">`<span class="hljs-keyword">timescale</span> 1ns / 1ns</span><br><br><span class="hljs-keyword">module</span> tb_uart_tx();<br><br><span class="hljs-keyword">reg</span> sys_clk;<br><span class="hljs-keyword">reg</span> sys_rst_n;<br><span class="hljs-keyword">reg</span> [<span class="hljs-number">7</span>:<span class="hljs-number">0</span>] pi_data;<br><span class="hljs-keyword">reg</span> pi_flag;<br><br><span class="hljs-keyword">wire</span> tx;<br><br><span class="hljs-comment">// 系统时钟初始化</span><br><span class="hljs-keyword">initial</span> <span class="hljs-keyword">begin</span><br>    sys_clk = <span class="hljs-number">1&#x27;b0</span>;<br>    sys_rst_n = <span class="hljs-number">1&#x27;b0</span>;<br>    #<span class="hljs-number">20</span>;<br>    sys_rst_n = <span class="hljs-number">1&#x27;b1</span>;<br><span class="hljs-keyword">end</span><br><br><span class="hljs-comment">// 生成系统时钟</span><br><span class="hljs-keyword">always</span> #<span class="hljs-number">10</span> sys_clk = ~sys_clk;<br><br><span class="hljs-comment">// 测试序列</span><br><span class="hljs-keyword">initial</span> <span class="hljs-keyword">begin</span><br>    pi_data &lt;= <span class="hljs-number">8&#x27;d0</span>;<br>    pi_flag &lt;= <span class="hljs-number">1&#x27;b0</span>;<br>    #<span class="hljs-number">200</span>;<br>    <span class="hljs-comment">// 0</span><br>    pi_data &lt;= <span class="hljs-number">8&#x27;d0</span>;<br>    pi_flag &lt;= <span class="hljs-number">1&#x27;b1</span>;<br>    #<span class="hljs-number">20</span>;<br>    pi_flag &lt;= <span class="hljs-number">1&#x27;b0</span>;<br>    <span class="hljs-variable">#(5208*10*20)</span>;<br>    <span class="hljs-comment">// 1</span><br>    pi_data &lt;= <span class="hljs-number">8&#x27;d1</span>;<br>    pi_flag &lt;= <span class="hljs-number">1&#x27;b1</span>;<br>    #<span class="hljs-number">20</span>;<br>    pi_flag &lt;= <span class="hljs-number">1&#x27;b0</span>;<br>    <span class="hljs-variable">#(5208*10*20)</span>;<br>    <span class="hljs-comment">// 2</span><br>    pi_data &lt;= <span class="hljs-number">8&#x27;d2</span>;<br>    pi_flag &lt;= <span class="hljs-number">1&#x27;b1</span>;<br>    #<span class="hljs-number">20</span>;<br>    pi_flag &lt;= <span class="hljs-number">1&#x27;b0</span>;<br>    <span class="hljs-variable">#(5208*10*20)</span>;<br>    <span class="hljs-comment">// 3</span><br>    pi_data &lt;= <span class="hljs-number">8&#x27;d3</span>;<br>    pi_flag &lt;= <span class="hljs-number">1&#x27;b1</span>;<br>    #<span class="hljs-number">20</span>;<br>    pi_flag &lt;= <span class="hljs-number">1&#x27;b0</span>;<br>    <span class="hljs-variable">#(5208*10*20)</span>;<br>    <span class="hljs-comment">// 4</span><br>    pi_data &lt;= <span class="hljs-number">8&#x27;d4</span>;<br>    pi_flag &lt;= <span class="hljs-number">1&#x27;b1</span>;<br>    #<span class="hljs-number">20</span>;<br>    pi_flag &lt;= <span class="hljs-number">1&#x27;b0</span>;<br>    <span class="hljs-variable">#(5208*10*20)</span>;<br>    <span class="hljs-comment">// 5</span><br>    pi_data &lt;= <span class="hljs-number">8&#x27;d5</span>;<br>    pi_flag &lt;= <span class="hljs-number">1&#x27;b1</span>;<br>    #<span class="hljs-number">20</span>;<br>    pi_flag &lt;= <span class="hljs-number">1&#x27;b0</span>;<br>    <span class="hljs-variable">#(5208*10*20)</span>;<br>    <span class="hljs-comment">// 6</span><br>    pi_data &lt;= <span class="hljs-number">8&#x27;d6</span>;<br>    pi_flag &lt;= <span class="hljs-number">1&#x27;b1</span>;<br>    #<span class="hljs-number">20</span>;<br>    pi_flag &lt;= <span class="hljs-number">1&#x27;b0</span>;<br>    <span class="hljs-variable">#(5208*10*20)</span>;<br>    <span class="hljs-comment">// 7</span><br>    pi_data &lt;= <span class="hljs-number">8&#x27;d7</span>;<br>    pi_flag &lt;= <span class="hljs-number">1&#x27;b1</span>;<br>    #<span class="hljs-number">20</span>;<br>    pi_flag &lt;= <span class="hljs-number">1&#x27;b0</span>;<br><span class="hljs-keyword">end</span><br><br><span class="hljs-comment">// 实例化UART发送模块</span><br>uart_tx<br>#(<br>    <span class="hljs-variable">.UART_BSP</span>(<span class="hljs-number">9600</span>),   <span class="hljs-comment">// 波特率</span><br>    <span class="hljs-variable">.CLK_FREQ</span>(<span class="hljs-number">50_000_000</span>)   <span class="hljs-comment">// 时钟频率</span><br>)<br>uart_tx_inst<br>(<br>    <span class="hljs-variable">.sys_clk</span>            (sys_clk),        <br>    <span class="hljs-variable">.sys_rst_n</span>          (sys_rst_n),      <br>    <span class="hljs-variable">.pi_data</span>            (pi_data),  <br>    <span class="hljs-variable">.pi_flag</span>            (pi_flag),<br><br>    <span class="hljs-variable">.tx</span>                 (tx)<br>);<br><span class="hljs-keyword">endmodule</span><br><br></code></pre></td></tr></table></figure>
+
+<h3 id="3-3-串口接收缓冲"><a href="#3-3-串口接收缓冲" class="headerlink" title="3.3 串口接收缓冲"></a>3.3 串口接收缓冲</h3><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-meta">`<span class="hljs-keyword">timescale</span> 1ns / 1ns</span><br><br><span class="hljs-comment">// 串口输入 + 缓冲</span><br><span class="hljs-keyword">module</span> uart_fifo_rx<br>#(<br>    <span class="hljs-keyword">parameter</span> UART_BSP = <span class="hljs-number">&#x27;d9600</span>,        <span class="hljs-comment">// 波特率</span><br>    <span class="hljs-keyword">parameter</span> CLK_FREQ = <span class="hljs-number">&#x27;d50_000_000</span>   <span class="hljs-comment">// 时钟频率</span><br>)<br>(<br>    <span class="hljs-keyword">input</span> <span class="hljs-keyword">wire</span> sys_clk,<br>    <span class="hljs-keyword">input</span> <span class="hljs-keyword">wire</span> sys_rst_n,<br>    <span class="hljs-keyword">input</span> <span class="hljs-keyword">wire</span> rx,         <span class="hljs-comment">// 串口接收数据</span><br>    <span class="hljs-keyword">input</span> <span class="hljs-keyword">wire</span> rd_en,      <span class="hljs-comment">// 串口输入缓冲区读取数据使能</span><br><br>    <span class="hljs-keyword">output</span> <span class="hljs-keyword">wire</span> [<span class="hljs-number">7</span>:<span class="hljs-number">0</span>] data_out, <span class="hljs-comment">// 串口输入缓冲区输出数据</span><br>    <span class="hljs-keyword">output</span> <span class="hljs-keyword">wire</span> empty      <span class="hljs-comment">// 串口输入缓冲区空标志</span><br>    <span class="hljs-comment">//output wire full        // 串口输入缓冲区满标志</span><br>);<br><br><span class="hljs-keyword">wire</span> [<span class="hljs-number">7</span>:<span class="hljs-number">0</span>] data_in;<br><span class="hljs-keyword">wire</span> data_in_flag;<br><br><span class="hljs-comment">// 实例化UART接收模块</span><br>uart_rx<br>#(<br>    <span class="hljs-variable">.UART_BSP</span>(UART_BSP),   <span class="hljs-comment">// 波特率</span><br>    <span class="hljs-variable">.CLK_FREQ</span>(CLK_FREQ)   <span class="hljs-comment">// 时钟频率</span><br>)<br>uart_rx<br>(<br>    <span class="hljs-variable">.sys_clk</span>            (sys_clk),        <span class="hljs-comment">// 系统时钟</span><br>    <span class="hljs-variable">.sys_rst_n</span>          (sys_rst_n),      <span class="hljs-comment">// 系统复位信号</span><br>    <span class="hljs-variable">.rx</span>                 (rx),             <span class="hljs-comment">// 串口接收数据</span><br><br>    <span class="hljs-variable">.po_data</span>            (data_in),  <span class="hljs-comment">// 模块输出数据</span><br>    <span class="hljs-variable">.po_flag</span>            (data_in_flag)   <span class="hljs-comment">// 串口接收数据完成标志</span><br>);<br><br><br><span class="hljs-comment">// 实例化FIFO</span><br>dcfifo_uart_1024x8 dcfifo_uart_1024x8_rx (<br>  <span class="hljs-variable">.rst</span>(~sys_rst_n),        <span class="hljs-comment">// input wire rst</span><br>  <span class="hljs-variable">.wr_clk</span>(sys_clk),  <span class="hljs-comment">// input wire wr_clk</span><br>  <span class="hljs-variable">.rd_clk</span>(sys_clk),  <span class="hljs-comment">// input wire rd_clk</span><br>  <span class="hljs-variable">.din</span>(data_in),        <span class="hljs-comment">// input wire [7 : 0] din</span><br>  <span class="hljs-variable">.wr_en</span>(data_in_flag),    <span class="hljs-comment">// input wire wr_en</span><br>  <span class="hljs-variable">.rd_en</span>(rd_en),    <span class="hljs-comment">// input wire rd_en</span><br><br>  <span class="hljs-variable">.dout</span>(data_out),      <span class="hljs-comment">// output wire [7 : 0] dout</span><br>  <span class="hljs-variable">.full</span>(),      <span class="hljs-comment">// output wire full</span><br>  <span class="hljs-variable">.empty</span>(empty)    <span class="hljs-comment">// output wire empty</span><br>);<br><br><span class="hljs-keyword">endmodule</span><br><br><br></code></pre></td></tr></table></figure>
+
+<h3 id="3-3-串口发送缓冲"><a href="#3-3-串口发送缓冲" class="headerlink" title="3.3 串口发送缓冲"></a>3.3 串口发送缓冲</h3><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-meta">`<span class="hljs-keyword">timescale</span> 1ns / 1ns</span><br><br><span class="hljs-comment">// 串口输出 + 缓冲</span><br><br><span class="hljs-keyword">module</span> uart_fifo_tx<br>#(<br>    <span class="hljs-keyword">parameter</span> UART_BSP = <span class="hljs-number">&#x27;d9600</span>,        <span class="hljs-comment">// 波特率</span><br>    <span class="hljs-keyword">parameter</span> CLK_FREQ = <span class="hljs-number">&#x27;d50_000_000</span>   <span class="hljs-comment">// 时钟频率</span><br>)<br>(<br>    <span class="hljs-keyword">input</span> <span class="hljs-keyword">wire</span> sys_clk,<br>    <span class="hljs-keyword">input</span> <span class="hljs-keyword">wire</span> sys_rst_n,<br>    <span class="hljs-keyword">input</span> <span class="hljs-keyword">wire</span> [<span class="hljs-number">7</span>:<span class="hljs-number">0</span>] data_in, <span class="hljs-comment">// 串口输出缓冲区输入数据</span><br>    <span class="hljs-keyword">input</span> <span class="hljs-keyword">wire</span> wr_en,          <span class="hljs-comment">// 串口输出缓冲区输入数据标志(写入使能)</span><br><br>    <span class="hljs-comment">//output wire empty,          // 串口输出缓冲区空标志</span><br>    <span class="hljs-comment">//output wire full,            // 串口输出缓冲区满标志</span><br>    <span class="hljs-keyword">output</span> <span class="hljs-keyword">wire</span> tx              <span class="hljs-comment">// 串口发送数据</span><br>);<br><br><span class="hljs-keyword">wire</span> [<span class="hljs-number">7</span>:<span class="hljs-number">0</span>] data_out;  <span class="hljs-comment">// 串口输出数据</span><br><span class="hljs-keyword">wire</span> rd_en;<br><span class="hljs-keyword">wire</span> empty;<br><br><span class="hljs-comment">// 缓冲区非空就使能缓冲区数据读出,并且和串口发送模块的写入使能相连</span><br><span class="hljs-keyword">assign</span> rd_en =!empty;<br><br><span class="hljs-comment">// 实例化UART发送模块</span><br>uart_tx<br>#(<br>    <span class="hljs-variable">.UART_BSP</span>(UART_BSP),   <span class="hljs-comment">// 波特率</span><br>    <span class="hljs-variable">.CLK_FREQ</span>(CLK_FREQ)   <span class="hljs-comment">// 时钟频率</span><br>)<br>uart_tx<br>(<br>    <span class="hljs-variable">.sys_clk</span>            (sys_clk),        <br>    <span class="hljs-variable">.sys_rst_n</span>          (sys_rst_n),      <br>    <span class="hljs-variable">.pi_data</span>            (data_out),  <br>    <span class="hljs-variable">.pi_flag</span>            (wr_en),<br><br>    <span class="hljs-variable">.tx</span>                 (tx)<br>);<br><br><span class="hljs-comment">// 实例化UART发送缓冲</span><br>dcfifo_uart_1024x8 dcfifo_uart_1024x8_tx (<br>  <span class="hljs-variable">.rst</span>(~sys_rst_n),        <span class="hljs-comment">// input wire rst</span><br>  <span class="hljs-variable">.wr_clk</span>(sys_clk),  <span class="hljs-comment">// input wire wr_clk</span><br>  <span class="hljs-variable">.rd_clk</span>(sys_clk),  <span class="hljs-comment">// input wire rd_clk</span><br>  <span class="hljs-variable">.din</span>(data_in),        <span class="hljs-comment">// input wire [7 : 0] din</span><br>  <span class="hljs-variable">.wr_en</span>(wr_en),    <span class="hljs-comment">// input wire wr_en</span><br>  <span class="hljs-variable">.rd_en</span>(rd_en),    <span class="hljs-comment">// input wire rd_en</span><br><br>  <span class="hljs-variable">.dout</span>(data_out),      <span class="hljs-comment">// output wire [7 : 0] dout</span><br>  <span class="hljs-variable">.full</span>(),      <span class="hljs-comment">// output wire full</span><br>  <span class="hljs-variable">.empty</span>(empty)    <span class="hljs-comment">// output wire empty</span><br>);<br><br><span class="hljs-keyword">endmodule</span><br><br></code></pre></td></tr></table></figure>
+
+<h3 id="3-3-串口顶层模块"><a href="#3-3-串口顶层模块" class="headerlink" title="3.3 串口顶层模块"></a>3.3 串口顶层模块</h3><p>模块代码：</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-meta">`<span class="hljs-keyword">timescale</span> 1ns / 1ns</span><br><br><span class="hljs-keyword">module</span> uart_fifo_demo(<br>    <span class="hljs-keyword">input</span> <span class="hljs-keyword">wire</span> sys_clk,<br>    <span class="hljs-keyword">input</span> <span class="hljs-keyword">wire</span> sys_rst_n,<br>    <span class="hljs-keyword">input</span> <span class="hljs-keyword">wire</span> rx,<br><br>    <span class="hljs-keyword">output</span> <span class="hljs-keyword">wire</span> tx<br>);<br><br><span class="hljs-keyword">parameter</span> UART_BSP = <span class="hljs-number">115200</span> ; <span class="hljs-comment">// 波特率</span><br><span class="hljs-keyword">parameter</span> SYS_CLK_FREQ = <span class="hljs-number">50_000_000</span> ; <span class="hljs-comment">// 系统时钟频率</span><br><br><span class="hljs-keyword">wire</span> [<span class="hljs-number">7</span>:<span class="hljs-number">0</span>] data;<br><br><span class="hljs-keyword">wire</span> rx_empty;<br><span class="hljs-keyword">wire</span> rx_rd_en;  <br><span class="hljs-keyword">wire</span> tx_wr_en;<br><br><span class="hljs-comment">// 接收缓冲区读取使能</span><br><span class="hljs-keyword">assign</span> rx_rd_en = !rx_empty;<br><br><span class="hljs-comment">// 发送缓冲区写入使能</span><br><span class="hljs-keyword">assign</span> tx_wr_en = !rx_empty;<br><br><br><br><span class="hljs-comment">// 实例化UART接收模块</span><br>uart_fifo_rx<br>#(<br>    <span class="hljs-variable">.UART_BSP</span>(UART_BSP),        <span class="hljs-comment">// 波特率</span><br>    <span class="hljs-variable">.CLK_FREQ</span>(SYS_CLK_FREQ)   <span class="hljs-comment">// 时钟频率</span><br>)<br>uart_fifo_rx<br>(<br>    <span class="hljs-variable">.sys_clk</span>(sys_clk),<br>    <span class="hljs-variable">.sys_rst_n</span>(sys_rst_n),<br>    <span class="hljs-variable">.rx</span>(rx),         <span class="hljs-comment">// 串口接收数据</span><br>    <span class="hljs-variable">.rd_en</span>(rx_rd_en),      <span class="hljs-comment">// 串口输入缓冲区读取数据使能</span><br><br>    <span class="hljs-variable">.data_out</span>(data), <span class="hljs-comment">// 串口输入缓冲区输出数据</span><br>    <span class="hljs-variable">.empty</span>(rx_empty)   <span class="hljs-comment">// 串口输入缓冲区空标志</span><br>    <span class="hljs-comment">//.full()        // 串口输入缓冲区满标志</span><br>);<br><br><br><span class="hljs-comment">// 实例化UART发送模块</span><br>uart_fifo_tx<br>#(<br>    <span class="hljs-variable">.UART_BSP</span>(UART_BSP),        <span class="hljs-comment">// 波特率</span><br>    <span class="hljs-variable">.CLK_FREQ</span>(SYS_CLK_FREQ)   <span class="hljs-comment">// 时钟频率</span><br>)<br>uart_fifo_tx<br>(<br>    <span class="hljs-variable">.sys_clk</span>(sys_clk),<br>    <span class="hljs-variable">.sys_rst_n</span>(sys_rst_n),<br>    <span class="hljs-variable">.data_in</span>(data),         <span class="hljs-comment">// 串口输出缓冲区输入数据</span><br>    <span class="hljs-variable">.wr_en</span>(tx_wr_en),           <span class="hljs-comment">// 串口输出缓冲区输入数据标志(写入使能)</span><br><br>    <span class="hljs-comment">//.empty(),           // 串口输出缓冲区空标志</span><br>    <span class="hljs-comment">//.full(),            // 串口输出缓冲区满标志</span><br>    <span class="hljs-variable">.tx</span>(tx)               <span class="hljs-comment">// 串口发送数据</span><br>);<br><br><br><br><span class="hljs-keyword">endmodule</span><br><br></code></pre></td></tr></table></figure>
+<p>仿真代码：</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-meta">`<span class="hljs-keyword">timescale</span> 1ns / 1ns</span><br><br><span class="hljs-comment">// 串口模块测试，模拟串口数据发送，波特率9600</span><br><br><span class="hljs-keyword">module</span> tb_uart_fifo_demo();<br><br><span class="hljs-keyword">reg</span> sys_clk;<br><span class="hljs-keyword">reg</span> sys_rst_n;<br><span class="hljs-keyword">reg</span> rx;<br><span class="hljs-keyword">wire</span> tx;<br><span class="hljs-comment">// 系统时钟初始化</span><br><span class="hljs-keyword">initial</span> <span class="hljs-keyword">begin</span><br>    sys_clk = <span class="hljs-number">1&#x27;b0</span>;<br>    sys_rst_n = <span class="hljs-number">1&#x27;b0</span>;<br>    rx = <span class="hljs-number">1&#x27;b1</span>;<br>    #<span class="hljs-number">20</span>;<br>    sys_rst_n = <span class="hljs-number">1&#x27;b1</span>;<br><span class="hljs-keyword">end</span><br><br><span class="hljs-comment">// 生成系统时钟</span><br><span class="hljs-keyword">always</span> #<span class="hljs-number">10</span> sys_clk = ~sys_clk;<br><br><span class="hljs-keyword">initial</span> <span class="hljs-keyword">begin</span><br>    #<span class="hljs-number">200</span>;<br>    rx_byte();<br><span class="hljs-keyword">end</span><br><br><br><span class="hljs-comment">// 字节发送任务</span><br><span class="hljs-keyword">task</span> rx_byte();<br><span class="hljs-keyword">integer</span> j;<br><span class="hljs-keyword">for</span>(j =<span class="hljs-number">0</span>;j&lt;<span class="hljs-number">8</span>;j=j+<span class="hljs-number">1</span>) <span class="hljs-keyword">begin</span><br>    rx_bit(j);<br><span class="hljs-keyword">end</span><br><span class="hljs-keyword">endtask</span><br><br><span class="hljs-comment">// 模拟串口数据的任务</span><br><span class="hljs-keyword">task</span> rx_bit (<br>    <span class="hljs-keyword">input</span> [<span class="hljs-number">7</span>:<span class="hljs-number">0</span>] data<br>);<br><br><span class="hljs-keyword">integer</span> i;<br><span class="hljs-keyword">for</span>( i= <span class="hljs-number">0</span> ; i&lt;<span class="hljs-number">10</span> ; i=i+<span class="hljs-number">1</span> ) <span class="hljs-keyword">begin</span><br>    <span class="hljs-keyword">case</span> (i)<br>        <span class="hljs-number">0</span>: rx &lt;= <span class="hljs-number">1&#x27;b0</span>;<br>        <span class="hljs-number">1</span>: rx &lt;= data[<span class="hljs-number">0</span>];<br>        <span class="hljs-number">2</span>: rx &lt;= data[<span class="hljs-number">1</span>];<br>        <span class="hljs-number">3</span>: rx &lt;= data[<span class="hljs-number">2</span>];<br>        <span class="hljs-number">4</span>: rx &lt;= data[<span class="hljs-number">3</span>];<br>        <span class="hljs-number">5</span>: rx &lt;= data[<span class="hljs-number">4</span>];<br>        <span class="hljs-number">6</span>: rx &lt;= data[<span class="hljs-number">5</span>];<br>        <span class="hljs-number">7</span>: rx &lt;= data[<span class="hljs-number">6</span>];<br>        <span class="hljs-number">8</span>: rx &lt;= data[<span class="hljs-number">7</span>];<br>        <span class="hljs-number">9</span>: rx &lt;= <span class="hljs-number">1&#x27;b1</span>;<br>    <span class="hljs-keyword">endcase</span><br>    <span class="hljs-variable">#(5208*20)</span>;<br>    <span class="hljs-keyword">end</span><br><span class="hljs-keyword">endtask</span><br><br><br><span class="hljs-comment">// 实例化串口模块</span><br>uart_fifo_demo uart_fifo_demo(<br>    <span class="hljs-variable">.sys_clk</span>(sys_clk),<br>    <span class="hljs-variable">.sys_rst_n</span>(sys_rst_n),<br>    <span class="hljs-variable">.rx</span>(rx),<br><br>    <span class="hljs-variable">.tx</span>(tx)<br>);<br><br><span class="hljs-comment">// 重定义参数,定义串口波特率为9600</span><br><span class="hljs-keyword">defparam</span> uart_fifo_demo<span class="hljs-variable">.UART_BSP</span> = <span class="hljs-number">9600</span>;<br><br><span class="hljs-keyword">endmodule</span><br><br><br></code></pre></td></tr></table></figure>
+
+<p>仿真效果(顶层模块)：<br><img src="/2024/01/28/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/FPGA/FPGA%E5%AE%9E%E8%B7%B5/FPGA%E5%AE%9E%E7%8E%B0%E4%B8%B2%E5%8F%A3/UART%E4%B8%B2%E5%8F%A3%E9%80%9A%E4%BF%A1-%E5%9F%BA%E4%BA%8EFIFO/UART%E4%B8%B2%E5%8F%A3%E9%80%9A%E4%BF%A1-%E5%9F%BA%E4%BA%8EFIFO/20240214221416.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="四、实际测试效果"><a href="#四、实际测试效果" class="headerlink" title="四、实际测试效果"></a>四、实际测试效果</h3><p><img src="/2024/01/28/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/FPGA/FPGA%E5%AE%9E%E8%B7%B5/FPGA%E5%AE%9E%E7%8E%B0%E4%B8%B2%E5%8F%A3/UART%E4%B8%B2%E5%8F%A3%E9%80%9A%E4%BF%A1-%E5%9F%BA%E4%BA%8EFIFO/UART%E4%B8%B2%E5%8F%A3%E9%80%9A%E4%BF%A1-%E5%9F%BA%E4%BA%8EFIFO/20240214221429.png" srcset="/img/loading.gif" lazyload></p>
+<h1 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h1><ol>
+<li><a target="_blank" rel="noopener" href="https://search.bilibili.com/all?vt=76757802&keyword=%E6%AD%A3%E7%82%B9%E5%8E%9F%E5%AD%90fpga&from_source=webtop_search&spm_id_from=333.1007&search_source=5">https://search.bilibili.com/all?vt=76757802&amp;keyword=%E6%AD%A3%E7%82%B9%E5%8E%9F%E5%AD%90fpga&amp;from_source=webtop_search&amp;spm_id_from=333.1007&amp;search_source=5</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1y34y147s5/?spm_id_from=333.337.top_right_bar_window_history.content.click&vd_source=ef5a0ab0106372751602034cdd9ab98e">https://www.bilibili.com/video/BV1y34y147s5/?spm_id_from=333.337.top_right_bar_window_history.content.click&amp;vd_source=ef5a0ab0106372751602034cdd9ab98e</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/wanerXR/article/details/125120315">https://blog.csdn.net/wanerXR/article/details/125120315</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/lzbmeee/p/17624957.html">https://www.cnblogs.com/lzbmeee/p/17624957.html</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1N5411v7GN/?spm_id_from=333.1007.top_right_bar_window_history.content.click&vd_source=ef5a0ab0106372751602034cdd9ab98e">https://www.bilibili.com/video/BV1N5411v7GN/?spm_id_from=333.1007.top_right_bar_window_history.content.click&amp;vd_source=ef5a0ab0106372751602034cdd9ab98e</a></li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%94%B5%E5%AD%90%E4%BF%A1%E6%81%AF%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/" class="category-chain-item">电子信息硬件相关</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E7%94%B5%E5%AD%90%E4%BF%A1%E6%81%AF%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/FPGA/" class="category-chain-item">FPGA</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E7%94%B5%E5%AD%90%E4%BF%A1%E6%81%AF%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/FPGA/vivado/" class="category-chain-item">vivado</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E7%94%B5%E5%AD%90%E4%BF%A1%E6%81%AF%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/FPGA/vivado/UART/" class="category-chain-item">UART</a>
+  
+  
+
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/FPGA/">#FPGA</a>
+      
+        <a href="/tags/vivado/">#vivado</a>
+      
+        <a href="/tags/UART/">#UART</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>UART串口通信-基于FIFO</div>
+      <div>https://www.duruofu.xyz/2024/01/28/4.硬件相关/FPGA/FPGA实践/FPGA实现串口/UART串口通信-基于FIFO/UART串口通信-基于FIFO/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>DuRuofu</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年1月28日</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>更新于</div>
+          <div>2024年2月24日</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
+                    <i class="iconfont icon-nc"></i>
+                  </span>
+                </a>
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="SA - 相同方式共享">
+                    <i class="iconfont icon-sa"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/01/30/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/01.%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/vscdoe+%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%BC%80%E5%8F%91ESP32/" title="vscdoe+虚拟机开发ESP32">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">vscdoe+虚拟机开发ESP32</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/01/25/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/FPGA/vivado%E5%B7%A5%E7%A8%8B%E7%AE%A1%E7%90%86/" title="vivado工程管理">
+                        <span class="hidden-mobile">vivado工程管理</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#gitalk-container', function() {
+      Fluid.utils.createCssLink('/css/gitalk.css')
+      Fluid.utils.createScript('https://lib.baomitu.com/gitalk/1.8.0/gitalk.min.js', function() {
+        var options = Object.assign(
+          {"clientID":"c9ac06d5413a9d613a1e","clientSecret":"a44f5c72589eb090876cc64067db28fbfdf4747c","repo":"Blog-comments-gitalk","owner":"DuRuofu","admin":["DuRuofu"],"language":"zh-CN","labels":["Gitalk"],"perPage":15,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":false,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token"},
+          {
+            id: '77c89a939ba81499f26950a27bb34234'
+          }
+        )
+        var gitalk = new Gitalk(options);
+        gitalk.render('gitalk-container');
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <br><span id="timeDate">天数载入中</span><span id="times">...</span><br> <span>总有读不懂的诗和到达不了的远方</span> <p>Copyright © 2023 - <span id="currentYear"></span> All Rights Reserved.</p> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      陕ICP备2022007454号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=2022007454"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>陕ICP备2022007454号-2</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":true,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/cust/custom.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
