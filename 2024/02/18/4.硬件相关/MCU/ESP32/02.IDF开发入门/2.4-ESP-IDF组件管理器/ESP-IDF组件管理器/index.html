@@ -16,16 +16,16 @@
   <meta name="author" content="DuRuofu">
   <meta name="keywords" content="嵌入式,个人博客,个人测试">
   
-    <meta name="description" content="ESP32工程结构及构建">
+    <meta name="description" content="ESP-IDF组件管理器">
 <meta property="og:type" content="article">
-<meta property="og:title" content="IDF开发入门-1.ESP32工程结构及构建">
-<meta property="og:url" content="https://www.duruofu.xyz/2024/02/18/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/02.IDF%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8/2.1-ESP32%E5%B7%A5%E7%A8%8B%E7%BB%93%E6%9E%84%E5%8F%8A%E6%9E%84%E5%BB%BA/ESP32%E5%B7%A5%E7%A8%8B%E7%BB%93%E6%9E%84%E5%8F%8A%E6%9E%84%E5%BB%BA/index.html">
+<meta property="og:title" content="IDF开发入门-4.ESP-IDF组件管理器">
+<meta property="og:url" content="https://www.duruofu.xyz/2024/02/18/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/02.IDF%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8/2.4-ESP-IDF%E7%BB%84%E4%BB%B6%E7%AE%A1%E7%90%86%E5%99%A8/ESP-IDF%E7%BB%84%E4%BB%B6%E7%AE%A1%E7%90%86%E5%99%A8/index.html">
 <meta property="og:site_name" content="Duruofu&#39;s 个人测试">
-<meta property="og:description" content="ESP32工程结构及构建">
+<meta property="og:description" content="ESP-IDF组件管理器">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://www.duruofu.xyz/img/index_img/espidf.png">
-<meta property="article:published_time" content="2024-02-18T06:40:53.000Z">
-<meta property="article:modified_time" content="2024-02-29T09:34:46.158Z">
+<meta property="article:published_time" content="2024-02-18T06:45:53.000Z">
+<meta property="article:modified_time" content="2024-02-29T09:38:35.952Z">
 <meta property="article:author" content="DuRuofu">
 <meta property="article:tag" content="MCU">
 <meta property="article:tag" content="ESP32">
@@ -37,7 +37,7 @@
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>IDF开发入门-1.ESP32工程结构及构建 - Duruofu&#39;s 个人测试</title>
+  <title>IDF开发入门-4.ESP-IDF组件管理器 - Duruofu&#39;s 个人测试</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -234,7 +234,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="IDF开发入门-1.ESP32工程结构及构建"></span>
+            <span id="subtitle" data-typed-text="IDF开发入门-4.ESP-IDF组件管理器"></span>
           
         </div>
 
@@ -250,7 +250,7 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2024-02-18 14:40" pubdate>
+        <time datetime="2024-02-18 14:45" pubdate>
           2024年2月18日 下午
         </time>
       </span>
@@ -262,7 +262,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          3.2k 字
+          4.6k 字
         
       </span>
     
@@ -273,7 +273,7 @@
         
         
         
-          27 分钟
+          39 分钟
         
       </span>
     
@@ -319,12 +319,12 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">IDF开发入门-1.ESP32工程结构及构建</h1>
+            <h1 style="display: none">IDF开发入门-4.ESP-IDF组件管理器</h1>
             
               <p class="note note-info">
                 
                   
-                    本文最后更新于：4 分钟前
+                    本文最后更新于：几秒前
                   
                 
               </p>
@@ -334,106 +334,82 @@
                 
                 <h3 id="说明："><a href="#说明：" class="headerlink" title="说明："></a>说明：</h3><ol>
 <li>本文档由DuRuofu撰写，由DuRuofu负责解释及执行。</li>
+<li>本文介绍ESP-IDF组件管理器的使用</li>
 </ol>
-<h3 id="修订历史："><a href="#修订历史：" class="headerlink" title="修订历史："></a>修订历史：</h3><table>
-<thead>
-<tr>
-<th>文档名称</th>
-<th>版本</th>
-<th>作者</th>
-<th>时间</th>
-<th>备注</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>ESP32工程结构及构建</td>
-<td>v1.0.0</td>
-<td>DuRuofu</td>
-<td>2024-02-18</td>
-<td>首次建立</td>
-</tr>
-</tbody></table>
+<h3 id="修订历史："><a href="#修订历史：" class="headerlink" title="修订历史："></a>修订历史：</h3><p>|  文档名称  |  版本  |  作者  |      时间      |   备注   |<br>| —- | —- | ———— | —— |<br>| ESP-IDF组件管理器 |v1.0.0| DuRuofu | 2024-02-18 | 首次建立 |</p>
 <div STYLE="page-break-after: always;"></div>
 
-<h1 id="ESP32工程结构及构建"><a href="#ESP32工程结构及构建" class="headerlink" title="ESP32工程结构及构建"></a>ESP32工程结构及构建</h1><h2 id="一、编译并烧录示例程序"><a href="#一、编译并烧录示例程序" class="headerlink" title="一、编译并烧录示例程序"></a>一、编译并烧录示例程序</h2><p>首先编译一个示例程序：hello_world</p>
-<p>示例程序目录：esp-idf&#x2F;examples&#x2F;get-started&#x2F;hello_world</p>
-<p>使用vscode打开示例程序：</p>
-<p><img src="/2024/02/18/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/02.IDF%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8/2.1-ESP32%E5%B7%A5%E7%A8%8B%E7%BB%93%E6%9E%84%E5%8F%8A%E6%9E%84%E5%BB%BA/ESP32%E5%B7%A5%E7%A8%8B%E7%BB%93%E6%9E%84%E5%8F%8A%E6%9E%84%E5%BB%BA/20240218170437.png" srcset="/img/loading.gif" lazyload></p>
-<p>使用自定义的命令 <code>get_idf_v5</code> 获取环境变量（<a target="_blank" rel="noopener" href="https://duruofu.github.io/2024/01/25/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/%E6%90%AD%E5%BB%BAesp-idf%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/">关于自定义命令</a>）：</p>
-<p><img src="/2024/02/18/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/02.IDF%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8/2.1-ESP32%E5%B7%A5%E7%A8%8B%E7%BB%93%E6%9E%84%E5%8F%8A%E6%9E%84%E5%BB%BA/ESP32%E5%B7%A5%E7%A8%8B%E7%BB%93%E6%9E%84%E5%8F%8A%E6%9E%84%E5%BB%BA/20240218170817.png" srcset="/img/loading.gif" lazyload></p>
-<p>使用<code>idf.py set-target esp32</code>配置开发板为ESP32，按照提示使用<code>idf.py build</code>命令编译程序：</p>
-<p><img src="/2024/02/18/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/02.IDF%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8/2.1-ESP32%E5%B7%A5%E7%A8%8B%E7%BB%93%E6%9E%84%E5%8F%8A%E6%9E%84%E5%BB%BA/ESP32%E5%B7%A5%E7%A8%8B%E7%BB%93%E6%9E%84%E5%8F%8A%E6%9E%84%E5%BB%BA/20240218171102.png" srcset="/img/loading.gif" lazyload></p>
-<p>使用<code>ls /dev/ttyUSB*</code>查询串口（linux）：</p>
-<p><img src="/2024/02/18/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/02.IDF%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8/2.1-ESP32%E5%B7%A5%E7%A8%8B%E7%BB%93%E6%9E%84%E5%8F%8A%E6%9E%84%E5%BB%BA/ESP32%E5%B7%A5%E7%A8%8B%E7%BB%93%E6%9E%84%E5%8F%8A%E6%9E%84%E5%BB%BA/20240218171312.png" srcset="/img/loading.gif" lazyload></p>
-<p>使用<code>idf.py  -p  &#123;PORT&#125;  flash</code>命令烧录代码到esp32：</p>
-<p><img src="/2024/02/18/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/02.IDF%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8/2.1-ESP32%E5%B7%A5%E7%A8%8B%E7%BB%93%E6%9E%84%E5%8F%8A%E6%9E%84%E5%BB%BA/ESP32%E5%B7%A5%E7%A8%8B%E7%BB%93%E6%9E%84%E5%8F%8A%E6%9E%84%E5%BB%BA/20240218171506.png" srcset="/img/loading.gif" lazyload></p>
-<p>烧录完成如下：</p>
-<p><img src="/2024/02/18/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/02.IDF%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8/2.1-ESP32%E5%B7%A5%E7%A8%8B%E7%BB%93%E6%9E%84%E5%8F%8A%E6%9E%84%E5%BB%BA/ESP32%E5%B7%A5%E7%A8%8B%E7%BB%93%E6%9E%84%E5%8F%8A%E6%9E%84%E5%BB%BA/20240218171516.png" srcset="/img/loading.gif" lazyload></p>
-<p>使用<code>idf.py  -p  &#123;PORT&#125;  monitor</code> 命令打开串口监视器：</p>
-<p><img src="/2024/02/18/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/02.IDF%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8/2.1-ESP32%E5%B7%A5%E7%A8%8B%E7%BB%93%E6%9E%84%E5%8F%8A%E6%9E%84%E5%BB%BA/ESP32%E5%B7%A5%E7%A8%8B%E7%BB%93%E6%9E%84%E5%8F%8A%E6%9E%84%E5%BB%BA/20240218171709.png" srcset="/img/loading.gif" lazyload></p>
-<p>成功输出：</p>
-<p><img src="/2024/02/18/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/02.IDF%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8/2.1-ESP32%E5%B7%A5%E7%A8%8B%E7%BB%93%E6%9E%84%E5%8F%8A%E6%9E%84%E5%BB%BA/ESP32%E5%B7%A5%E7%A8%8B%E7%BB%93%E6%9E%84%E5%8F%8A%E6%9E%84%E5%BB%BA/20240218171754.png" srcset="/img/loading.gif" lazyload></p>
-<h2 id="二、新建工程"><a href="#二、新建工程" class="headerlink" title="二、新建工程"></a>二、新建工程</h2><h3 id="新建基础工程"><a href="#新建基础工程" class="headerlink" title="新建基础工程"></a>新建基础工程</h3><p>加载idf.py环境变量后，使用<code>idf.py create-project filename</code>  创建工程</p>
-<p><img src="/2024/02/18/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/02.IDF%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8/2.1-ESP32%E5%B7%A5%E7%A8%8B%E7%BB%93%E6%9E%84%E5%8F%8A%E6%9E%84%E5%BB%BA/ESP32%E5%B7%A5%E7%A8%8B%E7%BB%93%E6%9E%84%E5%8F%8A%E6%9E%84%E5%BB%BA/20240218172510.png" srcset="/img/loading.gif" lazyload></p>
-<p>创建好的工程如下：</p>
-<p><img src="/2024/02/18/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/02.IDF%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8/2.1-ESP32%E5%B7%A5%E7%A8%8B%E7%BB%93%E6%9E%84%E5%8F%8A%E6%9E%84%E5%BB%BA/ESP32%E5%B7%A5%E7%A8%8B%E7%BB%93%E6%9E%84%E5%8F%8A%E6%9E%84%E5%BB%BA/20240218174120.png" srcset="/img/loading.gif" lazyload></p>
-<p>进入刚刚创建好的工程下，配置目标芯片，我以ESP32为例  <code>idf.py set-target esp32</code></p>
-<p><img src="/2024/02/18/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/02.IDF%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8/2.1-ESP32%E5%B7%A5%E7%A8%8B%E7%BB%93%E6%9E%84%E5%8F%8A%E6%9E%84%E5%BB%BA/ESP32%E5%B7%A5%E7%A8%8B%E7%BB%93%E6%9E%84%E5%8F%8A%E6%9E%84%E5%BB%BA/20240218174256.png" srcset="/img/loading.gif" lazyload><br>设置目标芯片后，会出现如图结构 , 其中build是编译过程中会出现的文件，sdkconfig是运行用于保存menuconfig的文件。</p>
-<h3 id="新建组件"><a href="#新建组件" class="headerlink" title="新建组件"></a>新建组件</h3><p>不知道组件是啥也不打紧，后面会系统学习，这里只说明如何新建自定义组件：</p>
-<p>使用命令：<code>idf.py -C components create-component my_component</code></p>
-<p><img src="/2024/02/18/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/02.IDF%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8/2.1-ESP32%E5%B7%A5%E7%A8%8B%E7%BB%93%E6%9E%84%E5%8F%8A%E6%9E%84%E5%BB%BA/ESP32%E5%B7%A5%E7%A8%8B%E7%BB%93%E6%9E%84%E5%8F%8A%E6%9E%84%E5%BB%BA/20240218175156.png" srcset="/img/loading.gif" lazyload></p>
-<h2 id="三、工程结构"><a href="#三、工程结构" class="headerlink" title="三、工程结构"></a>三、工程结构</h2><h3 id="项目目录"><a href="#项目目录" class="headerlink" title="项目目录"></a>项目目录</h3><p>esp-idf的标准目录如下所示：</p>
-<p><img src="/2024/02/18/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/02.IDF%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8/2.1-ESP32%E5%B7%A5%E7%A8%8B%E7%BB%93%E6%9E%84%E5%8F%8A%E6%9E%84%E5%BB%BA/ESP32%E5%B7%A5%E7%A8%8B%E7%BB%93%E6%9E%84%E5%8F%8A%E6%9E%84%E5%BB%BA/20240218174718.png" srcset="/img/loading.gif" lazyload></p>
-<ul>
-<li><p><code>CMakeLists.txt</code> 文件，这是 CMake 用于学习如何构建项目的主要文件，可以在这个文件中设置项目全局的 CMake 变量。顶层项目 CMakeLists.txt 文件会导入 &#x2F;tools&#x2F;cmake&#x2F;project.cmake 文件，由它负责实现构建系统的其余部分。该文件最后会设置项目的名称，并定义该项目。</p>
-</li>
-<li><p><code>sdkconfig</code> 项目配置文件，执行 idf.py menuconfig 时会创建或更新此文件，文件中保存了项目中所有组件（包括 ESP-IDF 本身）的配置信息。 sdkconfig 文件可能会也可能不会被添加到项目的源码管理系统中。</p>
-</li>
-<li><p>可选的 <code>components</code> 目录中包含了项目的部分自定义组件，并不是每个项目都需要这种自定义组件，但它有助于构建可复用的代码或者导入第三方（不属于 ESP-IDF）的组件。或者，您也可以在顶层 CMakeLists.txt 中设置 EXTRA_COMPONENT_DIRS 变量以查找其他指定位置处的组件。有关详细信息，请参阅 重命名 main 组件。如果项目中源文件较多，建议将其归于组件中，而不是全部放在 “main” 中</p>
-</li>
-<li><ul>
-<li><code>main</code> 目录是一个特殊的组件，它包含项目本身的源代码。”main” 是默认名称，CMake 变量 COMPONENT_DIRS 默认包含此组件，但您可以修改此变量。</li>
-</ul>
-</li>
-<li><p><code>build</code> 目录是存放构建输出的地方，如果没有此目录，idf.py 会自动创建。CMake 会配置项目，并在此目录下生成临时的构建文件。随后，在主构建进程的运行期间，该目录还会保存临时目标文件、库文件以及最终输出的二进制文件。此目录通常不会添加到项目的源码管理系统中，也不会随项目源码一同发布。</p>
-</li>
-</ul>
-<h3 id="项目-CMakeList-txt-文件"><a href="#项目-CMakeList-txt-文件" class="headerlink" title="项目 CMakeList.txt 文件"></a>项目 CMakeList.txt 文件</h3><p>每个项目都有一个顶层 <code>CMakeLists.txt</code> 文件，包含整个项目的构建设置。默认情况下，项目 CMakeLists 文件会非常小。</p>
-<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs CMake"><span class="hljs-keyword">cmake_minimum_required</span>(VERSION <span class="hljs-number">3.16</span>)<br><span class="hljs-keyword">include</span>($ENV&#123;IDF_PATH&#125;/tools/cmake/<span class="hljs-keyword">project</span>.cmake)<br><span class="hljs-keyword">project</span>(teat)<br></code></pre></td></tr></table></figure>
-
+<h1 id="ESP-IDF组件管理器"><a href="#ESP-IDF组件管理器" class="headerlink" title="ESP-IDF组件管理器"></a>ESP-IDF组件管理器</h1><h2 id="一、啥是组件管理器"><a href="#一、啥是组件管理器" class="headerlink" title="一、啥是组件管理器"></a>一、啥是组件管理器</h2><p>ESP-IDF官方对组件管理器的描述是这样的：</p>
 <blockquote>
-<p><code>cmake_minimum_required(VERSION 3.5)</code> 必须放在 CMakeLists.txt 文件的第一行，它会告诉 CMake 构建该项目所需要的最小版本号。ESP-IDF 支持 CMake 3.5 或更高的版本。<br>   <code>include($ENV&#123;IDF_PATH&#125;/tools/cmake/project.cmake)</code> 会导入 CMake 的其余功能来完成配置项目、检索组件等任务。<br>   <code>project(teat)</code> 会创建项目本身，括号内容作为项目名称。</p>
+<p>The IDF Component Manager is a tool that allows developers to manage components for the ESP-IDF development framework. The tool is compatible with ESP-IDF versions 4.1 and later, and is included by default starting with ESP-IDF version 4.4.</p>
 </blockquote>
-<p>上面的内容为 项目<strong>必要部分</strong>，除此之外，还有一些 <strong>可选部分</strong>。</p>
-<ul>
-<li><code>COMPONENT_DIRS</code>：组件的搜索目录，默认为 <code>IDF_PATH/components</code>、 <code>工程文件夹/components</code>、和变量 <code>EXTRA_COMPONENT_DIRS</code>。如果您不想在这些位置搜索组件，请覆盖此变量。(通常情况下此变量不需要覆盖，如果想要添加额外的组件，请放到) <code>工程文件夹/components</code>或者变<code>EXTRA_COMPONENT_DIRS</code>中</li>
-<li><code>EXTRA_COMPONENT_DIRS</code>：用于搜索组件的其它可选目录列表。路径可以是相对于项目目录的相对路径，也可以是绝对路径。</li>
-<li><code>COMPONENTS</code>：要构建进项目中的组件名称列表，默认为 <code>COMPONENT_DIRS</code> 目录下检索到的所有组件。使用此变量可以“精简”项目以缩短构建时间。请注意，如果一个组件通过 <code>COMPONENT_REQUIRES</code> 指定了它依赖的另一个组件，则会自动将其添加到 <code>COMPONENTS</code> 中，所以 <code>COMPONENTS</code> 列表可能会非常短。<br>以上变量中的路径可以是绝对路径，或者是相对于项目目录的相对路径。<br>要使用 cmake 中的 <code>set()</code> 命令 来设置这些变量。  如 <code>set(VARIABLE &quot;VALUE&quot;)</code>。</li>
-</ul>
-<h3 id="组件-CMakeList-txt-文件"><a href="#组件-CMakeList-txt-文件" class="headerlink" title="组件 CMakeList.txt 文件"></a>组件 CMakeList.txt 文件</h3><p>组件是 COMPONENT_DIRS 列表中的任何目录。此列表中的目录可以是组件自身（即包含 CMakeLists.txt 文件的目录），也可以是子目录为组件的顶级目录，例如<code>$ENV&#123;PROJECT_DIR&#125;/components</code></p>
-<p><code>构建</code> 或 <code>编译</code> 时，ESP-IDF 搜索所有待构建的组件的顺序为<code>COMPONENT_DIRS</code> 指定的顺序依次进行。<br>因此，在默认情况下：</p>
+<p>  The ESP Component Registry is a central repository for components that can be used with the ESP-IDF. It is hosted at <a target="_blank" rel="noopener" href="https://components.espressif.com/">https://components.espressif.com</a> and provides a convenient way for developers to discover and download components for their projects.</p>
+<blockquote>
+<p>  With the IDF Component Manager, developers can easily install components from the ESP-IDF Component Registry, streamlining the process of adding new functionality to their projects.</p>
+</blockquote>
+<p>说人话就是，世上本没有组件管理器，自定义组件多了，就有了组件库，就有了组件管理器。</p>
+<p>如果用学过node，那我们可以把组件管理器比作npm包管理器，把<code>idf_component.yml</code>比作<code>package.jso</code>,真的一模一样。(不知道node，npm当我没说)。</p>
+<p>我们可以在这：<a target="_blank" rel="noopener" href="https://components.espressif.com/"> ESP-IDF components</a>  找到乐鑫发布的一些他们帮我们写好的”自定义组件“。</p>
+<p>使用这些组件我们可以快速的完成一些功能的实现，比如移植还有点难度的LVGL库，现在只要一行命令就能移植完成。</p>
+<p><img src="/20240219001357.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="二、组件管理器使用示例："><a href="#二、组件管理器使用示例：" class="headerlink" title="二、组件管理器使用示例："></a>二、组件管理器使用示例：</h2><p>下面我们基于<a href="../2.3-ESP-IDF%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BB%84%E4%BB%B6/ESP-IDF%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BB%84%E4%BB%B6.md">ESP-IDF自定义组件</a>教程中编写的<a target="_blank" rel="noopener" href="https://github.com/DuRuofu/ESP32_Learning/tree/master/02.idf_basis/blink_component">blink_component</a>工程来实现使用一下官方的组件管理器，复制工程，重命名为<code>button_component</code></p>
+<h3 id="2-1-组件介绍"><a href="#2-1-组件介绍" class="headerlink" title="2.1 组件介绍"></a>2.1 组件介绍</h3><p>在这部分，我们学着使用官方提供的组件，这里以<a target="_blank" rel="noopener" href="https://components.espressif.com/components/espressif/button?language=en">button</a>组件为例：</p>
+<p><img src="/20240229163020.png" srcset="/img/loading.gif" lazyload></p>
+<p>按键组件实现了 GPIO 和 ADC 两种按键，并允许同时创建两种不同的按键。并且提供多种按键事件，包括按下，弹起，按下弹起 1 次，按下弹起 2 次等。</p>
+<p>这里是该组件的中文文档：<a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-iot-solution/zh_CN/latest/input_device/button.html">按键组件使用</a></p>
+<p><img src="/20240229163215.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="2-2-引入组件"><a href="#2-2-引入组件" class="headerlink" title="2.2 引入组件"></a>2.2 引入组件</h3><p>输入命令添加依赖   <code>idf.py add-dependency &quot;espressif/button^3.2.0&quot;</code>  ：</p>
+<p><img src="/20240229164040.png" srcset="/img/loading.gif" lazyload></p>
+<p>添加完成：</p>
+<p><img src="/20240229164107.png" srcset="/img/loading.gif" lazyload></p>
+<p>main下多出组件依赖文件，里面写上了我们依赖的组件<code>espressif/button</code></p>
+<p>编译项目：<code>idf.py build</code></p>
+<p>idf会自动下载我们依赖的组件，存放到<code>managed_components</code>文件夹中，如下图：</p>
+<p><img src="/20240229164459.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="2-3-组件的使用"><a href="#2-3-组件的使用" class="headerlink" title="2.3 组件的使用"></a>2.3 组件的使用</h3><p>组件的使用各不相同，使用时具体参考对应的组件文档即可:<a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-iot-solution/zh_CN/latest/index.html">ESP-IoT-Solution 编程指南</a></p>
+<p>下面的内容参考文档也能完成，这里不再详细描述：</p>
+<h4 id="创建按键"><a href="#创建按键" class="headerlink" title="创建按键"></a>创建按键</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// create gpio button</span><br><span class="hljs-type">button_config_t</span> gpio_btn_cfg = &#123;<br>    .type = BUTTON_TYPE_GPIO,<br>    .long_press_time = CONFIG_BUTTON_LONG_PRESS_TIME_MS,<br>    .short_press_time = CONFIG_BUTTON_SHORT_PRESS_TIME_MS,<br>    .gpio_button_config = &#123;<br>        .gpio_num = <span class="hljs-number">0</span>,<br>        .active_level = <span class="hljs-number">0</span>,<br>    &#125;,<br>&#125;;<br><span class="hljs-type">button_handle_t</span> gpio_btn = iot_button_create(&amp;gpio_btn_cfg);<br><span class="hljs-keyword">if</span>(<span class="hljs-literal">NULL</span> == gpio_btn) &#123;<br>    ESP_LOGE(TAG, <span class="hljs-string">&quot;Button create failed&quot;</span>);<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<p>详解：</p>
 <ol>
-<li>搜索 ESP-IDF 内部组件（<code>$ENV&#123;IDF_PATH&#125;/components</code>）</li>
-<li>搜索 <code>EXTRA_COMPONENT_DIRS</code> 中的组件</li>
-<li>搜索项目组件（<code>$ENV&#123;PROJECT_DIR&#125;/components</code>）</li>
+<li><code>button_config_t gpio_btn_cfg</code>：定义了一个名为 <code>gpio_btn_cfg</code> 的结构体变量，用于配置按钮的参数。</li>
+<li><code>.type = BUTTON_TYPE_GPIO</code>：指定按钮的类型为 GPIO 类型，表示这是一个基于 GPIO 的按钮。</li>
+<li><code>.long_press_ticks = CONFIG_BUTTON_LONG_PRESS_TIME_MS</code>：设置长按触发的时间阈值，单位为毫秒。</li>
+<li><code>.short_press_ticks = CONFIG_BUTTON_SHORT_PRESS_TIME_MS</code>：设置短按触发的时间阈值，单位为毫秒。</li>
+<li><code>.gpio_button_config</code>：GPIO 按钮的具体配置信息。<ul>
+<li><code>.gpio_num = 0</code>：指定了 GPIO 编号为 0，即对应 ESP32 开发板上的某个 GPIO 引脚。</li>
+<li><code>.active_level = 0</code>：指定了按钮的触发电平为低电平（0），即当 GPIO 引脚为低电平时被认为按钮被按下。</li>
+</ul>
+</li>
+<li><code>button_handle_t gpio_btn = iot_button_create(&amp;gpio_btn_cfg)</code>：调用 <code>iot_button_create</code> 函数创建一个按钮实例，并将配置信息传递给该函数，返回一个按钮句柄 <code>gpio_btn</code>。</li>
+<li><code>if(NULL == gpio_btn)</code>：检查按钮实例是否成功创建。<ul>
+<li>如果 <code>gpio_btn</code> 为 <code>NULL</code>，则打印错误日志，提示按钮创建失败。</li>
+</ul>
+</li>
 </ol>
-<blockquote>
-<p><strong>注意</strong>  :<br>   如果这些目录中的两个或者多个包含具有相同名字的组件，则使用 <strong>搜索到的最后一个</strong> 位置的组件。这就允许将组件复制到项目目录中再修改以覆盖 ESP-IDF 组件。</p>
-</blockquote>
-<p>组件的最小的CMakeList.txt文件只有一句:</p>
-<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs CMake">idf_component_register(SRCS <span class="hljs-string">&quot;my_component.c&quot;</span><br>                    INCLUDE_DIRS <span class="hljs-string">&quot;include&quot;</span>)<br></code></pre></td></tr></table></figure>
+<h4 id="注册回调函数"><a href="#注册回调函数" class="headerlink" title="注册回调函数"></a>注册回调函数</h4><p>Button 组件支持为多个事件注册回调函数，每个事件都可以注册一个回调函数，当事件发生时，回调函数将会被调用。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs c"><br><span class="hljs-type">static</span> <span class="hljs-type">void</span> <span class="hljs-title function_">button_single_click_cb</span><span class="hljs-params">(<span class="hljs-type">void</span> *arg,<span class="hljs-type">void</span> *usr_data)</span><br>&#123;<br>    ESP_LOGI(TAG, <span class="hljs-string">&quot;BUTTON_SINGLE_CLICK&quot;</span>);<br>&#125;<br><br>iot_button_register_cb(gpio_btn, BUTTON_SINGLE_CLICK, button_single_click_cb,<span class="hljs-literal">NULL</span>);<br><br></code></pre></td></tr></table></figure>
 
+<p>详解：</p>
+<ol>
+<li><p><code>static void button_single_click_cb(void *arg, void *usr_data)</code>：定义了一个静态的回调函数 <code>button_single_click_cb</code>，该函数在按钮单击事件发生时被调用。函数接受两个参数，一个是 <code>arg</code>，用于传递按钮相关的参数，另一个是 <code>usr_data</code>，用于传递用户数据。</p>
+</li>
+<li><p><code>iot_button_register_cb(gpio_btn, BUTTON_SINGLE_CLICK, button_single_click_cb, NULL)</code>：调用 <code>iot_button_register_cb</code> 函数注册了一个按钮单击事件的回调函数。</p>
 <ul>
-<li><code>SRCS</code> 是源文件列表（_.c、_.cpp、_.cc、_.S），里面所有的源文件都将会编译进组件库中。</li>
-<li><code>INCLUDE_DIRS</code> 是目录列表，里面的路径会被添加到所有需要该组件的组件（包括 main 组件）全局 include 搜索路径中。</li>
+<li><code>gpio_btn</code>：表示要注册回调函数的按钮实例。</li>
+<li><code>BUTTON_SINGLE_CLICK</code>：指定注册的是单击事件的回调函数。</li>
+<li><code>button_single_click_cb</code>：指定要注册的回调函数，即单击事件发生时调用的函数。</li>
+<li><code>NULL</code>：表示没有用户数据需要传递给回调函数。</li>
 </ul>
-<p>除此之外，还有很多非必须的参数:</p>
-<ul>
-<li><code>REQUIRES</code> 声明组件的public依赖，可供其他依赖者访问</li>
-<li><code>PRIV_REQUIRES</code>声明private依赖，只能被当前组件访问。</li>
-</ul>
+</li>
+</ol>
+<p>结合上一篇教程的LED闪烁的代码，最终代码如下：<code>blink_example_main.c</code></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><code class="hljs c"><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;freertos/FreeRTOS.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;freertos/task.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;esp_log.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;led_blink.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;iot_button.h&quot;</span></span><br><br><br><span class="hljs-type">static</span> <span class="hljs-type">const</span> <span class="hljs-type">char</span> *TAG = <span class="hljs-string">&quot;example&quot;</span>;<br><span class="hljs-type">uint8_t</span> s_led_state = <span class="hljs-number">0</span>;<br><br><br><span class="hljs-comment">// 按键回调函数(单击,led灯状态取反)</span><br><span class="hljs-type">static</span> <span class="hljs-type">void</span> <span class="hljs-title function_">button_single_click_cb</span><span class="hljs-params">(<span class="hljs-type">void</span> *arg,<span class="hljs-type">void</span> *usr_data)</span><br>&#123;<br>    ESP_LOGI(TAG, <span class="hljs-string">&quot;BUTTON_SINGLE_CLICK&quot;</span>);<br>    ESP_LOGI(TAG, <span class="hljs-string">&quot;Turning the LED %s!&quot;</span>, s_led_state == <span class="hljs-literal">true</span> ? <span class="hljs-string">&quot;ON&quot;</span> : <span class="hljs-string">&quot;OFF&quot;</span>);<br>    s_led_state = !s_led_state;<br>    blink_led(s_led_state);<br>&#125;<br><br><br><span class="hljs-type">void</span> <span class="hljs-title function_">app_main</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span><br>&#123;<br>    <span class="hljs-comment">/* Configure the peripheral according to the LED type */</span><br>    configure_led();<br>    <span class="hljs-comment">// create gpio button</span><br>    <span class="hljs-type">button_config_t</span> gpio_btn_cfg = &#123;<br>        .type = BUTTON_TYPE_GPIO,<br>        .long_press_time = CONFIG_BUTTON_LONG_PRESS_TIME_MS,<br>        .short_press_time = CONFIG_BUTTON_SHORT_PRESS_TIME_MS,<br>        .gpio_button_config = &#123;<br>            .gpio_num = <span class="hljs-number">0</span>,<br>            .active_level = <span class="hljs-number">0</span>,<br>        &#125;,<br>    &#125;;<br><br>    <span class="hljs-type">button_handle_t</span> gpio_btn = iot_button_create(&amp;gpio_btn_cfg);<br>    <span class="hljs-keyword">if</span>(<span class="hljs-literal">NULL</span> == gpio_btn) &#123;<br>        ESP_LOGE(TAG, <span class="hljs-string">&quot;Button create failed&quot;</span>);<br>    &#125;<br><br>    <span class="hljs-comment">// 注册按键回调</span><br>    iot_button_register_cb(gpio_btn, BUTTON_SINGLE_CLICK, button_single_click_cb,<span class="hljs-literal">NULL</span>);<br><br>    <span class="hljs-keyword">while</span> (<span class="hljs-number">1</span>) &#123;<br>        vTaskDelay(CONFIG_BLINK_PERIOD / portTICK_PERIOD_MS);<br>    &#125;<br>&#125;<br><br><br></code></pre></td></tr></table></figure>
+
+<p>实现的效果为：单击开发板上的按键，可以控制LED翻转。</p>
+<p>以上就是ESP32组件管理器及第三方组件的使用。</p>
 <h1 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h1><ol>
-<li><a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-guides/build-system.html">https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-guides/build-system.html</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-guides/tools/idf-component-manager.html">https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-guides/tools/idf-component-manager.html</a></li>
 </ol>
 
                 
@@ -505,8 +481,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>IDF开发入门-1.ESP32工程结构及构建</div>
-      <div>https://www.duruofu.xyz/2024/02/18/4.硬件相关/MCU/ESP32/02.IDF开发入门/2.1-ESP32工程结构及构建/ESP32工程结构及构建/</div>
+      <div>IDF开发入门-4.ESP-IDF组件管理器</div>
+      <div>https://www.duruofu.xyz/2024/02/18/4.硬件相关/MCU/ESP32/02.IDF开发入门/2.4-ESP-IDF组件管理器/ESP-IDF组件管理器/</div>
     </div>
     <div class="license-meta">
       
@@ -567,9 +543,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2024/02/18/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/02.IDF%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8/2.2-ESP-IDF%E9%A1%B9%E7%9B%AE%E9%85%8D%E7%BD%AE/ESP-IDF%E9%A1%B9%E7%9B%AE%E9%85%8D%E7%BD%AE/" title="IDF开发入门-2.ESP-IDF项目配置">
+                      <a href="/2024/02/24/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/FPGA/FPGA%E5%AE%9E%E8%B7%B5/FPGA%E4%BD%BF%E7%94%A8MicroBlaze%E8%BD%AF%E6%A0%B8%E6%B5%81%E7%A8%8B/" title="FPGA使用MicroBlaze软核">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">IDF开发入门-2.ESP-IDF项目配置</span>
+                        <span class="hidden-mobile">FPGA使用MicroBlaze软核</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -577,8 +553,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2024/02/13/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/STM32/STM32%E4%B8%B2%E5%8F%A3%E8%BF%9B%E9%98%B6/" title="STM32串口进阶(HAL)">
-                        <span class="hidden-mobile">STM32串口进阶(HAL)</span>
+                      <a href="/2024/02/18/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/02.IDF%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8/2.3-ESP-IDF%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BB%84%E4%BB%B6/ESP-IDF%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BB%84%E4%BB%B6/" title="IDF开发入门-3.ESP-IDF自定义组件">
+                        <span class="hidden-mobile">IDF开发入门-3.ESP-IDF自定义组件</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -601,7 +577,7 @@
         var options = Object.assign(
           {"clientID":"c9ac06d5413a9d613a1e","clientSecret":"a44f5c72589eb090876cc64067db28fbfdf4747c","repo":"Blog-comments-gitalk","owner":"DuRuofu","admin":["DuRuofu"],"language":"zh-CN","labels":["Gitalk"],"perPage":15,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":false,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token"},
           {
-            id: '4ff026a1661fffdfbd90ba3acb8322c3'
+            id: '37d16cd73ed592581ff568eaef3b3f1a'
           }
         )
         var gitalk = new Gitalk(options);
