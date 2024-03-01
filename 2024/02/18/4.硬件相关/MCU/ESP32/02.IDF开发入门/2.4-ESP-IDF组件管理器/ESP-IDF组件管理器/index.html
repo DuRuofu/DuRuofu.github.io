@@ -27,8 +27,8 @@
 <meta property="article:published_time" content="2024-02-18T06:45:53.000Z">
 <meta property="article:modified_time" content="2024-02-29T09:38:35.952Z">
 <meta property="article:author" content="DuRuofu">
-<meta property="article:tag" content="MCU">
 <meta property="article:tag" content="ESP32">
+<meta property="article:tag" content="MCU">
 <meta property="article:tag" content="IDF开发入门">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://www.duruofu.xyz/img/index_img/espidf.png">
@@ -324,7 +324,7 @@
               <p class="note note-info">
                 
                   
-                    本文最后更新于：几秒前
+                    本文最后更新于：19 小时前
                   
                 
               </p>
@@ -351,21 +351,21 @@
 <p>如果用学过node，那我们可以把组件管理器比作npm包管理器，把<code>idf_component.yml</code>比作<code>package.jso</code>,真的一模一样。(不知道node，npm当我没说)。</p>
 <p>我们可以在这：<a target="_blank" rel="noopener" href="https://components.espressif.com/"> ESP-IDF components</a>  找到乐鑫发布的一些他们帮我们写好的”自定义组件“。</p>
 <p>使用这些组件我们可以快速的完成一些功能的实现，比如移植还有点难度的LVGL库，现在只要一行命令就能移植完成。</p>
-<p><img src="/20240219001357.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/2024/02/18/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/02.IDF%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8/2.4-ESP-IDF%E7%BB%84%E4%BB%B6%E7%AE%A1%E7%90%86%E5%99%A8/ESP-IDF%E7%BB%84%E4%BB%B6%E7%AE%A1%E7%90%86%E5%99%A8/20240219001357.png" srcset="/img/loading.gif" lazyload></p>
 <h2 id="二、组件管理器使用示例："><a href="#二、组件管理器使用示例：" class="headerlink" title="二、组件管理器使用示例："></a>二、组件管理器使用示例：</h2><p>下面我们基于<a href="../2.3-ESP-IDF%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BB%84%E4%BB%B6/ESP-IDF%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BB%84%E4%BB%B6.md">ESP-IDF自定义组件</a>教程中编写的<a target="_blank" rel="noopener" href="https://github.com/DuRuofu/ESP32_Learning/tree/master/02.idf_basis/blink_component">blink_component</a>工程来实现使用一下官方的组件管理器，复制工程，重命名为<code>button_component</code></p>
 <h3 id="2-1-组件介绍"><a href="#2-1-组件介绍" class="headerlink" title="2.1 组件介绍"></a>2.1 组件介绍</h3><p>在这部分，我们学着使用官方提供的组件，这里以<a target="_blank" rel="noopener" href="https://components.espressif.com/components/espressif/button?language=en">button</a>组件为例：</p>
-<p><img src="/20240229163020.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/2024/02/18/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/02.IDF%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8/2.4-ESP-IDF%E7%BB%84%E4%BB%B6%E7%AE%A1%E7%90%86%E5%99%A8/ESP-IDF%E7%BB%84%E4%BB%B6%E7%AE%A1%E7%90%86%E5%99%A8/20240229163020.png" srcset="/img/loading.gif" lazyload></p>
 <p>按键组件实现了 GPIO 和 ADC 两种按键，并允许同时创建两种不同的按键。并且提供多种按键事件，包括按下，弹起，按下弹起 1 次，按下弹起 2 次等。</p>
 <p>这里是该组件的中文文档：<a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-iot-solution/zh_CN/latest/input_device/button.html">按键组件使用</a></p>
-<p><img src="/20240229163215.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/2024/02/18/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/02.IDF%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8/2.4-ESP-IDF%E7%BB%84%E4%BB%B6%E7%AE%A1%E7%90%86%E5%99%A8/ESP-IDF%E7%BB%84%E4%BB%B6%E7%AE%A1%E7%90%86%E5%99%A8/20240229163215.png" srcset="/img/loading.gif" lazyload></p>
 <h3 id="2-2-引入组件"><a href="#2-2-引入组件" class="headerlink" title="2.2 引入组件"></a>2.2 引入组件</h3><p>输入命令添加依赖   <code>idf.py add-dependency &quot;espressif/button^3.2.0&quot;</code>  ：</p>
-<p><img src="/20240229164040.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/2024/02/18/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/02.IDF%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8/2.4-ESP-IDF%E7%BB%84%E4%BB%B6%E7%AE%A1%E7%90%86%E5%99%A8/ESP-IDF%E7%BB%84%E4%BB%B6%E7%AE%A1%E7%90%86%E5%99%A8/20240229164040.png" srcset="/img/loading.gif" lazyload></p>
 <p>添加完成：</p>
-<p><img src="/20240229164107.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/2024/02/18/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/02.IDF%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8/2.4-ESP-IDF%E7%BB%84%E4%BB%B6%E7%AE%A1%E7%90%86%E5%99%A8/ESP-IDF%E7%BB%84%E4%BB%B6%E7%AE%A1%E7%90%86%E5%99%A8/20240229164107.png" srcset="/img/loading.gif" lazyload></p>
 <p>main下多出组件依赖文件，里面写上了我们依赖的组件<code>espressif/button</code></p>
 <p>编译项目：<code>idf.py build</code></p>
 <p>idf会自动下载我们依赖的组件，存放到<code>managed_components</code>文件夹中，如下图：</p>
-<p><img src="/20240229164459.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/2024/02/18/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/02.IDF%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8/2.4-ESP-IDF%E7%BB%84%E4%BB%B6%E7%AE%A1%E7%90%86%E5%99%A8/ESP-IDF%E7%BB%84%E4%BB%B6%E7%AE%A1%E7%90%86%E5%99%A8/20240229164459.png" srcset="/img/loading.gif" lazyload></p>
 <h3 id="2-3-组件的使用"><a href="#2-3-组件的使用" class="headerlink" title="2.3 组件的使用"></a>2.3 组件的使用</h3><p>组件的使用各不相同，使用时具体参考对应的组件文档即可:<a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-iot-solution/zh_CN/latest/index.html">ESP-IoT-Solution 编程指南</a></p>
 <p>下面的内容参考文档也能完成，这里不再详细描述：</p>
 <h4 id="创建按键"><a href="#创建按键" class="headerlink" title="创建按键"></a>创建按键</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// create gpio button</span><br><span class="hljs-type">button_config_t</span> gpio_btn_cfg = &#123;<br>    .type = BUTTON_TYPE_GPIO,<br>    .long_press_time = CONFIG_BUTTON_LONG_PRESS_TIME_MS,<br>    .short_press_time = CONFIG_BUTTON_SHORT_PRESS_TIME_MS,<br>    .gpio_button_config = &#123;<br>        .gpio_num = <span class="hljs-number">0</span>,<br>        .active_level = <span class="hljs-number">0</span>,<br>    &#125;,<br>&#125;;<br><span class="hljs-type">button_handle_t</span> gpio_btn = iot_button_create(&amp;gpio_btn_cfg);<br><span class="hljs-keyword">if</span>(<span class="hljs-literal">NULL</span> == gpio_btn) &#123;<br>    ESP_LOGE(TAG, <span class="hljs-string">&quot;Button create failed&quot;</span>);<br>&#125;<br><br></code></pre></td></tr></table></figure>
@@ -465,9 +465,9 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/MCU/">#MCU</a>
-      
         <a href="/tags/ESP32/">#ESP32</a>
+      
+        <a href="/tags/MCU/">#MCU</a>
       
         <a href="/tags/IDF%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8/">#IDF开发入门</a>
       
