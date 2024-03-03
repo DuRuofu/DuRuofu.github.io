@@ -27,8 +27,8 @@
 <meta property="article:published_time" content="2024-03-04T08:42:53.000Z">
 <meta property="article:modified_time" content="2024-03-03T14:35:46.748Z">
 <meta property="article:author" content="DuRuofu">
-<meta property="article:tag" content="ESP32">
 <meta property="article:tag" content="MCU">
+<meta property="article:tag" content="ESP32">
 <meta property="article:tag" content="ADC">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://www.duruofu.xyz/img/index_img/espidf.png">
@@ -324,7 +324,7 @@
               <p class="note note-info">
                 
                   
-                    本文最后更新于：几秒前
+                    本文最后更新于：3 分钟前
                   
                 
               </p>
@@ -374,14 +374,14 @@
 
 <h3 id="1-2-ADC-衰减"><a href="#1-2-ADC-衰减" class="headerlink" title="1.2 ADC 衰减"></a>1.2 ADC 衰减</h3><p>ADC模块 能读取电压的范围（量程）有限，因此我们一般给某个 ADC 通道配置一定的衰减，使其读取更大的电压。但更大的量程会导致更小的精度。因此根据 ADC 的应用场景，选择适当的衰减级别十分必要。</p>
 <p>ESP32 的每一个通道都有提供了4个级别的衰减等级，不同的衰减等级对于的量程在下表列出：注意，下表中的 “推荐范围” 并不是量程 ，而是在某衰减等级下测量最精确的推荐测量范围</p>
-<p><img src="/20240303200107.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/2024/03/04/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/03.ESP%E5%A4%96%E8%AE%BE%E5%85%A5%E9%97%A8/3.4-ESP32%E5%A4%96%E8%AE%BE-ADC%E5%85%A5%E9%97%A8/ESP32%E5%A4%96%E8%AE%BE-ADC%E5%85%A5%E9%97%A8/20240303200107.png" srcset="/img/loading.gif" lazyload></p>
 <h3 id="1-2-ADC校准与减小测量误差"><a href="#1-2-ADC校准与减小测量误差" class="headerlink" title="1.2 ADC校准与减小测量误差"></a>1.2 ADC校准与减小测量误差</h3><h4 id="减少噪声"><a href="#减少噪声" class="headerlink" title="减少噪声"></a>减少噪声</h4><p>ESP32 ADC 对噪声敏感，可能导致 ADC 读数出现较大偏差。根据不同使用场景，要减少噪声影响，你可能需要将旁路电容（如 100 nF 陶瓷电容）连接到 ADC 使用的输入管脚。此外，也可以通过多次采样，进一步减轻噪声的影响。</p>
-<p><img src="/20240303200300.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/2024/03/04/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/03.ESP%E5%A4%96%E8%AE%BE%E5%85%A5%E9%97%A8/3.4-ESP32%E5%A4%96%E8%AE%BE-ADC%E5%85%A5%E9%97%A8/ESP32%E5%A4%96%E8%AE%BE-ADC%E5%85%A5%E9%97%A8/20240303200300.png" srcset="/img/loading.gif" lazyload></p>
 <p>图中展示了连接电容以及 64 次采样对噪声的抑制效果。其中纵轴(ADC Reading)代表不同方式读取到的ADC值，横轴(Sample Number)是采样次数。</p>
 <h4 id="ADC-校准"><a href="#ADC-校准" class="headerlink" title="ADC 校准"></a>ADC 校准</h4><p>关于ADC校准的库为<code>esp_adc_cal.h</code></p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;esp_adc/adc_cali.h&quot;</span></span><br></code></pre></td></tr></table></figure>
 
-<p>个库提供 API 函数用于校正基准ADC 参考电压，ADC参考电压为 1100 m V。<br>对于不同的参考电压，ADC 值与输入电压值（待测电压）的关系不同。关系如下图：<br>​<img src="/20240303200839.png" srcset="/img/loading.gif" lazyload></p>
+<p>个库提供 API 函数用于校正基准ADC 参考电压，ADC参考电压为 1100 m V。<br>对于不同的参考电压，ADC 值与输入电压值（待测电压）的关系不同。关系如下图：<br>​<img src="/2024/03/04/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/03.ESP%E5%A4%96%E8%AE%BE%E5%85%A5%E9%97%A8/3.4-ESP32%E5%A4%96%E8%AE%BE-ADC%E5%85%A5%E9%97%A8/ESP32%E5%A4%96%E8%AE%BE-ADC%E5%85%A5%E9%97%A8/20240303200839.png" srcset="/img/loading.gif" lazyload></p>
 <p>上图列出了参考电压分别在：V r e f &#x3D; &#x3D;1070mV(蓝色) 和 V r e f &#x3D; &#x3D;1160mV(橙色) 下的 ADC 值和待测电压 Voltage 的关系。</p>
 <p>我们把这条拟合曲线称为 ADC 模块(在某参考电压下)的 <strong>ADC-Voltage 特征曲线</strong>。</p>
 <p>在实际应用中，我们调用esp_adc_cal.h库提供的 API 函数去求得指定参考电压下的 ADC-Voltage 特征曲线，并利用这一条曲线去将 ADC 测量值转换为欲测量的电压Voltage。开发者可以选择自定义参考电压值，也可以利用ESP32 内部 eFuse（一次性可编程存储器）中储存的出厂参考电压校准值去获取这个曲线。</p>
@@ -389,7 +389,7 @@
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">%IDF_PATH%/components/esptool_py/esptool/espefuse.py --port COMx adc_info<br></code></pre></td></tr></table></figure>
 
 <p>效果：</p>
-<p><img src="/20240303201442.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/2024/03/04/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/03.ESP%E5%A4%96%E8%AE%BE%E5%85%A5%E9%97%A8/3.4-ESP32%E5%A4%96%E8%AE%BE-ADC%E5%85%A5%E9%97%A8/ESP32%E5%A4%96%E8%AE%BE-ADC%E5%85%A5%E9%97%A8/20240303201442.png" srcset="/img/loading.gif" lazyload></p>
 <p>除此之外，ESP32 内部的参考电压也可以手动测量，方法是将此电压输出到（路由到）某个GPIO口上，然后手动测量此GPIO口和GND接口之间的电压，就是eFuse内部的参考电压。将参考电压路由到GPIO的方法是调用API函数adc_vref_to_gpio()，参数是想要输出电压的GPIO口编号。必须是ADC2的通道IO口之一，因为ESP32只支持将参考电压路由到 ADC2 上</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">/* 将参考电压路由到GPIO25上 */</span> <br>adc_vref_to_gpio(ADC_UNIT_2, GPIO_NUM_25);<br></code></pre></td></tr></table></figure>
 
@@ -464,7 +464,7 @@
 <li>转换帧：一个转换帧包含多个转换结果。转换帧大小以字节为单位，在 <a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/adc_continuous.html#_CPPv425adc_continuous_new_handlePK27adc_continuous_handle_cfg_tP23adc_continuous_handle_t" title="adc_continuous_new_handle"><code>adc_continuous_new_handle()</code></a> 中配置。</li>
 <li>转换结果：一个转换结果包含多个字节，即 <a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/system/soc_caps.html#c.SOC_ADC_DIGI_RESULT_BYTES" title="SOC_ADC_DIGI_RESULT_BYTES"><code>SOC_ADC_DIGI_RESULT_BYTES</code></a>。转换结果的数据结构由 <a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/adc_oneshot.html#_CPPv422adc_digi_output_data_t" title="adc_digi_output_data_t"><code>adc_digi_output_data_t</code></a> 定义，包括 ADC 单元、ADC 通道以及原始数据。</li>
 </ul>
-<p><img src="/20240303211254.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/2024/03/04/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/03.ESP%E5%A4%96%E8%AE%BE%E5%85%A5%E9%97%A8/3.4-ESP32%E5%A4%96%E8%AE%BE-ADC%E5%85%A5%E9%97%A8/ESP32%E5%A4%96%E8%AE%BE-ADC%E5%85%A5%E9%97%A8/20240303211254.png" srcset="/img/loading.gif" lazyload></p>
 <h5 id="1、-资源分配："><a href="#1、-资源分配：" class="headerlink" title="1、 资源分配："></a>1、 <a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/adc_continuous.html#adc-continuous-resource-allocation">资源分配</a>：</h5><p>首先设置配置结构体 <a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/adc_continuous.html#_CPPv427adc_continuous_handle_cfg_t" title="adc_continuous_handle_cfg_t"><code>adc_continuous_handle_cfg_t</code></a>，创建 ADC 连续转换模式驱动的句柄，参数如下：</p>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/adc_continuous.html#_CPPv4N27adc_continuous_handle_cfg_t18max_store_buf_sizeE" title="adc_continuous_handle_cfg_t::max_store_buf_size"><code>adc_continuous_handle_cfg_t::max_store_buf_size</code></a>：以字节为单位设置最大缓冲池的大小，驱动程序将 ADC 转换结果保存到该缓冲池中。缓冲池已满时，新的转换将丢失。</li>
@@ -519,7 +519,7 @@
 <p>为通道6接上1V电压：</p>
 <p><img src="/2024/03/04/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/03.ESP%E5%A4%96%E8%AE%BE%E5%85%A5%E9%97%A8/3.4-ESP32%E5%A4%96%E8%AE%BE-ADC%E5%85%A5%E9%97%A8/ESP32%E5%A4%96%E8%AE%BE-ADC%E5%85%A5%E9%97%A8/1e135337569c82f7be09abf554e49c5.jpg" srcset="/img/loading.gif" lazyload></p>
 <p>串口输出结果：</p>
-<p><img src="/20240303210953.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/2024/03/04/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/03.ESP%E5%A4%96%E8%AE%BE%E5%85%A5%E9%97%A8/3.4-ESP32%E5%A4%96%E8%AE%BE-ADC%E5%85%A5%E9%97%A8/ESP32%E5%A4%96%E8%AE%BE-ADC%E5%85%A5%E9%97%A8/20240303210953.png" srcset="/img/loading.gif" lazyload></p>
 <h4 id="连续转换示例程序："><a href="#连续转换示例程序：" class="headerlink" title="连续转换示例程序："></a>连续转换示例程序：</h4><blockquote>
 <p>参考:<a target="_blank" rel="noopener" href="https://github.com/espressif/esp-idf/blob/fdb7a43752633560c73ee079d512c0c13808456f/examples/peripherals/adc/continuous_read/main/continuous_read_main.c">https://github.com/espressif/esp-idf/blob/fdb7a43752633560c73ee079d512c0c13808456f/examples/peripherals/adc/continuous_read/main/continuous_read_main.c</a></p>
 </blockquote>
@@ -529,7 +529,7 @@
 <p>接线：</p>
 <p><img src="/2024/03/04/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/03.ESP%E5%A4%96%E8%AE%BE%E5%85%A5%E9%97%A8/3.4-ESP32%E5%A4%96%E8%AE%BE-ADC%E5%85%A5%E9%97%A8/ESP32%E5%A4%96%E8%AE%BE-ADC%E5%85%A5%E9%97%A8/1e135337569c82f7be09abf554e49c5.jpg" srcset="/img/loading.gif" lazyload></p>
 <p>效果：</p>
-<p><img src="/20240303222750.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/2024/03/04/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/03.ESP%E5%A4%96%E8%AE%BE%E5%85%A5%E9%97%A8/3.4-ESP32%E5%A4%96%E8%AE%BE-ADC%E5%85%A5%E9%97%A8/ESP32%E5%A4%96%E8%AE%BE-ADC%E5%85%A5%E9%97%A8/20240303222750.png" srcset="/img/loading.gif" lazyload></p>
 <h1 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h1><ol>
 <li><a target="_blank" rel="noopener" href="https://blog.csdn.net/m0_50064262/article/details/118817032">https://blog.csdn.net/m0_50064262/article/details/118817032</a></li>
 <li><a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/adc_oneshot.html#_CPPv427adc_oneshot_unit_init_cfg_t">https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/adc_oneshot.html#_CPPv427adc_oneshot_unit_init_cfg_t</a></li>
@@ -590,9 +590,9 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/ESP32/">#ESP32</a>
-      
         <a href="/tags/MCU/">#MCU</a>
+      
+        <a href="/tags/ESP32/">#ESP32</a>
       
         <a href="/tags/ADC/">#ADC</a>
       
