@@ -1,0 +1,941 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/%E4%B8%AA%E4%BA%BA%E5%A4%B4%E5%83%8F%E6%97%A0%E8%83%8C%E6%99%AF.png">
+  <link rel="icon" href="https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/%E4%B8%AA%E4%BA%BA%E5%A4%B4%E5%83%8F%E6%97%A0%E8%83%8C%E6%99%AF.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="DuRuofu">
+  <meta name="keywords" content="嵌入式,个人博客,个人测试">
+  
+    <meta name="description" content="本文档记录ESP32 ESP-NOW协议程序（实现最简接收发送）">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ESP32网络入门-ESP-NOW协议">
+<meta property="og:url" content="https://www.duruofu.xyz/2024/03/27/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/05.ESP32WIFI%E5%85%A5%E9%97%A8/5.7-ESP32%E7%BD%91%E7%BB%9C%E5%85%A5%E9%97%A8-ESP-NOW%E5%8D%8F%E8%AE%AE/ESP32%E7%BD%91%E7%BB%9C%E5%85%A5%E9%97%A8-ESP-NOW%E5%8D%8F%E8%AE%AE/index.html">
+<meta property="og:site_name" content="Duruofu&#39;s 个人测试">
+<meta property="og:description" content="本文档记录ESP32 ESP-NOW协议程序（实现最简接收发送）">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.duruofu.xyz/img/index_img/esp_wifi.png">
+<meta property="article:published_time" content="2024-03-27T07:30:53.000Z">
+<meta property="article:modified_time" content="2024-03-27T07:26:02.981Z">
+<meta property="article:author" content="DuRuofu">
+<meta property="article:tag" content="MQTT">
+<meta property="article:tag" content="ESP32">
+<meta property="article:tag" content="MCU">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://www.duruofu.xyz/img/index_img/esp_wifi.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>ESP32网络入门-ESP-NOW协议 - Duruofu&#39;s 个人测试</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/cust/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"www.duruofu.xyz","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":80,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":true,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":5},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>DuRuofu</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="ESP32网络入门-ESP-NOW协议"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        DuRuofu
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-03-27 15:30" pubdate>
+          2024年3月27日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          7.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          13 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">ESP32网络入门-ESP-NOW协议</h1>
+            
+              <p class="note note-info">
+                
+                  
+                    本文最后更新于：几秒前
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <h3 id="说明："><a href="#说明：" class="headerlink" title="说明："></a>说明：</h3><ol>
+<li>本文档由DuRuofu撰写，由DuRuofu负责解释及执行。</li>
+<li>本文档介绍ESP32ESP-NOW协议程序（实现最简接收发送）</li>
+</ol>
+<h3 id="修订历史："><a href="#修订历史：" class="headerlink" title="修订历史："></a>修订历史：</h3><table>
+<thead>
+<tr>
+<th>文档名称</th>
+<th>版本</th>
+<th>作者</th>
+<th>时间</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ESP32网络入门-ESP-NOW协议</td>
+<td>v1.0.0</td>
+<td>DuRuofu</td>
+<td>2024-03-27</td>
+<td>首次建立</td>
+</tr>
+</tbody></table>
+<div STYLE="page-break-after: always;"></div>
+
+<h1 id="ESP32网络入门-ESP-NOW协议"><a href="#ESP32网络入门-ESP-NOW协议" class="headerlink" title="ESP32网络入门-ESP-NOW协议"></a>ESP32网络入门-ESP-NOW协议</h1><h2 id="一、概述"><a href="#一、概述" class="headerlink" title="一、概述"></a>一、概述</h2><h3 id="1-1-ESP-NOW介绍"><a href="#1-1-ESP-NOW介绍" class="headerlink" title="1.1 ESP-NOW介绍"></a>1.1 ESP-NOW介绍</h3><blockquote>
+<p>视频介绍：<a target="_blank" rel="noopener" href="https://www.espressif.com/sites/default/files/esp-now-zh.mp4">https://www.espressif.com/sites/default/files/esp-now-zh.mp4</a></p>
+</blockquote>
+<p>ESP-NOW 是一种由乐鑫公司定义的无连接 Wi-Fi 通信协议。在 ESP-NOW 中，应用程序数据被封装在各个供应商的动作帧中，然后在无连接的情况下，从一个 Wi-Fi 设备传输到另一个 Wi-Fi 设备。 CTR 与 CBC-MAC 协议 (CCMP) 可用来保护动作帧的安全。ESP-NOW 广泛应用于智能照明、远程控制、传感器等领域。</p>
+<p>ESP-NOW 是基于数据链路层的无线通信协议，它将五层 OSI 上层协议精简为一层，数据传输时无需依次经过网络层、传输层、会话层、表示层、应用层等复杂的层级，也无需层层增加包头和解包，大大缓解了网络拥挤时因为丢包而导致的卡顿和延迟，拥有更高的响应速度。</p>
+<p><img src="/2024/03/27/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/05.ESP32WIFI%E5%85%A5%E9%97%A8/5.7-ESP32%E7%BD%91%E7%BB%9C%E5%85%A5%E9%97%A8-ESP-NOW%E5%8D%8F%E8%AE%AE/ESP32%E7%BD%91%E7%BB%9C%E5%85%A5%E9%97%A8-ESP-NOW%E5%8D%8F%E8%AE%AE/20240327133912.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="1-2-ESP-NOW-数据帧格式"><a href="#1-2-ESP-NOW-数据帧格式" class="headerlink" title="1.2 ESP-NOW 数据帧格式"></a>1.2 ESP-NOW 数据帧格式</h3><blockquote>
+<p>搬运自官方教程</p>
+</blockquote>
+<p>ESP-NOW 使用各个供应商的动作帧传输数据，默认比特率为 1 Mbps。各个供应商的动作帧格式为：</p>
+<table>
+<thead>
+<tr>
+<th>MAC 报头</th>
+<th>分类代码</th>
+<th>组织标识符</th>
+<th>随机值</th>
+<th>供应商特定内容</th>
+<th>FCS</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>24 字节</td>
+<td>1 字节</td>
+<td>3 字节</td>
+<td>4 字节</td>
+<td>7~257 字节</td>
+<td>4 字节</td>
+</tr>
+</tbody></table>
+<ul>
+<li>分类代码：分类代码字段可用于指示各个供应商的类别（比如 127）。</li>
+<li>组织标识符：组织标识符包含一个唯一标识符 (比如 0x18fe34)，为乐鑫指定的 MAC 地址的前三个字节。</li>
+<li>随机值：防止重放攻击。</li>
+<li>供应商特定内容：供应商特定内容包含供应商特定字段，如下所示：</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>元素 ID</th>
+<th>长度</th>
+<th>组织标识符</th>
+<th>类型</th>
+<th>版本</th>
+<th>正文</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1 字节</td>
+<td>1 字节</td>
+<td>3 字节</td>
+<td>1 字节</td>
+<td>1 字节</td>
+<td>0～250 字节</td>
+</tr>
+</tbody></table>
+<ul>
+<li>元素 ID：元素 ID 字段可用于指示特定于供应商的元素。</li>
+<li>长度：长度是组织标识符、类型、版本和正文的总长度。</li>
+<li>组织标识符：组织标识符包含一个唯一标识符 (比如 0x18fe34)，为乐鑫指定的 MAC 地址的前三个字节。</li>
+<li>类型：类型字段设置为 4，代表 ESP-NOW。</li>
+<li>版本：版本字段设置为 ESP-NOW 的版本。</li>
+<li>正文：正文包含 ESP-NOW 数据。</li>
+</ul>
+<p>由于 ESP-NOW 是无连接的，因此 MAC 报头与标准帧略有不同。FrameControl 字段的 FromDS 和 ToDS 位均为 0。第一个地址字段用于配置目标地址。第二个地址字段用于配置源地址。第三个地址字段用于配置广播地址 (0xff:0xff:0xff:0xff:0xff:0xff)。</p>
+<h2 id="二、使用"><a href="#二、使用" class="headerlink" title="二、使用"></a>二、使用</h2><blockquote>
+<p>使用ESP-NOW的基本条件是要知道ESP32的MAC地址</p>
+</blockquote>
+<p>可以使用<a target="_blank" rel="noopener" href="https://github.com/espressif/esp-idf/tree/v5.1.3/examples/system/base_mac_address">base_mac_address</a>历程获取芯片MAC地址：</p>
+<p><img src="/2024/03/27/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/05.ESP32WIFI%E5%85%A5%E9%97%A8/5.7-ESP32%E7%BD%91%E7%BB%9C%E5%85%A5%E9%97%A8-ESP-NOW%E5%8D%8F%E8%AE%AE/ESP32%E7%BD%91%E7%BB%9C%E5%85%A5%E9%97%A8-ESP-NOW%E5%8D%8F%E8%AE%AE/20240327141511.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="2-1-初始化"><a href="#2-1-初始化" class="headerlink" title="2.1 初始化"></a>2.1 初始化</h3><p>调用 <a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32c3/api-reference/network/esp_now.html#_CPPv412esp_now_initv" title="esp_now_init"><code>esp_now_init()</code></a> 初始化 ESP-NOW，调用 <a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32c3/api-reference/network/esp_now.html#_CPPv414esp_now_deinitv" title="esp_now_deinit"><code>esp_now_deinit()</code></a> 反初始化 ESP-NOW。ESP-NOW 数据必须在 Wi-Fi 启动后传输，因此建议在初始化 ESP-NOW 之前启动 Wi-Fi，并在反初始化 ESP-NOW 之后停止 Wi-Fi。</p>
+<p>当调用 <a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32c3/api-reference/network/esp_now.html#_CPPv414esp_now_deinitv" title="esp_now_deinit"><code>esp_now_deinit()</code></a> 时，配对设备的所有信息都将被删除。</p>
+<h3 id="2-2-设备配对"><a href="#2-2-设备配对" class="headerlink" title="2.2 设备配对"></a>2.2 设备配对</h3><p>在将数据发送到其他设备之前，请先调用 <a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32c3/api-reference/network/esp_now.html#_CPPv416esp_now_add_peerPK19esp_now_peer_info_t" title="esp_now_add_peer"><code>esp_now_add_peer()</code></a> 将其添加到配对设备列表中。如果启用了加密，则必须设置 LMK。ESP-NOW 数据可以从 Station 或 SoftAP 接口发送。确保在发送 ESP-NOW 数据之前已启用该接口。<br>配对设备的最大数量是 20，其中加密设备的数量不超过 17，默认值是 7。</p>
+<h3 id="2-3-发送数据"><a href="#2-3-发送数据" class="headerlink" title="2.3 发送数据"></a>2.3 发送数据</h3><p>调用 <a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32c3/api-reference/network/esp_now.html#_CPPv412esp_now_sendPK7uint8_tPK7uint8_t6size_t" title="esp_now_send"><code>esp_now_send()</code></a> 发送 ESP-NOW 数据，调用 <a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32c3/api-reference/network/esp_now.html#_CPPv424esp_now_register_send_cb17esp_now_send_cb_t" title="esp_now_register_send_cb"><code>esp_now_register_send_cb()</code></a> 注册发送回调函数。如果 MAC 层成功接收到数据，则该函数将返回 ESP_NOW_SEND_SUCCESS 事件。否则，它将返回 ESP_NOW_SEND_FAIL。</p>
+<p>如果有大量 ESP-NOW 数据要发送，调用 <code>esp_now_send()</code> 时需注意单次发送的数据不能超过 250 字节。请注意，两个 ESP-NOW 数据包的发送间隔太短可能导致回调函数返回混乱。因此，建议在等到上一次回调函数返回 ACK 后再发送下一个 ESP-NOW 数据。</p>
+<h3 id="2-4-接收数据"><a href="#2-4-接收数据" class="headerlink" title="2.4 接收数据"></a>2.4 接收数据</h3><p>调用 <a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32c3/api-reference/network/esp_now.html#_CPPv424esp_now_register_recv_cb17esp_now_recv_cb_t" title="esp_now_register_recv_cb"><code>esp_now_register_recv_cb()</code></a> 注册接收回调函数。当接收 ESP-NOW 数据时，需要调用接收回调函数。接收回调函数也在 Wi-Fi 任务任务中运行。因此，不要在回调函数中执行冗长的操作。 相反，将必要的数据发布到队列，并交给优先级较低的任务处理。</p>
+<h2 id="三、示例"><a href="#三、示例" class="headerlink" title="三、示例"></a>三、示例</h2><h3 id="3-1-发送"><a href="#3-1-发送" class="headerlink" title="3.1 发送"></a>3.1 发送</h3><blockquote>
+<p>注意：发送需要接收方的MAC地址</p>
+</blockquote>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdlib.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;time.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;string.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;assert.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;freertos/FreeRTOS.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;freertos/semphr.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;freertos/timers.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;nvs_flash.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;esp_random.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;esp_event.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;esp_netif.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;esp_wifi.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;esp_log.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;esp_mac.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;esp_now.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;esp_crc.h&quot;</span></span><br><br><span class="hljs-comment">// 接收方地址</span><br><span class="hljs-comment">//static uint8_t s_broadcast_mac[ESP_NOW_ETH_ALEN] = &#123;0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF&#125;;</span><br><span class="hljs-type">static</span> <span class="hljs-type">uint8_t</span> s_broadcast_mac[ESP_NOW_ETH_ALEN] = &#123;<span class="hljs-number">0x24</span>, <span class="hljs-number">0xdc</span>, <span class="hljs-number">0xc3</span>, <span class="hljs-number">0x9c</span>, <span class="hljs-number">0xeb</span>, <span class="hljs-number">0x18</span>&#125;;<br><br><span class="hljs-type">static</span> <span class="hljs-type">const</span> <span class="hljs-type">char</span> *TAG = <span class="hljs-string">&quot;espnow&quot;</span>;<br><br><span class="hljs-comment">/* WiFi should start before using ESPNOW */</span><br><span class="hljs-type">static</span> <span class="hljs-type">void</span> <span class="hljs-title function_">wifi_init</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span><br>&#123;<br>	ESP_ERROR_CHECK(esp_netif_init());<br>	ESP_ERROR_CHECK(esp_event_loop_create_default());<br>	<span class="hljs-type">wifi_init_config_t</span> cfg = WIFI_INIT_CONFIG_DEFAULT();<br>	ESP_ERROR_CHECK(esp_wifi_init(&amp;cfg));<br>	ESP_ERROR_CHECK(esp_wifi_set_storage(WIFI_STORAGE_RAM));<br>	ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_STA));<br>	ESP_ERROR_CHECK(esp_wifi_start());<br><br>&#125;<br><br><span class="hljs-type">static</span> <span class="hljs-type">void</span> <span class="hljs-title function_">example_espnow_send_cb</span><span class="hljs-params">(<span class="hljs-type">const</span> <span class="hljs-type">uint8_t</span> *mac_addr, <span class="hljs-type">esp_now_send_status_t</span> status)</span><br>&#123;<br>	<span class="hljs-keyword">if</span> (status != ESP_NOW_SEND_SUCCESS)<br>	&#123;<br>		ESP_LOGE(TAG, <span class="hljs-string">&quot;Send error&quot;</span>);<br>	&#125;<br>	<span class="hljs-keyword">else</span><br>	&#123;<br>		ESP_LOGI(TAG, <span class="hljs-string">&quot;Send success&quot;</span>);<br>	&#125;<br>&#125;<br><br><span class="hljs-comment">// ESPNOW发送任务</span><br><span class="hljs-type">static</span> <span class="hljs-type">void</span> <span class="hljs-title function_">espnow_task</span><span class="hljs-params">(<span class="hljs-type">void</span> *pvParameter)</span><br>&#123;<br>	<span class="hljs-type">char</span> send_msg[] = <span class="hljs-string">&quot;ESPNOW test!&quot;</span>;<br>	ESP_LOGI(TAG, <span class="hljs-string">&quot;Start sending broadcast data&quot;</span>);<br>	<span class="hljs-keyword">while</span> (<span class="hljs-number">1</span>)<br>	&#123;<br>		<span class="hljs-comment">// 发送数据</span><br>		<span class="hljs-keyword">if</span> (esp_now_send(s_broadcast_mac, (<span class="hljs-type">uint8_t</span> *)send_msg, <span class="hljs-keyword">sizeof</span>(send_msg)) != ESP_OK)<br>		&#123;<br>			ESP_LOGE(TAG, <span class="hljs-string">&quot;Send error&quot;</span>);<br>		&#125;<br>		vTaskDelay(<span class="hljs-number">1000</span> / portTICK_PERIOD_MS);<br>	&#125;<br>&#125;<br><br><span class="hljs-type">static</span> <span class="hljs-type">esp_err_t</span> <span class="hljs-title function_">espnow_init</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span><br>&#123;<br><br>	<span class="hljs-comment">/* Initialize ESPNOW and register sending and receiving callback function. */</span><br>	ESP_ERROR_CHECK(esp_now_init());<br>	<span class="hljs-comment">// 注册发送回调函数</span><br>	ESP_ERROR_CHECK(esp_now_register_send_cb(example_espnow_send_cb));<br>	<span class="hljs-comment">//ESP_ERROR_CHECK(esp_now_register_recv_cb(example_espnow_recv_cb));</span><br><br>	<span class="hljs-comment">// 将广播对等方信息添加到对等方列表</span><br>	<span class="hljs-type">esp_now_peer_info_t</span> *peer = <span class="hljs-built_in">malloc</span>(<span class="hljs-keyword">sizeof</span>(<span class="hljs-type">esp_now_peer_info_t</span>));<br>	<span class="hljs-keyword">if</span> (peer == <span class="hljs-literal">NULL</span>)<br>	&#123;<br>		ESP_LOGE(TAG, <span class="hljs-string">&quot;Malloc peer information fail&quot;</span>);<br>		esp_now_deinit();<br>		<span class="hljs-keyword">return</span> ESP_FAIL;<br>	&#125;<br>	<span class="hljs-comment">// 初始化对等方信息</span><br>	<span class="hljs-built_in">memset</span>(peer, <span class="hljs-number">0</span>, <span class="hljs-keyword">sizeof</span>(<span class="hljs-type">esp_now_peer_info_t</span>));<br>	peer-&gt;channel = <span class="hljs-number">1</span>;<br>	peer-&gt;ifidx = ESP_IF_WIFI_STA;<br>	peer-&gt;encrypt = <span class="hljs-literal">false</span>;<br>	<span class="hljs-built_in">memcpy</span>(peer-&gt;peer_addr, s_broadcast_mac, ESP_NOW_ETH_ALEN);<br>	<span class="hljs-comment">// 添加对等方</span><br>	ESP_ERROR_CHECK(esp_now_add_peer(peer));<br>	<span class="hljs-built_in">free</span>(peer);<br><br>	xTaskCreate(espnow_task, <span class="hljs-string">&quot;espnow_task&quot;</span>, <span class="hljs-number">2048</span>, <span class="hljs-literal">NULL</span>, <span class="hljs-number">4</span>, <span class="hljs-literal">NULL</span>);<br><br>	<span class="hljs-keyword">return</span> ESP_OK;<br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">app_main</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span><br>&#123;<br>	<span class="hljs-comment">// Initialize NVS</span><br>	<span class="hljs-type">esp_err_t</span> ret = nvs_flash_init();<br>	<span class="hljs-keyword">if</span> (ret == ESP_ERR_NVS_NO_FREE_PAGES || ret == ESP_ERR_NVS_NEW_VERSION_FOUND)<br>	&#123;<br>		ESP_ERROR_CHECK(nvs_flash_erase());<br>		ret = nvs_flash_init();<br>	&#125;<br>	ESP_ERROR_CHECK(ret);<br><br>	<span class="hljs-comment">// Initialize WiFi</span><br>	wifi_init();<br><br>	<span class="hljs-comment">// Initialize ESPNOW</span><br>	espnow_init();<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<h3 id="3-2-接收"><a href="#3-2-接收" class="headerlink" title="3.2 接收"></a>3.2 接收</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdlib.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;time.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;string.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;assert.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;freertos/FreeRTOS.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;freertos/semphr.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;freertos/timers.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;nvs_flash.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;esp_random.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;esp_event.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;esp_netif.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;esp_wifi.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;esp_log.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;esp_mac.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;esp_now.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;esp_crc.h&quot;</span></span><br><br><span class="hljs-comment">// 接收方地址</span><br><span class="hljs-comment">// static uint8_t s_broadcast_mac[ESP_NOW_ETH_ALEN] = &#123;0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF&#125;;</span><br><span class="hljs-type">static</span> <span class="hljs-type">uint8_t</span> s_broadcast_mac[ESP_NOW_ETH_ALEN] = &#123;<span class="hljs-number">0x24</span>, <span class="hljs-number">0xdc</span>, <span class="hljs-number">0xc3</span>, <span class="hljs-number">0x9c</span>, <span class="hljs-number">0xeb</span>, <span class="hljs-number">0x18</span>&#125;;<br><br><span class="hljs-type">static</span> <span class="hljs-type">const</span> <span class="hljs-type">char</span> *TAG = <span class="hljs-string">&quot;espnow&quot;</span>;<br><br><span class="hljs-comment">/* WiFi should start before using ESPNOW */</span><br><span class="hljs-type">static</span> <span class="hljs-type">void</span> <span class="hljs-title function_">wifi_init</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span><br>&#123;<br>	ESP_ERROR_CHECK(esp_netif_init());<br>	ESP_ERROR_CHECK(esp_event_loop_create_default());<br>	<span class="hljs-type">wifi_init_config_t</span> cfg = WIFI_INIT_CONFIG_DEFAULT();<br>	ESP_ERROR_CHECK(esp_wifi_init(&amp;cfg));<br>	ESP_ERROR_CHECK(esp_wifi_set_storage(WIFI_STORAGE_RAM));<br>	ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_STA));<br>	ESP_ERROR_CHECK(esp_wifi_start());<br>&#125;<br><br><span class="hljs-comment">// ESPNOW接收回调函数</span><br><span class="hljs-type">static</span> <span class="hljs-type">void</span> <span class="hljs-title function_">example_espnow_recv_cb</span><span class="hljs-params">(<span class="hljs-type">const</span> <span class="hljs-type">esp_now_recv_info_t</span> *recv_info, <span class="hljs-type">const</span> <span class="hljs-type">uint8_t</span> *data, <span class="hljs-type">int</span> len)</span><br>&#123;<br>	ESP_LOGI(TAG, <span class="hljs-string">&quot;Receive data from: &quot;</span> MACSTR <span class="hljs-string">&quot;, len: %d&quot;</span>, MAC2STR(recv_info-&gt;src_addr), len);<br>	ESP_LOGI(TAG, <span class="hljs-string">&quot;Data: %s&quot;</span>, data);<br>&#125;<br><br><span class="hljs-comment">// ESPNOW接受数据任务</span><br><span class="hljs-type">static</span> <span class="hljs-type">void</span> <span class="hljs-title function_">espnow_task</span><span class="hljs-params">(<span class="hljs-type">void</span> *pvParameter)</span><br>&#123;<br>	ESP_LOGI(TAG, <span class="hljs-string">&quot;Start receiving data&quot;</span>);<br>	<span class="hljs-keyword">while</span> (<span class="hljs-number">1</span>)<br>	&#123;<br>		vTaskDelay(<span class="hljs-number">1000</span> / portTICK_PERIOD_MS);<br>	&#125;<br>&#125;<br><br><span class="hljs-type">static</span> <span class="hljs-type">esp_err_t</span> <span class="hljs-title function_">espnow_init</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span><br>&#123;<br><br>	<span class="hljs-comment">/* Initialize ESPNOW and register sending and receiving callback function. */</span><br>	ESP_ERROR_CHECK(esp_now_init());<br>	<span class="hljs-comment">// 注册接受回调函数</span><br>	<span class="hljs-comment">//ESP_ERROR_CHECK(esp_now_register_send_cb(example_espnow_send_cb));</span><br>	ESP_ERROR_CHECK(esp_now_register_recv_cb(example_espnow_recv_cb));<br><br>	xTaskCreate(espnow_task, <span class="hljs-string">&quot;espnow_task&quot;</span>, <span class="hljs-number">2048</span>, <span class="hljs-literal">NULL</span>, <span class="hljs-number">4</span>, <span class="hljs-literal">NULL</span>);<br><br>	<span class="hljs-keyword">return</span> ESP_OK;<br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">app_main</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span><br>&#123;<br>	<span class="hljs-comment">// Initialize NVS</span><br>	<span class="hljs-type">esp_err_t</span> ret = nvs_flash_init();<br>	<span class="hljs-keyword">if</span> (ret == ESP_ERR_NVS_NO_FREE_PAGES || ret == ESP_ERR_NVS_NEW_VERSION_FOUND)<br>	&#123;<br>		ESP_ERROR_CHECK(nvs_flash_erase());<br>		ret = nvs_flash_init();<br>	&#125;<br>	ESP_ERROR_CHECK(ret);<br><br>	<span class="hljs-comment">// Initialize WiFi</span><br>	wifi_init();<br><br>	<span class="hljs-comment">// Initialize ESPNOW</span><br>	espnow_init();<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<p>效果：</p>
+<p><img src="/2024/03/27/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/05.ESP32WIFI%E5%85%A5%E9%97%A8/5.7-ESP32%E7%BD%91%E7%BB%9C%E5%85%A5%E9%97%A8-ESP-NOW%E5%8D%8F%E8%AE%AE/ESP32%E7%BD%91%E7%BB%9C%E5%85%A5%E9%97%A8-ESP-NOW%E5%8D%8F%E8%AE%AE/20240327152252.png" srcset="/img/loading.gif" lazyload></p>
+<h1 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h1><ol>
+<li><a target="_blank" rel="noopener" href="https://github.com/espressif/esp-idf/blob/v5.1.3/examples/wifi/espnow/main/espnow_example.h">https://github.com/espressif/esp-idf/blob/v5.1.3/examples/wifi/espnow/main/espnow_example.h</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32c3/api-reference/network/esp_now.html">https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32c3/api-reference/network/esp_now.html</a></li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%94%B5%E5%AD%90%E4%BF%A1%E6%81%AF%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/" class="category-chain-item">电子信息硬件相关</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E7%94%B5%E5%AD%90%E4%BF%A1%E6%81%AF%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/" class="category-chain-item">MCU</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E7%94%B5%E5%AD%90%E4%BF%A1%E6%81%AF%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/" class="category-chain-item">ESP32</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E7%94%B5%E5%AD%90%E4%BF%A1%E6%81%AF%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/WIFI/" class="category-chain-item">WIFI</a>
+  
+  
+
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/MQTT/">#MQTT</a>
+      
+        <a href="/tags/ESP32/">#ESP32</a>
+      
+        <a href="/tags/MCU/">#MCU</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>ESP32网络入门-ESP-NOW协议</div>
+      <div>https://www.duruofu.xyz/2024/03/27/4.硬件相关/MCU/ESP32/05.ESP32WIFI入门/5.7-ESP32网络入门-ESP-NOW协议/ESP32网络入门-ESP-NOW协议/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>DuRuofu</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年3月27日</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>更新于</div>
+          <div>2024年3月27日</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
+                    <i class="iconfont icon-nc"></i>
+                  </span>
+                </a>
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="SA - 相同方式共享">
+                    <i class="iconfont icon-sa"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/03/27/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/05.ESP32WIFI%E5%85%A5%E9%97%A8/5.6-ESP32%E7%BD%91%E7%BB%9C%E5%85%A5%E9%97%A8-MQTT%E5%8D%8F%E8%AE%AE/ESP32%E7%BD%91%E7%BB%9C%E5%85%A5%E9%97%A8-MQTT%E5%8D%8F%E8%AE%AE/" title="ESP32网络入门-MQTT协议">
+                        <span class="hidden-mobile">ESP32网络入门-MQTT协议</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#gitalk-container', function() {
+      Fluid.utils.createCssLink('/css/gitalk.css')
+      Fluid.utils.createScript('https://lib.baomitu.com/gitalk/1.8.0/gitalk.min.js', function() {
+        var options = Object.assign(
+          {"clientID":"c9ac06d5413a9d613a1e","clientSecret":"a44f5c72589eb090876cc64067db28fbfdf4747c","repo":"Blog-comments-gitalk","owner":"DuRuofu","admin":["DuRuofu"],"language":"zh-CN","labels":["Gitalk"],"perPage":15,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":false,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token"},
+          {
+            id: '5574588f8f4720c76cc8916ff3dc0441'
+          }
+        )
+        var gitalk = new Gitalk(options);
+        gitalk.render('gitalk-container');
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <br><span id="timeDate">天数载入中</span><span id="times">...</span><br> <span>总有读不懂的诗和到达不了的远方</span> <p>Copyright © 2023 - <span id="currentYear"></span> All Rights Reserved.</p>
+    </div>
+  
+<span style="font-size: smaller;" >  😊目前为止，已经码字：694k</span>
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+  
+</div>
+
+  
+
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      陕ICP备2022007454号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=2022007454"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>陕ICP备2022007454号-2</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+  
+
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":true,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/cust/custom.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
