@@ -1,0 +1,1043 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/%E4%B8%AA%E4%BA%BA%E5%A4%B4%E5%83%8F%E6%97%A0%E8%83%8C%E6%99%AF.png">
+  <link rel="icon" href="https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/%E4%B8%AA%E4%BA%BA%E5%A4%B4%E5%83%8F%E6%97%A0%E8%83%8C%E6%99%AF.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="DuRuofu">
+  <meta name="keywords" content="嵌入式,个人博客,个人测试">
+  
+    <meta name="description" content="本文档介绍ESP32ESP32GUI入门-基于ESP-IDF官方组件移植LVGL(GC9A01无触摸)">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ESP32GUI入门-1.基于ESP-IDF官方组件移植LVGL(GC9A01无触摸)">
+<meta property="og:url" content="https://www.duruofu.xyz/2024/05/31/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/08.ESP32GUI%E5%85%A5%E9%97%A8/8.1-%E4%BD%BF%E7%94%A8%E7%BB%84%E4%BB%B6%E7%AE%A1%E7%90%86%E5%99%A8%E7%A7%BB%E6%A4%8DLVGL/%E5%9F%BA%E4%BA%8EESP-IDF%E5%AE%98%E6%96%B9%E7%BB%84%E4%BB%B6%E7%A7%BB%E6%A4%8DLVGL(%E4%BB%A5GC9A01%E4%B8%BA%E4%BE%8B)/%E5%9F%BA%E4%BA%8EESP-IDF%E5%AE%98%E6%96%B9%E7%BB%84%E4%BB%B6%E7%A7%BB%E6%A4%8DLVGL(GC9A01%E6%97%A0%E8%A7%A6%E6%91%B8)/index.html">
+<meta property="og:site_name" content="Duruofu&#39;s 个人测试">
+<meta property="og:description" content="本文档介绍ESP32ESP32GUI入门-基于ESP-IDF官方组件移植LVGL(GC9A01无触摸)">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.duruofu.xyz/img/index_img/esp_lvgl.png">
+<meta property="article:published_time" content="2024-05-31T10:42:53.000Z">
+<meta property="article:modified_time" content="2024-06-01T02:24:32.770Z">
+<meta property="article:author" content="DuRuofu">
+<meta property="article:tag" content="ESP32">
+<meta property="article:tag" content="MCU">
+<meta property="article:tag" content="LVGL">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://www.duruofu.xyz/img/index_img/esp_lvgl.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>ESP32GUI入门-1.基于ESP-IDF官方组件移植LVGL(GC9A01无触摸) - Duruofu&#39;s 个人测试</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/cust/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"www.duruofu.xyz","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":80,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":true,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":5},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>DuRuofu</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/2020/06/06/1.%E9%98%85%E8%AF%BB%E5%86%99%E4%BD%9C/%E5%8E%9F%E5%88%9B%E8%AF%97%E8%AF%8D/%E8%AF%97%E8%AF%8D/">
+                <i class="iconfont icon-books"></i>
+                <span>诗词</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="ESP32GUI入门-1.基于ESP-IDF官方组件移植LVGL(GC9A01无触摸)"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        DuRuofu
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-05-31 18:42" pubdate>
+          2024年5月31日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          17k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          29 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">ESP32GUI入门-1.基于ESP-IDF官方组件移植LVGL(GC9A01无触摸)</h1>
+            
+              <p class="note note-info">
+                
+                  
+                    本文最后更新于：1 分钟前
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <h3 id="说明："><a href="#说明：" class="headerlink" title="说明："></a>说明：</h3><ol>
+<li>本文档由DuRuofu撰写，由DuRuofu负责解释及执行。</li>
+<li>本文记录使用使用组件管理器移植LVGL。</li>
+</ol>
+<h3 id="修订历史："><a href="#修订历史：" class="headerlink" title="修订历史："></a>修订历史：</h3><table>
+<thead>
+<tr>
+<th>文档名称</th>
+<th>版本</th>
+<th>作者</th>
+<th>时间</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>使用组件管理器移植LVGL</td>
+<td>v1.0.0</td>
+<td>DuRuofu</td>
+<td>2024-02-29</td>
+<td>首次建立</td>
+</tr>
+</tbody></table>
+<div STYLE="page-break-after: always;"></div>
+
+<h1 id="使用组件管理器移植LVGL"><a href="#使用组件管理器移植LVGL" class="headerlink" title="使用组件管理器移植LVGL"></a>使用组件管理器移植LVGL</h1><h2 id="一、啥是组件管理器"><a href="#一、啥是组件管理器" class="headerlink" title="一、啥是组件管理器"></a>一、啥是组件管理器</h2><p>ESP-IDF官方对组件管理器的描述是这样的：</p>
+<blockquote>
+<p>The IDF Component Manager is a tool that allows developers to manage components for the ESP-IDF development framework. The tool is compatible with ESP-IDF versions 4.1 and later, and is included by default starting with ESP-IDF version 4.4.</p>
+</blockquote>
+<p>  The ESP Component Registry is a central repository for components that can be used with the ESP-IDF. It is hosted at <a target="_blank" rel="noopener" href="https://components.espressif.com/">https://components.espressif.com</a> and provides a convenient way for developers to discover and download components for their projects.</p>
+<blockquote>
+<p>  With the IDF Component Manager, developers can easily install components from the ESP-IDF Component Registry, streamlining the process of adding new functionality to their projects.</p>
+</blockquote>
+<p>说人话就是，世上本没有组件管理器，自定义组件多了，就有了组件库，就有了组件管理器。</p>
+<p>如果用学过node，那我们可以把组件管理器比作npm包管理器，把<code>idf_component.yml</code>比作<code>package.jso</code>,真的一模一样。(不知道node，npm当我没说)。</p>
+<p>我们可以在这：<a target="_blank" rel="noopener" href="https://components.espressif.com/"> ESP-IDF components</a>  找到乐鑫发布的一些他们帮我们写好的”自定义组件“。</p>
+<p>使用这些组件我们可以快速的完成一些功能的实现，比如移植还有点难度的LVGL库，现在只要一行命令就能移植完成。</p>
+<p><img src="/2024/05/31/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/08.ESP32GUI%E5%85%A5%E9%97%A8/8.1-%E4%BD%BF%E7%94%A8%E7%BB%84%E4%BB%B6%E7%AE%A1%E7%90%86%E5%99%A8%E7%A7%BB%E6%A4%8DLVGL/%E5%9F%BA%E4%BA%8EESP-IDF%E5%AE%98%E6%96%B9%E7%BB%84%E4%BB%B6%E7%A7%BB%E6%A4%8DLVGL(%E4%BB%A5GC9A01%E4%B8%BA%E4%BE%8B)/%E5%9F%BA%E4%BA%8EESP-IDF%E5%AE%98%E6%96%B9%E7%BB%84%E4%BB%B6%E7%A7%BB%E6%A4%8DLVGL(GC9A01%E6%97%A0%E8%A7%A6%E6%91%B8)/20240219001357.png" srcset="/img/loading.gif" lazyload></p>
+<p>一个字：香啊！</p>
+<h2 id="二、组件管理器怎么用"><a href="#二、组件管理器怎么用" class="headerlink" title="二、组件管理器怎么用"></a>二、组件管理器怎么用</h2><p>下面展示一个使用组件管理器移植LVGL点亮屏幕的示例：</p>
+<h3 id="2-1-硬件参数及接线"><a href="#2-1-硬件参数及接线" class="headerlink" title="2.1 硬件参数及接线"></a>2.1 硬件参数及接线</h3><p>我们使用的开发板是：<a target="_blank" rel="noopener" href="https://item.taobao.com/item.htm?abbucket=18&id=739585951026&ns=1&spm=a21n57.1.0.0.7128523cmbToGt">ESP32圆形TFT屏幕开发板</a></p>
+<p><img src="/2024/05/31/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/08.ESP32GUI%E5%85%A5%E9%97%A8/8.1-%E4%BD%BF%E7%94%A8%E7%BB%84%E4%BB%B6%E7%AE%A1%E7%90%86%E5%99%A8%E7%A7%BB%E6%A4%8DLVGL/%E5%9F%BA%E4%BA%8EESP-IDF%E5%AE%98%E6%96%B9%E7%BB%84%E4%BB%B6%E7%A7%BB%E6%A4%8DLVGL(%E4%BB%A5GC9A01%E4%B8%BA%E4%BE%8B)/%E5%9F%BA%E4%BA%8EESP-IDF%E5%AE%98%E6%96%B9%E7%BB%84%E4%BB%B6%E7%A7%BB%E6%A4%8DLVGL(GC9A01%E6%97%A0%E8%A7%A6%E6%91%B8)/20240219002722.png" srcset="/img/loading.gif" lazyload></p>
+<p>屏幕驱动IC为：GC9A01<br>屏幕尺寸为：240 X 240<br>驱动接口为：4线SPI</p>
+<p>屏幕接线如图：<br><img src="/2024/05/31/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/08.ESP32GUI%E5%85%A5%E9%97%A8/8.1-%E4%BD%BF%E7%94%A8%E7%BB%84%E4%BB%B6%E7%AE%A1%E7%90%86%E5%99%A8%E7%A7%BB%E6%A4%8DLVGL/%E5%9F%BA%E4%BA%8EESP-IDF%E5%AE%98%E6%96%B9%E7%BB%84%E4%BB%B6%E7%A7%BB%E6%A4%8DLVGL(%E4%BB%A5GC9A01%E4%B8%BA%E4%BE%8B)/%E5%9F%BA%E4%BA%8EESP-IDF%E5%AE%98%E6%96%B9%E7%BB%84%E4%BB%B6%E7%A7%BB%E6%A4%8DLVGL(GC9A01%E6%97%A0%E8%A7%A6%E6%91%B8)/20240219002935.png" srcset="/img/loading.gif" lazyload></p>
+<table>
+<thead>
+<tr>
+<th>引脚名称</th>
+<th>引脚功能</th>
+<th>连接GPIO</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>GND</td>
+<td>电源负，地</td>
+<td>GND</td>
+</tr>
+<tr>
+<td>VCC</td>
+<td>电源正，3.3 - 5V，需要与通信电平一致</td>
+<td>VCC</td>
+</tr>
+<tr>
+<td>BLK</td>
+<td>背光，悬空使能接地关闭，默认上拉至3.3V</td>
+<td>32</td>
+</tr>
+<tr>
+<td>CS</td>
+<td>片选，低电平使能</td>
+<td>5</td>
+</tr>
+<tr>
+<td>DC</td>
+<td>数据&#x2F;命令选择，低电平命令，高电平数据</td>
+<td>27</td>
+</tr>
+<tr>
+<td>RES</td>
+<td>复位，低电平使能</td>
+<td>33</td>
+</tr>
+<tr>
+<td>SDA</td>
+<td>SPI数据输入端口</td>
+<td>15</td>
+</tr>
+<tr>
+<td>SCL</td>
+<td>SPI时钟信号输入端口</td>
+<td>14</td>
+</tr>
+</tbody></table>
+<h3 id="2-2-新建工程"><a href="#2-2-新建工程" class="headerlink" title="2.2 新建工程"></a>2.2 新建工程</h3><p>新建工程：，命名为：<code>lvgl_componen</code></p>
+<p><img src="/2024/05/31/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/08.ESP32GUI%E5%85%A5%E9%97%A8/8.1-%E4%BD%BF%E7%94%A8%E7%BB%84%E4%BB%B6%E7%AE%A1%E7%90%86%E5%99%A8%E7%A7%BB%E6%A4%8DLVGL/%E5%9F%BA%E4%BA%8EESP-IDF%E5%AE%98%E6%96%B9%E7%BB%84%E4%BB%B6%E7%A7%BB%E6%A4%8DLVGL(%E4%BB%A5GC9A01%E4%B8%BA%E4%BE%8B)/%E5%9F%BA%E4%BA%8EESP-IDF%E5%AE%98%E6%96%B9%E7%BB%84%E4%BB%B6%E7%A7%BB%E6%A4%8DLVGL(GC9A01%E6%97%A0%E8%A7%A6%E6%91%B8)/20240219084903.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/2024/05/31/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/08.ESP32GUI%E5%85%A5%E9%97%A8/8.1-%E4%BD%BF%E7%94%A8%E7%BB%84%E4%BB%B6%E7%AE%A1%E7%90%86%E5%99%A8%E7%A7%BB%E6%A4%8DLVGL/%E5%9F%BA%E4%BA%8EESP-IDF%E5%AE%98%E6%96%B9%E7%BB%84%E4%BB%B6%E7%A7%BB%E6%A4%8DLVGL(%E4%BB%A5GC9A01%E4%B8%BA%E4%BE%8B)/%E5%9F%BA%E4%BA%8EESP-IDF%E5%AE%98%E6%96%B9%E7%BB%84%E4%BB%B6%E7%A7%BB%E6%A4%8DLVGL(GC9A01%E6%97%A0%E8%A7%A6%E6%91%B8)/20240219085149.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="2-3-引入依赖"><a href="#2-3-引入依赖" class="headerlink" title="2.3 引入依赖"></a>2.3 引入依赖</h3><p>打开乐鑫维护的lvgl组件页面：<a target="_blank" rel="noopener" href="https://components.espressif.com/components/lvgl/lvgl/versions/8.3.11?language=en">lvgl</a></p>
+<p><img src="/2024/05/31/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/08.ESP32GUI%E5%85%A5%E9%97%A8/8.1-%E4%BD%BF%E7%94%A8%E7%BB%84%E4%BB%B6%E7%AE%A1%E7%90%86%E5%99%A8%E7%A7%BB%E6%A4%8DLVGL/%E5%9F%BA%E4%BA%8EESP-IDF%E5%AE%98%E6%96%B9%E7%BB%84%E4%BB%B6%E7%A7%BB%E6%A4%8DLVGL(%E4%BB%A5GC9A01%E4%B8%BA%E4%BE%8B)/%E5%9F%BA%E4%BA%8EESP-IDF%E5%AE%98%E6%96%B9%E7%BB%84%E4%BB%B6%E7%A7%BB%E6%A4%8DLVGL(GC9A01%E6%97%A0%E8%A7%A6%E6%91%B8)/20240308162418.png" srcset="/img/loading.gif" lazyload></p>
+<p>输入命令添加依赖   <code>idf.py add-dependency &quot;lvgl/lvgl^8.3.11&quot;</code>  (这里使用8.3.11版本)</p>
+<p><img src="/2024/05/31/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/08.ESP32GUI%E5%85%A5%E9%97%A8/8.1-%E4%BD%BF%E7%94%A8%E7%BB%84%E4%BB%B6%E7%AE%A1%E7%90%86%E5%99%A8%E7%A7%BB%E6%A4%8DLVGL/%E5%9F%BA%E4%BA%8EESP-IDF%E5%AE%98%E6%96%B9%E7%BB%84%E4%BB%B6%E7%A7%BB%E6%A4%8DLVGL(%E4%BB%A5GC9A01%E4%B8%BA%E4%BE%8B)/%E5%9F%BA%E4%BA%8EESP-IDF%E5%AE%98%E6%96%B9%E7%BB%84%E4%BB%B6%E7%A7%BB%E6%A4%8DLVGL(GC9A01%E6%97%A0%E8%A7%A6%E6%91%B8)/20240308162526.png" srcset="/img/loading.gif" lazyload></p>
+<p>添加后如下图所示：</p>
+<p>编译工程，会发现自动生成了 <code>managed_components</code>文件夹，替我们下载好了esp_lvgl_port 和lvgl两个组件</p>
+<p><img src="/2024/05/31/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/08.ESP32GUI%E5%85%A5%E9%97%A8/8.1-%E4%BD%BF%E7%94%A8%E7%BB%84%E4%BB%B6%E7%AE%A1%E7%90%86%E5%99%A8%E7%A7%BB%E6%A4%8DLVGL/%E5%9F%BA%E4%BA%8EESP-IDF%E5%AE%98%E6%96%B9%E7%BB%84%E4%BB%B6%E7%A7%BB%E6%A4%8DLVGL(%E4%BB%A5GC9A01%E4%B8%BA%E4%BE%8B)/%E5%9F%BA%E4%BA%8EESP-IDF%E5%AE%98%E6%96%B9%E7%BB%84%E4%BB%B6%E7%A7%BB%E6%A4%8DLVGL(GC9A01%E6%97%A0%E8%A7%A6%E6%91%B8)/20240219090431.png" srcset="/img/loading.gif" lazyload></p>
+<p>我们并没引入lvgl，问什么会下载呢，其实是esp_lvgl_port 内部有通过组件管理器引入了lvgl组件。</p>
+<p><img src="/2024/05/31/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/08.ESP32GUI%E5%85%A5%E9%97%A8/8.1-%E4%BD%BF%E7%94%A8%E7%BB%84%E4%BB%B6%E7%AE%A1%E7%90%86%E5%99%A8%E7%A7%BB%E6%A4%8DLVGL/%E5%9F%BA%E4%BA%8EESP-IDF%E5%AE%98%E6%96%B9%E7%BB%84%E4%BB%B6%E7%A7%BB%E6%A4%8DLVGL(%E4%BB%A5GC9A01%E4%B8%BA%E4%BE%8B)/%E5%9F%BA%E4%BA%8EESP-IDF%E5%AE%98%E6%96%B9%E7%BB%84%E4%BB%B6%E7%A7%BB%E6%A4%8DLVGL(GC9A01%E6%97%A0%E8%A7%A6%E6%91%B8)/20240308162550.png" srcset="/img/loading.gif" lazyload></p>
+<p>除此之外，我们还需要引入GC9A01这个屏幕IC的驱动程序，乐鑫已经替我们准备好了:  <a target="_blank" rel="noopener" href="https://components.espressif.com/components/espressif/esp_lcd_gc9a01?language=en">esp_lcd_gc9a01</a></p>
+<p><img src="/2024/05/31/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/08.ESP32GUI%E5%85%A5%E9%97%A8/8.1-%E4%BD%BF%E7%94%A8%E7%BB%84%E4%BB%B6%E7%AE%A1%E7%90%86%E5%99%A8%E7%A7%BB%E6%A4%8DLVGL/%E5%9F%BA%E4%BA%8EESP-IDF%E5%AE%98%E6%96%B9%E7%BB%84%E4%BB%B6%E7%A7%BB%E6%A4%8DLVGL(%E4%BB%A5GC9A01%E4%B8%BA%E4%BE%8B)/%E5%9F%BA%E4%BA%8EESP-IDF%E5%AE%98%E6%96%B9%E7%BB%84%E4%BB%B6%E7%A7%BB%E6%A4%8DLVGL(GC9A01%E6%97%A0%E8%A7%A6%E6%91%B8)/20240219091339.png" srcset="/img/loading.gif" lazyload></p>
+<p>同样引入依赖编译即可：</p>
+<p><img src="/2024/05/31/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/08.ESP32GUI%E5%85%A5%E9%97%A8/8.1-%E4%BD%BF%E7%94%A8%E7%BB%84%E4%BB%B6%E7%AE%A1%E7%90%86%E5%99%A8%E7%A7%BB%E6%A4%8DLVGL/%E5%9F%BA%E4%BA%8EESP-IDF%E5%AE%98%E6%96%B9%E7%BB%84%E4%BB%B6%E7%A7%BB%E6%A4%8DLVGL(%E4%BB%A5GC9A01%E4%B8%BA%E4%BE%8B)/%E5%9F%BA%E4%BA%8EESP-IDF%E5%AE%98%E6%96%B9%E7%BB%84%E4%BB%B6%E7%A7%BB%E6%A4%8DLVGL(GC9A01%E6%97%A0%E8%A7%A6%E6%91%B8)/20240308162854.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="2-4-编写代码调用组件，点亮屏幕"><a href="#2-4-编写代码调用组件，点亮屏幕" class="headerlink" title="2.4 编写代码调用组件，点亮屏幕"></a>2.4 编写代码调用组件，点亮屏幕</h3><blockquote>
+<p>关于如何使用spi点亮led 屏幕可以参考历程：esp-idf-v5.1.2&#x2F;examples&#x2F;peripherals&#x2F;lcd&#x2F;spi_lcd_touch</p>
+</blockquote>
+<h4 id="2-4-1-配置屏幕"><a href="#2-4-1-配置屏幕" class="headerlink" title="2.4.1 配置屏幕"></a>2.4.1 配置屏幕</h4><h5 id="导入头文件："><a href="#导入头文件：" class="headerlink" title="导入头文件："></a>导入头文件：</h5><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;freertos/FreeRTOS.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;freertos/semphr.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;freertos/task.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;esp_timer.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;esp_lcd_panel_io.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;esp_lcd_panel_vendor.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;esp_lcd_panel_ops.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;driver/gpio.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;driver/spi_master.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;driver/i2c.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;esp_err.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;esp_log.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;lvgl.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;sdkconfig.h&quot;</span></span><br><span class="hljs-comment">// 屏幕驱动</span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;esp_lcd_gc9a01.h&quot;</span></span><br></code></pre></td></tr></table></figure>
+
+<h5 id="选择SPI控制器："><a href="#选择SPI控制器：" class="headerlink" title="选择SPI控制器："></a>选择SPI控制器：</h5><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// Using SPI2</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> LCD_HOST SPI2_HOST</span><br></code></pre></td></tr></table></figure>
+
+<p><img src="/2024/05/31/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/08.ESP32GUI%E5%85%A5%E9%97%A8/8.1-%E4%BD%BF%E7%94%A8%E7%BB%84%E4%BB%B6%E7%AE%A1%E7%90%86%E5%99%A8%E7%A7%BB%E6%A4%8DLVGL/%E5%9F%BA%E4%BA%8EESP-IDF%E5%AE%98%E6%96%B9%E7%BB%84%E4%BB%B6%E7%A7%BB%E6%A4%8DLVGL(%E4%BB%A5GC9A01%E4%B8%BA%E4%BE%8B)/%E5%9F%BA%E4%BA%8EESP-IDF%E5%AE%98%E6%96%B9%E7%BB%84%E4%BB%B6%E7%A7%BB%E6%A4%8DLVGL(GC9A01%E6%97%A0%E8%A7%A6%E6%91%B8)/20240308163718.png" srcset="/img/loading.gif" lazyload></p>
+<p>根据手册这里选择SPI2</p>
+<h5 id="定义屏幕尺寸："><a href="#定义屏幕尺寸：" class="headerlink" title="定义屏幕尺寸："></a>定义屏幕尺寸：</h5><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// 屏幕尺寸</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> EXAMPLE_LCD_H_RES 240</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> EXAMPLE_LCD_V_RES 240</span><br></code></pre></td></tr></table></figure>
+
+<h5 id="定义引脚接线："><a href="#定义引脚接线：" class="headerlink" title="定义引脚接线："></a>定义引脚接线：</h5><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// 引脚接线</span><br><span class="hljs-comment">// | Name | Description            				| GPIO   |</span><br><span class="hljs-comment">// | BLK  | 背光，悬空使能接地关闭，默认上拉至3.3V | 32     |</span><br><span class="hljs-comment">// | CS   | 片选，低电平使能               	      | 5      |</span><br><span class="hljs-comment">// | DC   | 数据/命令选择，低电平命令，高电平数据   | 27     |</span><br><span class="hljs-comment">// | RES  | 复位，低电平使能               	  	  | 33     |</span><br><span class="hljs-comment">// | SDA  | SPI数据输入端口              		  | 15     |</span><br><span class="hljs-comment">// | SCL  | SPI时钟信号输入端口            		  | 14     |</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> EXAMPLE_LCD_BK_LIGHT_ON_LEVEL 1</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> EXAMPLE_LCD_BK_LIGHT_OFF_LEVEL !EXAMPLE_LCD_BK_LIGHT_ON_LEVEL</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> EXAMPLE_PIN_NUM_BK_LIGHT      32</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> EXAMPLE_PIN_NUM_LCD_CS 5</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> EXAMPLE_PIN_NUM_LCD_DC 27</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> EXAMPLE_PIN_NUM_LCD_RST 33</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> EXAMPLE_PIN_NUM_DATA0 15</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> EXAMPLE_PIN_NUM_SCLK 14</span><br><br></code></pre></td></tr></table></figure>
+
+<h5 id="测试背光（main）"><a href="#测试背光（main）" class="headerlink" title="测试背光（main）"></a>测试背光（main）</h5><blockquote>
+<p>如果硬件上背光常开，可以忽略这个环节</p>
+</blockquote>
+<p>在main函数里运行这段代码：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// 配置屏幕背光</span><br>ESP_LOGI(TAG, <span class="hljs-string">&quot;Turn off LCD backlight&quot;</span>);<br><span class="hljs-type">gpio_config_t</span> bk_gpio_config = &#123;<br>	.mode = GPIO_MODE_OUTPUT,<br>	.pin_bit_mask = <span class="hljs-number">1ULL</span> &lt;&lt; EXAMPLE_PIN_NUM_BK_LIGHT&#125;;<br>ESP_ERROR_CHECK(gpio_config(&amp;bk_gpio_config));<br><br><span class="hljs-comment">// 打开背光</span><br>ESP_ERROR_CHECK(gpio_set_level(EXAMPLE_PIN_NUM_BK_LIGHT, EXAMPLE_LCD_BK_LIGHT_ON_LEVEL));<br><br></code></pre></td></tr></table></figure>
+
+<p>测试背光配置ok（背光的确是亮的，可能不是很明显）：</p>
+<p><img src="/2024/05/31/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/08.ESP32GUI%E5%85%A5%E9%97%A8/8.1-%E4%BD%BF%E7%94%A8%E7%BB%84%E4%BB%B6%E7%AE%A1%E7%90%86%E5%99%A8%E7%A7%BB%E6%A4%8DLVGL/%E5%9F%BA%E4%BA%8EESP-IDF%E5%AE%98%E6%96%B9%E7%BB%84%E4%BB%B6%E7%A7%BB%E6%A4%8DLVGL(%E4%BB%A5GC9A01%E4%B8%BA%E4%BE%8B)/%E5%9F%BA%E4%BA%8EESP-IDF%E5%AE%98%E6%96%B9%E7%BB%84%E4%BB%B6%E7%A7%BB%E6%A4%8DLVGL(GC9A01%E6%97%A0%E8%A7%A6%E6%91%B8)/20240308164712.png" srcset="/img/loading.gif" lazyload></p>
+<h5 id="初始化SPI总线（main）"><a href="#初始化SPI总线（main）" class="headerlink" title="初始化SPI总线（main）"></a>初始化SPI总线（main）</h5><p>按照屏幕驱动库里的SPI配置函数，配置SPI总线：</p>
+<p>参数：</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs less">*<span class="hljs-variable">@param</span>[in]sclk SPI时钟引脚编号<br>*<span class="hljs-variable">@param</span>[in]mosi SPI mosi引脚编号<br>*<span class="hljs-variable">@param</span>[in]max_trans_sz最大传输大小（字节）<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// 初始化SPI总线</span><br>ESP_LOGI(TAG, <span class="hljs-string">&quot;Initialize SPI bus&quot;</span>);<br><span class="hljs-type">spi_bus_config_t</span> buscfg = GC9A01_PANEL_BUS_SPI_CONFIG(EXAMPLE_PIN_NUM_SCLK, EXAMPLE_PIN_NUM_DATA0, EXAMPLE_LCD_H_RES * EXAMPLE_LCD_V_RES);<br>ESP_ERROR_CHECK(spi_bus_initialize(LCD_HOST, &amp;buscfg, SPI_DMA_CH_AUTO));<br></code></pre></td></tr></table></figure>
+
+<h5 id="创建屏幕IO句柄（main）"><a href="#创建屏幕IO句柄（main）" class="headerlink" title="创建屏幕IO句柄（main）"></a>创建屏幕IO句柄（main）</h5><p>屏幕IO句柄用于给屏幕发送指令和数据。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c">ESP_LOGI(TAG, <span class="hljs-string">&quot;Install panel IO&quot;</span>);<br><span class="hljs-type">esp_lcd_panel_io_handle_t</span> io_handle = <span class="hljs-literal">NULL</span>;<br><span class="hljs-type">esp_lcd_panel_io_spi_config_t</span> io_config = GC9A01_PANEL_IO_SPI_CONFIG(EXAMPLE_PIN_NUM_LCD_CS, EXAMPLE_PIN_NUM_LCD_DC, notify_lvgl_flush_ready, &amp;disp_drv);<br></code></pre></td></tr></table></figure>
+
+<p><code>notify_lvgl_flush_ready</code>是一个回调函数，用于颜色传输完成被调用。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// 回调函数:颜色传输完成 (通知LVGL刷新)</span><br><span class="hljs-type">static</span> <span class="hljs-type">bool</span> <span class="hljs-title function_">notify_lvgl_flush_ready</span><span class="hljs-params">(<span class="hljs-type">esp_lcd_panel_io_handle_t</span> panel_io, <span class="hljs-type">esp_lcd_panel_io_event_data_t</span> *edata, <span class="hljs-type">void</span> *user_ctx)</span><br>&#123;<br>	<span class="hljs-type">lv_disp_drv_t</span> *disp_driver = (<span class="hljs-type">lv_disp_drv_t</span> *)user_ctx;<br>	lv_disp_flush_ready(disp_driver);<br>	<span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>我们在这个回调函数里通知LVGL刷新</p>
+<p><code>disp_drv</code> 用于给回调函数传参：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">static</span> <span class="hljs-type">lv_disp_drv_t</span> disp_drv;      <span class="hljs-comment">// contains callback functions</span><br></code></pre></td></tr></table></figure>
+<h5 id="将LCD连接至SPI"><a href="#将LCD连接至SPI" class="headerlink" title="将LCD连接至SPI"></a>将LCD连接至SPI</h5><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// 将LCD连接到SPI总线</span><br>ESP_ERROR_CHECK(esp_lcd_new_panel_io_spi((<span class="hljs-type">esp_lcd_spi_bus_handle_t</span>)LCD_HOST, &amp;io_config, &amp;io_handle));<br></code></pre></td></tr></table></figure>
+
+<h5 id="创建屏幕驱动句柄"><a href="#创建屏幕驱动句柄" class="headerlink" title="创建屏幕驱动句柄"></a>创建屏幕驱动句柄</h5><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// 创建屏幕驱动句柄</span><br>ESP_LOGI(TAG, <span class="hljs-string">&quot;Install GC9A01 panel driver&quot;</span>);<br><span class="hljs-type">esp_lcd_panel_handle_t</span> panel_handle = <span class="hljs-literal">NULL</span>;<br></code></pre></td></tr></table></figure>
+
+<h5 id="配置屏幕驱动："><a href="#配置屏幕驱动：" class="headerlink" title="配置屏幕驱动："></a>配置屏幕驱动：</h5><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// 创建屏幕实例</span><br>ESP_ERROR_CHECK(esp_lcd_new_panel_gc9a01(io_handle, &amp;panel_config, &amp;panel_handle));<br><span class="hljs-comment">// 屏幕复位</span><br>ESP_ERROR_CHECK(esp_lcd_panel_reset(panel_handle));<br><span class="hljs-comment">// 初始化屏幕</span><br>ESP_ERROR_CHECK(esp_lcd_panel_init(panel_handle));<br><span class="hljs-comment">// 反转颜色</span><br>ESP_ERROR_CHECK(esp_lcd_panel_invert_color(panel_handle, <span class="hljs-literal">true</span>)); <br><span class="hljs-comment">// 镜像</span><br><span class="hljs-comment">///ESP_ERROR_CHECK(esp_lcd_panel_mirror(panel_handle, true, false)); </span><br><span class="hljs-comment">// 打开屏幕</span><br>ESP_ERROR_CHECK(esp_lcd_panel_disp_on_off(panel_handle, <span class="hljs-literal">true</span>));<br><span class="hljs-comment">// 打开背光</span><br>ESP_ERROR_CHECK(gpio_set_level(EXAMPLE_PIN_NUM_BK_LIGHT, EXAMPLE_LCD_BK_LIGHT_ON_LEVEL));<br></code></pre></td></tr></table></figure>
+
+<p>到这里屏幕就应该点亮了。</p>
+<h4 id="2-4-2-配置LVGL"><a href="#2-4-2-配置LVGL" class="headerlink" title="2.4.2 配置LVGL"></a>2.4.2 配置LVGL</h4><h5 id="初始化LVGL："><a href="#初始化LVGL：" class="headerlink" title="初始化LVGL："></a>初始化LVGL：</h5><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// 初始化LVGL</span><br>ESP_LOGI(TAG, <span class="hljs-string">&quot;Initialize LVGL&quot;</span>);<br>lv_init();<br><span class="hljs-comment">// 申请内存 两个buf</span><br><span class="hljs-type">lv_color_t</span> *buf1 = heap_caps_malloc(EXAMPLE_LCD_H_RES * <span class="hljs-number">50</span> * <span class="hljs-keyword">sizeof</span>(<span class="hljs-type">lv_color_t</span>), MALLOC_CAP_DMA);<br>assert(buf1); <span class="hljs-comment">// 检查内存是否申请成功</span><br><span class="hljs-type">lv_color_t</span> *buf2 = heap_caps_malloc(EXAMPLE_LCD_H_RES * <span class="hljs-number">50</span> * <span class="hljs-keyword">sizeof</span>(<span class="hljs-type">lv_color_t</span>), MALLOC_CAP_DMA);<br>assert(buf2); <br><span class="hljs-comment">// 初始化LVGL显示缓冲区</span><br>lv_disp_draw_buf_init(&amp;disp_buf, buf1, buf2, EXAMPLE_LCD_H_RES * <span class="hljs-number">50</span>);<br></code></pre></td></tr></table></figure>
+
+<h5 id="注册LVGL显示驱动："><a href="#注册LVGL显示驱动：" class="headerlink" title="注册LVGL显示驱动："></a>注册LVGL显示驱动：</h5><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// 初始化LVGL显示驱动</span><br>ESP_LOGI(TAG, <span class="hljs-string">&quot;Initialize LVGL display driver&quot;</span>);<br>lv_disp_drv_init(&amp;disp_drv);<br>disp_drv.hor_res = EXAMPLE_LCD_H_RES; 	<span class="hljs-comment">// 设置屏幕水平分辨率</span><br>disp_drv.ver_res = EXAMPLE_LCD_V_RES; 	<span class="hljs-comment">// 设置屏幕垂直分辨率</span><br>disp_drv.flush_cb = lvgl_flush_cb;  	<span class="hljs-comment">// 设置刷新回调函数</span><br>disp_drv.draw_buf = &amp;disp_buf; 			<span class="hljs-comment">// 设置显示缓冲区</span><br>disp_drv.user_data = panel_handle; 		<span class="hljs-comment">// 设置用户数据</span><br><span class="hljs-type">lv_disp_t</span> *disp = lv_disp_drv_register(&amp;disp_drv); 	<span class="hljs-comment">// 注册显示驱动</span><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// 回调函数:刷新屏幕</span><br><span class="hljs-type">static</span> <span class="hljs-type">void</span> <span class="hljs-title function_">lvgl_flush_cb</span><span class="hljs-params">(<span class="hljs-type">lv_disp_drv_t</span> *drv, <span class="hljs-type">const</span> <span class="hljs-type">lv_area_t</span> *area, <span class="hljs-type">lv_color_t</span> *color_map)</span><br>&#123;<br>    <span class="hljs-type">esp_lcd_panel_handle_t</span> panel_handle = (<span class="hljs-type">esp_lcd_panel_handle_t</span>) drv-&gt;user_data;<br>    <span class="hljs-type">int</span> offsetx1 = area-&gt;x1;<br>    <span class="hljs-type">int</span> offsetx2 = area-&gt;x2;<br>    <span class="hljs-type">int</span> offsety1 = area-&gt;y1;<br>    <span class="hljs-type">int</span> offsety2 = area-&gt;y2;<br>    <span class="hljs-comment">/* Copy a buffer&#x27;s content to a specific area of the display */</span><br>    esp_lcd_panel_draw_bitmap(panel_handle, offsetx1, offsety1, offsetx2 + <span class="hljs-number">1</span>, offsety2 + <span class="hljs-number">1</span>, color_map);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+<h5 id="注册LVGL触摸驱动："><a href="#注册LVGL触摸驱动：" class="headerlink" title="注册LVGL触摸驱动："></a>注册LVGL触摸驱动：</h5><blockquote>
+<p>开发板上没有触摸接口，这部分省略。</p>
+</blockquote>
+<h5 id="创建LVGL定时器及任务："><a href="#创建LVGL定时器及任务：" class="headerlink" title="创建LVGL定时器及任务："></a>创建LVGL定时器及任务：</h5><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// 创建定时器</span><br>ESP_LOGI(TAG, <span class="hljs-string">&quot;Install LVGL tick timer&quot;</span>);<br><span class="hljs-comment">/* Tick interface for LVGL (using esp_timer to generate 2ms periodic event) */</span><br><span class="hljs-type">const</span> <span class="hljs-type">esp_timer_create_args_t</span> lvgl_tick_timer_args = &#123;<br>	.callback   = &amp;example_increase_lvgl_tick,<br>	.name       = <span class="hljs-string">&quot;lvgl_tick&quot;</span><br>&#125;;<br><span class="hljs-type">esp_timer_handle_t</span> lvgl_tick_timer = <span class="hljs-literal">NULL</span>;<br>ESP_ERROR_CHECK(esp_timer_create(&amp;lvgl_tick_timer_args, &amp;lvgl_tick_timer));<br>ESP_ERROR_CHECK(esp_timer_start_periodic(lvgl_tick_timer, EXAMPLE_LVGL_TICK_PERIOD_MS * <span class="hljs-number">1000</span>));<br><br><span class="hljs-comment">// 创建LVGL任务</span><br>ESP_LOGI(TAG, <span class="hljs-string">&quot;Create LVGL task&quot;</span>);<br>lvgl_mux = xSemaphoreCreateMutex();<br>assert(lvgl_mux);<br>xTaskCreate(example_lvgl_port_task, <span class="hljs-string">&quot;LVGL&quot;</span>, EXAMPLE_LVGL_TASK_STACK_SIZE, <span class="hljs-literal">NULL</span>, EXAMPLE_LVGL_TASK_PRIORITY, <span class="hljs-literal">NULL</span>);<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">define</span> EXAMPLE_LVGL_TICK_PERIOD_MS     2               </span><br><span class="hljs-comment">// LVGL任务参数</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> EXAMPLE_LVGL_TASK_MAX_DELAY_MS  500</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> EXAMPLE_LVGL_TASK_MIN_DELAY_MS  1</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> EXAMPLE_LVGL_TASK_STACK_SIZE    (5 * 1024)</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> EXAMPLE_LVGL_TASK_PRIORITY      2</span><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">static</span> <span class="hljs-type">bool</span> <span class="hljs-title function_">example_lvgl_lock</span><span class="hljs-params">(<span class="hljs-type">int</span> timeout_ms)</span><br>&#123;<br>    assert(lvgl_mux &amp;&amp; <span class="hljs-string">&quot;bsp_display_start must be called first&quot;</span>);<br><br>    <span class="hljs-type">const</span> TickType_t timeout_ticks = (timeout_ms == <span class="hljs-number">-1</span>) ? portMAX_DELAY : pdMS_TO_TICKS(timeout_ms);<br>    <span class="hljs-keyword">return</span> xSemaphoreTake(lvgl_mux, timeout_ticks) == pdTRUE;<br>&#125;<br><br><span class="hljs-type">static</span> <span class="hljs-type">void</span> <span class="hljs-title function_">example_lvgl_unlock</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span><br>&#123;<br>    assert(lvgl_mux &amp;&amp; <span class="hljs-string">&quot;bsp_display_start must be called first&quot;</span>);<br>    xSemaphoreGive(lvgl_mux);<br>&#125;<br><br><span class="hljs-comment">// LVGL任务</span><br><span class="hljs-type">static</span> <span class="hljs-type">void</span> <span class="hljs-title function_">example_lvgl_port_task</span><span class="hljs-params">(<span class="hljs-type">void</span> *arg)</span><br>&#123;<br>    ESP_LOGI(TAG, <span class="hljs-string">&quot;Starting LVGL task&quot;</span>);<br>    ESP_LOGI(TAG, <span class="hljs-string">&quot;Display LVGL UI&quot;</span>);<br><br>    <span class="hljs-comment">//test_ui();</span><br>	lv_demo_widgets();<br><br>    <span class="hljs-type">uint32_t</span> task_delay_ms = EXAMPLE_LVGL_TASK_MAX_DELAY_MS;<br>    <span class="hljs-keyword">while</span> (<span class="hljs-number">1</span>) &#123;<br>		ESP_LOGI(TAG, <span class="hljs-string">&quot;LVGL task&quot;</span>);<br>        <span class="hljs-comment">/* Lock the mutex due to the LVGL APIs are not thread-safe */</span><br>        <span class="hljs-keyword">if</span> (example_lvgl_lock(<span class="hljs-number">-1</span>)) &#123;<br>            task_delay_ms = lv_timer_handler();<br>            <span class="hljs-comment">/* Release the mutex */</span><br>            example_lvgl_unlock();<br>        &#125;<br>        <span class="hljs-keyword">if</span> (task_delay_ms &gt; EXAMPLE_LVGL_TASK_MAX_DELAY_MS) &#123;<br>            task_delay_ms = EXAMPLE_LVGL_TASK_MAX_DELAY_MS;<br>        &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (task_delay_ms &lt; EXAMPLE_LVGL_TASK_MIN_DELAY_MS) &#123;<br>            task_delay_ms = EXAMPLE_LVGL_TASK_MIN_DELAY_MS;<br>        &#125;<br>        vTaskDelay(pdMS_TO_TICKS(task_delay_ms));<br>    &#125;<br>&#125;<br><br><br></code></pre></td></tr></table></figure>
+
+<p>这里在LVGL任务里开启<code>lv_demo_widgets()</code>演示demo。</p>
+<p>效果如下：</p>
+<p><img src="/2024/05/31/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/08.ESP32GUI%E5%85%A5%E9%97%A8/8.1-%E4%BD%BF%E7%94%A8%E7%BB%84%E4%BB%B6%E7%AE%A1%E7%90%86%E5%99%A8%E7%A7%BB%E6%A4%8DLVGL/%E5%9F%BA%E4%BA%8EESP-IDF%E5%AE%98%E6%96%B9%E7%BB%84%E4%BB%B6%E7%A7%BB%E6%A4%8DLVGL(%E4%BB%A5GC9A01%E4%B8%BA%E4%BE%8B)/%E5%9F%BA%E4%BA%8EESP-IDF%E5%AE%98%E6%96%B9%E7%BB%84%E4%BB%B6%E7%A7%BB%E6%A4%8DLVGL(GC9A01%E6%97%A0%E8%A7%A6%E6%91%B8)/20240308180842.png" srcset="/img/loading.gif" lazyload></p>
+<p>颜色有误，我们需要修改配置（颜色深度）：</p>
+<p><img src="/2024/05/31/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/08.ESP32GUI%E5%85%A5%E9%97%A8/8.1-%E4%BD%BF%E7%94%A8%E7%BB%84%E4%BB%B6%E7%AE%A1%E7%90%86%E5%99%A8%E7%A7%BB%E6%A4%8DLVGL/%E5%9F%BA%E4%BA%8EESP-IDF%E5%AE%98%E6%96%B9%E7%BB%84%E4%BB%B6%E7%A7%BB%E6%A4%8DLVGL(%E4%BB%A5GC9A01%E4%B8%BA%E4%BE%8B)/%E5%9F%BA%E4%BA%8EESP-IDF%E5%AE%98%E6%96%B9%E7%BB%84%E4%BB%B6%E7%A7%BB%E6%A4%8DLVGL(GC9A01%E6%97%A0%E8%A7%A6%E6%91%B8)/20240308181023.png" srcset="/img/loading.gif" lazyload></p>
+<p>修改后效果如下：</p>
+<p><img src="/2024/05/31/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/08.ESP32GUI%E5%85%A5%E9%97%A8/8.1-%E4%BD%BF%E7%94%A8%E7%BB%84%E4%BB%B6%E7%AE%A1%E7%90%86%E5%99%A8%E7%A7%BB%E6%A4%8DLVGL/%E5%9F%BA%E4%BA%8EESP-IDF%E5%AE%98%E6%96%B9%E7%BB%84%E4%BB%B6%E7%A7%BB%E6%A4%8DLVGL(%E4%BB%A5GC9A01%E4%B8%BA%E4%BE%8B)/%E5%9F%BA%E4%BA%8EESP-IDF%E5%AE%98%E6%96%B9%E7%BB%84%E4%BB%B6%E7%A7%BB%E6%A4%8DLVGL(GC9A01%E6%97%A0%E8%A7%A6%E6%91%B8)/20240308181218.png" srcset="/img/loading.gif" lazyload></p>
+<p>颜色好像还是有误差，还需要进一步修改：</p>
+<p>最后发现是屏幕配置的问题：<br>修改后：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// 屏幕配置</span><br><span class="hljs-type">const</span> <span class="hljs-type">esp_lcd_panel_dev_config_t</span> panel_config = &#123;<br>	.reset_gpio_num = EXAMPLE_PIN_NUM_LCD_RST, <span class="hljs-comment">// Set to -1 if not use</span><br>	.rgb_ele_order = LCD_RGB_ELEMENT_ORDER_BGR,<br>	.bits_per_pixel = <span class="hljs-number">16</span>, <span class="hljs-comment">// Implemented by LCD command `3Ah` (16/18)</span><br>	<span class="hljs-comment">//.vendor_config = &amp;vendor_config,</span><br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<p><img src="/2024/05/31/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/08.ESP32GUI%E5%85%A5%E9%97%A8/8.1-%E4%BD%BF%E7%94%A8%E7%BB%84%E4%BB%B6%E7%AE%A1%E7%90%86%E5%99%A8%E7%A7%BB%E6%A4%8DLVGL/%E5%9F%BA%E4%BA%8EESP-IDF%E5%AE%98%E6%96%B9%E7%BB%84%E4%BB%B6%E7%A7%BB%E6%A4%8DLVGL(%E4%BB%A5GC9A01%E4%B8%BA%E4%BE%8B)/%E5%9F%BA%E4%BA%8EESP-IDF%E5%AE%98%E6%96%B9%E7%BB%84%E4%BB%B6%E7%A7%BB%E6%A4%8DLVGL(GC9A01%E6%97%A0%E8%A7%A6%E6%91%B8)/20240308185934.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="2-5-其他项目配置"><a href="#2-5-其他项目配置" class="headerlink" title="2.5 其他项目配置"></a>2.5 其他项目配置</h3><h5 id="1-修改分区表"><a href="#1-修改分区表" class="headerlink" title="1.修改分区表"></a>1.修改分区表</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs csv"># Name,   Type, SubType, Offset,  Size, Flags<br># Note: if you have increased the bootloader size, make sure to update the offsets to avoid overlap<br>nvs,      data, nvs,        0x10000,   0x6000,<br>phy_init, data, phy,               ,   0x1000,<br>factory,  app,  factory,           ,   0x2c0000,<br></code></pre></td></tr></table></figure>
+
+<p>将上面的内容保存为 <code>partitions.csv</code> 保存到项目根目录，并修改配置使用自定义分区表</p>
+<p><img src="/2024/05/31/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/08.ESP32GUI%E5%85%A5%E9%97%A8/8.1-%E4%BD%BF%E7%94%A8%E7%BB%84%E4%BB%B6%E7%AE%A1%E7%90%86%E5%99%A8%E7%A7%BB%E6%A4%8DLVGL/%E5%9F%BA%E4%BA%8EESP-IDF%E5%AE%98%E6%96%B9%E7%BB%84%E4%BB%B6%E7%A7%BB%E6%A4%8DLVGL(%E4%BB%A5GC9A01%E4%B8%BA%E4%BE%8B)/%E5%9F%BA%E4%BA%8EESP-IDF%E5%AE%98%E6%96%B9%E7%BB%84%E4%BB%B6%E7%A7%BB%E6%A4%8DLVGL(GC9A01%E6%97%A0%E8%A7%A6%E6%91%B8)/20240219111110.png" srcset="/img/loading.gif" lazyload></p>
+<p>flash 调整到4MB</p>
+<p><img src="/2024/05/31/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/08.ESP32GUI%E5%85%A5%E9%97%A8/8.1-%E4%BD%BF%E7%94%A8%E7%BB%84%E4%BB%B6%E7%AE%A1%E7%90%86%E5%99%A8%E7%A7%BB%E6%A4%8DLVGL/%E5%9F%BA%E4%BA%8EESP-IDF%E5%AE%98%E6%96%B9%E7%BB%84%E4%BB%B6%E7%A7%BB%E6%A4%8DLVGL(%E4%BB%A5GC9A01%E4%B8%BA%E4%BE%8B)/%E5%9F%BA%E4%BA%8EESP-IDF%E5%AE%98%E6%96%B9%E7%BB%84%E4%BB%B6%E7%A7%BB%E6%A4%8DLVGL(GC9A01%E6%97%A0%E8%A7%A6%E6%91%B8)/20240219111316.png" srcset="/img/loading.gif" lazyload></p>
+<p>优化lvgl性能</p>
+<p><img src="/2024/05/31/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/08.ESP32GUI%E5%85%A5%E9%97%A8/8.1-%E4%BD%BF%E7%94%A8%E7%BB%84%E4%BB%B6%E7%AE%A1%E7%90%86%E5%99%A8%E7%A7%BB%E6%A4%8DLVGL/%E5%9F%BA%E4%BA%8EESP-IDF%E5%AE%98%E6%96%B9%E7%BB%84%E4%BB%B6%E7%A7%BB%E6%A4%8DLVGL(%E4%BB%A5GC9A01%E4%B8%BA%E4%BE%8B)/%E5%9F%BA%E4%BA%8EESP-IDF%E5%AE%98%E6%96%B9%E7%BB%84%E4%BB%B6%E7%A7%BB%E6%A4%8DLVGL(GC9A01%E6%97%A0%E8%A7%A6%E6%91%B8)/20240308182740.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/2024/05/31/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/08.ESP32GUI%E5%85%A5%E9%97%A8/8.1-%E4%BD%BF%E7%94%A8%E7%BB%84%E4%BB%B6%E7%AE%A1%E7%90%86%E5%99%A8%E7%A7%BB%E6%A4%8DLVGL/%E5%9F%BA%E4%BA%8EESP-IDF%E5%AE%98%E6%96%B9%E7%BB%84%E4%BB%B6%E7%A7%BB%E6%A4%8DLVGL(%E4%BB%A5GC9A01%E4%B8%BA%E4%BE%8B)/%E5%9F%BA%E4%BA%8EESP-IDF%E5%AE%98%E6%96%B9%E7%BB%84%E4%BB%B6%E7%A7%BB%E6%A4%8DLVGL(GC9A01%E6%97%A0%E8%A7%A6%E6%91%B8)/20240308182809.png" srcset="/img/loading.gif" lazyload></p>
+<p>打开LVGL日志，方便调试：</p>
+<p><img src="/2024/05/31/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/08.ESP32GUI%E5%85%A5%E9%97%A8/8.1-%E4%BD%BF%E7%94%A8%E7%BB%84%E4%BB%B6%E7%AE%A1%E7%90%86%E5%99%A8%E7%A7%BB%E6%A4%8DLVGL/%E5%9F%BA%E4%BA%8EESP-IDF%E5%AE%98%E6%96%B9%E7%BB%84%E4%BB%B6%E7%A7%BB%E6%A4%8DLVGL(%E4%BB%A5GC9A01%E4%B8%BA%E4%BE%8B)/%E5%9F%BA%E4%BA%8EESP-IDF%E5%AE%98%E6%96%B9%E7%BB%84%E4%BB%B6%E7%A7%BB%E6%A4%8DLVGL(GC9A01%E6%97%A0%E8%A7%A6%E6%91%B8)/20240308182935.png" srcset="/img/loading.gif" lazyload></p>
+<p>显示帧数和性能：</p>
+<p><img src="/2024/05/31/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/08.ESP32GUI%E5%85%A5%E9%97%A8/8.1-%E4%BD%BF%E7%94%A8%E7%BB%84%E4%BB%B6%E7%AE%A1%E7%90%86%E5%99%A8%E7%A7%BB%E6%A4%8DLVGL/%E5%9F%BA%E4%BA%8EESP-IDF%E5%AE%98%E6%96%B9%E7%BB%84%E4%BB%B6%E7%A7%BB%E6%A4%8DLVGL(%E4%BB%A5GC9A01%E4%B8%BA%E4%BE%8B)/%E5%9F%BA%E4%BA%8EESP-IDF%E5%AE%98%E6%96%B9%E7%BB%84%E4%BB%B6%E7%A7%BB%E6%A4%8DLVGL(GC9A01%E6%97%A0%E8%A7%A6%E6%91%B8)/20240308183030.png" srcset="/img/loading.gif" lazyload></p>
+<p>最终代码如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;freertos/FreeRTOS.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;freertos/semphr.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;freertos/task.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;esp_timer.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;esp_lcd_panel_io.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;esp_lcd_panel_vendor.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;esp_lcd_panel_ops.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;driver/gpio.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;driver/spi_master.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;driver/i2c.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;esp_err.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;esp_log.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;lvgl.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;sdkconfig.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;esp_lcd_gc9a01.h&quot;</span>   <span class="hljs-comment">// 屏幕驱动</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;lv_demos.h&quot;</span></span><br><span class="hljs-comment">// Using SPI2 </span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> LCD_HOST SPI2_HOST</span><br><br><span class="hljs-comment">// 屏幕尺寸</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> EXAMPLE_LCD_H_RES 240</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> EXAMPLE_LCD_V_RES 240</span><br><br><span class="hljs-comment">// 引脚接线</span><br><span class="hljs-comment">// | Name | Description            				| GPIO   |</span><br><span class="hljs-comment">// | BLK  | 背光，悬空使能接地关闭，默认上拉至3.3V | 32     |</span><br><span class="hljs-comment">// | CS   | 片选，低电平使能               	      | 5      |</span><br><span class="hljs-comment">// | DC   | 数据/命令选择，低电平命令，高电平数据   | 27     |</span><br><span class="hljs-comment">// | RES  | 复位，低电平使能               	  	  | 33     |</span><br><span class="hljs-comment">// | SDA  | SPI数据输入端口              		  | 15     |</span><br><span class="hljs-comment">// | SCL  | SPI时钟信号输入端口            		  | 14     |</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> EXAMPLE_LCD_BK_LIGHT_ON_LEVEL 1</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> EXAMPLE_LCD_BK_LIGHT_OFF_LEVEL !EXAMPLE_LCD_BK_LIGHT_ON_LEVEL</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> EXAMPLE_PIN_NUM_BK_LIGHT      32</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> EXAMPLE_PIN_NUM_LCD_CS 5</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> EXAMPLE_PIN_NUM_LCD_DC 27</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> EXAMPLE_PIN_NUM_LCD_RST 33</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> EXAMPLE_PIN_NUM_DATA0 15</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> EXAMPLE_PIN_NUM_SCLK 14</span><br><br><span class="hljs-comment">// 日志标签</span><br><span class="hljs-type">static</span> <span class="hljs-type">const</span> <span class="hljs-type">char</span> *TAG = <span class="hljs-string">&quot;main&quot;</span>;<br><br><span class="hljs-type">static</span> SemaphoreHandle_t    lvgl_mux    = <span class="hljs-literal">NULL</span>;<br><br><span class="hljs-comment">// LVGL定时器周期</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> EXAMPLE_LVGL_TICK_PERIOD_MS     2               </span><br><span class="hljs-comment">// LVGL任务参数</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> EXAMPLE_LVGL_TASK_MAX_DELAY_MS  500</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> EXAMPLE_LVGL_TASK_MIN_DELAY_MS  1</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> EXAMPLE_LVGL_TASK_STACK_SIZE    (5 * 1024)</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> EXAMPLE_LVGL_TASK_PRIORITY      2</span><br><br><br><span class="hljs-comment">// 回调函数:颜色传输完成 (通知LVGL刷新)</span><br><span class="hljs-type">static</span> <span class="hljs-type">bool</span> <span class="hljs-title function_">notify_lvgl_flush_ready</span><span class="hljs-params">(<span class="hljs-type">esp_lcd_panel_io_handle_t</span> panel_io, <span class="hljs-type">esp_lcd_panel_io_event_data_t</span> *edata, <span class="hljs-type">void</span> *user_ctx)</span><br>&#123;<br>	<span class="hljs-type">lv_disp_drv_t</span> *disp_driver = (<span class="hljs-type">lv_disp_drv_t</span> *)user_ctx;<br>	lv_disp_flush_ready(disp_driver);<br>	<span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>&#125;<br><br><span class="hljs-comment">// 回调函数:刷新屏幕</span><br><span class="hljs-type">static</span> <span class="hljs-type">void</span> <span class="hljs-title function_">lvgl_flush_cb</span><span class="hljs-params">(<span class="hljs-type">lv_disp_drv_t</span> *drv, <span class="hljs-type">const</span> <span class="hljs-type">lv_area_t</span> *area, <span class="hljs-type">lv_color_t</span> *color_map)</span><br>&#123;<br>    <span class="hljs-type">esp_lcd_panel_handle_t</span> panel_handle = (<span class="hljs-type">esp_lcd_panel_handle_t</span>) drv-&gt;user_data;<br>    <span class="hljs-type">int</span> offsetx1 = area-&gt;x1;<br>    <span class="hljs-type">int</span> offsetx2 = area-&gt;x2;<br>    <span class="hljs-type">int</span> offsety1 = area-&gt;y1;<br>    <span class="hljs-type">int</span> offsety2 = area-&gt;y2;<br>    <span class="hljs-comment">/* Copy a buffer&#x27;s content to a specific area of the display */</span><br>    esp_lcd_panel_draw_bitmap(panel_handle, offsetx1, offsety1, offsetx2 + <span class="hljs-number">1</span>, offsety2 + <span class="hljs-number">1</span>, color_map);<br>&#125;<br><br><span class="hljs-comment">// 回调函数:增加LVGL的tick</span><br><span class="hljs-type">static</span> <span class="hljs-type">void</span> <span class="hljs-title function_">example_increase_lvgl_tick</span><span class="hljs-params">(<span class="hljs-type">void</span> *arg)</span><br>&#123;<br>    <span class="hljs-comment">/* Tell LVGL how many milliseconds has elapsed */</span><br>    lv_tick_inc(EXAMPLE_LVGL_TICK_PERIOD_MS);<br><br>&#125;<br><br><br><br><span class="hljs-type">static</span> <span class="hljs-type">bool</span> <span class="hljs-title function_">example_lvgl_lock</span><span class="hljs-params">(<span class="hljs-type">int</span> timeout_ms)</span><br>&#123;<br>    assert(lvgl_mux &amp;&amp; <span class="hljs-string">&quot;bsp_display_start must be called first&quot;</span>);<br><br>    <span class="hljs-type">const</span> TickType_t timeout_ticks = (timeout_ms == <span class="hljs-number">-1</span>) ? portMAX_DELAY : pdMS_TO_TICKS(timeout_ms);<br>    <span class="hljs-keyword">return</span> xSemaphoreTake(lvgl_mux, timeout_ticks) == pdTRUE;<br>&#125;<br><br><span class="hljs-type">static</span> <span class="hljs-type">void</span> <span class="hljs-title function_">example_lvgl_unlock</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span><br>&#123;<br>    assert(lvgl_mux &amp;&amp; <span class="hljs-string">&quot;bsp_display_start must be called first&quot;</span>);<br>    xSemaphoreGive(lvgl_mux);<br>&#125;<br><br><br><br><span class="hljs-comment">// 测试UI</span><br><span class="hljs-type">void</span> <span class="hljs-title function_">test_ui</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span> &#123;<br>	<span class="hljs-comment">// ESP_LOGI(TAG, &quot;Create a test_ui&quot;);</span><br>    <span class="hljs-comment">// // 创建一个屏幕对象</span><br>    <span class="hljs-comment">// lv_obj_t *scr = lv_disp_get_scr_act(NULL);</span><br><br>    <span class="hljs-comment">// // 创建一个矩形对象</span><br>    <span class="hljs-comment">// lv_obj_t *rect = lv_obj_create(scr);</span><br>    <span class="hljs-comment">// lv_obj_set_size(rect, LV_HOR_RES, LV_VER_RES);  // 设置矩形大小为屏幕大小</span><br>    <span class="hljs-comment">// lv_obj_set_style_local_bg_color(rect, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_BLUE); // 设置矩形对象背景颜色为蓝色</span><br>	<span class="hljs-comment">// lv_obj_set_style_outline_color(rect, LV_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_SIZE); // 设置矩形对象背景颜色为白色</span><br><br>&#125;<br><br><span class="hljs-comment">// LVGL任务</span><br><span class="hljs-type">static</span> <span class="hljs-type">void</span> <span class="hljs-title function_">example_lvgl_port_task</span><span class="hljs-params">(<span class="hljs-type">void</span> *arg)</span><br>&#123;<br>    ESP_LOGI(TAG, <span class="hljs-string">&quot;Starting LVGL task&quot;</span>);<br>    ESP_LOGI(TAG, <span class="hljs-string">&quot;Display LVGL UI&quot;</span>);<br><br>    <span class="hljs-comment">//test_ui();</span><br>	lv_demo_widgets();<br>	<span class="hljs-comment">//lv_demo_music();</span><br><br>    <span class="hljs-type">uint32_t</span> task_delay_ms = EXAMPLE_LVGL_TASK_MAX_DELAY_MS;<br>    <span class="hljs-keyword">while</span> (<span class="hljs-number">1</span>) &#123;<br>		ESP_LOGI(TAG, <span class="hljs-string">&quot;LVGL task&quot;</span>);<br>        <span class="hljs-comment">/* Lock the mutex due to the LVGL APIs are not thread-safe */</span><br>        <span class="hljs-keyword">if</span> (example_lvgl_lock(<span class="hljs-number">-1</span>)) &#123;<br>            task_delay_ms = lv_timer_handler();<br>            <span class="hljs-comment">/* Release the mutex */</span><br>            example_lvgl_unlock();<br>        &#125;<br>        <span class="hljs-keyword">if</span> (task_delay_ms &gt; EXAMPLE_LVGL_TASK_MAX_DELAY_MS) &#123;<br>            task_delay_ms = EXAMPLE_LVGL_TASK_MAX_DELAY_MS;<br>        &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (task_delay_ms &lt; EXAMPLE_LVGL_TASK_MIN_DELAY_MS) &#123;<br>            task_delay_ms = EXAMPLE_LVGL_TASK_MIN_DELAY_MS;<br>        &#125;<br>        vTaskDelay(pdMS_TO_TICKS(task_delay_ms));<br>    &#125;<br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">app_main</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span><br>&#123;<br>	<span class="hljs-type">static</span> <span class="hljs-type">lv_disp_draw_buf_t</span> disp_buf; <span class="hljs-comment">// contains internal graphic buffer(s) called draw buffer(s)</span><br>	<span class="hljs-type">static</span> <span class="hljs-type">lv_disp_drv_t</span> disp_drv;		<span class="hljs-comment">// contains callback functions</span><br><br>	<span class="hljs-comment">// 配置屏幕背光</span><br>	ESP_LOGI(TAG, <span class="hljs-string">&quot;Turn off LCD backlight&quot;</span>);<br>	<span class="hljs-type">gpio_config_t</span> bk_gpio_config = &#123;<br>		.mode = GPIO_MODE_OUTPUT,<br>		.pin_bit_mask = <span class="hljs-number">1ULL</span> &lt;&lt; EXAMPLE_PIN_NUM_BK_LIGHT&#125;;<br>	ESP_ERROR_CHECK(gpio_config(&amp;bk_gpio_config));<br><br>	<span class="hljs-comment">// 初始化SPI总线</span><br>	ESP_LOGI(TAG, <span class="hljs-string">&quot;Initialize SPI bus&quot;</span>);<br>	<span class="hljs-type">const</span> <span class="hljs-type">spi_bus_config_t</span> buscfg = GC9A01_PANEL_BUS_SPI_CONFIG(EXAMPLE_PIN_NUM_SCLK, EXAMPLE_PIN_NUM_DATA0, EXAMPLE_LCD_H_RES * EXAMPLE_LCD_V_RES);<br>	ESP_ERROR_CHECK(spi_bus_initialize(LCD_HOST, &amp;buscfg, SPI_DMA_CH_AUTO));<br><br>	<span class="hljs-comment">// 创建屏幕句柄</span><br>	ESP_LOGI(TAG, <span class="hljs-string">&quot;Install panel IO&quot;</span>);<br>	<span class="hljs-type">esp_lcd_panel_io_handle_t</span> io_handle = <span class="hljs-literal">NULL</span>;<br>	<span class="hljs-type">const</span> <span class="hljs-type">esp_lcd_panel_io_spi_config_t</span> io_config = GC9A01_PANEL_IO_SPI_CONFIG(EXAMPLE_PIN_NUM_LCD_CS, EXAMPLE_PIN_NUM_LCD_DC, notify_lvgl_flush_ready, &amp;disp_drv);<br>		<br>	<span class="hljs-comment">// 将LCD连接到SPI总线</span><br>	ESP_ERROR_CHECK(esp_lcd_new_panel_io_spi((<span class="hljs-type">esp_lcd_spi_bus_handle_t</span>)LCD_HOST, &amp;io_config, &amp;io_handle));<br><br>	<span class="hljs-comment">// 创建屏幕驱动句柄</span><br>	ESP_LOGI(TAG, <span class="hljs-string">&quot;Install GC9A01 panel driver&quot;</span>);<br>	<span class="hljs-type">esp_lcd_panel_handle_t</span> panel_handle = <span class="hljs-literal">NULL</span>;<br>	<span class="hljs-comment">// 屏幕配置</span><br>	<span class="hljs-type">const</span> <span class="hljs-type">esp_lcd_panel_dev_config_t</span> panel_config = &#123;<br>		.reset_gpio_num = EXAMPLE_PIN_NUM_LCD_RST, <span class="hljs-comment">// Set to -1 if not use</span><br>		.rgb_ele_order = LCD_RGB_ELEMENT_ORDER_BGR,<br>		.bits_per_pixel = <span class="hljs-number">16</span>, <span class="hljs-comment">// Implemented by LCD command `3Ah` (16/18)</span><br>		<span class="hljs-comment">//.vendor_config = &amp;vendor_config,</span><br>	&#125;;<br>	<span class="hljs-comment">// 创建屏幕实例</span><br>	ESP_ERROR_CHECK(esp_lcd_new_panel_gc9a01(io_handle, &amp;panel_config, &amp;panel_handle));<br>	<span class="hljs-comment">// 屏幕复位</span><br>	ESP_ERROR_CHECK(esp_lcd_panel_reset(panel_handle));<br>	<span class="hljs-comment">// 初始化屏幕</span><br>	ESP_ERROR_CHECK(esp_lcd_panel_init(panel_handle));<br>	<span class="hljs-comment">// 反转颜色</span><br>	ESP_ERROR_CHECK(esp_lcd_panel_invert_color(panel_handle, <span class="hljs-literal">true</span>)); <br>	<span class="hljs-comment">// 镜像</span><br>	ESP_ERROR_CHECK(esp_lcd_panel_mirror(panel_handle, <span class="hljs-literal">true</span>, <span class="hljs-literal">false</span>)); <br>	<span class="hljs-comment">// 打开屏幕</span><br>	ESP_ERROR_CHECK(esp_lcd_panel_disp_on_off(panel_handle, <span class="hljs-literal">true</span>));<br>	<span class="hljs-comment">// 打开背光</span><br>	ESP_ERROR_CHECK(gpio_set_level(EXAMPLE_PIN_NUM_BK_LIGHT, EXAMPLE_LCD_BK_LIGHT_ON_LEVEL));<br><br><br><br>	<span class="hljs-comment">// 初始化LVGL</span><br>	ESP_LOGI(TAG, <span class="hljs-string">&quot;Initialize LVGL&quot;</span>);<br>	lv_init();<br>	<span class="hljs-comment">// 申请内存 两个buf</span><br>	<span class="hljs-type">lv_color_t</span> *buf1 = heap_caps_malloc(EXAMPLE_LCD_H_RES * <span class="hljs-number">50</span> * <span class="hljs-keyword">sizeof</span>(<span class="hljs-type">lv_color_t</span>), MALLOC_CAP_DMA);<br>	assert(buf1); <span class="hljs-comment">// 检查内存是否申请成功</span><br>	<span class="hljs-type">lv_color_t</span> *buf2 = heap_caps_malloc(EXAMPLE_LCD_H_RES * <span class="hljs-number">50</span> * <span class="hljs-keyword">sizeof</span>(<span class="hljs-type">lv_color_t</span>), MALLOC_CAP_DMA);<br>	assert(buf2); <br>	<span class="hljs-comment">// 初始化LVGL显示缓冲区</span><br>	lv_disp_draw_buf_init(&amp;disp_buf, buf1, buf2, EXAMPLE_LCD_H_RES * <span class="hljs-number">50</span>);<br><br>	<span class="hljs-comment">// 初始化LVGL显示驱动</span><br>	ESP_LOGI(TAG, <span class="hljs-string">&quot;Initialize LVGL display driver&quot;</span>);<br>	lv_disp_drv_init(&amp;disp_drv);<br>	disp_drv.hor_res = EXAMPLE_LCD_H_RES; 	<span class="hljs-comment">// 设置屏幕水平分辨率</span><br>	disp_drv.ver_res = EXAMPLE_LCD_V_RES; 	<span class="hljs-comment">// 设置屏幕垂直分辨率</span><br>	disp_drv.flush_cb = lvgl_flush_cb;  	<span class="hljs-comment">// 设置刷新回调函数</span><br>	disp_drv.draw_buf = &amp;disp_buf; 			<span class="hljs-comment">// 设置显示缓冲区</span><br>	disp_drv.user_data = panel_handle; 		<span class="hljs-comment">// 设置用户数据</span><br>	<span class="hljs-type">lv_disp_t</span> *disp = lv_disp_drv_register(&amp;disp_drv); 	<span class="hljs-comment">// 注册显示驱动</span><br><br><br>	<span class="hljs-comment">// 创建定时器</span><br>	ESP_LOGI(TAG, <span class="hljs-string">&quot;Install LVGL tick timer&quot;</span>);<br>    <span class="hljs-comment">/* Tick interface for LVGL (using esp_timer to generate 2ms periodic event) */</span><br>    <span class="hljs-type">const</span> <span class="hljs-type">esp_timer_create_args_t</span> lvgl_tick_timer_args = &#123;<br>        .callback   = &amp;example_increase_lvgl_tick,<br>        .name       = <span class="hljs-string">&quot;lvgl_tick&quot;</span><br>    &#125;;<br>    <span class="hljs-type">esp_timer_handle_t</span> lvgl_tick_timer = <span class="hljs-literal">NULL</span>;<br>    ESP_ERROR_CHECK(esp_timer_create(&amp;lvgl_tick_timer_args, &amp;lvgl_tick_timer));<br>    ESP_ERROR_CHECK(esp_timer_start_periodic(lvgl_tick_timer, EXAMPLE_LVGL_TICK_PERIOD_MS * <span class="hljs-number">1000</span>));<br><br>    <span class="hljs-comment">// 创建LVGL任务</span><br>	ESP_LOGI(TAG, <span class="hljs-string">&quot;Create LVGL task&quot;</span>);<br>	lvgl_mux = xSemaphoreCreateMutex();<br>    assert(lvgl_mux);<br>    xTaskCreate(example_lvgl_port_task, <span class="hljs-string">&quot;LVGL&quot;</span>, EXAMPLE_LVGL_TASK_STACK_SIZE, <span class="hljs-literal">NULL</span>, EXAMPLE_LVGL_TASK_PRIORITY, <span class="hljs-literal">NULL</span>);<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+
+<h3 id="2-6-补充：配置输入设备"><a href="#2-6-补充：配置输入设备" class="headerlink" title="2.6 补充：配置输入设备"></a>2.6 补充：配置输入设备</h3><blockquote>
+<p>这里的输入设备主要是触摸，鼠标，键盘，编码器，外部按键等</p>
+</blockquote>
+<p>这里我们以开发板上的两个用户自定义按键为例：</p>
+<h1 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h1><ol>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Yc411y7bb/?spm_id_from=333.880.my_history.page.click">https://www.bilibili.com/video/BV1Yc411y7bb/?spm_id_from=333.880.my_history.page.click</a></li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%94%B5%E5%AD%90%E4%BF%A1%E6%81%AF%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/" class="category-chain-item">电子信息硬件相关</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E7%94%B5%E5%AD%90%E4%BF%A1%E6%81%AF%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/" class="category-chain-item">MCU</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E7%94%B5%E5%AD%90%E4%BF%A1%E6%81%AF%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/" class="category-chain-item">ESP32</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E7%94%B5%E5%AD%90%E4%BF%A1%E6%81%AF%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/GUI%E5%85%A5%E9%97%A8/" class="category-chain-item">GUI入门</a>
+  
+  
+
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/ESP32/">#ESP32</a>
+      
+        <a href="/tags/MCU/">#MCU</a>
+      
+        <a href="/tags/LVGL/">#LVGL</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>ESP32GUI入门-1.基于ESP-IDF官方组件移植LVGL(GC9A01无触摸)</div>
+      <div>https://www.duruofu.xyz/2024/05/31/4.硬件相关/MCU/ESP32/08.ESP32GUI入门/8.1-使用组件管理器移植LVGL/基于ESP-IDF官方组件移植LVGL(以GC9A01为例)/基于ESP-IDF官方组件移植LVGL(GC9A01无触摸)/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>DuRuofu</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年5月31日</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>更新于</div>
+          <div>2024年6月1日</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
+                    <i class="iconfont icon-nc"></i>
+                  </span>
+                </a>
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="SA - 相同方式共享">
+                    <i class="iconfont icon-sa"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/04/12/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/05.ESP32WIFI%E5%85%A5%E9%97%A8/5.8-ESP32%E7%BD%91%E7%BB%9C%E5%85%A5%E9%97%A8-SNTP%E6%A0%A1%E6%97%B6/ESP32%E7%BD%91%E7%BB%9C%E5%85%A5%E9%97%A8-SNTP%E6%A0%A1%E6%97%B6/" title="ESP32网络入门-ESP-SNTP校准时间">
+                        <span class="hidden-mobile">ESP32网络入门-ESP-SNTP校准时间</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#gitalk-container', function() {
+      Fluid.utils.createCssLink('/css/gitalk.css')
+      Fluid.utils.createScript('https://lib.baomitu.com/gitalk/1.8.0/gitalk.min.js', function() {
+        var options = Object.assign(
+          {"clientID":"c9ac06d5413a9d613a1e","clientSecret":"a44f5c72589eb090876cc64067db28fbfdf4747c","repo":"Blog-comments-gitalk","owner":"DuRuofu","admin":["DuRuofu"],"language":"zh-CN","labels":["Gitalk"],"perPage":15,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":false,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token"},
+          {
+            id: '99b8a2f6255fe6101ad675e8f680a580'
+          }
+        )
+        var gitalk = new Gitalk(options);
+        gitalk.render('gitalk-container');
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <br><span id="timeDate">天数载入中</span><span id="times">...</span><br> <span>总有读不懂的诗和到达不了的远方</span> <p>Copyright © 2023 - <span id="currentYear"></span> All Rights Reserved.</p>
+    </div>
+  
+<span style="font-size: smaller;" >  😊目前为止，已经码字：728k</span>
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+  
+</div>
+
+  
+
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      陕ICP备2022007454号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=2022007454"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>陕ICP备2022007454号-2</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+  
+
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":true,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/cust/custom.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
