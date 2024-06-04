@@ -1,0 +1,896 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/%E4%B8%AA%E4%BA%BA%E5%A4%B4%E5%83%8F%E6%97%A0%E8%83%8C%E6%99%AF.png">
+  <link rel="icon" href="https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/%E4%B8%AA%E4%BA%BA%E5%A4%B4%E5%83%8F%E6%97%A0%E8%83%8C%E6%99%AF.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="DuRuofu">
+  <meta name="keywords" content="嵌入式,个人博客,个人测试">
+  
+    <meta name="description" content="本文档介绍ESP32ESP32GUI入门-使用SquareLine_Studio设计LVGL页面">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ESP32GUI入门-使用SquareLine_Studio设计LVGL页面">
+<meta property="og:url" content="https://www.duruofu.xyz/2024/06/04/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/08.ESP32GUI%E5%85%A5%E9%97%A8/8.3-%E4%BD%BF%E7%94%A8SquareLine_Studio%E8%AE%BE%E8%AE%A1LVGL%E9%A1%B5%E9%9D%A2/%E4%BD%BF%E7%94%A8SquareLine_Studio%E8%AE%BE%E8%AE%A1LVGL%E9%A1%B5%E9%9D%A2/index.html">
+<meta property="og:site_name" content="Duruofu&#39;s 个人测试">
+<meta property="og:description" content="本文档介绍ESP32ESP32GUI入门-使用SquareLine_Studio设计LVGL页面">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.duruofu.xyz/img/index_img/esp_lvgl.png">
+<meta property="article:published_time" content="2024-06-04T04:42:53.000Z">
+<meta property="article:modified_time" content="2024-06-04T08:24:59.547Z">
+<meta property="article:author" content="DuRuofu">
+<meta property="article:tag" content="ESP32">
+<meta property="article:tag" content="MCU">
+<meta property="article:tag" content="LVGL">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://www.duruofu.xyz/img/index_img/esp_lvgl.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>ESP32GUI入门-使用SquareLine_Studio设计LVGL页面 - Duruofu&#39;s 个人测试</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/cust/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"www.duruofu.xyz","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":80,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":true,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":5},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>DuRuofu</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/2020/06/06/1.%E9%98%85%E8%AF%BB%E5%86%99%E4%BD%9C/%E5%8E%9F%E5%88%9B%E8%AF%97%E8%AF%8D/%E8%AF%97%E8%AF%8D/">
+                <i class="iconfont icon-books"></i>
+                <span>诗词</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="ESP32GUI入门-使用SquareLine_Studio设计LVGL页面"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        DuRuofu
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-06-04 12:42" pubdate>
+          2024年6月4日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          2 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">ESP32GUI入门-使用SquareLine_Studio设计LVGL页面</h1>
+            
+              <p class="note note-info">
+                
+                  
+                    本文最后更新于：2 分钟前
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <h3 id="说明："><a href="#说明：" class="headerlink" title="说明："></a>说明：</h3><ol>
+<li>本文档由DuRuofu撰写，由DuRuofu负责解释及执行。</li>
+<li>这篇文章主要记录使用SquareLine_Studio设计LVGL页面，仅作为记录，并非教程。</li>
+</ol>
+<h3 id="修订历史："><a href="#修订历史：" class="headerlink" title="修订历史："></a>修订历史：</h3><table>
+<thead>
+<tr>
+<th>文档名称</th>
+<th>版本</th>
+<th>作者</th>
+<th>时间</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>使用SquareLine_Studio设计LVGL页面</td>
+<td>v1.0.0</td>
+<td>DuRuofu</td>
+<td>2024-06-04</td>
+<td>首次建立</td>
+</tr>
+</tbody></table>
+<div STYLE="page-break-after: always;"></div>
+
+<h1 id="使用SquareLine-Studio设计LVGL页面"><a href="#使用SquareLine-Studio设计LVGL页面" class="headerlink" title="使用SquareLine_Studio设计LVGL页面"></a>使用SquareLine_Studio设计LVGL页面</h1><h2 id="一、介绍"><a href="#一、介绍" class="headerlink" title="一、介绍"></a>一、介绍</h2><h3 id="1-1-SquareLine-Studio"><a href="#1-1-SquareLine-Studio" class="headerlink" title="1.1 SquareLine_Studio"></a>1.1 SquareLine_Studio</h3><p>SquareLine Studio 是一款专业的 UI 设计软件，它与 LVGL（Light and Versatile Graphics Library，轻量级通用图形库）紧密集成，允许用户通过直接拖放组件来设计用户界面，无需编写复杂的代码。</p>
+<p>SquareLine Studio 支持多种组件和布局，用户可以自定义样式、动画和行为。设计完成后，它可以将设计直接导出为 C 代码，这些代码可以直接嵌入到嵌入式项目的源代码中，极大地简化了开发流程。它适合希望快速开发嵌入式设备用户界面的开发人员，特别是那些没有 UI 开发经验或不想直接编写 UI 代码的开发人员。</p>
+<p>SquareLine Studio 官网：<a target="_blank" rel="noopener" href="https://squareline.io/">https://squareline.io</a></p>
+<p><img src="/2024/06/04/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/08.ESP32GUI%E5%85%A5%E9%97%A8/8.3-%E4%BD%BF%E7%94%A8SquareLine_Studio%E8%AE%BE%E8%AE%A1LVGL%E9%A1%B5%E9%9D%A2/%E4%BD%BF%E7%94%A8SquareLine_Studio%E8%AE%BE%E8%AE%A1LVGL%E9%A1%B5%E9%9D%A2/20240604110205.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="1-2-SquareLine-Studio安装"><a href="#1-2-SquareLine-Studio安装" class="headerlink" title="1.2 SquareLine_Studio安装"></a>1.2 SquareLine_Studio安装</h3><p>软件安装比较无脑，这里略过</p>
+<p><img src="/2024/06/04/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/08.ESP32GUI%E5%85%A5%E9%97%A8/8.3-%E4%BD%BF%E7%94%A8SquareLine_Studio%E8%AE%BE%E8%AE%A1LVGL%E9%A1%B5%E9%9D%A2/%E4%BD%BF%E7%94%A8SquareLine_Studio%E8%AE%BE%E8%AE%A1LVGL%E9%A1%B5%E9%9D%A2/20240604105916.png" srcset="/img/loading.gif" lazyload></p>
+<p>安装好后需要去官网注册账号，软件需要登陆使用<br><img src="/2024/06/04/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/08.ESP32GUI%E5%85%A5%E9%97%A8/8.3-%E4%BD%BF%E7%94%A8SquareLine_Studio%E8%AE%BE%E8%AE%A1LVGL%E9%A1%B5%E9%9D%A2/%E4%BD%BF%E7%94%A8SquareLine_Studio%E8%AE%BE%E8%AE%A1LVGL%E9%A1%B5%E9%9D%A2/20240604110538.png" srcset="/img/loading.gif" lazyload></p>
+<p>登陆后可获取到许可证：</p>
+<p><img src="/2024/06/04/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/08.ESP32GUI%E5%85%A5%E9%97%A8/8.3-%E4%BD%BF%E7%94%A8SquareLine_Studio%E8%AE%BE%E8%AE%A1LVGL%E9%A1%B5%E9%9D%A2/%E4%BD%BF%E7%94%A8SquareLine_Studio%E8%AE%BE%E8%AE%A1LVGL%E9%A1%B5%E9%9D%A2/20240604110523.png" srcset="/img/loading.gif" lazyload></p>
+<p>然后就可以正常使用了:</p>
+<p><img src="/2024/06/04/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/08.ESP32GUI%E5%85%A5%E9%97%A8/8.3-%E4%BD%BF%E7%94%A8SquareLine_Studio%E8%AE%BE%E8%AE%A1LVGL%E9%A1%B5%E9%9D%A2/%E4%BD%BF%E7%94%A8SquareLine_Studio%E8%AE%BE%E8%AE%A1LVGL%E9%A1%B5%E9%9D%A2/20240604110656.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="二、使用"><a href="#二、使用" class="headerlink" title="二、使用"></a>二、使用</h2><blockquote>
+<p>具体使用细节这里不进行说明，自行查看文档即可，重点在于与ESP32工程通联</p>
+</blockquote>
+<p>选择模板工程：</p>
+<p><img src="/2024/06/04/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/08.ESP32GUI%E5%85%A5%E9%97%A8/8.3-%E4%BD%BF%E7%94%A8SquareLine_Studio%E8%AE%BE%E8%AE%A1LVGL%E9%A1%B5%E9%9D%A2/%E4%BD%BF%E7%94%A8SquareLine_Studio%E8%AE%BE%E8%AE%A1LVGL%E9%A1%B5%E9%9D%A2/20240604111429.png" srcset="/img/loading.gif" lazyload></p>
+<p>修改色深：</p>
+<p><img src="/2024/06/04/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/08.ESP32GUI%E5%85%A5%E9%97%A8/8.3-%E4%BD%BF%E7%94%A8SquareLine_Studio%E8%AE%BE%E8%AE%A1LVGL%E9%A1%B5%E9%9D%A2/%E4%BD%BF%E7%94%A8SquareLine_Studio%E8%AE%BE%E8%AE%A1LVGL%E9%A1%B5%E9%9D%A2/20240604111644.png" srcset="/img/loading.gif" lazyload></p>
+<p>导出UI文件：</p>
+<p><img src="/2024/06/04/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/08.ESP32GUI%E5%85%A5%E9%97%A8/8.3-%E4%BD%BF%E7%94%A8SquareLine_Studio%E8%AE%BE%E8%AE%A1LVGL%E9%A1%B5%E9%9D%A2/%E4%BD%BF%E7%94%A8SquareLine_Studio%E8%AE%BE%E8%AE%A1LVGL%E9%A1%B5%E9%9D%A2/20240604111708.png" srcset="/img/loading.gif" lazyload></p>
+<p>导出内容如下：<br><img src="/2024/06/04/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/08.ESP32GUI%E5%85%A5%E9%97%A8/8.3-%E4%BD%BF%E7%94%A8SquareLine_Studio%E8%AE%BE%E8%AE%A1LVGL%E9%A1%B5%E9%9D%A2/%E4%BD%BF%E7%94%A8SquareLine_Studio%E8%AE%BE%E8%AE%A1LVGL%E9%A1%B5%E9%9D%A2/20240604111828.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="三、移植到ESP硬件平台"><a href="#三、移植到ESP硬件平台" class="headerlink" title="三、移植到ESP硬件平台"></a>三、移植到ESP硬件平台</h2><h3 id="3-1-ESP32移植屏幕驱动和LGVL库"><a href="#3-1-ESP32移植屏幕驱动和LGVL库" class="headerlink" title="3.1 ESP32移植屏幕驱动和LGVL库"></a>3.1 ESP32移植屏幕驱动和LGVL库</h3><p>本部分可以参考之间的博客<a target="_blank" rel="noopener" href="https://www.duruofu.top/2024/06/01/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/08.ESP32GUI%E5%85%A5%E9%97%A8/8.1-%E4%BD%BF%E7%94%A8%E7%BB%84%E4%BB%B6%E7%AE%A1%E7%90%86%E5%99%A8%E7%A7%BB%E6%A4%8DLVGL/%E5%9F%BA%E4%BA%8EESP-IDF%E5%AE%98%E6%96%B9%E7%BB%84%E4%BB%B6%E7%A7%BB%E6%A4%8DLVGL(SPD2010%E5%B8%A6%E8%A7%A6%E6%91%B8)/%E5%9F%BA%E4%BA%8EESP-IDF%E5%AE%98%E6%96%B9%E7%BB%84%E4%BB%B6%E7%A7%BB%E6%A4%8DLVGL(SPD2010%E5%B8%A6%E8%A7%A6%E6%91%B8)/">基于ESP-IDF官方组件移植LVGL(SPD2010(带触摸))</a></p>
+<p>本部分在这篇博客的基础上进行开发，基础代码为:<a target="_blank" rel="noopener" href="https://github.com/DuRuofu/ESP32_Learning/tree/master/09.gui/lvgl_transplant_spd2010">lvgl_transplant_spd2010</a></p>
+<h3 id="3-2-移植GUI到ESP32的代码"><a href="#3-2-移植GUI到ESP32的代码" class="headerlink" title="3.2 移植GUI到ESP32的代码"></a>3.2 移植GUI到ESP32的代码</h3><p>在esp32的工程里创建一个ui文件夹，将上面第二部分导出的UI文件放入此文件夹内。</p>
+<p>修改main文件夹下的CMakeLists.txt,来引入ui文件夹内的文件：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs c">file(GLOB_RECURSE SRC_UI $&#123;CMAKE_SOURCE_DIR&#125; <span class="hljs-string">&quot;ui/*.c&quot;</span>)<br><br>idf_component_register(SRCS <span class="hljs-string">&quot;main.c&quot;</span> $&#123;SRC_UI&#125;<br>                    INCLUDE_DIRS <span class="hljs-string">&quot;.&quot;</span> <span class="hljs-string">&quot;ui&quot;</span>)<br></code></pre></td></tr></table></figure>
+
+<p>主程序中添加 ui.h 头文件，调用一次 ui_init() 函数即可。</p>
+<h3 id="3-3-移植效果展示："><a href="#3-3-移植效果展示：" class="headerlink" title="3.3 移植效果展示："></a>3.3 移植效果展示：</h3><p><img src="/2024/06/04/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/08.ESP32GUI%E5%85%A5%E9%97%A8/8.3-%E4%BD%BF%E7%94%A8SquareLine_Studio%E8%AE%BE%E8%AE%A1LVGL%E9%A1%B5%E9%9D%A2/%E4%BD%BF%E7%94%A8SquareLine_Studio%E8%AE%BE%E8%AE%A1LVGL%E9%A1%B5%E9%9D%A2/20240604114243.png" srcset="/img/loading.gif" lazyload></p>
+<h1 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h1><ol>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Yc411y7bb/?spm_id_from=333.880.my_history.page.click">https://www.bilibili.com/video/BV1Yc411y7bb/?spm_id_from=333.880.my_history.page.click</a></li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%94%B5%E5%AD%90%E4%BF%A1%E6%81%AF%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/" class="category-chain-item">电子信息硬件相关</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E7%94%B5%E5%AD%90%E4%BF%A1%E6%81%AF%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/" class="category-chain-item">MCU</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E7%94%B5%E5%AD%90%E4%BF%A1%E6%81%AF%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/" class="category-chain-item">ESP32</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E7%94%B5%E5%AD%90%E4%BF%A1%E6%81%AF%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/GUI%E5%85%A5%E9%97%A8/" class="category-chain-item">GUI入门</a>
+  
+  
+
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/ESP32/">#ESP32</a>
+      
+        <a href="/tags/MCU/">#MCU</a>
+      
+        <a href="/tags/LVGL/">#LVGL</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>ESP32GUI入门-使用SquareLine_Studio设计LVGL页面</div>
+      <div>https://www.duruofu.xyz/2024/06/04/4.硬件相关/MCU/ESP32/08.ESP32GUI入门/8.3-使用SquareLine_Studio设计LVGL页面/使用SquareLine_Studio设计LVGL页面/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>DuRuofu</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年6月4日</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>更新于</div>
+          <div>2024年6月4日</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
+                    <i class="iconfont icon-nc"></i>
+                  </span>
+                </a>
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="SA - 相同方式共享">
+                    <i class="iconfont icon-sa"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/06/01/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/08.ESP32GUI%E5%85%A5%E9%97%A8/8.1-%E4%BD%BF%E7%94%A8%E7%BB%84%E4%BB%B6%E7%AE%A1%E7%90%86%E5%99%A8%E7%A7%BB%E6%A4%8DLVGL/%E5%9F%BA%E4%BA%8EESP-IDF%E5%AE%98%E6%96%B9%E7%BB%84%E4%BB%B6%E7%A7%BB%E6%A4%8DLVGL(SPD2010%E5%B8%A6%E8%A7%A6%E6%91%B8)/%E5%9F%BA%E4%BA%8EESP-IDF%E5%AE%98%E6%96%B9%E7%BB%84%E4%BB%B6%E7%A7%BB%E6%A4%8DLVGL(SPD2010%E5%B8%A6%E8%A7%A6%E6%91%B8)/" title="ESP32GUI入门-基于ESP-IDF官方组件移植LVGL(SPD2010带触摸)">
+                        <span class="hidden-mobile">ESP32GUI入门-基于ESP-IDF官方组件移植LVGL(SPD2010带触摸)</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#gitalk-container', function() {
+      Fluid.utils.createCssLink('/css/gitalk.css')
+      Fluid.utils.createScript('https://lib.baomitu.com/gitalk/1.8.0/gitalk.min.js', function() {
+        var options = Object.assign(
+          {"clientID":"c9ac06d5413a9d613a1e","clientSecret":"a44f5c72589eb090876cc64067db28fbfdf4747c","repo":"Blog-comments-gitalk","owner":"DuRuofu","admin":["DuRuofu"],"language":"zh-CN","labels":["Gitalk"],"perPage":15,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":false,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token"},
+          {
+            id: '447ac6e5bc43a7f87ff07425852e8fe3'
+          }
+        )
+        var gitalk = new Gitalk(options);
+        gitalk.render('gitalk-container');
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <br><span id="timeDate">天数载入中</span><span id="times">...</span><br> <span>总有读不懂的诗和到达不了的远方</span> <p>Copyright © 2023 - <span id="currentYear"></span> All Rights Reserved.</p>
+    </div>
+  
+<span style="font-size: smaller;" >  😊目前为止，已经码字：753k</span>
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+  
+</div>
+
+  
+
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      陕ICP备2022007454号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=2022007454"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>陕ICP备2022007454号-2</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+  
+
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":true,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/cust/custom.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
