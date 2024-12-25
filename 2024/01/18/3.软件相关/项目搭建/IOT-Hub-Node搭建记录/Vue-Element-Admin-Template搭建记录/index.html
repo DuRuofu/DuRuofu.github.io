@@ -19,7 +19,7 @@
     <meta name="description" content="本文档为了记录Vue-Element-Admin-Template的搭建过程">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Vue-Element-Admin-Template搭建记录">
-<meta property="og:url" content="https://www.duruofu.xyz/2024/01/18/3.%E8%BD%AF%E4%BB%B6%E7%9B%B8%E5%85%B3/%E9%A1%B9%E7%9B%AE%E6%90%AD%E5%BB%BA/01.Vue-Element-Admin-Template%E6%90%AD%E5%BB%BA%E8%AE%B0%E5%BD%95/Vue-Element-Admin-Template%E6%90%AD%E5%BB%BA%E8%AE%B0%E5%BD%95/index.html">
+<meta property="og:url" content="https://www.duruofu.xyz/2024/01/18/3.%E8%BD%AF%E4%BB%B6%E7%9B%B8%E5%85%B3/%E9%A1%B9%E7%9B%AE%E6%90%AD%E5%BB%BA/IOT-Hub-Node%E6%90%AD%E5%BB%BA%E8%AE%B0%E5%BD%95/Vue-Element-Admin-Template%E6%90%AD%E5%BB%BA%E8%AE%B0%E5%BD%95/index.html">
 <meta property="og:site_name" content="Duruofu&#39;s 个人测试">
 <meta property="og:description" content="本文档为了记录Vue-Element-Admin-Template的搭建过程">
 <meta property="og:locale" content="zh_CN">
@@ -348,7 +348,7 @@
               <p class="note note-info">
                 
                   
-                    本文最后更新于：2 分钟前
+                    本文最后更新于：18 分钟前
                   
                 
               </p>
@@ -398,7 +398,7 @@
 <li><a href="https://link.juejin.cn/?target=http://eslint.cn" title="http://eslint.cn">ESLint</a> + <a href="https://link.juejin.cn/?target=https://prettier.cn" title="https://prettier.cn">Prettier</a>+  <a href="https://link.juejin.cn/?target=https://stylelint.cn" title="https://stylelint.cn">Stylelint</a>- 代码规范</li>
 <li><a href="https://link.juejin.cn/?target=https://cz-git.qbb.sh/zh" title="https://cz-git.qbb.sh/zh">Commitizen</a> + <a href="https://link.juejin.cn/?target=https://commitlint.js.org" title="https://commitlint.js.org">Commitlint</a> - 提交规范</li>
 </ul>
-<h2 id="二、基础搭建"><a href="#二、基础搭建" class="headerlink" title="二、基础搭建"></a>二、基础搭建</h2><h3 id="2-1-初始化项目"><a href="#2-1-初始化项目" class="headerlink" title="2.1 初始化项目"></a>2.1 初始化项目</h3><p><code>npm create vue@latest</code><br><img src="/2024/01/18/3.%E8%BD%AF%E4%BB%B6%E7%9B%B8%E5%85%B3/%E9%A1%B9%E7%9B%AE%E6%90%AD%E5%BB%BA/01.Vue-Element-Admin-Template%E6%90%AD%E5%BB%BA%E8%AE%B0%E5%BD%95/Vue-Element-Admin-Template%E6%90%AD%E5%BB%BA%E8%AE%B0%E5%BD%95/20240118205751.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="二、基础搭建"><a href="#二、基础搭建" class="headerlink" title="二、基础搭建"></a>二、基础搭建</h2><h3 id="2-1-初始化项目"><a href="#2-1-初始化项目" class="headerlink" title="2.1 初始化项目"></a>2.1 初始化项目</h3><p><code>npm create vue@latest</code><br><img src="/2024/01/18/3.%E8%BD%AF%E4%BB%B6%E7%9B%B8%E5%85%B3/%E9%A1%B9%E7%9B%AE%E6%90%AD%E5%BB%BA/IOT-Hub-Node%E6%90%AD%E5%BB%BA%E8%AE%B0%E5%BD%95/Vue-Element-Admin-Template%E6%90%AD%E5%BB%BA%E8%AE%B0%E5%BD%95/20240118205751.png" srcset="/img/loading.gif" lazyload></p>
 <blockquote>
 <p>eslint 和 prettier在生成项目时已经配置好了，后面不再提及</p>
 </blockquote>
@@ -412,7 +412,7 @@
 <h3 id="2-4-eslint-配置"><a href="#2-4-eslint-配置" class="headerlink" title="2.4 eslint 配置"></a>2.4 eslint 配置</h3><p>重新生成配置文件：</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">npx eslint --init<br></code></pre></td></tr></table></figure>
 
-<p><img src="/2024/01/18/3.%E8%BD%AF%E4%BB%B6%E7%9B%B8%E5%85%B3/%E9%A1%B9%E7%9B%AE%E6%90%AD%E5%BB%BA/01.Vue-Element-Admin-Template%E6%90%AD%E5%BB%BA%E8%AE%B0%E5%BD%95/Vue-Element-Admin-Template%E6%90%AD%E5%BB%BA%E8%AE%B0%E5%BD%95/20240129102607.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/2024/01/18/3.%E8%BD%AF%E4%BB%B6%E7%9B%B8%E5%85%B3/%E9%A1%B9%E7%9B%AE%E6%90%AD%E5%BB%BA/IOT-Hub-Node%E6%90%AD%E5%BB%BA%E8%AE%B0%E5%BD%95/Vue-Element-Admin-Template%E6%90%AD%E5%BB%BA%E8%AE%B0%E5%BD%95/20240129102607.png" srcset="/img/loading.gif" lazyload></p>
 <p>运行命令后会在根目录生成一个<code>.eslintrc.cjs</code>文件，其中的代码如下:</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = &#123;<br>    <span class="hljs-string">&quot;env&quot;</span>: &#123;<br>        <span class="hljs-string">&quot;browser&quot;</span>: <span class="hljs-literal">true</span>,<br>        <span class="hljs-string">&quot;es2021&quot;</span>: <span class="hljs-literal">true</span><br>    &#125;,<br>    <span class="hljs-string">&quot;extends&quot;</span>: [<br>        <span class="hljs-string">&quot;eslint:recommended&quot;</span>,<br>        <span class="hljs-string">&quot;plugin:@typescript-eslint/recommended&quot;</span>,<br>        <span class="hljs-string">&quot;plugin:vue/vue3-essential&quot;</span><br>    ],<br>    <span class="hljs-string">&quot;overrides&quot;</span>: [<br>        &#123;<br>            <span class="hljs-string">&quot;env&quot;</span>: &#123;<br>                <span class="hljs-string">&quot;node&quot;</span>: <span class="hljs-literal">true</span><br>            &#125;,<br>            <span class="hljs-string">&quot;files&quot;</span>: [<br>                <span class="hljs-string">&quot;.eslintrc.&#123;js,cjs&#125;&quot;</span><br>            ],<br>            <span class="hljs-string">&quot;parserOptions&quot;</span>: &#123;<br>                <span class="hljs-string">&quot;sourceType&quot;</span>: <span class="hljs-string">&quot;script&quot;</span><br>            &#125;<br>        &#125;<br>    ],<br>    <span class="hljs-string">&quot;parserOptions&quot;</span>: &#123;<br>        <span class="hljs-string">&quot;ecmaVersion&quot;</span>: <span class="hljs-string">&quot;latest&quot;</span>,<br>        <span class="hljs-string">&quot;parser&quot;</span>: <span class="hljs-string">&quot;@typescript-eslint/parser&quot;</span>,<br>        <span class="hljs-string">&quot;sourceType&quot;</span>: <span class="hljs-string">&quot;module&quot;</span><br>    &#125;,<br>    <span class="hljs-string">&quot;plugins&quot;</span>: [<br>        <span class="hljs-string">&quot;@typescript-eslint&quot;</span>,<br>        <span class="hljs-string">&quot;vue&quot;</span><br>    ],<br>    <span class="hljs-string">&quot;rules&quot;</span>: &#123;<br>    &#125;<br>&#125;<br><br></code></pre></td></tr></table></figure>
 
@@ -638,7 +638,7 @@
   <div class="license-box my-3">
     <div class="license-title">
       <div>Vue-Element-Admin-Template搭建记录</div>
-      <div>https://www.duruofu.xyz/2024/01/18/3.软件相关/项目搭建/01.Vue-Element-Admin-Template搭建记录/Vue-Element-Admin-Template搭建记录/</div>
+      <div>https://www.duruofu.xyz/2024/01/18/3.软件相关/项目搭建/IOT-Hub-Node搭建记录/Vue-Element-Admin-Template搭建记录/</div>
     </div>
     <div class="license-meta">
       
@@ -699,9 +699,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2024/01/23/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/FPGA/FPGA%E5%AE%9E%E8%B7%B5/FPGA%E5%AE%9E%E7%8E%B0%E4%B8%B2%E5%8F%A3/%E5%AE%9E%E7%8E%B0%E5%9F%BA%E6%9C%AC%E4%B8%B2%E5%8F%A3/FPGA%E5%AE%9E%E7%8E%B0%E4%B8%B2%E5%8F%A3RS232/" title="FPGA实现串口RS232">
+                      <a href="/2024/01/18/3.%E8%BD%AF%E4%BB%B6%E7%9B%B8%E5%85%B3/%E9%A1%B9%E7%9B%AE%E6%90%AD%E5%BB%BA/IOT-Hub-Node%E6%90%AD%E5%BB%BA%E8%AE%B0%E5%BD%95/Node-Koa-Templates%E6%A1%86%E6%9E%B6%E6%90%AD%E5%BB%BA/" title="Node-Koa-Templates框架搭建">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">FPGA实现串口RS232</span>
+                        <span class="hidden-mobile">Node-Koa-Templates框架搭建</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -733,7 +733,7 @@
         var options = Object.assign(
           {"clientID":"c9ac06d5413a9d613a1e","clientSecret":"a44f5c72589eb090876cc64067db28fbfdf4747c","repo":"Blog-comments-gitalk","owner":"DuRuofu","admin":["DuRuofu"],"language":"zh-CN","labels":["Gitalk"],"perPage":15,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":false,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token"},
           {
-            id: '42f9c7493e8975a2675710fcfbc981c6'
+            id: '2f5d5657e2ae2ad5a391bda528260986'
           }
         )
         var gitalk = new Gitalk(options);
@@ -843,7 +843,7 @@
        <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <br><span id="timeDate">天数载入中</span><span id="times">...</span><br> <span>总有读不懂的诗和到达不了的远方</span> <p>Copyright © 2023 - <span id="currentYear"></span> All Rights Reserved.</p>
     </div>
   
-<span style="font-size: smaller;" >  😊目前为止，已经码字：777k</span>
+<span style="font-size: smaller;" >  😊目前为止，已经码字：812k</span>
   
     <div class="statistics">
   
