@@ -7,8 +7,11 @@
 
 <head>
   <meta charset="UTF-8">
+
   <link rel="apple-touch-icon" sizes="76x76" href="https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/%E4%B8%AA%E4%BA%BA%E5%A4%B4%E5%83%8F%E6%97%A0%E8%83%8C%E6%99%AF.png">
   <link rel="icon" href="https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/%E4%B8%AA%E4%BA%BA%E5%A4%B4%E5%83%8F%E6%97%A0%E8%83%8C%E6%99%AF.png">
+  
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
@@ -19,13 +22,13 @@
     <meta name="description" content="第五部分 函数函数简介（function）- 函数也是一个对象 - 对象是内存中专门用来存储数据的一块区域 - 函数可以用来保存一些可执行的代码，并且可以在需要时，对这些语句进行多次的调用 - 创建函数：     def 函数名([形参1,形参2,...形参n]) :         代码块     - 函数名必须要符号标识符的规范         （可以包含字母、数字、下划线、但是不能以数字开头">
 <meta property="og:type" content="article">
 <meta property="og:title" content="python笔记(5.函数)">
-<meta property="og:url" content="https://www.duruofu.xyz/2023/06/06/3.%E8%BD%AF%E4%BB%B6%E7%9B%B8%E5%85%B3/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/python/5.%E7%AC%AC%E4%BA%94%E9%83%A8%E5%88%86%20%E5%87%BD%E6%95%B0/index.html">
+<meta property="og:url" content="https://www.duruofu.xyz/2022/03/17/3.%E8%BD%AF%E4%BB%B6%E7%9B%B8%E5%85%B3/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/python/5.%E7%AC%AC%E4%BA%94%E9%83%A8%E5%88%86%20%E5%87%BD%E6%95%B0/index.html">
 <meta property="og:site_name" content="Duruofu&#39;s 个人测试">
 <meta property="og:description" content="第五部分 函数函数简介（function）- 函数也是一个对象 - 对象是内存中专门用来存储数据的一块区域 - 函数可以用来保存一些可执行的代码，并且可以在需要时，对这些语句进行多次的调用 - 创建函数：     def 函数名([形参1,形参2,...形参n]) :         代码块     - 函数名必须要符号标识符的规范         （可以包含字母、数字、下划线、但是不能以数字开头">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://www.duruofu.xyz/img/index_img/python.jpg">
-<meta property="article:published_time" content="2023-06-06T03:29:59.191Z">
-<meta property="article:modified_time" content="2024-01-05T05:35:17.063Z">
+<meta property="article:published_time" content="2022-03-17T03:21:53.000Z">
+<meta property="article:modified_time" content="2025-01-10T14:14:17.330Z">
 <meta property="article:author" content="DuRuofu">
 <meta property="article:tag" content="编程语言">
 <meta property="article:tag" content="python">
@@ -54,7 +57,7 @@
 <!-- 主题依赖的图标库，不要自行修改 -->
 <!-- Do not modify the link that theme dependent icons -->
 
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
 
 
 
@@ -79,7 +82,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"www.duruofu.xyz","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":80,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":true,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":5},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+    var CONFIG = {"hostname":"www.duruofu.xyz","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":80,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":true,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":5},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null},"gtag":null,"woyaola":null,"cnzz":null},"search_path":"/local-search.xml","include_content_in_search":true};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -88,10 +91,6 @@
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-  
-
-  
-
   
 
   
@@ -138,7 +137,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/">
+              <a class="nav-link" href="/" target="_self">
                 <i class="iconfont icon-home-fill"></i>
                 <span>首页</span>
               </a>
@@ -150,7 +149,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/2020/06/06/1.%E9%98%85%E8%AF%BB%E5%86%99%E4%BD%9C/%E5%8E%9F%E5%88%9B%E8%AF%97%E8%AF%8D/%E8%AF%97%E8%AF%8D/">
+              <a class="nav-link" href="/2020/06/06/1.%E9%98%85%E8%AF%BB%E5%86%99%E4%BD%9C/%E5%8E%9F%E5%88%9B%E8%AF%97%E8%AF%8D/%E8%AF%97%E8%AF%8D/" target="_self">
                 <i class="iconfont icon-books"></i>
                 <span>诗词</span>
               </a>
@@ -162,7 +161,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/2024/01/30/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/00.%E7%9B%AE%E5%BD%95/ESP32%E5%AD%A6%E4%B9%A0%E8%AE%A1%E5%88%92/">
+              <a class="nav-link" href="/2024/01/30/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/00.%E7%9B%AE%E5%BD%95/ESP32%E5%AD%A6%E4%B9%A0%E8%AE%A1%E5%88%92/" target="_self">
                 <i class="iconfont icon-books"></i>
                 <span>ESP32</span>
               </a>
@@ -174,7 +173,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/archives/">
+              <a class="nav-link" href="/archives/" target="_self">
                 <i class="iconfont icon-archive-fill"></i>
                 <span>归档</span>
               </a>
@@ -186,7 +185,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/categories/">
+              <a class="nav-link" href="/categories/" target="_self">
                 <i class="iconfont icon-category-fill"></i>
                 <span>分类</span>
               </a>
@@ -198,7 +197,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/tags/">
+              <a class="nav-link" href="/tags/" target="_self">
                 <i class="iconfont icon-tags-fill"></i>
                 <span>标签</span>
               </a>
@@ -210,7 +209,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/about/">
+              <a class="nav-link" href="/about/" target="_self">
                 <i class="iconfont icon-user-fill"></i>
                 <span>关于</span>
               </a>
@@ -222,7 +221,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/links/">
+              <a class="nav-link" href="/links/" target="_self">
                 <i class="iconfont icon-link-fill"></i>
                 <span>友链</span>
               </a>
@@ -274,8 +273,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2023-06-06 11:29" pubdate>
-          2023年6月6日 上午
+        <time datetime="2022-03-17 11:21" pubdate>
+          2022年3月17日 上午
         </time>
       </span>
     
@@ -286,7 +285,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          13k 字
+          6.5k 字
         
       </span>
     
@@ -297,7 +296,7 @@
         
         
         
-          22 分钟
+          11 分钟
         
       </span>
     
@@ -310,6 +309,7 @@
           <span id="busuanzi_value_page_pv"></span> 次
         </span>
         
+
       
     
   </div>
@@ -342,14 +342,15 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <!-- SEO header -->
-            <h1 style="display: none">python笔记(5.函数)</h1>
+            <h1 id="seo-header">python笔记(5.函数)</h1>
             
-              <p class="note note-info">
+              <p id="updated-time" class="note note-info" style="display: none">
                 
                   
-                    本文最后更新于：1 年前
+                    本文最后更新于 2025-01-10T22:14:17+08:00
                   
+                  
+
                 
               </p>
             
@@ -540,6 +541,7 @@
 
 <p>这个就相当于：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">f = begin_end(say_hello)<br></code></pre></td></tr></table></figure>
+
                 
               </div>
             
@@ -586,11 +588,11 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">#编程语言</a>
+        <a href="/tags/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/" class="print-no-link">#编程语言</a>
       
-        <a href="/tags/python/">#python</a>
+        <a href="/tags/python/" class="print-no-link">#python</a>
       
-        <a href="/tags/%E5%87%BD%E6%95%B0/">#函数</a>
+        <a href="/tags/%E5%87%BD%E6%95%B0/" class="print-no-link">#函数</a>
       
     </div>
   
@@ -603,7 +605,7 @@
   <div class="license-box my-3">
     <div class="license-title">
       <div>python笔记(5.函数)</div>
-      <div>https://www.duruofu.xyz/2023/06/06/3.软件相关/编程语言/python/5.第五部分 函数/</div>
+      <div>https://www.duruofu.xyz/2022/03/17/3.软件相关/编程语言/python/5.第五部分 函数/</div>
     </div>
     <div class="license-meta">
       
@@ -615,13 +617,13 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2023年6月6日</div>
+          <div>2022年3月17日</div>
         </div>
       
       
         <div class="license-meta-item license-meta-date">
           <div>更新于</div>
-          <div>2024年1月5日</div>
+          <div>2025年1月10日</div>
         </div>
       
       
@@ -631,21 +633,21 @@
             
               
               
-                <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
                   <span class="hint--top hint--rounded" aria-label="BY - 署名">
-                    <i class="iconfont icon-by"></i>
+                    <i class="iconfont icon-cc-by"></i>
                   </span>
                 </a>
               
-                <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
                   <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
-                    <i class="iconfont icon-nc"></i>
+                    <i class="iconfont icon-cc-nc"></i>
                   </span>
                 </a>
               
-                <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
                   <span class="hint--top hint--rounded" aria-label="SA - 相同方式共享">
-                    <i class="iconfont icon-sa"></i>
+                    <i class="iconfont icon-cc-sa"></i>
                   </span>
                 </a>
               
@@ -664,9 +666,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2023/06/06/3.%E8%BD%AF%E4%BB%B6%E7%9B%B8%E5%85%B3/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/python/6.%E7%AC%AC%E5%85%AD%E9%83%A8%E5%88%86%20%E5%AF%B9%E8%B1%A1/" title="python笔记(6.对象)">
+                      <a href="/2022/03/17/3.%E8%BD%AF%E4%BB%B6%E7%9B%B8%E5%85%B3/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/python/2.%E7%AC%AC%E4%BA%8C%E9%83%A8%E5%88%86%20python%E5%85%A5%E9%97%A8/" title="python笔记(2.Python入门)">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">python笔记(6.对象)</span>
+                        <span class="hidden-mobile">python笔记(2.Python入门)</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -674,8 +676,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2023/06/06/1.%E9%98%85%E8%AF%BB%E5%86%99%E4%BD%9C/%E8%AF%BB%E4%B9%A6/%E8%AF%BB%E4%B9%A6%E6%B8%85%E5%8D%95/%E4%B8%AA%E4%BA%BA%E8%AF%BB%E4%B9%A6%E6%B8%85%E5%8D%95/" title="个人读书清单">
-                        <span class="hidden-mobile">个人读书清单</span>
+                      <a href="/2022/03/17/3.%E8%BD%AF%E4%BB%B6%E7%9B%B8%E5%85%B3/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/python/3.%E7%AC%AC%E4%B8%89%E9%83%A8%E5%88%86%20%E6%B5%81%E7%A8%8B%E6%8E%A7%E5%88%B6%E8%AF%AD%E5%8F%A5/" title="python笔记(3.流程控制语句)">
+                        <span class="hidden-mobile">python笔记(3.流程控制语句)</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -698,7 +700,7 @@
         var options = Object.assign(
           {"clientID":"c9ac06d5413a9d613a1e","clientSecret":"a44f5c72589eb090876cc64067db28fbfdf4747c","repo":"Blog-comments-gitalk","owner":"DuRuofu","admin":["DuRuofu"],"language":"zh-CN","labels":["Gitalk"],"perPage":15,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":false,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token"},
           {
-            id: '4c4aaadc36dd9112dccc642c1dee7df9'
+            id: '023fb8db903fd959770eeb5ea6a871b8'
           }
         )
         var gitalk = new Gitalk(options);
@@ -808,7 +810,6 @@
        <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <br><span id="timeDate">天数载入中</span><span id="times">...</span><br> <span>总有读不懂的诗和到达不了的远方</span> <p>Copyright © 2023 - <span id="currentYear"></span> All Rights Reserved.</p>
     </div>
   
-<span style="font-size: smaller;" >  😊目前为止，已经码字：812k</span>
   
     <div class="statistics">
   
@@ -830,11 +831,12 @@
       </span>
     
     
+
   
+
 </div>
 
   
-
   
     <!-- 备案信息 ICP for China -->
     <div class="beian">
@@ -864,8 +866,6 @@
 </div>
 
   
-  
-
 </div>
 
   </footer>
@@ -913,6 +913,33 @@
   
 
 
+
+
+  
+<script>
+  var relativeDate = function() {
+    var updatedTime = document.getElementById('updated-time');
+    if (updatedTime) {
+      var text = updatedTime.textContent;
+      var reg = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:Z|[+-]\d{2}:\d{2})/;
+      var matchs = text.match(reg);
+      if (matchs) {
+        var relativeTime = moment(matchs[0]).fromNow();
+        updatedTime.textContent = text.replace(reg, relativeTime);
+      }
+      updatedTime.style.display = '';
+    }
+  };
+  Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/moment.min.js', function() {
+    if (!'zh-cn'.startsWith('en')) {
+      Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/locale/zh-cn.min.js', function() {
+        relativeDate();
+      });
+    } else {
+      relativeDate();
+    }
+  });
+</script>
 
 
   

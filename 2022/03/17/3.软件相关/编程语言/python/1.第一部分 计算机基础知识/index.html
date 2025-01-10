@@ -7,8 +7,11 @@
 
 <head>
   <meta charset="UTF-8">
+
   <link rel="apple-touch-icon" sizes="76x76" href="https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/%E4%B8%AA%E4%BA%BA%E5%A4%B4%E5%83%8F%E6%97%A0%E8%83%8C%E6%99%AF.png">
   <link rel="icon" href="https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/%E4%B8%AA%E4%BA%BA%E5%A4%B4%E5%83%8F%E6%97%A0%E8%83%8C%E6%99%AF.png">
+  
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
@@ -16,26 +19,28 @@
   <meta name="author" content="DuRuofu">
   <meta name="keywords" content="嵌入式,个人博客,个人测试">
   
-    <meta name="description" content="在此记录个人读书情况">
+    <meta name="description" content="第一部分 计算机基础知识（了解即可）计算机的组成计算机由两部分组成：硬件 和 软件硬件包含：键盘、鼠标、显示器、CPU、主板、内存、硬盘 。。。硬件是看的见摸得着的软件包含：系统软件（windows、macOS、Linux）和应用软件（office 、QQ、绝地求生）软件是看的见摸不着的，软件负责控制计算机中的硬件     计算机的使用方式我们必须要通过软件来对计算机完成各种操作，但是注意，软件中">
 <meta property="og:type" content="article">
-<meta property="og:title" content="个人读书清单">
-<meta property="og:url" content="https://www.duruofu.xyz/2023/06/06/1.%E9%98%85%E8%AF%BB%E5%86%99%E4%BD%9C/%E8%AF%BB%E4%B9%A6/%E8%AF%BB%E4%B9%A6%E6%B8%85%E5%8D%95/%E4%B8%AA%E4%BA%BA%E8%AF%BB%E4%B9%A6%E6%B8%85%E5%8D%95/index.html">
+<meta property="og:title" content="python笔记(1.计算机基础知识)">
+<meta property="og:url" content="https://www.duruofu.xyz/2022/03/17/3.%E8%BD%AF%E4%BB%B6%E7%9B%B8%E5%85%B3/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/python/1.%E7%AC%AC%E4%B8%80%E9%83%A8%E5%88%86%20%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/index.html">
 <meta property="og:site_name" content="Duruofu&#39;s 个人测试">
-<meta property="og:description" content="在此记录个人读书情况">
+<meta property="og:description" content="第一部分 计算机基础知识（了解即可）计算机的组成计算机由两部分组成：硬件 和 软件硬件包含：键盘、鼠标、显示器、CPU、主板、内存、硬盘 。。。硬件是看的见摸得着的软件包含：系统软件（windows、macOS、Linux）和应用软件（office 、QQ、绝地求生）软件是看的见摸不着的，软件负责控制计算机中的硬件     计算机的使用方式我们必须要通过软件来对计算机完成各种操作，但是注意，软件中">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://www.duruofu.xyz/img/index_img/%E8%AF%BB%E4%B9%A6.jpg">
-<meta property="article:published_time" content="2023-06-06T02:49:15.858Z">
-<meta property="article:modified_time" content="2024-01-05T05:29:33.815Z">
+<meta property="og:image" content="https://www.duruofu.xyz/img/index_img/python.jpg">
+<meta property="article:published_time" content="2022-03-17T03:21:53.000Z">
+<meta property="article:modified_time" content="2025-01-10T14:13:57.365Z">
 <meta property="article:author" content="DuRuofu">
-<meta property="article:tag" content="读书清单">
+<meta property="article:tag" content="编程语言">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="计算机基础知识">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://www.duruofu.xyz/img/index_img/%E8%AF%BB%E4%B9%A6.jpg">
+<meta name="twitter:image" content="https://www.duruofu.xyz/img/index_img/python.jpg">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>个人读书清单 - Duruofu&#39;s 个人测试</title>
+  <title>python笔记(1.计算机基础知识) - Duruofu&#39;s 个人测试</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -52,7 +57,7 @@
 <!-- 主题依赖的图标库，不要自行修改 -->
 <!-- Do not modify the link that theme dependent icons -->
 
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
 
 
 
@@ -77,7 +82,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"www.duruofu.xyz","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":80,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":true,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":5},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+    var CONFIG = {"hostname":"www.duruofu.xyz","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":80,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":true,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":5},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null},"gtag":null,"woyaola":null,"cnzz":null},"search_path":"/local-search.xml","include_content_in_search":true};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -86,10 +91,6 @@
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-  
-
-  
-
   
 
   
@@ -136,7 +137,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/">
+              <a class="nav-link" href="/" target="_self">
                 <i class="iconfont icon-home-fill"></i>
                 <span>首页</span>
               </a>
@@ -148,7 +149,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/2020/06/06/1.%E9%98%85%E8%AF%BB%E5%86%99%E4%BD%9C/%E5%8E%9F%E5%88%9B%E8%AF%97%E8%AF%8D/%E8%AF%97%E8%AF%8D/">
+              <a class="nav-link" href="/2020/06/06/1.%E9%98%85%E8%AF%BB%E5%86%99%E4%BD%9C/%E5%8E%9F%E5%88%9B%E8%AF%97%E8%AF%8D/%E8%AF%97%E8%AF%8D/" target="_self">
                 <i class="iconfont icon-books"></i>
                 <span>诗词</span>
               </a>
@@ -160,7 +161,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/2024/01/30/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/00.%E7%9B%AE%E5%BD%95/ESP32%E5%AD%A6%E4%B9%A0%E8%AE%A1%E5%88%92/">
+              <a class="nav-link" href="/2024/01/30/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/00.%E7%9B%AE%E5%BD%95/ESP32%E5%AD%A6%E4%B9%A0%E8%AE%A1%E5%88%92/" target="_self">
                 <i class="iconfont icon-books"></i>
                 <span>ESP32</span>
               </a>
@@ -172,7 +173,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/archives/">
+              <a class="nav-link" href="/archives/" target="_self">
                 <i class="iconfont icon-archive-fill"></i>
                 <span>归档</span>
               </a>
@@ -184,7 +185,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/categories/">
+              <a class="nav-link" href="/categories/" target="_self">
                 <i class="iconfont icon-category-fill"></i>
                 <span>分类</span>
               </a>
@@ -196,7 +197,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/tags/">
+              <a class="nav-link" href="/tags/" target="_self">
                 <i class="iconfont icon-tags-fill"></i>
                 <span>标签</span>
               </a>
@@ -208,7 +209,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/about/">
+              <a class="nav-link" href="/about/" target="_self">
                 <i class="iconfont icon-user-fill"></i>
                 <span>关于</span>
               </a>
@@ -220,7 +221,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/links/">
+              <a class="nav-link" href="/links/" target="_self">
                 <i class="iconfont icon-link-fill"></i>
                 <span>友链</span>
               </a>
@@ -250,13 +251,13 @@
   
 
 <div id="banner" class="banner" parallax=true
-     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+     style="background: url('/img/index_img/python.jpg') no-repeat center center; background-size: cover;">
   <div class="full-bg-img">
     <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="个人读书清单"></span>
+            <span id="subtitle" data-typed-text="python笔记(1.计算机基础知识)"></span>
           
         </div>
 
@@ -272,8 +273,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2023-06-06 10:49" pubdate>
-          2023年6月6日 上午
+        <time datetime="2022-03-17 11:21" pubdate>
+          2022年3月17日 上午
         </time>
       </span>
     
@@ -284,7 +285,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          729 字
+          1.7k 字
         
       </span>
     
@@ -295,7 +296,7 @@
         
         
         
-          2 分钟
+          3 分钟
         
       </span>
     
@@ -308,6 +309,7 @@
           <span id="busuanzi_value_page_pv"></span> 次
         </span>
         
+
       
     
   </div>
@@ -340,25 +342,95 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <!-- SEO header -->
-            <h1 style="display: none">个人读书清单</h1>
+            <h1 id="seo-header">python笔记(1.计算机基础知识)</h1>
             
-              <p class="note note-info">
+              <p id="updated-time" class="note note-info" style="display: none">
                 
                   
-                    本文最后更新于：1 年前
+                    本文最后更新于 2025-01-10T22:13:57+08:00
                   
+                  
+
                 
               </p>
             
             
               <div class="markdown-body">
                 
-                <p>在此记录个人读书情况</p>
-<span id="more"></span>
+                <h2 id="第一部分-计算机基础知识（了解即可）"><a href="#第一部分-计算机基础知识（了解即可）" class="headerlink" title="第一部分 计算机基础知识（了解即可）"></a>第一部分 计算机基础知识（了解即可）</h2><h3 id="计算机的组成"><a href="#计算机的组成" class="headerlink" title="计算机的组成"></a>计算机的组成</h3><p>计算机由两部分组成：硬件 和 软件<br>硬件包含：键盘、鼠标、显示器、CPU、主板、内存、硬盘 。。。硬件是看的见摸得着的<br>软件包含：系统软件（windows、macOS、Linux）和应用软件（office 、QQ、绝地求生）软件是看的见摸不着的，软件负责控制计算机中的硬件    </p>
+<h3 id="计算机的使用方式"><a href="#计算机的使用方式" class="headerlink" title="计算机的使用方式"></a>计算机的使用方式</h3><p>我们必须要通过软件来对计算机完成各种操作，但是注意，软件中并不是所有的功能都会对用户开放，用户需要调用软件提供的接口（Interface 交互界面）来操作计算机<br>用户界面分成两种：TUI（文本交互界面）和 GUI（图形化交互界面）</p>
+<h3 id="windows的命令行"><a href="#windows的命令行" class="headerlink" title="windows的命令行"></a>windows的命令行</h3><p>命令行就是文本交互界面，通过命令行可以使用一个一个的指令来操作计算机，任何的计算机的操作系统中都包含有命令行（windows、linux、macOS）<br>命令行有多个不同的名字：命令行、命令行窗口、DOS窗口、命令提示符、CMD窗口、Shell、终端、Terminal</p>
+<h4 id="1-如何进入到命令行"><a href="#1-如何进入到命令行" class="headerlink" title="1.如何进入到命令行"></a>1.如何进入到命令行</h4><p>​    win键 + R 出现运行窗口，输入cmd，然后回车</p>
+<img src="https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/1648465246565.png" srcset="/img/loading.gif" lazyload style="zoom:67%;" />
 
-<h3 id="2021-年读书清单"><a href="#2021-年读书清单" class="headerlink" title="2021 年读书清单"></a>2021 年读书清单</h3><p>《球状闪电》刘慈欣<br>《时间移民》刘慈欣<br>《上帝之手》王晋康<br>《夹边沟记事》杨显惠<br>《改造火星（科幻集）》王晋康 何夕 张冉<br>《时空平移》王晋康<br>《沉默的大多数》王小波<br>《汪曾祺散文：人寰速写》汪曾祺<br>《第一序列》会说话的肘子<br>《睡眠革命》尼克·利特尔黑尔斯<br>《计算机是怎样跑起来的》矢泽久雄<br>《what if（那些古怪又让人忧心的问题）》兰道尔·门罗<br>《人类简史：从动物到上帝》尤瓦尔·赫拉利<br>《活着》余华<br>《苏东坡传》林语堂<br>《平面国》埃德温·艾勃特<br>《临界（科幻小说集）》王晋康<br>《哈利波特与密室》J.K·罗琳<br>《哈利波特和阿兹卡班的囚徒》J.K·罗琳<br>《哈利波特与火焰杯》J.K·罗琳<br>《古代人的日常生活（1）》王磊<br>《上帝的骰子》罗金海<br>《给青年的十二封信》朱光潜<br>《古代人的日常生活（2）》王磊<br>《原来如此是这样的宋朝》吴钩<br>《随园食单》袁枚<br>《牧羊少年的奇幻之旅》保罗·柯艾略<br>《我的个天》戴建业<br>《白夜行》<br>《山月记》<br> 《人间失格》太宰治</p>
-<h3 id="2021-年读书清单-1"><a href="#2021-年读书清单-1" class="headerlink" title="2021 年读书清单"></a>2021 年读书清单</h3><p> 《超新星纪元》（小说集）刘慈欣<br>（北京少年儿童出版社）1月1日<br>《天使时代》（小说集）刘慈欣<br>（广西师范大学出版社）1月1号<br>《在细雨中呼喊》余华1月2号<br>《银河系搭车客指南》道格拉斯·亚当斯1月2号<br>《现实一种》余华（作家出版社）1月2号<br>《漫步人生，步履不停》陈忠实（古吴轩出版社）1月3号<br>《许三观卖血记》余华     1月3号<br>《梁家河》 梁家河编写组  陕西人民出版社1.4<br>《陈忠实文学回忆录》陈忠实  广东人民出版社  1.7<br>《山茶文具店》小川糸1.11<br>《恶意》东野圭吾1.14<br>《献给阿尔迪侬的花束》丹尼尔凯斯    广西师范大学出版社   1.26<br>《小狗钱钱》1.27<br>《闪闪发光的人生》小川系 1.29<br>《且听风吟》 村上春树 2.16<br>《第一人称单数》村上春树3.6</p>
+<h4 id="2-命令行的结构"><a href="#2-命令行的结构" class="headerlink" title="2.命令行的结构"></a>2.命令行的结构</h4><pre><code class="hljs">- 版本及版权声明（一般没有什么用）
+Microsoft Windows [版本 10.0.16299.431]
+(c) 2017 Microsoft Corporation。保留所有权利。
+命令提示符
+    C:\Users\lilichao&gt;  
+        C:  
+            - 当前所在的磁盘根目录
+            - 可以通过 x: 来切换盘符（x表示你的盘符）
+
+        \Users\lilichao
+            - 所在磁盘的路径，当前所在的文件夹
+            - cd 来切换目录
+        &gt;
+            - 命令提示符，在大于号后边可以直接输入指令
+</code></pre>
+<h4 id="3-常用的dos命令"><a href="#3-常用的dos命令" class="headerlink" title="3.常用的dos命令"></a>3.常用的dos命令</h4><p>​    dir 查看当前目录下的所有文件（夹）<br>​    cd 进入到指定的目录<br>​        . 表示当前目录<br>​        .. 表示上一级目录<br>​    md 创建一个目录<br>​    rd 删除一个目录<br>​    del 删除一个文件<br>​    cls 清除屏幕<br>命令的语法<br>​    命令 [参数] [选项]</p>
+<h4 id="4-小技巧"><a href="#4-小技巧" class="headerlink" title="4.小技巧"></a>4.小技巧</h4><ul>
+<li>方向键上下，查看命令的历史记录<ul>
+<li>tab键自动补全命令</li>
+</ul>
+</li>
+</ul>
+<h3 id="环境变量"><a href="#环境变量" class="headerlink" title="环境变量"></a>环境变量</h3><p>环境变量指的就是操作系统当中的一些变量。可以通过修改环境变量，来对计算机进行配置（主要是来配置一些路径的）</p>
+<h4 id="1-查看环境变量"><a href="#1-查看环境变量" class="headerlink" title="1.查看环境变量"></a>1.查看环境变量</h4><p>​    &gt; 右键 计算机（此电脑），选择属性<br>​    &gt; 系统界面左侧选择 高级系统设置<br>​    &gt; 选择环境变量<br>​    环境变量界面分成了两个部分，上边是用户环境变量，下边是系统环境变量 建议只修改用户的环境变量，不要修改系统的环境变量</p>
+<h4 id="2-添加环境变量"><a href="#2-添加环境变量" class="headerlink" title="2.添加环境变量"></a>2.添加环境变量</h4><p>​    &gt; 通过新建按钮添加环境变量<br>​    &gt; 一个环境变量可以由多个值，值与值之间使用;（英文）隔开</p>
+<h4 id="3-修改环境变量"><a href="#3-修改环境变量" class="headerlink" title="3.修改环境变量"></a>3.修改环境变量</h4><p>​    &gt; 通过编辑按钮来修改环境变量</p>
+<h4 id="4-删除环境变量"><a href="#4-删除环境变量" class="headerlink" title="4.删除环境变量"></a>4.删除环境变量</h4><p>​    &gt; 通过删除按钮来删除环境变量</p>
+<h3 id="path环境变量"><a href="#path环境变量" class="headerlink" title="path环境变量"></a>path环境变量</h3><p>path环境变量中保存的是一个一个的路径。<br>当我们在命令行中输入一个命令（或访问一个文件时），系统会首先在当前目录下寻找，如果找到了则直接执行或打开。 如果没有找到，则会依次去path环境变量的路径中去寻找，直到找到为止。如果path环境变量中的路径都没有找到，则报错 ‘xxx’ 不是内部或外部命令，也不是可运行的程序或批处理文件。<br>我们可以将一些经常需要访问到的文件会程序的路径，添加到path环境变量中，这样我们就可以在任意的位置访问到这些文件了</p>
+<p>注意事项：<br>    1.如果环境变量中没有path，可以手动添加<br>    2.path环境变量不区分大小写 PATH Path path<br>    3.修改完环境变量必须重新启动命令行窗口<br>    4.多个路径之间使用;隔开</p>
+<h3 id="进制"><a href="#进制" class="headerlink" title="进制"></a>进制</h3><h4 id="十进制（最常用的进制）"><a href="#十进制（最常用的进制）" class="headerlink" title="十进制（最常用的进制）"></a>十进制（最常用的进制）</h4><ul>
+<li>十进制就是满十进一的进制</li>
+<li>十进制当中一共有10个数字<br>0 1 2 3 4 5 6 7 8 9</li>
+<li>十进制如何计数<br>0 1 2 3 4 5 6 7 8 9 10 11 12 。。。 19 20 。。。29 30</li>
+</ul>
+<h4 id="二进制（计算机底层使用的进制）"><a href="#二进制（计算机底层使用的进制）" class="headerlink" title="二进制（计算机底层使用的进制）"></a>二进制（计算机底层使用的进制）</h4><ul>
+<li>满二进一</li>
+<li>二进制中一共有2个数字<br>0 1</li>
+<li>二进制如何计数<br>0 1 10 11 100 101 110 111 1000</li>
+<li>所有的数据在计算机底层都是以二进制的形式保存的，计算机只认二进制</li>
+<li>可以将内存想象为一个一个的小格子，小格子中可以存储一个0或一个1</li>
+<li>内存中的每一个小格子，我们称为1bit（位）<br>bit是计算机中的最小的单位<br>byte是我们最小的可操作的单位<br>8bit &#x3D; 1byte（字节）<br>1024byte &#x3D; 1kb（千字节）<br>1024kb &#x3D; 1mb（兆字节）<br>1024mb &#x3D; 1gb（吉字节）<br>1024gb &#x3D; 1tb（太字节）</li>
+</ul>
+<h4 id="八进制（一般不用）"><a href="#八进制（一般不用）" class="headerlink" title="八进制（一般不用）"></a>八进制（一般不用）</h4><ul>
+<li>满八进一</li>
+<li>八进制中一共有8个数字<br>0 1 2 3 4 5 6 7</li>
+<li>八进制如何计数<br>0 1 2 3 4 5 6 7 10 11 。。。 17 20 。。。27 30</li>
+</ul>
+<h4 id="十六进制"><a href="#十六进制" class="headerlink" title="十六进制"></a>十六进制</h4><ul>
+<li>满十六进一</li>
+<li>十六进制中一共有16个数字，由于十六进制是满16才进位，所以十六进制中引入了a b c d e f来表示 10 11 12 13 14 15<br>0 1 2 3 4 5 6 7 8 9 a b c d e f </li>
+<li>十六进制如何计数<br>0 1 2 3 4 5 6 7 8 9 a b c d e f 10 11 12 。。。 1a 1b 1c 1d 1e 1f20 21 22 。。。 2a 2b 2c 2d 2e 2f 30    </li>
+<li>我们在查看二进制数据时，一般会以十六进制的形式显示</li>
+</ul>
+<h3 id="文本文件和字符集"><a href="#文本文件和字符集" class="headerlink" title="文本文件和字符集"></a>文本文件和字符集</h3><p> 文本分成两种，一种叫做纯文本，还有一种叫做富文本</p>
+<ul>
+<li>纯文本中只能保存单一的文本内容，无法保存内容无关的东西（字体、颜色、图片。。。）</li>
+<li>富文本中可以保存文本以外的内容（word文档）</li>
+<li>在开发时，编写程序使用的全都是纯文本！</li>
+<li>纯文本在计算机底层也会转换为二进制保存，将字符转换为二进制码的过程，我们称为编码<br>将二进制码转换为字符的过程，我们称为解码编码和解码时所采用的规则，我们称为字符集</li>
+<li>常见的字符集：<br>ASCII<ul>
+<li>美国人编码，使用7位来对美国常用的字符进行编码</li>
+<li>包含128个字符<br>ISO-8859-1</li>
+<li>欧洲的编码，使用8位</li>
+<li>包含256个字符<br>GB2312<br>GBK<br>国标码，中国的编码<br>Unicode<br>万国码，包含世界上所有的语言和符号，编写程序时一般都会使用Unicode编码Unicode编码有多种实现，UTF-8 UTF-16 UTF-32最常用的就是UTF-8</li>
+</ul>
+</li>
+<li>乱码<br>编写程序时，如果发现程序代码出现乱码的情况，就要马上去检查字符集是否正确</li>
+</ul>
 
                 
               </div>
@@ -377,17 +449,17 @@
     
       <span class="category-chain">
         
-  <a href="/categories/%E9%98%85%E8%AF%BB%E4%B8%8E%E5%86%99%E4%BD%9C/" class="category-chain-item">阅读与写作</a>
+  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%8F%8A%E5%B5%8C%E5%85%A5%E5%BC%8F%E8%BD%AF%E4%BB%B6/" class="category-chain-item">计算机及嵌入式软件</a>
   
   
     <span>></span>
     
-  <a href="/categories/%E9%98%85%E8%AF%BB%E4%B8%8E%E5%86%99%E4%BD%9C/%E8%AF%BB%E4%B9%A6/" class="category-chain-item">读书</a>
+  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%8F%8A%E5%B5%8C%E5%85%A5%E5%BC%8F%E8%BD%AF%E4%BB%B6/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/" class="category-chain-item">编程语言</a>
   
   
     <span>></span>
     
-  <a href="/categories/%E9%98%85%E8%AF%BB%E4%B8%8E%E5%86%99%E4%BD%9C/%E8%AF%BB%E4%B9%A6/%E8%AF%BB%E4%B9%A6%E6%B8%85%E5%8D%95/" class="category-chain-item">读书清单</a>
+  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%8F%8A%E5%B5%8C%E5%85%A5%E5%BC%8F%E8%BD%AF%E4%BB%B6/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/python/" class="category-chain-item">python</a>
   
   
 
@@ -406,7 +478,11 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/%E8%AF%BB%E4%B9%A6%E6%B8%85%E5%8D%95/">#读书清单</a>
+        <a href="/tags/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/" class="print-no-link">#编程语言</a>
+      
+        <a href="/tags/python/" class="print-no-link">#python</a>
+      
+        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" class="print-no-link">#计算机基础知识</a>
       
     </div>
   
@@ -418,8 +494,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>个人读书清单</div>
-      <div>https://www.duruofu.xyz/2023/06/06/1.阅读写作/读书/读书清单/个人读书清单/</div>
+      <div>python笔记(1.计算机基础知识)</div>
+      <div>https://www.duruofu.xyz/2022/03/17/3.软件相关/编程语言/python/1.第一部分 计算机基础知识/</div>
     </div>
     <div class="license-meta">
       
@@ -431,13 +507,13 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2023年6月6日</div>
+          <div>2022年3月17日</div>
         </div>
       
       
         <div class="license-meta-item license-meta-date">
           <div>更新于</div>
-          <div>2024年1月5日</div>
+          <div>2025年1月10日</div>
         </div>
       
       
@@ -447,21 +523,21 @@
             
               
               
-                <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
                   <span class="hint--top hint--rounded" aria-label="BY - 署名">
-                    <i class="iconfont icon-by"></i>
+                    <i class="iconfont icon-cc-by"></i>
                   </span>
                 </a>
               
-                <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
                   <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
-                    <i class="iconfont icon-nc"></i>
+                    <i class="iconfont icon-cc-nc"></i>
                   </span>
                 </a>
               
-                <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
                   <span class="hint--top hint--rounded" aria-label="SA - 相同方式共享">
-                    <i class="iconfont icon-sa"></i>
+                    <i class="iconfont icon-cc-sa"></i>
                   </span>
                 </a>
               
@@ -480,9 +556,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2023/06/06/3.%E8%BD%AF%E4%BB%B6%E7%9B%B8%E5%85%B3/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/python/5.%E7%AC%AC%E4%BA%94%E9%83%A8%E5%88%86%20%E5%87%BD%E6%95%B0/" title="python笔记(5.函数)">
+                      <a href="/2022/06/06/1.%E9%98%85%E8%AF%BB%E5%86%99%E4%BD%9C/%E5%86%99%E4%BD%9C/%E8%AF%97%E8%AF%8D/%E5%8E%9F%E5%88%9B%E8%AF%97%E8%AF%8D/%E5%8E%9F%E5%88%9B%E8%AF%97%E8%AF%8D%E6%B1%87%E6%80%BB/" title="一些拙劣的诗词">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">python笔记(5.函数)</span>
+                        <span class="hidden-mobile">一些拙劣的诗词</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -490,8 +566,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2023/06/05/3.%E8%BD%AF%E4%BB%B6%E7%9B%B8%E5%85%B3/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/JS/1.0%20%E4%BB%8B%E7%BB%8D/" title="JavaScript笔记 (1.JavaScript介绍)">
-                        <span class="hidden-mobile">JavaScript笔记 (1.JavaScript介绍)</span>
+                      <a href="/2022/03/17/3.%E8%BD%AF%E4%BB%B6%E7%9B%B8%E5%85%B3/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/python/2.%E7%AC%AC%E4%BA%8C%E9%83%A8%E5%88%86%20python%E5%85%A5%E9%97%A8/" title="python笔记(2.Python入门)">
+                        <span class="hidden-mobile">python笔记(2.Python入门)</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -514,7 +590,7 @@
         var options = Object.assign(
           {"clientID":"c9ac06d5413a9d613a1e","clientSecret":"a44f5c72589eb090876cc64067db28fbfdf4747c","repo":"Blog-comments-gitalk","owner":"DuRuofu","admin":["DuRuofu"],"language":"zh-CN","labels":["Gitalk"],"perPage":15,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":false,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token"},
           {
-            id: '989ca5ff8fc00e2a79128e11d704e07e'
+            id: '86fb0d81b330f1f9916a70fe17aa4c3a'
           }
         )
         var gitalk = new Gitalk(options);
@@ -624,7 +700,6 @@
        <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <br><span id="timeDate">天数载入中</span><span id="times">...</span><br> <span>总有读不懂的诗和到达不了的远方</span> <p>Copyright © 2023 - <span id="currentYear"></span> All Rights Reserved.</p>
     </div>
   
-<span style="font-size: smaller;" >  😊目前为止，已经码字：812k</span>
   
     <div class="statistics">
   
@@ -646,11 +721,12 @@
       </span>
     
     
+
   
+
 </div>
 
   
-
   
     <!-- 备案信息 ICP for China -->
     <div class="beian">
@@ -680,8 +756,6 @@
 </div>
 
   
-  
-
 </div>
 
   </footer>
@@ -729,6 +803,33 @@
   
 
 
+
+
+  
+<script>
+  var relativeDate = function() {
+    var updatedTime = document.getElementById('updated-time');
+    if (updatedTime) {
+      var text = updatedTime.textContent;
+      var reg = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:Z|[+-]\d{2}:\d{2})/;
+      var matchs = text.match(reg);
+      if (matchs) {
+        var relativeTime = moment(matchs[0]).fromNow();
+        updatedTime.textContent = text.replace(reg, relativeTime);
+      }
+      updatedTime.style.display = '';
+    }
+  };
+  Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/moment.min.js', function() {
+    if (!'zh-cn'.startsWith('en')) {
+      Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/locale/zh-cn.min.js', function() {
+        relativeDate();
+      });
+    } else {
+      relativeDate();
+    }
+  });
+</script>
 
 
   
