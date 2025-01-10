@@ -1,0 +1,1015 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/%E4%B8%AA%E4%BA%BA%E5%A4%B4%E5%83%8F%E6%97%A0%E8%83%8C%E6%99%AF.png">
+  <link rel="icon" href="https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/%E4%B8%AA%E4%BA%BA%E5%A4%B4%E5%83%8F%E6%97%A0%E8%83%8C%E6%99%AF.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="DuRuofu">
+  <meta name="keywords" content="嵌入式,个人博客,个人测试">
+  
+    <meta name="description" content="本文档介绍ESP32外设-UART的基本使用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ESP32外设-2.UART入门">
+<meta property="og:url" content="https://www.duruofu.xyz/posts/22053/index.html">
+<meta property="og:site_name" content="Duruofu&#39;s 个人测试">
+<meta property="og:description" content="本文档介绍ESP32外设-UART的基本使用">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.duruofu.xyz/img/index_img/espidf.png">
+<meta property="article:published_time" content="2024-03-03T08:42:53.000Z">
+<meta property="article:modified_time" content="2025-01-10T14:20:34.070Z">
+<meta property="article:author" content="DuRuofu">
+<meta property="article:tag" content="MCU">
+<meta property="article:tag" content="ESP32">
+<meta property="article:tag" content="UART">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://www.duruofu.xyz/img/index_img/espidf.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>ESP32外设-2.UART入门 - Duruofu&#39;s 个人测试</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/cust/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"www.duruofu.xyz","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":80,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":true,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":5},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null},"gtag":null,"woyaola":null,"cnzz":null},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>DuRuofu</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/2020/06/06/1.%E9%98%85%E8%AF%BB%E5%86%99%E4%BD%9C/%E5%8E%9F%E5%88%9B%E8%AF%97%E8%AF%8D/%E8%AF%97%E8%AF%8D/" target="_self">
+                <i class="iconfont icon-books"></i>
+                <span>诗词</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                <span>ESP32教程</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/posts/58874/" target="_self">
+                    
+                    <span>ESP32教程-2024</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/posts/58875/" target="_self">
+                    
+                    <span>ESP32教程-2025</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="ESP32外设-2.UART入门"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        DuRuofu
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-03-03 16:42" pubdate>
+          2024年3月3日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.5k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          3 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">ESP32外设-2.UART入门</h1>
+            
+              <p id="updated-time" class="note note-info" style="display: none">
+                
+                  
+                    本文最后更新于 2025-01-10T22:20:34+08:00
+                  
+                  
+
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <h3 id="说明："><a href="#说明：" class="headerlink" title="说明："></a>说明：</h3><ol>
+<li>本文档由DuRuofu撰写，由DuRuofu负责解释及执行。</li>
+<li>本文档介绍ESP32外设-UART的基本使用</li>
+</ol>
+<h3 id="修订历史："><a href="#修订历史：" class="headerlink" title="修订历史："></a>修订历史：</h3><table>
+<thead>
+<tr>
+<th>文档名称</th>
+<th>版本</th>
+<th>作者</th>
+<th>时间</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ESP32外设-UART入门</td>
+<td>v1.0.0</td>
+<td>DuRuofu</td>
+<td>2024-03-03</td>
+<td>首次建立</td>
+</tr>
+</tbody></table>
+<div STYLE="page-break-after: always;"></div>
+
+<h1 id="ESP32外设-UART入门"><a href="#ESP32外设-UART入门" class="headerlink" title="ESP32外设-UART入门"></a>ESP32外设-UART入门</h1><h2 id="一、UART介绍"><a href="#一、UART介绍" class="headerlink" title="一、UART介绍"></a>一、UART介绍</h2><p>通用异步接收器&#x2F;发送器 (UART) 属于一种硬件功能，通过使用 RS232、RS422、RS485 等常见异步串行通信接口来处理通信时序要求和数据帧。UART 是实现不同设备之间全双工或半双工数据交换的一种常用且经济的方式。</p>
+<p>ESP32 芯片有 3 个 UART 控制器（也称为端口），每个控制器都有一组相同的寄存器以简化编程并提高灵活性。</p>
+<p>每个 UART 控制器可以独立配置波特率、数据位长度、位顺序、停止位位数、奇偶校验位等参数。所有具备完整功能的 UART 控制器都能与不同制造商的 UART 设备兼容，并且支持红外数据协会 (IrDA) 定义的标准协议。</p>
+<h2 id="二、功能概述"><a href="#二、功能概述" class="headerlink" title="二、功能概述"></a>二、功能概述</h2><p>基本编程流程分为以下几个步骤：</p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/uart.html#uart-api-setting-communication-parameters">设置通信参数</a> - 设置波特率、数据位、停止位等</li>
+<li><a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/uart.html#uart-api-setting-communication-pins">设置通信管脚</a> - 分配连接设备的管脚</li>
+<li><a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/uart.html#uart-api-driver-installation">安装驱动程序</a> - 为 UART 驱动程序分配 ESP32 资源</li>
+<li><a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/uart.html#uart-api-running-uart-communication">运行 UART 通信</a> - 发送&#x2F;接收数据</li>
+<li><a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/uart.html#uart-api-using-interrupts">使用中断</a> - 触发特定通信事件的中断</li>
+<li><a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/uart.html#uart-api-deleting-driver">删除驱动程序</a> - 如无需 UART 通信，则释放已分配的资源</li>
+</ol>
+<blockquote>
+<p>步骤 1 到 3 为配置阶段，步骤 4 为 UART 运行阶段，步骤 5 和 6 为可选步骤。<br>UART 驱动程序函数通过 <a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/uart.html#_CPPv411uart_port_t" title="uart_port_t"><code>uart_port_t</code></a> 识别不同的 UART 控制器。调用以下所有函数均需此标识。</p>
+</blockquote>
+<h2 id="三、UART简单使用"><a href="#三、UART简单使用" class="headerlink" title="三、UART简单使用"></a>三、UART简单使用</h2><h3 id="1、设置通信参数"><a href="#1、设置通信参数" class="headerlink" title="1、设置通信参数"></a>1、设置通信参数</h3><h4 id="结构体配置："><a href="#结构体配置：" class="headerlink" title="结构体配置："></a>结构体配置：</h4><p>调用函数 <a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/uart.html#_CPPv417uart_param_config11uart_port_tPK13uart_config_t" title="uart_param_config"><code>uart_param_config()</code></a> 并向其传递 <a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/uart.html#_CPPv413uart_config_t" title="uart_config_t"><code>uart_config_t</code></a> 结构体，<a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/uart.html#_CPPv413uart_config_t" title="uart_config_t"><code>uart_config_t</code></a> 结构体应包含所有必要的参数。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// 定义使用的UART端口为UART_NUM_2，即第三个UART端口</span><br><span class="hljs-type">const</span> <span class="hljs-type">uart_port_t</span> uart_num = UART_NUM_2;<br><br><span class="hljs-comment">// 初始化并配置UART的参数</span><br><span class="hljs-type">uart_config_t</span> uart_config = &#123;<br>    .baud_rate = <span class="hljs-number">115200</span>, <span class="hljs-comment">// 设置波特率为115200，这是数据传输速率的一种度量</span><br>    .data_bits = UART_DATA_8_BITS, <span class="hljs-comment">// 设置数据位为8位，这是每个数据包中的位数</span><br>    .parity = UART_PARITY_DISABLE, <span class="hljs-comment">// 禁用奇偶校验，用于错误检测</span><br>    .stop_bits = UART_STOP_BITS_1, <span class="hljs-comment">// 设置停止位为1，停止位用于标识每个数据包的结束</span><br>    .flow_ctrl = UART_HW_FLOWCTRL_CTS_RTS, <span class="hljs-comment">// 启用CTS/RTS硬件流控制，用于调节数据传输速率，防止数据丢失</span><br>    .rx_flow_ctrl_thresh = <span class="hljs-number">122</span>, <span class="hljs-comment">// 设置接收流控制阈值为122，这与硬件流控制相关</span><br>&#125;;<br><br><span class="hljs-comment">// 使用上述配置参数配置UART端口</span><br><span class="hljs-comment">// ESP_ERROR_CHECK是一个宏，用于检查函数返回的错误码，并在出错时终止程序</span><br>ESP_ERROR_CHECK(uart_param_config(uart_num, &amp;uart_config));<br><br></code></pre></td></tr></table></figure>
+<h4 id="函数分步配置："><a href="#函数分步配置：" class="headerlink" title="函数分步配置："></a>函数分步配置：</h4><p>调用下表中的专用函数，能够单独配置特定参数。如需重新配置某个参数，也可使用这些函数</p>
+<table>
+<thead>
+<tr>
+<th>配置参数</th>
+<th>函数</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>波特率</td>
+<td><a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/uart.html#_CPPv417uart_set_baudrate11uart_port_t8uint32_t" title="uart_set_baudrate"><code>uart_set_baudrate()</code></a></td>
+</tr>
+<tr>
+<td>传输位</td>
+<td>调用 <a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/uart.html#_CPPv420uart_set_word_length11uart_port_t18uart_word_length_t" title="uart_set_word_length"><code>uart_set_word_length()</code></a> 设置 <a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/uart.html#_CPPv418uart_word_length_t" title="uart_word_length_t"><code>uart_word_length_t</code></a></td>
+</tr>
+<tr>
+<td>奇偶控制</td>
+<td>调用 <a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/uart.html#_CPPv413uart_parity_t" title="uart_parity_t"><code>uart_parity_t</code></a> 设置 <a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/uart.html#_CPPv415uart_set_parity11uart_port_t13uart_parity_t" title="uart_set_parity"><code>uart_set_parity()</code></a></td>
+</tr>
+<tr>
+<td>停止位</td>
+<td>调用 <a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/uart.html#_CPPv418uart_set_stop_bits11uart_port_t16uart_stop_bits_t" title="uart_set_stop_bits"><code>uart_set_stop_bits()</code></a> 设置 <a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/uart.html#_CPPv416uart_stop_bits_t" title="uart_stop_bits_t"><code>uart_stop_bits_t</code></a></td>
+</tr>
+<tr>
+<td>硬件流控模式</td>
+<td>调用 <a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/uart.html#_CPPv421uart_set_hw_flow_ctrl11uart_port_t21uart_hw_flowcontrol_t7uint8_t" title="uart_set_hw_flow_ctrl"><code>uart_set_hw_flow_ctrl()</code></a> 设置 <a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/uart.html#_CPPv421uart_hw_flowcontrol_t" title="uart_hw_flowcontrol_t"><code>uart_hw_flowcontrol_t</code></a></td>
+</tr>
+<tr>
+<td>通信模式</td>
+<td>调用 <a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/uart.html#_CPPv413uart_set_mode11uart_port_t11uart_mode_t" title="uart_set_mode"><code>uart_set_mode()</code></a> 设置 <a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/uart.html#_CPPv411uart_mode_t" title="uart_mode_t"><code>uart_mode_t</code></a></td>
+</tr>
+<tr>
+<td>表中每个函数都可使用 <code>_get_</code> 对应项来查看当前设置值。例如，查看当前波特率值，调用 <a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/uart.html#_CPPv417uart_get_baudrate11uart_port_tP8uint32_t" title="uart_get_baudrate"><code>uart_get_baudrate()</code></a>。</td>
+<td></td>
+</tr>
+</tbody></table>
+<h3 id="2、分配引脚"><a href="#2、分配引脚" class="headerlink" title="2、分配引脚"></a>2、分配引脚</h3><p>通信参数设置完成后，可以配置其他 UART 设备连接的 GPIO 管脚。调用函数 <a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/uart.html#_CPPv412uart_set_pin11uart_port_tiiii" title="uart_set_pin"><code>uart_set_pin()</code></a>，指定配置 Tx、Rx、RTS 和 CTS 信号的 GPIO 管脚编号。如要为特定信号保留当前分配的管脚编号，可传递宏 <a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/uart.html#c.UART_PIN_NO_CHANGE" title="UART_PIN_NO_CHANGE"><code>UART_PIN_NO_CHANGE</code></a>。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// Set UART pins(TX: IO4, RX: IO5, RTS: IO18, CTS: IO19)</span><br>ESP_ERROR_CHECK(uart_set_pin(UART_NUM_2, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">18</span>, <span class="hljs-number">19</span>));<br></code></pre></td></tr></table></figure>
+
+<h3 id="3、安装驱动程序"><a href="#3、安装驱动程序" class="headerlink" title="3、安装驱动程序"></a>3、安装驱动程序</h3><p>通信管脚设置完成后，请调用 <a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/uart.html#_CPPv419uart_driver_install11uart_port_tiiiP13QueueHandle_ti" title="uart_driver_install"><code>uart_driver_install()</code></a> 安装驱动程序并指定以下参数：</p>
+<ul>
+<li>Tx 环形缓冲区的大小</li>
+<li>Rx 环形缓冲区的大小</li>
+<li>事件队列句柄和大小</li>
+<li>分配中断的标志<br>该函数将为 UART 驱动程序分配所需的内部资源。<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs c"><br><span class="hljs-comment">// Setup UART buffered IO with event queue</span><br><span class="hljs-type">const</span> <span class="hljs-type">int</span> uart_buffer_size = (<span class="hljs-number">1024</span> * <span class="hljs-number">2</span>);<br>QueueHandle_t uart_queue;<br><span class="hljs-comment">// Install UART driver using an event queue here</span><br>ESP_ERROR_CHECK(uart_driver_install(UART_NUM_2, uart_buffer_size, \<br>                                        uart_buffer_size, <span class="hljs-number">10</span>, &amp;uart_queue, <span class="hljs-number">0</span>));<br><br></code></pre></td></tr></table></figure></li>
+</ul>
+<p>此步骤完成后，可连接外部 UART 设备检查通信。</p>
+<blockquote>
+<p>注意：当TX 缓冲区参数填 0 或 NULL 的时候，不使用缓冲区，使用uart_write_bytes()发送操作时，在数据发送之前将会阻塞。</p>
+<p>同样也有不阻塞的函数uart_tx_chars()，它不会为等待TX FIFO有足够的空间而阻塞，而是将填充可用的TX FIFO。此函数返回时，FIFO是满的。</p>
+</blockquote>
+<p>示例：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs c">QueueHandle_t eventQueue;<br><br>uart_driver_install(<br>	UART_NUM_2, 	<span class="hljs-comment">//UART 编号</span><br>	<span class="hljs-keyword">sizeof</span> rxBuf, 	<span class="hljs-comment">//Rx 缓冲区大小</span><br>	<span class="hljs-keyword">sizeof</span> rxBuf, 	<span class="hljs-comment">//Tx 缓冲区大小</span><br>	<span class="hljs-number">16</span>, 			<span class="hljs-comment">//事件队列长度（可以不要，此参数填 0，然后下一个参数填NULL）</span><br>	&amp;eventQueue, 	<span class="hljs-comment">//(QueueHandle_t*)接受被创建的句柄的变量指针，类型为FreeRTOS的队列</span><br>	<span class="hljs-number">0</span>				<span class="hljs-comment">//中断分配标志，这里写 0 表示不想分配中断</span><br>);<br><br>uart_set_pin(<br>	UART_NUM_2, 	<span class="hljs-comment">//UART 编号</span><br>	<span class="hljs-number">19</span>, 			<span class="hljs-comment">//TX GPIO</span><br>	<span class="hljs-number">18</span>, 			<span class="hljs-comment">//RX GPIO</span><br>	<span class="hljs-number">5</span>, 				<span class="hljs-comment">//RTS GPIO</span><br>	<span class="hljs-number">4</span>				<span class="hljs-comment">//CTS GPIO</span><br>);<br><br></code></pre></td></tr></table></figure>
+
+<h3 id="3、收发数据"><a href="#3、收发数据" class="headerlink" title="3、收发数据"></a>3、收发数据</h3><p>使用函数<code>uart_write_bytes()</code> 和 <code>uart_read_bytes()</code> 分别进行发送数据以及接收数据。<strong>两个函数的参数均为（UART_NUM，发送内容首地址&#x2F;接受缓冲区地址，长度）</strong></p>
+<p>下面是一个简单的UART通信示例，展示如何使用ESP32进行数据的发送和接收。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;freertos/FreeRTOS.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;freertos/task.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;freertos/queue.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;driver/uart.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;esp_err.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;string.h&quot;</span></span><br><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> TX_GPIO_NUM 17</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> RX_GPIO_NUM 16</span><br><br><span class="hljs-comment">// 配置串口3</span><br><span class="hljs-type">void</span> <span class="hljs-title function_">uart_config</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span> &#123;<br>    <span class="hljs-type">const</span> <span class="hljs-type">uart_port_t</span> uart_num = UART_NUM_2;<br><br>    <span class="hljs-type">uart_config_t</span> uart_config = &#123;<br>        .baud_rate = <span class="hljs-number">115200</span>,<br>        .data_bits = UART_DATA_8_BITS,<br>        .parity = UART_PARITY_DISABLE,<br>        .stop_bits = UART_STOP_BITS_1,<br>        .flow_ctrl = UART_HW_FLOWCTRL_DISABLE,<br>        .rx_flow_ctrl_thresh = <span class="hljs-number">122</span>,<br>    &#125;;<br><br>    <span class="hljs-comment">// 配置UART参数</span><br>    ESP_ERROR_CHECK(uart_param_config(uart_num, &amp;uart_config));<br><br>    <span class="hljs-comment">// 设置UART引脚</span><br>    ESP_ERROR_CHECK(uart_set_pin(uart_num, TX_GPIO_NUM, RX_GPIO_NUM, UART_PIN_NO_CHANGE, UART_PIN_NO_CHANGE));<br><br>    <span class="hljs-comment">// 安装UART驱动程序，不使用事件队列</span><br>    <span class="hljs-type">const</span> <span class="hljs-type">int</span> uart_buffer_size = (<span class="hljs-number">1024</span> * <span class="hljs-number">2</span>);<br>    ESP_ERROR_CHECK(uart_driver_install(uart_num, uart_buffer_size, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-literal">NULL</span>, <span class="hljs-number">0</span>));<br>&#125;<br><br><span class="hljs-comment">// 串口发送测试</span><br><span class="hljs-type">void</span> <span class="hljs-title function_">uart_send_receive_demo</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span> &#123;<br>    <span class="hljs-type">const</span> <span class="hljs-type">uart_port_t</span> uart_num = UART_NUM_2;<br>    <span class="hljs-type">char</span>* test_str = <span class="hljs-string">&quot;This is a UART test string.\n&quot;</span>;<br>    <span class="hljs-type">uint8_t</span> data[<span class="hljs-number">128</span>];<br><br>    <span class="hljs-comment">// 发送数据</span><br>    uart_write_bytes(uart_num, test_str, <span class="hljs-built_in">strlen</span>(test_str));<br><br>    <span class="hljs-keyword">while</span>(<span class="hljs-number">1</span>)&#123;<br>        vTaskDelay(<span class="hljs-number">1</span>);<br>        <span class="hljs-comment">// 等待数据接收</span><br>        <span class="hljs-type">int</span> length = <span class="hljs-number">0</span>;<br>        ESP_ERROR_CHECK(uart_get_buffered_data_len(uart_num, (<span class="hljs-type">size_t</span>*)&amp;length));<br>        <span class="hljs-keyword">if</span>(length &gt; <span class="hljs-number">0</span>) &#123;<br>            <span class="hljs-type">int</span> read_len = uart_read_bytes(uart_num, data, length, pdMS_TO_TICKS(<span class="hljs-number">1000</span>));<br>            <span class="hljs-keyword">if</span>(read_len &gt; <span class="hljs-number">0</span>) &#123;<br>                <span class="hljs-comment">// 输出接收到的数据</span><br>                <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Received: %.*s\n&quot;</span>, read_len, data);<br>            &#125;<br>        &#125;<br>    &#125;<br><br>&#125;<br><br><br><span class="hljs-type">void</span> <span class="hljs-title function_">app_main</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span> &#123;<br>    uart_config();<br>    uart_send_receive_demo();<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<p>连接硬件：</p>
+<p><img src="/posts/22053/f6feb7ee07d7284e6cb91d19578507a.jpg" srcset="/img/loading.gif" lazyload></p>
+<p>测试接收发送效果：</p>
+<p>发送：</p>
+<p><img src="/posts/22053/20240303184402.png" srcset="/img/loading.gif" lazyload></p>
+<p>接收：</p>
+<p><img src="/posts/22053/20240303184431.png" srcset="/img/loading.gif" lazyload></p>
+<h1 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h1><ol>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/m0_50064262/article/details/119006749">https://blog.csdn.net/m0_50064262/article/details/119006749</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/uart.html#uart-api-setting-communication-parameters">https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/uart.html#uart-api-setting-communication-parameters</a></li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%94%B5%E5%AD%90%E4%BF%A1%E6%81%AF%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/" class="category-chain-item">电子信息硬件相关</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E7%94%B5%E5%AD%90%E4%BF%A1%E6%81%AF%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/" class="category-chain-item">MCU</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E7%94%B5%E5%AD%90%E4%BF%A1%E6%81%AF%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/" class="category-chain-item">ESP32</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E7%94%B5%E5%AD%90%E4%BF%A1%E6%81%AF%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/%E5%9F%BA%E7%A1%80%E5%A4%96%E8%AE%BE/" class="category-chain-item">基础外设</a>
+  
+  
+
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/MCU/" class="print-no-link">#MCU</a>
+      
+        <a href="/tags/ESP32/" class="print-no-link">#ESP32</a>
+      
+        <a href="/tags/UART/" class="print-no-link">#UART</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>ESP32外设-2.UART入门</div>
+      <div>https://www.duruofu.xyz/posts/22053/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>DuRuofu</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年3月3日</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>更新于</div>
+          <div>2025年1月10日</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
+                    <i class="iconfont icon-cc-nc"></i>
+                  </span>
+                </a>
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="SA - 相同方式共享">
+                    <i class="iconfont icon-cc-sa"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/17429/" title="ESP32外设-3.硬件定时器入门">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">ESP32外设-3.硬件定时器入门</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/58282/" title="ESP32外设-1.GPIO入门">
+                        <span class="hidden-mobile">ESP32外设-1.GPIO入门</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#gitalk-container', function() {
+      Fluid.utils.createCssLink('/css/gitalk.css')
+      Fluid.utils.createScript('https://lib.baomitu.com/gitalk/1.8.0/gitalk.min.js', function() {
+        var options = Object.assign(
+          {"clientID":"c9ac06d5413a9d613a1e","clientSecret":"a44f5c72589eb090876cc64067db28fbfdf4747c","repo":"Blog-comments-gitalk","owner":"DuRuofu","admin":["DuRuofu"],"language":"zh-CN","labels":["Gitalk"],"perPage":15,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":false,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token"},
+          {
+            id: '7f9b24df4ad86ccebd8cddb6a26181ac'
+          }
+        )
+        var gitalk = new Gitalk(options);
+        gitalk.render('gitalk-container');
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <br><span id="timeDate">天数载入中</span><span id="times">...</span><br> <span>总有读不懂的诗和到达不了的远方</span> <p>Copyright © 2023 - <span id="currentYear"></span> All Rights Reserved.</p>
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      陕ICP备2022007454号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=2022007454"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>陕ICP备2022007454号-2</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":true,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  var relativeDate = function() {
+    var updatedTime = document.getElementById('updated-time');
+    if (updatedTime) {
+      var text = updatedTime.textContent;
+      var reg = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:Z|[+-]\d{2}:\d{2})/;
+      var matchs = text.match(reg);
+      if (matchs) {
+        var relativeTime = moment(matchs[0]).fromNow();
+        updatedTime.textContent = text.replace(reg, relativeTime);
+      }
+      updatedTime.style.display = '';
+    }
+  };
+  Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/moment.min.js', function() {
+    if (!'zh-cn'.startsWith('en')) {
+      Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/locale/zh-cn.min.js', function() {
+        relativeDate();
+      });
+    } else {
+      relativeDate();
+    }
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/cust/custom.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

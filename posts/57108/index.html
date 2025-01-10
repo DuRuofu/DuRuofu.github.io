@@ -1,0 +1,1112 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/%E4%B8%AA%E4%BA%BA%E5%A4%B4%E5%83%8F%E6%97%A0%E8%83%8C%E6%99%AF.png">
+  <link rel="icon" href="https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/%E4%B8%AA%E4%BA%BA%E5%A4%B4%E5%83%8F%E6%97%A0%E8%83%8C%E6%99%AF.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="DuRuofu">
+  <meta name="keywords" content="嵌入式,个人博客,个人测试">
+  
+    <meta name="description" content="本文档主要介绍ESP32的TCP协议,本节内容实现TCP客户端和服务端。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ESP32WIFI-2.TCP协议">
+<meta property="og:url" content="https://www.duruofu.xyz/posts/57108/index.html">
+<meta property="og:site_name" content="Duruofu&#39;s 个人测试">
+<meta property="og:description" content="本文档主要介绍ESP32的TCP协议,本节内容实现TCP客户端和服务端。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.duruofu.xyz/img/index_img/esp_wifi.png">
+<meta property="article:published_time" content="2024-03-15T10:21:53.000Z">
+<meta property="article:modified_time" content="2025-01-10T14:20:34.095Z">
+<meta property="article:author" content="DuRuofu">
+<meta property="article:tag" content="MCU">
+<meta property="article:tag" content="ESP32">
+<meta property="article:tag" content="TCP协议">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://www.duruofu.xyz/img/index_img/esp_wifi.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>ESP32WIFI-2.TCP协议 - Duruofu&#39;s 个人测试</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/cust/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"www.duruofu.xyz","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":80,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":true,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":5},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null},"gtag":null,"woyaola":null,"cnzz":null},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>DuRuofu</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/2020/06/06/1.%E9%98%85%E8%AF%BB%E5%86%99%E4%BD%9C/%E5%8E%9F%E5%88%9B%E8%AF%97%E8%AF%8D/%E8%AF%97%E8%AF%8D/" target="_self">
+                <i class="iconfont icon-books"></i>
+                <span>诗词</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                <span>ESP32教程</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/posts/58874/" target="_self">
+                    
+                    <span>ESP32教程-2024</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/posts/58875/" target="_self">
+                    
+                    <span>ESP32教程-2025</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="ESP32WIFI-2.TCP协议"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        DuRuofu
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-03-15 18:21" pubdate>
+          2024年3月15日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          5.2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          9 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">ESP32WIFI-2.TCP协议</h1>
+            
+              <p id="updated-time" class="note note-info" style="display: none">
+                
+                  
+                    本文最后更新于 2025-01-10T22:20:34+08:00
+                  
+                  
+
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <h3 id="说明："><a href="#说明：" class="headerlink" title="说明："></a>说明：</h3><ol>
+<li>本文档由DuRuofu撰写，由DuRuofu负责解释及执行。</li>
+<li>本文档主要介绍ESP32的TCP协议,本节内容实现TCP客户端和服务端。</li>
+<li>此文档仅作为个人学习笔记，本人不能保证其绝对准确性。</li>
+</ol>
+<h3 id="修订历史："><a href="#修订历史：" class="headerlink" title="修订历史："></a>修订历史：</h3><table>
+<thead>
+<tr>
+<th>文档名称</th>
+<th>版本</th>
+<th>作者</th>
+<th>时间</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ESP32网络入门-TCP协议</td>
+<td>v1.0.0</td>
+<td>DuRuofu</td>
+<td>2024-03-15</td>
+<td>首次建立</td>
+</tr>
+</tbody></table>
+<div STYLE="page-break-after: always;"></div>
+
+<h1 id="ESP32网络入门-TCP协议"><a href="#ESP32网络入门-TCP协议" class="headerlink" title="ESP32网络入门-TCP协议"></a>ESP32网络入门-TCP协议</h1><h2 id="一、介绍"><a href="#一、介绍" class="headerlink" title="一、介绍"></a>一、介绍</h2><p>在开始使用TCP协议之前，我们需要掌握一些基本的概念和前置知识：</p>
+<blockquote>
+<p>最基本的一点：TCP&#x2F;UDP工作在网络OSI的七层模型中的第四层——传输层，IP在第三层——网络层，WIFI（狭义上）在一二层-物理层和数据链路层。</p>
+</blockquote>
+<h3 id="1-1-套接字（socket）"><a href="#1-1-套接字（socket）" class="headerlink" title="1.1 套接字（socket）"></a>1.1 套接字（socket）</h3><blockquote>
+<p>下面的部分搬运自：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/106271407#:~:text=Socket%E6%98%AF%E5%BA%94%E7%94%A8%E5%B1%82%E4%B8%8ETCP%2FIP%E5%8D%8F%E8%AE%AE%E6%97%8F%E9%80%9A%E4%BF%A1%E7%9A%84%E4%B8%AD%E9%97%B4%E8%BD%AF%E4%BB%B6%E6%8A%BD%E8%B1%A1%E5%B1%82%EF%BC%8C%E5%AE%83%E6%98%AF%E4%B8%80%E7%BB%84%E6%8E%A5%E5%8F%A3%E3%80%82,%E5%9C%A8%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B8%AD%EF%BC%8CSocket%E5%85%B6%E5%AE%9E%E5%B0%B1%E6%98%AF%E4%B8%80%E4%B8%AA%E9%97%A8%E9%9D%A2%E6%A8%A1%E5%BC%8F%EF%BC%8C%E5%AE%83%E6%8A%8A%E5%A4%8D%E6%9D%82%E7%9A%84TCP%2FIP%E5%8D%8F%E8%AE%AE%E6%97%8F%E9%9A%90%E8%97%8F%E5%9C%A8Socket%E6%8E%A5%E5%8F%A3%E5%90%8E%E9%9D%A2%EF%BC%8C%E5%AF%B9%E7%94%A8%E6%88%B7%E6%9D%A5%E8%AF%B4%EF%BC%8C%E4%B8%80%E7%BB%84%E7%AE%80%E5%8D%95%E7%9A%84%E6%8E%A5%E5%8F%A3%E5%B0%B1%E6%98%AF%E5%85%A8%E9%83%A8%E3%80%82">Socket介绍</a> <em>(如有侵权，请联系作者删除)</em></p>
+</blockquote>
+<p><img src="/posts/57108/20240315105448.png" srcset="/img/loading.gif" lazyload></p>
+<p>Socket是应用层与TCP&#x2F;IP协议族通信的中间软件抽象层，它是一组接口。在设计模式中，Socket其实就是一个门面模式，它把复杂的TCP&#x2F;IP协议族隐藏在Socket接口后面，对用户来说，一组简单的接口就是全部。</p>
+<p><img src="/posts/57108/20240315104749.png" srcset="/img/loading.gif" lazyload></p>
+<p>网络协议是很复杂的，它的硬件接口可以是WIFI，网线，4G网卡等，我们开发网络程序，不可能亲自去了解这些物理层，链路层的网络协议和实现。我们通过抽象出统一的上层建筑（Socket）来完成代码编写，这样无论底层（链路层，网络层）是何种形式，我们需要考虑的东西都是相同的（Socket的概念是一样的）。</p>
+<p>socket起源于Unix，而Unix&#x2F;Linux 基本哲学之一就是“一切皆文件”，都可以用“打开open –&gt; 读写write&#x2F;read –&gt; 关闭close”模式 来操作。Socket就是该模式的一个实现，socket即是一种特殊的文件，一些socket函数就是对其进行的操作（读&#x2F;写IO、打开、关闭）</p>
+<h3 id="1-2-C-x2F-S模式"><a href="#1-2-C-x2F-S模式" class="headerlink" title="1.2 C&#x2F;S模式"></a>1.2 C&#x2F;S模式</h3><p>C&#x2F;S分布式模式，是计算机用语。C是指Client，S是指Server，C&#x2F;S模式就是指客户端&#x2F;服务器模式。是计算机软件协同工作的一种模式，通常采取两层结构。服务器负责数据的管理，客户机负责完成与用户的交互任务。</p>
+<p><img src="/posts/57108/20240315105755.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="1-3-TCP协议"><a href="#1-3-TCP协议" class="headerlink" title="1.3 TCP协议"></a>1.3 TCP协议</h3><blockquote>
+<p>请自行了解</p>
+</blockquote>
+<h2 id="二、使用"><a href="#二、使用" class="headerlink" title="二、使用"></a>二、使用</h2><blockquote>
+<p>本节的工程基于<a target="_blank" rel="noopener" href="https://www.duruofu.top/2024/03/15/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/05.ESP32WIFI%E5%85%A5%E9%97%A8/5.1-ESP32%E7%BD%91%E7%BB%9C%E5%85%A5%E9%97%A8-WIFI%E8%BF%9E%E6%8E%A5/ESP32%E7%BD%91%E7%BB%9C%E5%85%A5%E9%97%A8-WIFI%E8%BF%9E%E6%8E%A5/">ESP32WIFI-1.WIFI连接</a>中的<a target="_blank" rel="noopener" href="https://github.com/DuRuofu/ESP32_Learning/tree/master/05.wifi/wifi_sta">wifi_sta</a>历程</p>
+</blockquote>
+<p>下图展示了TCP协议服务端和客户端的基本流程：</p>
+<p><img src="/posts/57108/20240315111126.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="2-1-TCP客户端"><a href="#2-1-TCP客户端" class="headerlink" title="2.1 TCP客户端"></a>2.1 TCP客户端</h3><p><img src="/posts/57108/20240315110509.png" srcset="/img/loading.gif" lazyload></p>
+<p>客户端程序流程：初始化-连接-数据交换-断开连接</p>
+<pre><code class=" mermaid">graph LR;  
+A(Initialize) --&gt; B(Connect);  
+B --&gt; C(Communicate);  
+C --&gt; D(Disconnect);  
+```  
+
+#### 2.1.1 准备工作
+
+准备工作主要是连接wifi，为下面的网络协议提供支持，可以参考：[ESP32WIFI-1.WIFI连接](https://www.duruofu.top/2024/03/15/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/05.ESP32WIFI%E5%85%A5%E9%97%A8/5.1-ESP32%E7%BD%91%E7%BB%9C%E5%85%A5%E9%97%A8-WIFI%E8%BF%9E%E6%8E%A5/ESP32%E7%BD%91%E7%BB%9C%E5%85%A5%E9%97%A8-WIFI%E8%BF%9E%E6%8E%A5/)
+
+#### 2.1.2 创建套接字
+
+使用函数`int socket(int domain,int type,int protocol)`创建套接字，参数分别为
+
+- `domain`：指定协议家族或地址族，常用的有 `AF_INET`（IPv4 地址族）和 `AF_INET6`（IPv6 地址族）。
+- `type`：指定套接字类型，常见的有 `SOCK_STREAM`（流套接字，提供面向连接的、可靠的数据传输）和 `SOCK_DGRAM`（数据报套接字，提供无连接的、不可靠的数据传输）。
+- `protocol`：指定协议，一般为 0，默认由 `socket()` 函数根据前两个参数自动选择合适的协议。
+
+```c
+// 创建socket
+int sock = socket(AF_INET, SOCK_STREAM, 0);
+if (sock &lt; 0) // 创建失败返回-1
+&#123;
+	ESP_LOGE(TAG, &quot;Unable to create socket: errno %d&quot;, errno);
+	return;
+&#125;
+</code></pre>
+<h4 id="2-1-3-配置并连接服务端"><a href="#2-1-3-配置并连接服务端" class="headerlink" title="2.1.3 配置并连接服务端"></a>2.1.3 配置并连接服务端</h4><p>使用函数<code>connect(int s,const struct sockaddr *name,socklen_t namelen)</code>连接服务端，参数分别为：</p>
+<ul>
+<li><code>s</code>: 表示一个已经创建并绑定到本地地址的套接字描述符。</li>
+<li><code>name</code>: 是一个指向目标服务器地址结构体的指针，通常是 <code>struct sockaddr</code> 结构体或其派生结构体，用来指定要连接的远程服务器的地址信息。</li>
+<li><code>namelen</code>: 表示参数 <code>name</code> 指向的地址结构体的长度。</li>
+</ul>
+<p>这里的<code> struct sockaddr </code>结构体用于配置IP协议，这里以IPV4为例，参数如下：</p>
+<ul>
+<li><code>sin_len</code>: 该字段表示结构体的长度，单位为字节。在这个结构体中，用一个字节来表示结构体的长度。</li>
+<li><code>sin_family</code>: 这是一个表示地址族（Address Family）的字段，用于指示地址的类型，如IPv4或IPv6。在这里，用<code>sa_family_t</code>类型来表示，可能是一个枚举值或整数值，用于指示IPv4地址族。（和上一步的<code>domain</code>参数相同）</li>
+<li><code>sin_port</code>: 一个16位的整数，表示端口号。<code>in_port_t</code>类型通常被定义为一个16位的整数，用于存储端口号。</li>
+<li><code>sin_addr</code>: 一个<code>struct in_addr</code>类型的结构体，用于存储IPv4地址信息。通常<code>struct in_addr</code>包含一个32位的整数，表示IPv4地址。</li>
+</ul>
+<p>代码如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">define</span> TCP_SREVER_ADDR <span class="hljs-string">&quot;192.168.1.100&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> TCP_SREVER_PORT 8080</span><br><br><span class="hljs-comment">// 设置服务器(IPV4)</span><br><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">sockaddr_in</span> <span class="hljs-title">server_config</span>;</span><br>server_config.sin_addr.s_addr = inet_addr(TCP_SREVER_ADDR);<br>server_config.sin_family = AF_INET;<br>server_config.sin_port = htons(TCP_SREVER_PORT); <span class="hljs-comment">// 宏htons 用于将主机的无符号短整型数据转换成网络字节顺序(小端转大端)</span><br><br><span class="hljs-comment">// 连接服务器</span><br><span class="hljs-type">int</span> err = connect(sock, (<span class="hljs-keyword">struct</span> sockaddr *)&amp;server_config, <span class="hljs-keyword">sizeof</span>(server_config));<br><span class="hljs-keyword">if</span> (err != <span class="hljs-number">0</span>)<br>&#123;<br>	ESP_LOGE(TAG, <span class="hljs-string">&quot;Socket unable to connect: errno %d&quot;</span>, errno);<br>	<span class="hljs-keyword">break</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="2-1-4-发送消息"><a href="#2-1-4-发送消息" class="headerlink" title="2.1.4 发送消息"></a>2.1.4 发送消息</h4><p>使用<code>send(int s,const void *dataptr,size_t size,int flags)</code>函数发送消息，参数为：</p>
+<ul>
+<li><code>s</code>：指定的套接字描述符，即要发送消息的目标套接字。</li>
+<li><code>dataptr</code>：指向要发送数据的指针，可以是任意类型的数据。</li>
+<li><code>size</code>：要发送的数据大小，以字节为单位。</li>
+<li><code>flags</code>：用于指定发送操作的附加选项，通常可以设为0。</li>
+</ul>
+<p>例如：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// 发送数据</span><br><span class="hljs-type">const</span> <span class="hljs-type">char</span> *data = <span class="hljs-string">&quot;Hello World!&quot;</span>;<br><span class="hljs-type">int</span> len = send(sock, data, <span class="hljs-built_in">strlen</span>(data), <span class="hljs-number">0</span>);<br><span class="hljs-keyword">if</span> (len &lt; <span class="hljs-number">0</span>)<br>&#123;<br>	ESP_LOGE(TAG, <span class="hljs-string">&quot;Error occurred during sending: errno %d&quot;</span>, errno);<br>	<span class="hljs-keyword">break</span>;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<h4 id="2-1-5-接收消息"><a href="#2-1-5-接收消息" class="headerlink" title="2.1.5 接收消息"></a>2.1.5 接收消息</h4><p>使用<code>recv(int s,void *mem,size_t len,int flags)</code>接收数据，参数为：</p>
+<ul>
+<li><code>s</code>：指定要接收数据的套接字描述符。</li>
+<li><code>mem</code>：指向存放接收数据的缓冲区的指针。</li>
+<li><code>len</code>：表示接收缓冲区的长度。</li>
+<li><code>flags</code>：指定接收操作的附加选项，通常可以设置为 0。</li>
+</ul>
+<p>例如：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs c"><br><span class="hljs-type">int</span> len = recv(sock, rx_buffer, <span class="hljs-keyword">sizeof</span>(rx_buffer), <span class="hljs-number">0</span>);<br><span class="hljs-comment">// Error occurred during receiving</span><br><span class="hljs-keyword">if</span> (len &lt; <span class="hljs-number">0</span>)<br>&#123;<br>	ESP_LOGE(TAG, <span class="hljs-string">&quot;recv failed: errno %d&quot;</span>, errno);<br>	<span class="hljs-keyword">return</span>;<br>&#125;<br><span class="hljs-comment">// Data received</span><br><span class="hljs-keyword">else</span><br>&#123;<br>	ESP_LOGI(TAG, <span class="hljs-string">&quot;Received %d bytes from %s:&quot;</span>, len, TCP_SREVER_ADDR);<br>	ESP_LOGI(TAG, <span class="hljs-string">&quot;%.*s&quot;</span>, len, rx_buffer);<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<p>完整程序请看下面第三部分：</p>
+<h3 id="2-1-TCP服务器"><a href="#2-1-TCP服务器" class="headerlink" title="2.1 TCP服务器"></a>2.1 TCP服务器</h3><h4 id="2-2-1-准备工作"><a href="#2-2-1-准备工作" class="headerlink" title="2.2.1 准备工作"></a>2.2.1 准备工作</h4><p>初始化NVS、 连接WIFI</p>
+<h4 id="2-2-2-创建并配置socket"><a href="#2-2-2-创建并配置socket" class="headerlink" title="2.2.2 创建并配置socket"></a>2.2.2 创建并配置socket</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// 创建套接字</span><br><span class="hljs-type">int</span> listen_sock = socket(AF_INET, SOCK_STREAM, <span class="hljs-number">0</span>);<br><span class="hljs-keyword">if</span> (listen_sock &lt; <span class="hljs-number">0</span>)<br>&#123;<br>	ESP_LOGE(TAG, <span class="hljs-string">&quot;Unable to create socket: errno %d&quot;</span>, errno);<br>	vTaskDelete(<span class="hljs-literal">NULL</span>);<br>	<span class="hljs-keyword">return</span>;<br>&#125;<br><span class="hljs-comment">// 设置套接字属性</span><br><span class="hljs-type">int</span> opt = <span class="hljs-number">1</span>;<br>setsockopt(listen_sock, SOL_SOCKET, SO_REUSEADDR, &amp;opt, <span class="hljs-keyword">sizeof</span>(opt));<br>ESP_LOGI(TAG, <span class="hljs-string">&quot;Socket created&quot;</span>);<br><br></code></pre></td></tr></table></figure>
+
+<p>这里使用了一个用于设置 socket 属性，用函数 <code>setsockopt()</code>，函数原形如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> <span class="hljs-title function_">setsockopt</span><span class="hljs-params">(<span class="hljs-type">int</span> sockfd, <span class="hljs-type">int</span> level, <span class="hljs-type">int</span> optname, <span class="hljs-type">const</span> <span class="hljs-type">void</span> *optval, <span class="hljs-type">socklen_t</span> optlen)</span>;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><code>sockfd</code>：指定要设置选项的套接字文件描述符。</li>
+<li><code>level</code>：指定选项的协议级别。常见的级别包括 <code>SOL_SOCKET</code>（通用套接字选项）和 <code>IPPROTO_TCP</code>（TCP 协议选项）等。</li>
+<li><code>optname</code>：指定要设置的选项名称，可以是下列之一或者协议特定的选项。常见的选项包括 <code>SO_REUSEADDR</code>（允许地址重用）、<code>SO_KEEPALIVE</code>（启用连接保活）、<code>SO_RCVBUF</code>（设置接收缓冲区大小）等。</li>
+<li><code>optval</code>：指向包含选项值的缓冲区的指针。</li>
+<li><code>optlen</code>：指定选项值的长度。</li>
+</ul>
+<h4 id="2-2-3-配置服务器信息"><a href="#2-2-3-配置服务器信息" class="headerlink" title="2.2.3 配置服务器信息"></a>2.2.3 配置服务器信息</h4><p>代码：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// 设置服务器(IPV4)</span><br><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">sockaddr_storage</span> <span class="hljs-title">dest_addr</span>;</span><br><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">sockaddr_in</span> *<span class="hljs-title">dest_addr_ip4</span> =</span> (<span class="hljs-keyword">struct</span> sockaddr_in *)&amp;dest_addr;<br>dest_addr_ip4-&gt;sin_addr.s_addr = htonl(INADDR_ANY);<br>dest_addr_ip4-&gt;sin_family = AF_INET;<br>dest_addr_ip4-&gt;sin_port = htons(TCP_SREVER_PORT);<br><br><span class="hljs-comment">// 绑定套接字</span><br><span class="hljs-type">int</span> err = bind(listen_sock, (<span class="hljs-keyword">struct</span> sockaddr *)&amp;dest_addr, <span class="hljs-keyword">sizeof</span>(dest_addr));<br><span class="hljs-keyword">if</span> (err != <span class="hljs-number">0</span>)<br>&#123;<br>	ESP_LOGE(TAG, <span class="hljs-string">&quot;Socket unable to bind: errno %d&quot;</span>, errno);<br>	ESP_LOGE(TAG, <span class="hljs-string">&quot;IPPROTO: %d&quot;</span>, AF_INET);<br>	<span class="hljs-keyword">goto</span> CLEAN_UP;<br>&#125;<br>ESP_LOGI(TAG, <span class="hljs-string">&quot;Socket bound, port %d&quot;</span>, TCP_SREVER_PORT);<br><br></code></pre></td></tr></table></figure>
+
+<p><code>bind</code> 函数用于将一个套接字与一个地址（通常是 IP 地址和端口号）绑定在一起，以便在该地址上监听连接或发送数据。它的原型如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> <span class="hljs-title function_">bind</span><span class="hljs-params">(<span class="hljs-type">int</span> sockfd, <span class="hljs-type">const</span> <span class="hljs-keyword">struct</span> sockaddr *addr, <span class="hljs-type">socklen_t</span> addrlen)</span>;<br></code></pre></td></tr></table></figure>
+
+
+<ol>
+<li><code>sockfd</code>：指定要绑定地址的套接字文件描述符。</li>
+<li><code>addr</code>：指向一个 <code>sockaddr</code> 结构体的指针，该结构体包含了要绑定的地址信息。在 IPv4 地址族中，可以使用 <code>sockaddr_in</code> 结构体；在 IPv6 地址族中，可以使用 <code>sockaddr_in6</code> 结构体。通常，你需要将地址信息转换为 <code>sockaddr</code> 结构体的形式，然后传递给 <code>bind</code> 函数。</li>
+<li><code>addrlen</code>：指定地址结构体的长度。</li>
+</ol>
+<h4 id="2-2-4-监听客户端连接"><a href="#2-2-4-监听客户端连接" class="headerlink" title="2.2.4 监听客户端连接"></a>2.2.4 监听客户端连接</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// 监听套接字</span><br>err = listen(listen_sock, <span class="hljs-number">1</span>);<br><span class="hljs-keyword">if</span> (err != <span class="hljs-number">0</span>)<br>&#123;<br>	ESP_LOGE(TAG, <span class="hljs-string">&quot;Error occurred during listen: errno %d&quot;</span>, errno);<br>	<span class="hljs-keyword">goto</span> CLEAN_UP;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><code>listen()</code> 函数用于将一个套接字（通常是服务器套接字）转换为被动套接字，即用于接受连接请求</p>
+<ol>
+<li><code>sockfd</code>：指定要监听的套接字文件描述符。</li>
+<li><code>backlog</code>：指定在内核中排队等待接受连接的最大连接数。这个参数限制了同时等待连接的数量，超过这个数量的连接请求将被拒绝。这并不是一个限制同时连接的数量，而是限制等待连接队列的长度。</li>
+<li><code>listen()</code> 函数在成功时返回 0，失败时返回 -1</li>
+</ol>
+<h4 id="2-2-4-建立接收"><a href="#2-2-4-建立接收" class="headerlink" title="2.2.4 建立接收"></a>2.2.4 建立接收</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs c">ESP_LOGI(TAG, <span class="hljs-string">&quot;Socket listening&quot;</span>);<br><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">sockaddr_storage</span> <span class="hljs-title">source_addr</span>;</span> <span class="hljs-comment">// Large enough for both IPv4 or IPv6</span><br><span class="hljs-type">socklen_t</span> addr_len = <span class="hljs-keyword">sizeof</span>(source_addr);<br><span class="hljs-type">int</span> sock = accept(listen_sock, (<span class="hljs-keyword">struct</span> sockaddr *)&amp;source_addr, &amp;addr_len);<br><span class="hljs-keyword">if</span> (sock &lt; <span class="hljs-number">0</span>)<br>&#123;<br>	ESP_LOGE(TAG, <span class="hljs-string">&quot;Unable to accept connection: errno %d&quot;</span>, errno);<br>	<span class="hljs-keyword">break</span>;<br>&#125;<br><br><br><span class="hljs-comment">// Set tcp keepalive option</span><br><span class="hljs-type">int</span> keepAlive = <span class="hljs-number">1</span>;<br><span class="hljs-type">int</span> keepIdle = <span class="hljs-number">5</span>;	  <span class="hljs-comment">// TCP keep-alive idle time(s)</span><br><span class="hljs-type">int</span> keepInterval = <span class="hljs-number">5</span>; <span class="hljs-comment">// TCP keep-alive interval time(s)</span><br><span class="hljs-type">int</span> keepCount = <span class="hljs-number">3</span>;	  <span class="hljs-comment">// TCP keep-alive packet retry send counts</span><br><br>setsockopt(sock, SOL_SOCKET, SO_KEEPALIVE, &amp;keepAlive, <span class="hljs-keyword">sizeof</span>(<span class="hljs-type">int</span>));<br>setsockopt(sock, IPPROTO_TCP, TCP_KEEPIDLE, &amp;keepIdle, <span class="hljs-keyword">sizeof</span>(<span class="hljs-type">int</span>));<br>setsockopt(sock, IPPROTO_TCP, TCP_KEEPINTVL, &amp;keepInterval, <span class="hljs-keyword">sizeof</span>(<span class="hljs-type">int</span>));<br>setsockopt(sock, IPPROTO_TCP, TCP_KEEPCNT, &amp;keepCount, <span class="hljs-keyword">sizeof</span>(<span class="hljs-type">int</span>));<br><br><br></code></pre></td></tr></table></figure>
+
+<p><code>sockaddr_storage</code> 是一个足够大的结构体，可用于存储任意地址族（IPv4 或 IPv6）的地址信息。</p>
+<p>建立连接使用函数<code>accept()</code>,它用于接受传入的连接请求，并创建一个<strong>新的套接字</strong>来与客户端进行通信。它的原型如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> <span class="hljs-title function_">accept</span><span class="hljs-params">(<span class="hljs-type">int</span> sockfd, <span class="hljs-keyword">struct</span> sockaddr *addr, <span class="hljs-type">socklen_t</span> *addrlen)</span>;<br></code></pre></td></tr></table></figure>
+
+<p>参数：</p>
+<ul>
+<li><code>sockfd</code>：指定正在监听连接请求的套接字文件描述符。</li>
+<li><code>addr</code>：用于存储客户端地址信息的指针。当有连接请求到达时，<code>accept()</code> 函数会将客户端的地址信息填写到这个结构体中。</li>
+<li><code>addrlen</code>：指向一个整数的指针，表示传入的地址结构体的长度。在调用 <code>accept()</code> 函数之前，必须将这个参数设置为 <code>addr</code> 缓冲区的大小。当 <code>accept()</code> 函数返回时，这个参数会更新为实际填充到 <code>addr</code> 缓冲区中的地址结构体的长度。</li>
+</ul>
+<p>建立连接成功后，通过调用 <code>setsockopt()</code> 函数，设置了套接字的 Keep-Alive 选项，以确保连接保持活跃状态。</p>
+<ul>
+<li><code>SO_KEEPALIVE</code>：启用或禁用 TCP Keep-Alive 机制。</li>
+<li><code>TCP_KEEPIDLE</code>：设置 TCP Keep-Alive 空闲时间，即连接空闲多长时间后开始发送 Keep-Alive 消息。</li>
+<li><code>TCP_KEEPINTVL</code>：设置 TCP Keep-Alive 消息的发送间隔，即两次 Keep-Alive 消息之间的时间间隔。</li>
+<li><code>TCP_KEEPCNT</code>：设置 TCP Keep-Alive 消息的发送次数，即发送多少次 Keep-Alive 消息后仍未收到响应才认为连接失效。</li>
+</ul>
+<h4 id="2-2-6-接收-x2F-发送数据"><a href="#2-2-6-接收-x2F-发送数据" class="headerlink" title="2.2.6 接收&#x2F;发送数据"></a>2.2.6 接收&#x2F;发送数据</h4><p>接收和发送依然使用<code>recv</code>和<code>send</code>，下面实现了一个简单的数据接收，回传函数，参数为建立连接的套接字。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// 数据接收与回传</span><br><span class="hljs-type">static</span> <span class="hljs-type">void</span> <span class="hljs-title function_">do_retransmit</span><span class="hljs-params">(<span class="hljs-type">const</span> <span class="hljs-type">int</span> sock)</span><br>&#123;<br><span class="hljs-type">int</span> len;<br><span class="hljs-type">char</span> rx_buffer[<span class="hljs-number">128</span>];<br><br><span class="hljs-keyword">do</span><br>&#123;<br>	len = recv(sock, rx_buffer, <span class="hljs-keyword">sizeof</span>(rx_buffer) - <span class="hljs-number">1</span>, <span class="hljs-number">0</span>);<br>	<span class="hljs-keyword">if</span> (len &lt; <span class="hljs-number">0</span>)<br>	&#123;<br>		ESP_LOGE(TAG, <span class="hljs-string">&quot;Error occurred during receiving: errno %d&quot;</span>, errno);<br>	&#125;<br>	<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (len == <span class="hljs-number">0</span>)<br>	&#123;<br>		ESP_LOGW(TAG, <span class="hljs-string">&quot;Connection closed&quot;</span>);<br>	&#125;<br>	<span class="hljs-keyword">else</span><br>	&#123;<br>		rx_buffer[len] = <span class="hljs-number">0</span>; <span class="hljs-comment">// Null-terminate whatever is received and treat it like a string</span><br>		ESP_LOGI(TAG, <span class="hljs-string">&quot;Received %d bytes: %s&quot;</span>, len, rx_buffer);<br><br>		<span class="hljs-comment">// send() can return less bytes than supplied length.</span><br>		<span class="hljs-comment">// Walk-around for robust implementation.</span><br>		<span class="hljs-type">int</span> to_write = len;<br>		<span class="hljs-keyword">while</span> (to_write &gt; <span class="hljs-number">0</span>)<br>		&#123;<br>			<span class="hljs-type">int</span> written = send(sock, rx_buffer + (len - to_write), to_write, <span class="hljs-number">0</span>);<br>			<span class="hljs-keyword">if</span> (written &lt; <span class="hljs-number">0</span>)<br>			&#123;<br>				ESP_LOGE(TAG, <span class="hljs-string">&quot;Error occurred during sending: errno %d&quot;</span>, errno);<br>				<span class="hljs-comment">// Failed to retransmit, giving up</span><br>				<span class="hljs-keyword">return</span>;<br>			&#125;<br>			to_write -= written;<br>		&#125;<br>	&#125;<br>&#125; <span class="hljs-keyword">while</span> (len &gt; <span class="hljs-number">0</span>);<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<p>程序解释如下：</p>
+<ul>
+<li><code>recv()</code> 函数用于从套接字接收数据，并将接收到的数据存储在 <code>rx_buffer</code> 中。它的参数包括套接字文件描述符 <code>sock</code>、接收缓冲区 <code>rx_buffer</code>、缓冲区大小以及一些可选的标志参数。如果 <code>recv()</code> 返回值小于 0，则表示出现了错误；如果返回值为 0，则表示连接已关闭；否则，返回接收到的字节数。</li>
+<li>如果接收到的字节数小于 0，表示发生了接收错误，这时会记录错误信息到日志。</li>
+<li>如果接收到的字节数为 0，表示连接已关闭，这时会记录警告信息到日志。</li>
+<li>如果接收到了数据，会记录接收到的数据字节数和数据内容到日志，并通过 <code>send()</code> 函数将接收到的数据回传给客户端。由于 <code>send()</code> 函数可能一次未能发送完所有数据，所以在一个循环中，将剩余的数据继续发送，直到所有数据都被发送出去。</li>
+<li>如果在发送过程中出现了发送错误（<code>send()</code> 返回值小于 0），则会记录错误信息到日志，并返回函数，放弃继续回传数据。</li>
+<li>整个函数在循环中进行，直到 <code>recv()</code> 返回值小于等于 0，表示接收到的数据长度为 0（连接关闭）或出现了接收错误。</li>
+</ul>
+<h4 id="2-2-6-关闭连接和销毁套接字"><a href="#2-2-6-关闭连接和销毁套接字" class="headerlink" title="2.2.6 关闭连接和销毁套接字"></a>2.2.6 关闭连接和销毁套接字</h4><ul>
+<li><code>shutdown();</code>：这个函数调用会关闭套接字的一部分或者全部通信。第二个参数指定了关闭方式：<ul>
+<li>如果为 0，则表示关闭套接字的读取功能，即不能再从套接字中读取数据。</li>
+<li>如果为 1，则表示关闭套接字的写入功能，即不能再向套接字中写入数据。</li>
+<li>如果为 2，则表示关闭套接字的读取和写入功能，即完全关闭套接字的通信功能。</li>
+</ul>
+</li>
+<li><code>close(sock);</code>：这个函数调用会彻底关闭套接字，释放它占用的资源。关闭套接字后，不能再对它进行任何操作。</li>
+</ul>
+<p>以上就是基本的TCP服务的编程流程，关于服务器实例请参考第三部分</p>
+<h2 id="三、示例"><a href="#三、示例" class="headerlink" title="三、示例"></a>三、示例</h2><h3 id="3-1-TCP客户端程序"><a href="#3-1-TCP客户端程序" class="headerlink" title="3.1 TCP客户端程序"></a>3.1 TCP客户端程序</h3><blockquote>
+<p>代码见： <a target="_blank" rel="noopener" href="https://github.com/DuRuofu/ESP32_Learning/tree/master/05.wifi/wifi_tcp_client">https://github.com/DuRuofu/ESP32_Learning/tree/master/05.wifi/wifi_tcp_client</a></p>
+</blockquote>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;string.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;freertos/FreeRTOS.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;freertos/event_groups.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;esp_wifi.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;esp_log.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;esp_event.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;nvs_flash.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;esp_mac.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;esp_netif.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;sys/socket.h&gt;</span></span><br><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ESP_WIFI_STA_SSID <span class="hljs-string">&quot;duruofu_win10&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ESP_WIFI_STA_PASSWD <span class="hljs-string">&quot;1234567890&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> TCP_SREVER_ADDR <span class="hljs-string">&quot;192.168.137.1&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> TCP_SREVER_PORT 8080</span><br><br><span class="hljs-type">static</span> <span class="hljs-type">const</span> <span class="hljs-type">char</span> *TAG = <span class="hljs-string">&quot;main&quot;</span>;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">WIFI_CallBack</span><span class="hljs-params">(<span class="hljs-type">void</span> *event_handler_arg, <span class="hljs-type">esp_event_base_t</span> event_base, <span class="hljs-type">int32_t</span> event_id, <span class="hljs-type">void</span> *event_data)</span><br>&#123;<br>	<span class="hljs-type">static</span> <span class="hljs-type">uint8_t</span> connect_count = <span class="hljs-number">0</span>;<br>	<span class="hljs-comment">// WIFI 启动成功</span><br>	<span class="hljs-keyword">if</span> (event_base == WIFI_EVENT &amp;&amp; event_id == WIFI_EVENT_STA_START)<br>	&#123;<br>		ESP_LOGI(<span class="hljs-string">&quot;WIFI_EVENT&quot;</span>, <span class="hljs-string">&quot;WIFI_EVENT_STA_START&quot;</span>);<br>		ESP_ERROR_CHECK(esp_wifi_connect());<br>	&#125;<br>	<span class="hljs-comment">// WIFI 连接失败</span><br>	<span class="hljs-keyword">if</span> (event_base == WIFI_EVENT &amp;&amp; event_id == WIFI_EVENT_STA_DISCONNECTED)<br>	&#123;<br>		ESP_LOGI(<span class="hljs-string">&quot;WIFI_EVENT&quot;</span>, <span class="hljs-string">&quot;WIFI_EVENT_STA_DISCONNECTED&quot;</span>);<br>		connect_count++;<br>		<span class="hljs-keyword">if</span> (connect_count &lt; <span class="hljs-number">6</span>)<br>		&#123;<br>			vTaskDelay(<span class="hljs-number">1000</span> / portTICK_PERIOD_MS);<br>			ESP_ERROR_CHECK(esp_wifi_connect());<br>		&#125;<br>		<span class="hljs-keyword">else</span><br>		&#123;<br>			ESP_LOGI(<span class="hljs-string">&quot;WIFI_EVENT&quot;</span>, <span class="hljs-string">&quot;WIFI_EVENT_STA_DISCONNECTED 10 times&quot;</span>);<br>		&#125;<br>	&#125;<br>	<span class="hljs-comment">// WIFI 连接成功(获取到了IP)</span><br>	<span class="hljs-keyword">if</span> (event_base == IP_EVENT &amp;&amp; event_id == IP_EVENT_STA_GOT_IP)<br>	&#123;<br>		ESP_LOGI(<span class="hljs-string">&quot;WIFI_EVENT&quot;</span>, <span class="hljs-string">&quot;WIFI_EVENT_STA_GOT_IP&quot;</span>);<br>		<span class="hljs-type">ip_event_got_ip_t</span> *info = (<span class="hljs-type">ip_event_got_ip_t</span> *)event_data;<br>		ESP_LOGI(<span class="hljs-string">&quot;WIFI_EVENT&quot;</span>, <span class="hljs-string">&quot;got ip:&quot;</span> IPSTR <span class="hljs-string">&quot;&quot;</span>, IP2STR(&amp;info-&gt;ip_info.ip));<br>	&#125;<br>&#125;<br><br><span class="hljs-type">static</span> <span class="hljs-type">void</span> <span class="hljs-title function_">tcp_client_task</span><span class="hljs-params">(<span class="hljs-type">void</span> *pvParameters)</span><br>&#123;<br><br><br>	<span class="hljs-comment">// 等待wifi连接成功(暂时这样处理)</span><br>	vTaskDelay(<span class="hljs-number">5000</span> / portTICK_PERIOD_MS);<br><br>	ESP_LOGI(<span class="hljs-string">&quot;tcp_client_task&quot;</span>, <span class="hljs-string">&quot;tcp_client_task start&quot;</span>);<br><br>	<span class="hljs-comment">// 创建socket</span><br>	<span class="hljs-type">int</span> sock = socket(AF_INET, SOCK_STREAM, <span class="hljs-number">0</span>);<br>	<span class="hljs-keyword">if</span> (sock &lt; <span class="hljs-number">0</span>) <span class="hljs-comment">// 创建失败返回-1</span><br>	&#123;<br>		ESP_LOGE(TAG, <span class="hljs-string">&quot;Unable to create socket: errno %d&quot;</span>, errno);<br>		<span class="hljs-keyword">return</span>;<br>	&#125;<br><br>	<span class="hljs-comment">// 设置服务器(IPV4)</span><br>	<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">sockaddr_in</span> <span class="hljs-title">server_config</span>;</span><br>	server_config.sin_addr.s_addr = inet_addr(TCP_SREVER_ADDR);<br>	server_config.sin_family = AF_INET;<br>	server_config.sin_port = htons(TCP_SREVER_PORT); <span class="hljs-comment">// 宏htons 用于将主机的无符号短整型数据转换成网络字节顺序(小端转大端)</span><br><br>	<span class="hljs-comment">// 连接服务器</span><br>	<span class="hljs-type">int</span> err = connect(sock, (<span class="hljs-keyword">struct</span> sockaddr *)&amp;server_config, <span class="hljs-keyword">sizeof</span>(server_config));<br>	<span class="hljs-keyword">if</span> (err != <span class="hljs-number">0</span>)<br>	&#123;<br>		ESP_LOGE(TAG, <span class="hljs-string">&quot;Socket unable to connect: errno %d&quot;</span>, errno);<br>		<span class="hljs-keyword">return</span>;<br>	&#125;<br><br>	<span class="hljs-comment">// 发送数据</span><br>	<span class="hljs-type">const</span> <span class="hljs-type">char</span> *data = <span class="hljs-string">&quot;Hello World!&quot;</span>;<br>	<span class="hljs-type">int</span> len = send(sock, data, <span class="hljs-built_in">strlen</span>(data), <span class="hljs-number">0</span>);<br>	<span class="hljs-keyword">if</span> (len &lt; <span class="hljs-number">0</span>)<br>	&#123;<br>		ESP_LOGE(TAG, <span class="hljs-string">&quot;Error occurred during sending: errno %d&quot;</span>, errno);<br>		<span class="hljs-keyword">return</span>;<br>	&#125;<br><br>	<span class="hljs-type">char</span> rx_buffer[<span class="hljs-number">1024</span>];<br>	<span class="hljs-comment">// 接收数据,并发回</span><br>	<span class="hljs-keyword">while</span>(<span class="hljs-number">1</span>)<br>	&#123;<br>		<span class="hljs-type">int</span> len = recv(sock, rx_buffer, <span class="hljs-keyword">sizeof</span>(rx_buffer), <span class="hljs-number">0</span>);<br>		<span class="hljs-comment">// Error occurred during receiving</span><br>		<span class="hljs-keyword">if</span> (len &lt; <span class="hljs-number">0</span>)<br>		&#123;<br>			ESP_LOGE(TAG, <span class="hljs-string">&quot;recv failed: errno %d&quot;</span>, errno);<br>			<span class="hljs-keyword">break</span>;<br>		&#125;<br>		<span class="hljs-comment">// Data received</span><br>		<span class="hljs-keyword">else</span><br>		&#123;<br>			ESP_LOGI(TAG, <span class="hljs-string">&quot;Received %d bytes from %s:&quot;</span>, len, TCP_SREVER_ADDR);<br>			ESP_LOGI(TAG, <span class="hljs-string">&quot;%.*s&quot;</span>, len, rx_buffer);<br><br>			<span class="hljs-comment">// 发送数据</span><br>			<span class="hljs-type">int</span> len_end = send(sock, rx_buffer, len, <span class="hljs-number">0</span>);<br>			<span class="hljs-keyword">if</span> (len_end &lt; <span class="hljs-number">0</span>)<br>			&#123;<br>				ESP_LOGE(TAG, <span class="hljs-string">&quot;Error occurred during sending: errno %d&quot;</span>, errno);<br>				<span class="hljs-keyword">break</span>;<br>			&#125;<br>		&#125;<br>	&#125;<br><br>	vTaskDelete(<span class="hljs-literal">NULL</span>);<br>&#125;<br><br><span class="hljs-comment">// wifi初始化</span><br><span class="hljs-type">static</span> <span class="hljs-type">void</span> <span class="hljs-title function_">wifi_sta_init</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span><br>&#123;<br>	ESP_ERROR_CHECK(esp_netif_init());<br><br>	<span class="hljs-comment">// 注册事件(wifi启动成功)</span><br>	ESP_ERROR_CHECK(esp_event_handler_instance_register(WIFI_EVENT, WIFI_EVENT_STA_START, WIFI_CallBack, <span class="hljs-literal">NULL</span>, <span class="hljs-literal">NULL</span>));<br>	<span class="hljs-comment">// 注册事件(wifi连接失败)</span><br>	ESP_ERROR_CHECK(esp_event_handler_instance_register(WIFI_EVENT, WIFI_EVENT_STA_DISCONNECTED, WIFI_CallBack, <span class="hljs-literal">NULL</span>, <span class="hljs-literal">NULL</span>));<br>	<span class="hljs-comment">// 注册事件(wifi连接失败)</span><br>	ESP_ERROR_CHECK(esp_event_handler_instance_register(IP_EVENT, IP_EVENT_STA_GOT_IP, WIFI_CallBack, <span class="hljs-literal">NULL</span>, <span class="hljs-literal">NULL</span>));<br><br>	<span class="hljs-comment">// 初始化STA设备</span><br>	esp_netif_create_default_wifi_sta();<br><br>	<span class="hljs-comment">/*Initialize WiFi */</span><br>	<span class="hljs-type">wifi_init_config_t</span> cfg = WIFI_INIT_CONFIG_DEFAULT();<br>	<span class="hljs-comment">// WIFI_INIT_CONFIG_DEFAULT 是一个默认配置的宏</span><br><br>	ESP_ERROR_CHECK(esp_wifi_init(&amp;cfg));<br><br>	<span class="hljs-comment">//----------------配置阶段-------------------</span><br>	<span class="hljs-comment">// 初始化WIFI设备( 为 WiFi 驱动初始化 WiFi 分配资源，如 WiFi 控制结构、RX/TX 缓冲区、WiFi NVS 结构等，这个 WiFi 也启动 WiFi 任务。必须先调用此API，然后才能调用所有其他WiFi API)</span><br>	ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_STA));<br><br>	<span class="hljs-comment">// STA详细配置</span><br>	<span class="hljs-type">wifi_config_t</span> sta_config = &#123;<br>		.sta = &#123;<br>			.ssid = ESP_WIFI_STA_SSID,<br>			.password = ESP_WIFI_STA_PASSWD,<br>			.bssid_set = <span class="hljs-literal">false</span>,<br>		&#125;,<br>	&#125;;<br>	ESP_ERROR_CHECK(esp_wifi_set_config(WIFI_IF_STA, &amp;sta_config));<br><br>	<span class="hljs-comment">//----------------启动阶段-------------------</span><br>	ESP_ERROR_CHECK(esp_wifi_start());<br><br>	<span class="hljs-comment">//----------------配置省电模式-------------------</span><br>	<span class="hljs-comment">// 不省电(数据传输会更快)</span><br>	ESP_ERROR_CHECK(esp_wifi_set_ps(WIFI_PS_NONE));<br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">app_main</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span><br>&#123;<br>	<span class="hljs-comment">// Initialize NVS</span><br>	<span class="hljs-type">esp_err_t</span> ret = nvs_flash_init();<br>	<span class="hljs-keyword">if</span> (ret == ESP_ERR_NVS_NO_FREE_PAGES || ret == ESP_ERR_NVS_NEW_VERSION_FOUND)<br>	&#123;<br>		ESP_ERROR_CHECK(nvs_flash_erase());<br>		ret = nvs_flash_init();<br>	&#125;<br>	ESP_ERROR_CHECK(ret);<br><br>	<span class="hljs-comment">// 创建默认事件循环</span><br>	ESP_ERROR_CHECK(esp_event_loop_create_default());<br><br>	<span class="hljs-comment">// 配置启动WIFI</span><br>	wifi_sta_init();<br><br>	<span class="hljs-comment">// 创建TCP客户端任务</span><br>	xTaskCreate(tcp_client_task, <span class="hljs-string">&quot;tcp_client_task&quot;</span>, <span class="hljs-number">4096</span>, <span class="hljs-literal">NULL</span>, <span class="hljs-number">5</span>, <span class="hljs-literal">NULL</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>程序效果如下，可以正常收发数据：</p>
+<p><img src="/posts/57108/20240315144045.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="3-2-TCP服务端程序"><a href="#3-2-TCP服务端程序" class="headerlink" title="3.2 TCP服务端程序"></a>3.2 TCP服务端程序</h3><blockquote>
+<p>代码见： <a target="_blank" rel="noopener" href="https://github.com/DuRuofu/ESP32_Learning/tree/master/05.wifi/wifi_tcp_server">https://github.com/DuRuofu/ESP32_Learning/tree/master/05.wifi/wifi_tcp_server</a></p>
+</blockquote>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;string.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;freertos/FreeRTOS.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;freertos/event_groups.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;esp_wifi.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;esp_log.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;esp_event.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;nvs_flash.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;esp_mac.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;esp_netif.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;sys/socket.h&gt;</span></span><br><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ESP_WIFI_STA_SSID <span class="hljs-string">&quot;duruofu_win10&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ESP_WIFI_STA_PASSWD <span class="hljs-string">&quot;1234567890&quot;</span></span><br><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> TCP_SREVER_PORT 8080</span><br><br><span class="hljs-type">static</span> <span class="hljs-type">const</span> <span class="hljs-type">char</span> *TAG = <span class="hljs-string">&quot;main&quot;</span>;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">WIFI_CallBack</span><span class="hljs-params">(<span class="hljs-type">void</span> *event_handler_arg, <span class="hljs-type">esp_event_base_t</span> event_base, <span class="hljs-type">int32_t</span> event_id, <span class="hljs-type">void</span> *event_data)</span><br>&#123;<br>	<span class="hljs-type">static</span> <span class="hljs-type">uint8_t</span> connect_count = <span class="hljs-number">0</span>;<br>	<span class="hljs-comment">// WIFI 启动成功</span><br>	<span class="hljs-keyword">if</span> (event_base == WIFI_EVENT &amp;&amp; event_id == WIFI_EVENT_STA_START)<br>	&#123;<br>		ESP_LOGI(<span class="hljs-string">&quot;WIFI_EVENT&quot;</span>, <span class="hljs-string">&quot;WIFI_EVENT_STA_START&quot;</span>);<br>		ESP_ERROR_CHECK(esp_wifi_connect());<br>	&#125;<br>	<span class="hljs-comment">// WIFI 连接失败</span><br>	<span class="hljs-keyword">if</span> (event_base == WIFI_EVENT &amp;&amp; event_id == WIFI_EVENT_STA_DISCONNECTED)<br>	&#123;<br>		ESP_LOGI(<span class="hljs-string">&quot;WIFI_EVENT&quot;</span>, <span class="hljs-string">&quot;WIFI_EVENT_STA_DISCONNECTED&quot;</span>);<br>		connect_count++;<br>		<span class="hljs-keyword">if</span> (connect_count &lt; <span class="hljs-number">6</span>)<br>		&#123;<br>			vTaskDelay(<span class="hljs-number">1000</span> / portTICK_PERIOD_MS);<br>			ESP_ERROR_CHECK(esp_wifi_connect());<br>		&#125;<br>		<span class="hljs-keyword">else</span><br>		&#123;<br>			ESP_LOGI(<span class="hljs-string">&quot;WIFI_EVENT&quot;</span>, <span class="hljs-string">&quot;WIFI_EVENT_STA_DISCONNECTED 10 times&quot;</span>);<br>		&#125;<br>	&#125;<br>	<span class="hljs-comment">// WIFI 连接成功(获取到了IP)</span><br>	<span class="hljs-keyword">if</span> (event_base == IP_EVENT &amp;&amp; event_id == IP_EVENT_STA_GOT_IP)<br>	&#123;<br>		ESP_LOGI(<span class="hljs-string">&quot;WIFI_EVENT&quot;</span>, <span class="hljs-string">&quot;WIFI_EVENT_STA_GOT_IP&quot;</span>);<br>		<span class="hljs-type">ip_event_got_ip_t</span> *info = (<span class="hljs-type">ip_event_got_ip_t</span> *)event_data;<br>		ESP_LOGI(<span class="hljs-string">&quot;WIFI_EVENT&quot;</span>, <span class="hljs-string">&quot;got ip:&quot;</span> IPSTR <span class="hljs-string">&quot;&quot;</span>, IP2STR(&amp;info-&gt;ip_info.ip));<br>	&#125;<br>&#125;<br><br><span class="hljs-comment">// 数据接收与回传</span><br><span class="hljs-type">static</span> <span class="hljs-type">void</span> <span class="hljs-title function_">do_retransmit</span><span class="hljs-params">(<span class="hljs-type">const</span> <span class="hljs-type">int</span> sock)</span><br>&#123;<br>	<span class="hljs-type">int</span> len;<br>	<span class="hljs-type">char</span> rx_buffer[<span class="hljs-number">128</span>];<br><br>	<span class="hljs-keyword">do</span><br>	&#123;<br>		len = recv(sock, rx_buffer, <span class="hljs-keyword">sizeof</span>(rx_buffer) - <span class="hljs-number">1</span>, <span class="hljs-number">0</span>);<br>		<span class="hljs-keyword">if</span> (len &lt; <span class="hljs-number">0</span>)<br>		&#123;<br>			ESP_LOGE(TAG, <span class="hljs-string">&quot;Error occurred during receiving: errno %d&quot;</span>, errno);<br>		&#125;<br>		<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (len == <span class="hljs-number">0</span>)<br>		&#123;<br>			ESP_LOGW(TAG, <span class="hljs-string">&quot;Connection closed&quot;</span>);<br>		&#125;<br>		<span class="hljs-keyword">else</span><br>		&#123;<br>			rx_buffer[len] = <span class="hljs-number">0</span>; <span class="hljs-comment">// Null-terminate whatever is received and treat it like a string</span><br>			ESP_LOGI(TAG, <span class="hljs-string">&quot;Received %d bytes: %s&quot;</span>, len, rx_buffer);<br><br>			<span class="hljs-comment">// send() can return less bytes than supplied length.</span><br>			<span class="hljs-comment">// Walk-around for robust implementation.</span><br>			<span class="hljs-type">int</span> to_write = len;<br>			<span class="hljs-keyword">while</span> (to_write &gt; <span class="hljs-number">0</span>)<br>			&#123;<br>				<span class="hljs-type">int</span> written = send(sock, rx_buffer + (len - to_write), to_write, <span class="hljs-number">0</span>);<br>				<span class="hljs-keyword">if</span> (written &lt; <span class="hljs-number">0</span>)<br>				&#123;<br>					ESP_LOGE(TAG, <span class="hljs-string">&quot;Error occurred during sending: errno %d&quot;</span>, errno);<br>					<span class="hljs-comment">// Failed to retransmit, giving up</span><br>					<span class="hljs-keyword">return</span>;<br>				&#125;<br>				to_write -= written;<br>			&#125;<br>		&#125;<br>	&#125; <span class="hljs-keyword">while</span> (len &gt; <span class="hljs-number">0</span>);<br>&#125;<br><br><span class="hljs-comment">// tcp服务器任务</span><br><span class="hljs-type">static</span> <span class="hljs-type">void</span> <span class="hljs-title function_">tcp_server_task</span><span class="hljs-params">(<span class="hljs-type">void</span> *pvParameters)</span><br>&#123;<br>	<span class="hljs-comment">// 创建套接字</span><br>	<span class="hljs-type">int</span> listen_sock = socket(AF_INET, SOCK_STREAM, <span class="hljs-number">0</span>);<br>	<span class="hljs-keyword">if</span> (listen_sock &lt; <span class="hljs-number">0</span>)<br>	&#123;<br>		ESP_LOGE(TAG, <span class="hljs-string">&quot;Unable to create socket: errno %d&quot;</span>, errno);<br>		vTaskDelete(<span class="hljs-literal">NULL</span>);<br>		<span class="hljs-keyword">return</span>;<br>	&#125;<br>	<span class="hljs-comment">// 设置套接字属性</span><br>	<span class="hljs-type">int</span> opt = <span class="hljs-number">1</span>;<br>	setsockopt(listen_sock, SOL_SOCKET, SO_REUSEADDR, &amp;opt, <span class="hljs-keyword">sizeof</span>(opt));<br>	ESP_LOGI(TAG, <span class="hljs-string">&quot;Socket created&quot;</span>);<br><br>	<span class="hljs-comment">// 设置服务器(IPV4)</span><br>	<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">sockaddr_storage</span> <span class="hljs-title">dest_addr</span>;</span><br>	<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">sockaddr_in</span> *<span class="hljs-title">dest_addr_ip4</span> =</span> (<span class="hljs-keyword">struct</span> sockaddr_in *)&amp;dest_addr;<br>	dest_addr_ip4-&gt;sin_addr.s_addr = htonl(INADDR_ANY);<br>	dest_addr_ip4-&gt;sin_family = AF_INET;<br>	dest_addr_ip4-&gt;sin_port = htons(TCP_SREVER_PORT);<br><br>	<span class="hljs-comment">// 绑定套接字</span><br>	<span class="hljs-type">int</span> err = bind(listen_sock, (<span class="hljs-keyword">struct</span> sockaddr *)&amp;dest_addr, <span class="hljs-keyword">sizeof</span>(dest_addr));<br>	<span class="hljs-keyword">if</span> (err != <span class="hljs-number">0</span>)<br>	&#123;<br>		ESP_LOGE(TAG, <span class="hljs-string">&quot;Socket unable to bind: errno %d&quot;</span>, errno);<br>		ESP_LOGE(TAG, <span class="hljs-string">&quot;IPPROTO: %d&quot;</span>, AF_INET);<br>		<span class="hljs-keyword">goto</span> CLEAN_UP;<br>	&#125;<br>	ESP_LOGI(TAG, <span class="hljs-string">&quot;Socket bound, port %d&quot;</span>, TCP_SREVER_PORT);<br><br>	<span class="hljs-comment">// 监听套接字 (阻塞)</span><br>	err = listen(listen_sock, <span class="hljs-number">1</span>);<br>	<span class="hljs-keyword">if</span> (err != <span class="hljs-number">0</span>)<br>	&#123;<br>		ESP_LOGE(TAG, <span class="hljs-string">&quot;Error occurred during listen: errno %d&quot;</span>, errno);<br>		<span class="hljs-keyword">goto</span> CLEAN_UP;<br>	&#125;<br><br>	<span class="hljs-keyword">while</span> (<span class="hljs-number">1</span>)<br>	&#123;<br>		<span class="hljs-type">char</span> addr_str[<span class="hljs-number">128</span>];<br><br>		ESP_LOGI(TAG, <span class="hljs-string">&quot;Socket listening&quot;</span>);<br>		<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">sockaddr_storage</span> <span class="hljs-title">source_addr</span>;</span> <span class="hljs-comment">// Large enough for both IPv4 or IPv6</span><br>		<span class="hljs-type">socklen_t</span> addr_len = <span class="hljs-keyword">sizeof</span>(source_addr);<br>		<span class="hljs-type">int</span> sock = accept(listen_sock, (<span class="hljs-keyword">struct</span> sockaddr *)&amp;source_addr, &amp;addr_len);<br>		<span class="hljs-keyword">if</span> (sock &lt; <span class="hljs-number">0</span>)<br>		&#123;<br>			ESP_LOGE(TAG, <span class="hljs-string">&quot;Unable to accept connection: errno %d&quot;</span>, errno);<br>			<span class="hljs-keyword">break</span>;<br>		&#125;<br><br>		<span class="hljs-comment">// Set tcp keepalive option</span><br>		<span class="hljs-type">int</span> keepAlive = <span class="hljs-number">1</span>;<br>		<span class="hljs-type">int</span> keepIdle = <span class="hljs-number">5</span>;	  <span class="hljs-comment">// TCP keep-alive idle time(s)</span><br>		<span class="hljs-type">int</span> keepInterval = <span class="hljs-number">5</span>; <span class="hljs-comment">// TCP keep-alive interval time(s)</span><br>		<span class="hljs-type">int</span> keepCount = <span class="hljs-number">3</span>;	  <span class="hljs-comment">// TCP keep-alive packet retry send counts</span><br><br>		setsockopt(sock, SOL_SOCKET, SO_KEEPALIVE, &amp;keepAlive, <span class="hljs-keyword">sizeof</span>(<span class="hljs-type">int</span>));<br>		setsockopt(sock, IPPROTO_TCP, TCP_KEEPIDLE, &amp;keepIdle, <span class="hljs-keyword">sizeof</span>(<span class="hljs-type">int</span>));<br>		setsockopt(sock, IPPROTO_TCP, TCP_KEEPINTVL, &amp;keepInterval, <span class="hljs-keyword">sizeof</span>(<span class="hljs-type">int</span>));<br>		setsockopt(sock, IPPROTO_TCP, TCP_KEEPCNT, &amp;keepCount, <span class="hljs-keyword">sizeof</span>(<span class="hljs-type">int</span>));<br>		<br>		<span class="hljs-comment">// Convert ip address to string</span><br>		<span class="hljs-keyword">if</span> (source_addr.ss_family == PF_INET)<br>		&#123;<br>			inet_ntoa_r(((<span class="hljs-keyword">struct</span> sockaddr_in *)&amp;source_addr)-&gt;sin_addr, addr_str, <span class="hljs-keyword">sizeof</span>(addr_str) - <span class="hljs-number">1</span>);<br>		&#125;<br><br>		ESP_LOGI(TAG, <span class="hljs-string">&quot;Socket accepted ip address: %s&quot;</span>, addr_str);<br><br>		do_retransmit(sock);<br><br>		shutdown(sock, <span class="hljs-number">0</span>);<br>		close(sock);<br>	&#125;<br><br>CLEAN_UP:<br>	close(listen_sock);<br>	vTaskDelete(<span class="hljs-literal">NULL</span>);<br>&#125;<br><br><span class="hljs-comment">// wifi初始化</span><br><span class="hljs-type">static</span> <span class="hljs-type">void</span> <span class="hljs-title function_">wifi_sta_init</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span><br>&#123;<br>	ESP_ERROR_CHECK(esp_netif_init());<br><br>	<span class="hljs-comment">// 注册事件(wifi启动成功)</span><br>	ESP_ERROR_CHECK(esp_event_handler_instance_register(WIFI_EVENT, WIFI_EVENT_STA_START, WIFI_CallBack, <span class="hljs-literal">NULL</span>, <span class="hljs-literal">NULL</span>));<br>	<span class="hljs-comment">// 注册事件(wifi连接失败)</span><br>	ESP_ERROR_CHECK(esp_event_handler_instance_register(WIFI_EVENT, WIFI_EVENT_STA_DISCONNECTED, WIFI_CallBack, <span class="hljs-literal">NULL</span>, <span class="hljs-literal">NULL</span>));<br>	<span class="hljs-comment">// 注册事件(wifi连接失败)</span><br>	ESP_ERROR_CHECK(esp_event_handler_instance_register(IP_EVENT, IP_EVENT_STA_GOT_IP, WIFI_CallBack, <span class="hljs-literal">NULL</span>, <span class="hljs-literal">NULL</span>));<br><br>	<span class="hljs-comment">// 初始化STA设备</span><br>	esp_netif_create_default_wifi_sta();<br><br>	<span class="hljs-comment">/*Initialize WiFi */</span><br>	<span class="hljs-type">wifi_init_config_t</span> cfg = WIFI_INIT_CONFIG_DEFAULT();<br>	<span class="hljs-comment">// WIFI_INIT_CONFIG_DEFAULT 是一个默认配置的宏</span><br><br>	ESP_ERROR_CHECK(esp_wifi_init(&amp;cfg));<br><br>	<span class="hljs-comment">//----------------配置阶段-------------------</span><br>	<span class="hljs-comment">// 初始化WIFI设备( 为 WiFi 驱动初始化 WiFi 分配资源，如 WiFi 控制结构、RX/TX 缓冲区、WiFi NVS 结构等，这个 WiFi 也启动 WiFi 任务。必须先调用此API，然后才能调用所有其他WiFi API)</span><br>	ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_STA));<br><br>	<span class="hljs-comment">// STA详细配置</span><br>	<span class="hljs-type">wifi_config_t</span> sta_config = &#123;<br>		.sta = &#123;<br>			.ssid = ESP_WIFI_STA_SSID,<br>			.password = ESP_WIFI_STA_PASSWD,<br>			.bssid_set = <span class="hljs-literal">false</span>,<br>		&#125;,<br>	&#125;;<br>	ESP_ERROR_CHECK(esp_wifi_set_config(WIFI_IF_STA, &amp;sta_config));<br><br>	<span class="hljs-comment">//----------------启动阶段-------------------</span><br>	ESP_ERROR_CHECK(esp_wifi_start());<br><br>	<span class="hljs-comment">//----------------配置省电模式-------------------</span><br>	<span class="hljs-comment">// 不省电(数据传输会更快)</span><br>	ESP_ERROR_CHECK(esp_wifi_set_ps(WIFI_PS_NONE));<br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">app_main</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span><br>&#123;<br>	<span class="hljs-comment">// Initialize NVS</span><br>	<span class="hljs-type">esp_err_t</span> ret = nvs_flash_init();<br>	<span class="hljs-keyword">if</span> (ret == ESP_ERR_NVS_NO_FREE_PAGES || ret == ESP_ERR_NVS_NEW_VERSION_FOUND)<br>	&#123;<br>		ESP_ERROR_CHECK(nvs_flash_erase());<br>		ret = nvs_flash_init();<br>	&#125;<br>	ESP_ERROR_CHECK(ret);<br><br>	<span class="hljs-comment">// 创建默认事件循环</span><br>	ESP_ERROR_CHECK(esp_event_loop_create_default());<br><br>	<span class="hljs-comment">// 配置启动WIFI</span><br>	wifi_sta_init();<br><br>	<span class="hljs-comment">// 创建TCP服务器任务</span><br>	xTaskCreate(tcp_server_task, <span class="hljs-string">&quot;tcp_server_task&quot;</span>, <span class="hljs-number">4096</span>, <span class="hljs-literal">NULL</span>, <span class="hljs-number">5</span>, <span class="hljs-literal">NULL</span>);<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+
+<p>效果演示：</p>
+<p><img src="/posts/57108/20240315180322.png" srcset="/img/loading.gif" lazyload></p>
+<blockquote>
+<p>值得注意的一点：这里将整个tcpserver的流程放在一个task里，以至于他只能一对一通信，若要连接多个，则需要将连接，接收的部分也作为task来编写。<br>每次建立连接就会创建一个新的套接字，将这个新的套接字放到一个新的线程进行通信，就能实现多个客户端连接。</p>
+</blockquote>
+<h1 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h1><ol>
+<li><a target="_blank" rel="noopener" href="https://github.com/espressif/esp-idf/blob/release/v5.1/examples/protocols/sockets/tcp_server/main/tcp_server.c">https://github.com/espressif/esp-idf/blob/release/v5.1/examples/protocols/sockets/tcp_server/main/tcp_server.c</a></li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%94%B5%E5%AD%90%E4%BF%A1%E6%81%AF%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/" class="category-chain-item">电子信息硬件相关</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E7%94%B5%E5%AD%90%E4%BF%A1%E6%81%AF%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/" class="category-chain-item">MCU</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E7%94%B5%E5%AD%90%E4%BF%A1%E6%81%AF%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/" class="category-chain-item">ESP32</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E7%94%B5%E5%AD%90%E4%BF%A1%E6%81%AF%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/WIFI/" class="category-chain-item">WIFI</a>
+  
+  
+
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/MCU/" class="print-no-link">#MCU</a>
+      
+        <a href="/tags/ESP32/" class="print-no-link">#ESP32</a>
+      
+        <a href="/tags/TCP%E5%8D%8F%E8%AE%AE/" class="print-no-link">#TCP协议</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>ESP32WIFI-2.TCP协议</div>
+      <div>https://www.duruofu.xyz/posts/57108/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>DuRuofu</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年3月15日</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>更新于</div>
+          <div>2025年1月10日</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
+                    <i class="iconfont icon-cc-nc"></i>
+                  </span>
+                </a>
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="SA - 相同方式共享">
+                    <i class="iconfont icon-cc-sa"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/40389/" title="Ubuntu_20_04_ROS1安装">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Ubuntu_20_04_ROS1安装</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/40114/" title="ESP32WIFI-1.WIFI连接">
+                        <span class="hidden-mobile">ESP32WIFI-1.WIFI连接</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#gitalk-container', function() {
+      Fluid.utils.createCssLink('/css/gitalk.css')
+      Fluid.utils.createScript('https://lib.baomitu.com/gitalk/1.8.0/gitalk.min.js', function() {
+        var options = Object.assign(
+          {"clientID":"c9ac06d5413a9d613a1e","clientSecret":"a44f5c72589eb090876cc64067db28fbfdf4747c","repo":"Blog-comments-gitalk","owner":"DuRuofu","admin":["DuRuofu"],"language":"zh-CN","labels":["Gitalk"],"perPage":15,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":false,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token"},
+          {
+            id: '601bd2819c1a293365cd7f32caa414cc'
+          }
+        )
+        var gitalk = new Gitalk(options);
+        gitalk.render('gitalk-container');
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <br><span id="timeDate">天数载入中</span><span id="times">...</span><br> <span>总有读不懂的诗和到达不了的远方</span> <p>Copyright © 2023 - <span id="currentYear"></span> All Rights Reserved.</p>
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      陕ICP备2022007454号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=2022007454"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>陕ICP备2022007454号-2</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":true,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  var relativeDate = function() {
+    var updatedTime = document.getElementById('updated-time');
+    if (updatedTime) {
+      var text = updatedTime.textContent;
+      var reg = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:Z|[+-]\d{2}:\d{2})/;
+      var matchs = text.match(reg);
+      if (matchs) {
+        var relativeTime = moment(matchs[0]).fromNow();
+        updatedTime.textContent = text.replace(reg, relativeTime);
+      }
+      updatedTime.style.display = '';
+    }
+  };
+  Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/moment.min.js', function() {
+    if (!'zh-cn'.startsWith('en')) {
+      Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/locale/zh-cn.min.js', function() {
+        relativeDate();
+      });
+    } else {
+      relativeDate();
+    }
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/cust/custom.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

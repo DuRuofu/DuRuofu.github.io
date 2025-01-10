@@ -1,0 +1,1098 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/%E4%B8%AA%E4%BA%BA%E5%A4%B4%E5%83%8F%E6%97%A0%E8%83%8C%E6%99%AF.png">
+  <link rel="icon" href="https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/%E4%B8%AA%E4%BA%BA%E5%A4%B4%E5%83%8F%E6%97%A0%E8%83%8C%E6%99%AF.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="DuRuofu">
+  <meta name="keywords" content="嵌入式,个人博客,个人测试">
+  
+    <meta name="description" content="ESP32学习计划">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ESP32学习路线">
+<meta property="og:url" content="https://www.duruofu.xyz/posts/58874/index.html">
+<meta property="og:site_name" content="Duruofu&#39;s 个人测试">
+<meta property="og:description" content="ESP32学习计划">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.duruofu.xyz/img/index_img/espidf.png">
+<meta property="article:published_time" content="2024-01-29T17:40:53.000Z">
+<meta property="article:modified_time" content="2025-01-10T14:20:34.010Z">
+<meta property="article:author" content="DuRuofu">
+<meta property="article:tag" content="MCU">
+<meta property="article:tag" content="ESP32">
+<meta property="article:tag" content="ESP32学习计划">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://www.duruofu.xyz/img/index_img/espidf.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>ESP32学习路线 - Duruofu&#39;s 个人测试</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/cust/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"www.duruofu.xyz","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":80,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":true,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":5},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null},"gtag":null,"woyaola":null,"cnzz":null},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>DuRuofu</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/2020/06/06/1.%E9%98%85%E8%AF%BB%E5%86%99%E4%BD%9C/%E5%8E%9F%E5%88%9B%E8%AF%97%E8%AF%8D/%E8%AF%97%E8%AF%8D/" target="_self">
+                <i class="iconfont icon-books"></i>
+                <span>诗词</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                <span>ESP32教程</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/posts/58874/" target="_self">
+                    
+                    <span>ESP32教程-2024</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/posts/58875/" target="_self">
+                    
+                    <span>ESP32教程-2025</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="ESP32学习路线"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        DuRuofu
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-01-30 01:40" pubdate>
+          2024年1月30日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          4 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">ESP32学习路线</h1>
+            
+              <p id="updated-time" class="note note-info" style="display: none">
+                
+                  
+                    本文最后更新于 2025-01-10T22:20:34+08:00
+                  
+                  
+
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <h3 id="说明："><a href="#说明：" class="headerlink" title="说明："></a>说明：</h3><ol>
+<li>本文档由DuRuofu撰写，由DuRuofu负责解释及执行。</li>
+<li>本文档记录ESP32学习过程中的相关笔记。</li>
+</ol>
+<h3 id="修订历史："><a href="#修订历史：" class="headerlink" title="修订历史："></a>修订历史：</h3><table>
+<thead>
+<tr>
+<th>文档名称</th>
+<th>版本</th>
+<th>作者</th>
+<th>时间</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ESP32学习计划</td>
+<td>v1.0.0</td>
+<td>DuRuofu</td>
+<td>2023-08-28</td>
+<td>首次建立</td>
+</tr>
+<tr>
+<td>ESP32学习计划</td>
+<td>v1.0.1</td>
+<td>DuRuofu</td>
+<td>2023-09-2</td>
+<td>补充</td>
+</tr>
+<tr>
+<td>ESP32学习计划</td>
+<td>v1.1.0</td>
+<td>DuRuofu</td>
+<td>2023-09-13</td>
+<td>补充</td>
+</tr>
+</tbody></table>
+<h2 id="一、认知阶段📌"><a href="#一、认知阶段📌" class="headerlink" title="一、认知阶段📌"></a>一、认知阶段📌</h2><blockquote>
+<p>目标：学会安装esp-idf开发环境，并使用其烧录代码，学会工具使用。</p>
+</blockquote>
+<h3 id="1-1-准备开发环境："><a href="#1-1-准备开发环境：" class="headerlink" title="1. 1  准备开发环境："></a>1. 1  <strong>准备开发环境</strong>：</h3><p>安装 esp-idf 开发环境，并进行设置。</p>
+<p>参考：</p>
+<blockquote>
+<p>基础搭建：<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1E841177Tu/?spm_id_from=333.999.0.0&vd_source=ef5a0ab0106372751602034cdd9ab98e">ESP-IDF环境搭建</a>+<a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/v5.1.2/esp32/get-started/index.html#get-started-how-to-get-esp-idf">官方安装教程</a><br>进阶搭建: <a target="_blank" rel="noopener" href="https://duruofu.github.io/2024/01/25/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/%E6%90%AD%E5%BB%BAesp-idf%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/#%E5%9B%9B%E3%80%81-%E9%85%8D%E7%BD%AE%E5%BF%AB%E6%8D%B7%E6%8C%87%E4%BB%A4">linux下ESP32开发环境搭建</a> +<a target="_blank" rel="noopener" href="https://duruofu.github.io/2024/01/30/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/vscdoe+%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%BC%80%E5%8F%91ESP32/#2-2-%E6%89%8B%E8%BE%93%E5%91%BD%E4%BB%A4%E5%A4%AA%E9%BA%BB%E7%83%A6%E7%9A%84%E9%97%AE%E9%A2%98">vscdoe配合虚拟机远程连接开发</a></p>
+</blockquote>
+<p>这里提供一个搭建好4.4.6以及5.1.2 版本的虚拟机：<a target="_blank" rel="noopener" href="https://www.alipan.com/s/i8yiHDk8nMN">虚拟机-网盘分享</a> ,提取码：3j9a<br>虚拟机密码：3.1415926</p>
+<p>基于官方提供的示例程序，我们可以了解到最基本的工程结构：</p>
+<blockquote>
+<p>代码参考：<a target="_blank" rel="noopener" href="https://github.com/DuRuofu/ESP32_Learning/tree/master/01.example/sample_project">01.example&#x2F;sample_project</a></p>
+</blockquote>
+<h3 id="1-2-点灯程序："><a href="#1-2-点灯程序：" class="headerlink" title="1.2 点灯程序："></a>1.2 点灯程序：</h3><p>创建一个最简单的程序，点亮板载的LED灯。（使用官方历程）</p>
+<blockquote>
+<p>视频参考：<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1nR4y1o7VE/?spm_id_from=333.788&vd_source=ef5a0ab0106372751602034cdd9ab98e">ESP-IDF点灯</a><br>代码参考：<a target="_blank" rel="noopener" href="https://github.com/DuRuofu/ESP32_Learning/tree/master/01.example/blink">01.example&#x2F;blink</a></p>
+</blockquote>
+<h3 id="1-3-Hello-World-程序："><a href="#1-3-Hello-World-程序：" class="headerlink" title="1.3 Hello World 程序："></a>1.3 <strong>Hello World 程序</strong>：</h3><p>  创建一个最简单的程序，如打印 “Hello world!” 到串口。（使用官方历程）</p>
+<blockquote>
+<p>视频参考：<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Rd4y1b7CE/?spm_id_from=333.788&vd_source=ef5a0ab0106372751602034cdd9ab98e">Hello World 程序</a><br>代码参考：<a target="_blank" rel="noopener" href="https://github.com/DuRuofu/ESP32_Learning/tree/master/01.example/hello_world">01.example&#x2F;hello_world</a></p>
+</blockquote>
+<h2 id="二、IDF学习📌"><a href="#二、IDF学习📌" class="headerlink" title="二、IDF学习📌"></a>二、IDF学习📌</h2><blockquote>
+<p>目标：学会安装esp-idf开发环境的项目配置，包括配置菜单，可变参数宏，组件机制。</p>
+</blockquote>
+<h3 id="2-1-ESP32工程结构及构建"><a href="#2-1-ESP32工程结构及构建" class="headerlink" title="2.1  ESP32工程结构及构建"></a>2.1  ESP32工程结构及构建</h3><blockquote>
+<p>文字教程参考：<a target="_blank" rel="noopener" href="https://www.duruofu.top/2024/02/18/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/02.IDF%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8/2.1-ESP32%E5%B7%A5%E7%A8%8B%E7%BB%93%E6%9E%84%E5%8F%8A%E6%9E%84%E5%BB%BA/ESP32%E5%B7%A5%E7%A8%8B%E7%BB%93%E6%9E%84%E5%8F%8A%E6%9E%84%E5%BB%BA/">ESP32工程结构及构建</a><br>官方参考：<a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-guides/build-system.html">ESP-IDF编程指南&#x2F;API指南&#x2F;构建系统</a></p>
+</blockquote>
+<h3 id="2-2-ESP-IDF项目配置（Menuconfig）"><a href="#2-2-ESP-IDF项目配置（Menuconfig）" class="headerlink" title="2.2  ESP-IDF项目配置（Menuconfig）"></a>2.2  ESP-IDF项目配置（Menuconfig）</h3><blockquote>
+<p>教程参考：<a target="_blank" rel="noopener" href="https://www.duruofu.top/2024/02/18/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/02.IDF%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8/2.2-ESP-IDF%E9%A1%B9%E7%9B%AE%E9%85%8D%E7%BD%AE/ESP-IDF%E9%A1%B9%E7%9B%AE%E9%85%8D%E7%BD%AE/">ESP-IDF项目配置</a><br>官方参考：<a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/kconfig.html">ESP-IDF编程指南&#x2F;API参考&#x2F;项目配置</a><br>视频参考:   <a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1S44y1D7cf/?spm_id_from=333.999.0.0&vd_source=ef5a0ab0106372751602034cdd9ab98e">ESP-IDF自定义菜单</a><br>代码参考:  <a target="_blank" rel="noopener" href="https://github.com/DuRuofu/ESP32_Learning/tree/master/02.idf_basis/blink_menuconfig">https://github.com/DuRuofu/ESP32_Learning/tree/master/02.idf_basis/blink_menuconfig</a></p>
+</blockquote>
+<h3 id="2-3-ESP-IDF自定义组件（components）"><a href="#2-3-ESP-IDF自定义组件（components）" class="headerlink" title="2.3  ESP-IDF自定义组件（components）"></a>2.3  ESP-IDF自定义组件（components）</h3><blockquote>
+<p>教程参考：<a target="_blank" rel="noopener" href="https://www.duruofu.top/2024/02/18/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/02.IDF%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8/2.3-ESP-IDF%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BB%84%E4%BB%B6/ESP-IDF%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BB%84%E4%BB%B6/">ESP-IDF自定义组件</a><br>官方参考：<a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-guides/build-system.html#component-configuration">API指南-&gt;构建系统</a><br>视频参考:  <a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1w14y1s7oy/?spm_id_from=333.999.0.0&vd_source=ef5a0ab0106372751602034cdd9ab98e">ESP32-IDF中cmake文件管理</a><br>代码参考:  <a target="_blank" rel="noopener" href="https://github.com/DuRuofu/ESP32_Learning/tree/master/02.idf_basis/blink_component">https://github.com/DuRuofu/ESP32_Learning/tree/master/02.idf_basis/blink_component</a></p>
+</blockquote>
+<h3 id="2-4-ESP-IDF组件管理器"><a href="#2-4-ESP-IDF组件管理器" class="headerlink" title="2.4  ESP-IDF组件管理器"></a>2.4  ESP-IDF组件管理器</h3><blockquote>
+<p>教程参考：<a target="_blank" rel="noopener" href="https://www.duruofu.top/2024/02/18/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/02.IDF%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8/2.4-ESP-IDF%E7%BB%84%E4%BB%B6%E7%AE%A1%E7%90%86%E5%99%A8/ESP-IDF%E7%BB%84%E4%BB%B6%E7%AE%A1%E7%90%86%E5%99%A8/">ESP-IDF组件管理器</a><br>官方参考：<a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-guides/build-system.html#component-configuration">API指南-&gt;构建系统</a><br>视频参考:  <a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1w14y1s7oy/?spm_id_from=333.999.0.0&vd_source=ef5a0ab0106372751602034cdd9ab98e">ESP32-IDF中cmake文件管理</a><br>代码参考:  <a target="_blank" rel="noopener" href="https://github.com/DuRuofu/ESP32_Learning/tree/master/02.idf_basis/button_component">https://github.com/DuRuofu/ESP32_Learning/tree/master/02.idf_basis/button_component</a></p>
+</blockquote>
+<h2 id="三、基础外设学习📌"><a href="#三、基础外设学习📌" class="headerlink" title="三、基础外设学习📌"></a>三、基础外设学习📌</h2><h3 id="3-1-GPIO"><a href="#3-1-GPIO" class="headerlink" title="3.1 GPIO"></a>3.1 GPIO</h3><h4 id="3-1-1-GPIO输出-x2F-输出"><a href="#3-1-1-GPIO输出-x2F-输出" class="headerlink" title="3.1.1 GPIO输出&#x2F;输出"></a>3.1.1 GPIO输出&#x2F;输出</h4><blockquote>
+<p>教程参考：<a target="_blank" rel="noopener" href="https://www.duruofu.top/2024/02/29/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/03.ESP%E5%A4%96%E8%AE%BE%E5%85%A5%E9%97%A8/3.1-ESP32%E5%A4%96%E8%AE%BE-GPIO%E5%85%A5%E9%97%A8/ESP32%E5%A4%96%E8%AE%BE-GPIO%E5%85%A5%E9%97%A8/">ESP32外设-GPIO入门</a><br>官方参考：<a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/gpio.html">GPIO &amp; RTC GPIO</a><br>代码参考： <a target="_blank" rel="noopener" href="https://github.com/DuRuofu/ESP32_Learning/tree/master/03.peripheral/gpio">https://github.com/DuRuofu/ESP32_Learning/tree/master/03.peripheral/gpio</a></p>
+</blockquote>
+<h4 id="3-1-2-GPIO中断"><a href="#3-1-2-GPIO中断" class="headerlink" title="3.1.2 GPIO中断"></a>3.1.2 GPIO中断</h4><blockquote>
+<p>教程参考：<a target="_blank" rel="noopener" href="https://www.duruofu.top/2024/02/29/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/03.ESP%E5%A4%96%E8%AE%BE%E5%85%A5%E9%97%A8/3.1-ESP32%E5%A4%96%E8%AE%BE-GPIO%E5%85%A5%E9%97%A8/ESP32%E5%A4%96%E8%AE%BE-GPIO%E5%85%A5%E9%97%A8/">ESP32外设-GPIO入门</a><br>官方参考：<a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/gpio.html">GPIO &amp; RTC GPIO</a><br>代码参考： <a target="_blank" rel="noopener" href="https://github.com/DuRuofu/ESP32_Learning/tree/master/03.peripheral/gpio_exit">https://github.com/DuRuofu/ESP32_Learning/tree/master/03.peripheral/gpio_exit</a></p>
+</blockquote>
+<h3 id="3-2-UART"><a href="#3-2-UART" class="headerlink" title="3.2 UART"></a>3.2 UART</h3><blockquote>
+<p>教程参考：<a target="_blank" rel="noopener" href="https://www.duruofu.top/2024/03/03/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/03.ESP%E5%A4%96%E8%AE%BE%E5%85%A5%E9%97%A8/3.2-ESP32%E5%A4%96%E8%AE%BE-UART%E5%85%A5%E9%97%A8/ESP32%E5%A4%96%E8%AE%BE-UART%E5%85%A5%E9%97%A8/">ESP32外设-UART入门</a><br>官方参考：<a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/uart.html#uart-api-setting-communication-parameters">外设API-&gt;通用异步接收器&#x2F;发送器 (UART)</a><br>代码参考： <a target="_blank" rel="noopener" href="https://github.com/DuRuofu/ESP32_Learning/tree/master/03.peripheral/uart">https://github.com/DuRuofu/ESP32_Learning/tree/master/03.peripheral/uart</a></p>
+</blockquote>
+<h3 id="3-3-硬件定时器"><a href="#3-3-硬件定时器" class="headerlink" title="3.3 硬件定时器"></a>3.3 硬件定时器</h3><blockquote>
+<p>教程参考：<a target="_blank" rel="noopener" href="https://www.duruofu.top/2024/03/03/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/03.ESP%E5%A4%96%E8%AE%BE%E5%85%A5%E9%97%A8/3.3-ESP32%E5%A4%96%E8%AE%BE-%E7%A1%AC%E4%BB%B6%E5%AE%9A%E6%97%B6%E5%99%A8%E5%85%A5%E9%97%A8/ESP32%E5%A4%96%E8%AE%BE-%E7%A1%AC%E4%BB%B6%E5%AE%9A%E6%97%B6%E5%99%A8%E5%85%A5%E9%97%A8/">ESP32外设-硬件定时器入门</a><br>官方参考：<a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/gptimer.html#id26">通用定时器</a><br>代码参考： <a target="_blank" rel="noopener" href="https://github.com/DuRuofu/ESP32_Learning/tree/master/03.peripheral/gptimer">https://github.com/DuRuofu/ESP32_Learning/tree/master/03.peripheral/gptimer</a></p>
+</blockquote>
+<h3 id="3-4-ADC"><a href="#3-4-ADC" class="headerlink" title="3.4 ADC"></a>3.4 ADC</h3><h4 id="3-4-1-ADC单次转换"><a href="#3-4-1-ADC单次转换" class="headerlink" title="3.4.1 ADC单次转换"></a>3.4.1 ADC单次转换</h4><blockquote>
+<p>教程参考：<a target="_blank" rel="noopener" href="https://www.duruofu.top/2024/03/04/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/03.ESP%E5%A4%96%E8%AE%BE%E5%85%A5%E9%97%A8/3.4-ESP32%E5%A4%96%E8%AE%BE-ADC%E5%85%A5%E9%97%A8/ESP32%E5%A4%96%E8%AE%BE-ADC%E5%85%A5%E9%97%A8/">ESP32外设-ADC入门</a><br>官方参考：<a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/adc_oneshot.html">模数转换器 (ADC-单次)</a><br>代码参考： <a target="_blank" rel="noopener" href="https://github.com/DuRuofu/ESP32_Learning/tree/master/03.peripheral/adc_oneshot">https://github.com/DuRuofu/ESP32_Learning/tree/master/03.peripheral/adc_oneshot</a></p>
+</blockquote>
+<h4 id="3-4-2-ADC连续转换"><a href="#3-4-2-ADC连续转换" class="headerlink" title="3.4.2 ADC连续转换"></a>3.4.2 ADC连续转换</h4><blockquote>
+<p>教程参考：<a target="_blank" rel="noopener" href="https://www.duruofu.top/2024/03/04/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/03.ESP%E5%A4%96%E8%AE%BE%E5%85%A5%E9%97%A8/3.4-ESP32%E5%A4%96%E8%AE%BE-ADC%E5%85%A5%E9%97%A8/ESP32%E5%A4%96%E8%AE%BE-ADC%E5%85%A5%E9%97%A8/">ESP32外设-ADC入门</a><br>官方参考：<a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/adc_continuous.html#">模数转换器 (ADC-连续)</a><br>代码参考： <a target="_blank" rel="noopener" href="https://github.com/DuRuofu/ESP32_Learning/tree/master/03.peripheral/adc_continuous">https://github.com/DuRuofu/ESP32_Learning/tree/master/03.peripheral/adc_continuous</a></p>
+</blockquote>
+<h3 id="3-5-DAC"><a href="#3-5-DAC" class="headerlink" title="3.5 DAC"></a>3.5 DAC</h3><blockquote>
+<p>教程参考：<a target="_blank" rel="noopener" href="https://www.duruofu.top/2024/03/05/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/03.ESP%E5%A4%96%E8%AE%BE%E5%85%A5%E9%97%A8/3.5-ESP32%E5%A4%96%E8%AE%BE-DAC%E5%85%A5%E9%97%A8/ESP32%E5%A4%96%E8%AE%BE-DAC%E5%85%A5%E9%97%A8/">ESP32外设-DAC入门</a><br>官方参考：<a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/adc_continuous.html#">模数转换器 (ADC-连续)</a><br>代码参考1： <a target="_blank" rel="noopener" href="https://github.com/DuRuofu/ESP32_Learning/tree/master/03.peripheral/dac_oneshot">https://github.com/DuRuofu/ESP32_Learning/tree/master/03.peripheral/dac_oneshot</a><br>代码参考2： <a target="_blank" rel="noopener" href="https://github.com/DuRuofu/ESP32_Learning/tree/master/03.peripheral/dac_cosine">https://github.com/DuRuofu/ESP32_Learning/tree/master/03.peripheral/dac_cosine</a></p>
+</blockquote>
+<h3 id="3-6-LED-PWM"><a href="#3-6-LED-PWM" class="headerlink" title="3.6 LED PWM"></a>3.6 LED PWM</h3><blockquote>
+<p>教程参考：<a target="_blank" rel="noopener" href="https://www.duruofu.top/2024/03/05/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/03.ESP%E5%A4%96%E8%AE%BE%E5%85%A5%E9%97%A8/3.6-ESP32%E5%A4%96%E8%AE%BE-LEDPWM%E5%85%A5%E9%97%A8/ESP32%E5%A4%96%E8%AE%BE-LEDPWM%E5%85%A5%E9%97%A8/">ESP32外设-LEDPWM入门</a><br>官方参考：<a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/ledc.html#led-pwm" title="永久链接至标题">LED PWM 控制器</a><br>代码参考： <a target="_blank" rel="noopener" href="https://github.com/DuRuofu/ESP32_Learning/tree/master/03.peripheral/led_pwm">https://github.com/DuRuofu/ESP32_Learning/tree/master/03.peripheral/led_pwm</a></p>
+</blockquote>
+<h3 id="3-7-I2C"><a href="#3-7-I2C" class="headerlink" title="3.7 I2C"></a>3.7 I2C</h3><blockquote>
+<p>教程参考：<a target="_blank" rel="noopener" href="https://www.duruofu.top/2024/03/11/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/03.ESP%E5%A4%96%E8%AE%BE%E5%85%A5%E9%97%A8/3.7-ESP32%E5%A4%96%E8%AE%BE-I2C%E5%85%A5%E9%97%A8/ESP32%E5%A4%96%E8%AE%BE-I2C%E5%85%A5%E9%97%A8/">ESP32外设-I2C入门</a><br>官方参考：<a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/release-v5.1/esp32/api-reference/peripherals/i2c.html">I2C 驱动程序</a><br>代码参考： <a target="_blank" rel="noopener" href="https://github.com/DuRuofu/ESP32_Learning/tree/master/03.peripheral/i2c_bh1750">https://github.com/DuRuofu/ESP32_Learning/tree/master/03.peripheral/i2c_bh1750</a></p>
+</blockquote>
+<h3 id="3-8-I2S"><a href="#3-8-I2S" class="headerlink" title="3.8 I2S"></a>3.8 I2S</h3><blockquote>
+<p>教程参考：<br>官方参考：<br>代码参考： </p>
+</blockquote>
+<h2 id="四、ESP32存储器学习📌"><a href="#四、ESP32存储器学习📌" class="headerlink" title="四、ESP32存储器学习📌"></a>四、ESP32存储器学习📌</h2><h3 id="4-1-分区表"><a href="#4-1-分区表" class="headerlink" title="4.1 分区表"></a>4.1 分区表</h3><blockquote>
+<p>教程参考：<a target="_blank" rel="noopener" href="https://www.duruofu.top/2024/03/06/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/04.ESP32%E5%AD%98%E5%82%A8%E5%99%A8%E5%85%A5%E9%97%A8/4.1-ESP32%E5%AD%98%E5%82%A8-%E5%88%86%E5%8C%BA%E8%A1%A8%E5%85%A5%E9%97%A8/ESP32%E5%AD%98%E5%82%A8-%E5%88%86%E5%8C%BA%E8%A1%A8%E5%85%A5%E9%97%A8/">ESP32存储-分区表入门</a><br>官方参考：<a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-guides/partition-tables.html">分区表</a><br>代码参考： <a target="_blank" rel="noopener" href="https://github.com/DuRuofu/ESP32_Learning/tree/master/04.storage/partition">https://github.com/DuRuofu/ESP32_Learning/tree/master/04.storage/partition</a></p>
+</blockquote>
+<h3 id="4-2-非易失性存储-NVS"><a href="#4-2-非易失性存储-NVS" class="headerlink" title="4.2 非易失性存储 (NVS)"></a>4.2 非易失性存储 (NVS)</h3><blockquote>
+<p>教程参考：<a target="_blank" rel="noopener" href="https://www.duruofu.top/2024/03/06/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/04.ESP32%E5%AD%98%E5%82%A8%E5%99%A8%E5%85%A5%E9%97%A8/4.2-ESP32%E5%AD%98%E5%82%A8-%E9%9D%9E%E6%98%93%E5%A4%B1%E6%80%A7%E5%AD%98%E5%82%A8%20(NVS)/ESP32%E5%AD%98%E5%82%A8-%E9%9D%9E%E6%98%93%E5%A4%B1%E6%80%A7%E5%AD%98%E5%82%A8%20(NVS)/">ESP32存储-非易失性存储 (NVS)入门</a><br>官方参考：<a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-guides/partition-tables.html">分区表</a><br>代码参考： <a target="_blank" rel="noopener" href="https://github.com/DuRuofu/ESP32_Learning/tree/master/04.storage/nvs">https://github.com/DuRuofu/ESP32_Learning/tree/master/04.storage/nvs</a></p>
+</blockquote>
+<h3 id="4-3-FAT文件系统"><a href="#4-3-FAT文件系统" class="headerlink" title="4.3  FAT文件系统"></a>4.3  FAT文件系统</h3><blockquote>
+<p>教程参考：<a target="_blank" rel="noopener" href="https://www.duruofu.top/2024/03/06/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/04.ESP32%E5%AD%98%E5%82%A8%E5%99%A8%E5%85%A5%E9%97%A8/4.3-ESP32%E5%AD%98%E5%82%A8-VFS%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/ESP32%E5%AD%98%E5%82%A8-VFS%E8%99%9A%E6%8B%9F%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E5%85%A5%E9%97%A8/">ESP32存储-VFS虚拟文件系统入门</a><br>官方参考：<a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/stable/esp32/api-reference/storage/fatfs.html">FAT 文件系统</a><br>代码参考： <a target="_blank" rel="noopener" href="https://github.com/DuRuofu/ESP32_Learning/tree/master/04.storage/flash_fatfs">https://github.com/DuRuofu/ESP32_Learning/tree/master/04.storage/flash_fatfs</a></p>
+</blockquote>
+<h3 id="4-4-SPIFFS-文件系统"><a href="#4-4-SPIFFS-文件系统" class="headerlink" title="4.4 SPIFFS 文件系统"></a>4.4 SPIFFS 文件系统</h3><blockquote>
+<p>教程参考：<a target="_blank" rel="noopener" href="https://www.duruofu.top/2024/03/06/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/04.ESP32%E5%AD%98%E5%82%A8%E5%99%A8%E5%85%A5%E9%97%A8/4.4-ESP32%E5%AD%98%E5%82%A8-SPIFFS%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E5%85%A5%E9%97%A8/ESP32%E5%AD%98%E5%82%A8-SPIFFS%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/">ESP32存储-SPIFFS文件系统</a><br>官方参考：<a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/stable/esp32/api-reference/storage/spiffs.html">SPIFFS 文件系统</a><br>代码参考： <a target="_blank" rel="noopener" href="https://github.com/DuRuofu/ESP32_Learning/tree/master/04.storage/flash_spiffs">https://github.com/DuRuofu/ESP32_Learning/tree/master/04.storage/flash_spiffs</a></p>
+</blockquote>
+<h3 id="4-5-SD、SDIO、MMC-驱动"><a href="#4-5-SD、SDIO、MMC-驱动" class="headerlink" title="4.5 SD、SDIO、MMC 驱动"></a>4.5 SD、SDIO、MMC 驱动</h3><blockquote>
+<p>教程参考：<a target="_blank" rel="noopener" href="https://www.duruofu.top/2024/04/12/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/04.ESP32%E5%AD%98%E5%82%A8%E5%99%A8%E5%85%A5%E9%97%A8/4.5-ESP32%E5%AD%98%E5%82%A8-SD%E3%80%81SDIO%E3%80%81MMC%20%E9%A9%B1%E5%8A%A8/ESP32%E5%AD%98%E5%82%A8-SD%E3%80%81SDIO%E3%80%81MMC%20%E9%A9%B1%E5%8A%A8/">ESP32存储-SD、SDIO、MMC 驱动</a><br>官方参考：<br>代码参考： <a target="_blank" rel="noopener" href="https://github.com/DuRuofu/ESP32_Learning/tree/master/04.storage/sdmmc">https://github.com/DuRuofu/ESP32_Learning/tree/master/04.storage/sdmmc</a></p>
+</blockquote>
+<h2 id="五、ESP32-WFI学习📌"><a href="#五、ESP32-WFI学习📌" class="headerlink" title="五、ESP32 WFI学习📌"></a>五、ESP32 WFI学习📌</h2><h3 id="5-1-WIFI入门"><a href="#5-1-WIFI入门" class="headerlink" title="5.1  WIFI入门"></a>5.1  WIFI入门</h3><blockquote>
+<p>教程参考：<a target="_blank" rel="noopener" href="https://www.duruofu.top/2024/03/15/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/05.ESP32WIFI%E5%85%A5%E9%97%A8/5.1-ESP32%E7%BD%91%E7%BB%9C%E5%85%A5%E9%97%A8-WIFI%E8%BF%9E%E6%8E%A5/ESP32%E7%BD%91%E7%BB%9C%E5%85%A5%E9%97%A8-WIFI%E8%BF%9E%E6%8E%A5/">ESP32网络入门-WIFI连接</a><br>官方参考：<br>代码参考： <a target="_blank" rel="noopener" href="https://github.com/DuRuofu/ESP32_Learning/tree/master/05.wifi">https://github.com/DuRuofu/ESP32_Learning/tree/master/05.wifi</a></p>
+</blockquote>
+<h3 id="5-2-TCP协议"><a href="#5-2-TCP协议" class="headerlink" title="5.2 TCP协议"></a>5.2 TCP协议</h3><blockquote>
+<p>教程参考：<a target="_blank" rel="noopener" href="https://www.duruofu.top/2024/03/15/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/05.ESP32WIFI%E5%85%A5%E9%97%A8/5.2-ESP32%E7%BD%91%E7%BB%9C%E5%85%A5%E9%97%A8-TCP%E5%8D%8F%E8%AE%AE/ESP32%E7%BD%91%E7%BB%9C%E5%85%A5%E9%97%A8-TCP%E5%8D%8F%E8%AE%AE/">ESP32网络入门-TCP协议</a><br>官方参考：<br>代码参考： <a target="_blank" rel="noopener" href="https://github.com/DuRuofu/ESP32_Learning/tree/master/05.wifi/tcp">https://github.com/DuRuofu/ESP32_Learning/tree/master/05.wifi/tcp</a></p>
+</blockquote>
+<h3 id="5-3-UDP协议"><a href="#5-3-UDP协议" class="headerlink" title="5.3 UDP协议"></a>5.3 UDP协议</h3><blockquote>
+<p>教程参考：<a target="_blank" rel="noopener" href="https://www.duruofu.top/2024/03/17/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/05.ESP32WIFI%E5%85%A5%E9%97%A8/5.3-ESP32%E7%BD%91%E7%BB%9C%E5%85%A5%E9%97%A8-UDP%E5%8D%8F%E8%AE%AE/ESP32%E7%BD%91%E7%BB%9C%E5%85%A5%E9%97%A8-UDP%E5%8D%8F%E8%AE%AE/">ESP32网络入门-UDP协议</a><br>官方参考：<br>代码参考： <a target="_blank" rel="noopener" href="https://github.com/DuRuofu/ESP32_Learning/tree/master/05.wifi/udp">https://github.com/DuRuofu/ESP32_Learning/tree/master/05.wifi/udp</a></p>
+</blockquote>
+<h3 id="5-4-HTTP协议"><a href="#5-4-HTTP协议" class="headerlink" title="5.4 HTTP协议"></a>5.4 HTTP协议</h3><h4 id="5-4-1-客户端协议"><a href="#5-4-1-客户端协议" class="headerlink" title="5.4.1 客户端协议"></a>5.4.1 客户端协议</h4><blockquote>
+<p>教程参考：<a target="_blank" rel="noopener" href="https://www.duruofu.top/2024/03/25/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/05.ESP32WIFI%E5%85%A5%E9%97%A8/5.4-ESP32%E7%BD%91%E7%BB%9C%E5%85%A5%E9%97%A8-HTTP%E5%8D%8F%E8%AE%AE/ESP32%E7%BD%91%E7%BB%9C%E5%85%A5%E9%97%A8-HTTP%E5%8D%8F%E8%AE%AE(%E5%AE%A2%E6%88%B7%E7%AB%AF)/ESP32%E7%BD%91%E7%BB%9C%E5%85%A5%E9%97%A8-HTTP%E5%8D%8F%E8%AE%AE%EF%BC%88%E5%AE%A2%E6%88%B7%E7%AB%AF%EF%BC%89/">ESP32网络入门-HTTP协议（客户端）</a><br>官方参考：<a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/protocols/esp_http_client.html">HTTP 客户端</a><br>代码参考： <a target="_blank" rel="noopener" href="https://github.com/DuRuofu/ESP32_Learning/tree/master/05.wifi/http/http_client">https://github.com/DuRuofu/ESP32_Learning/tree/master/05.wifi/http/http_client</a></p>
+</blockquote>
+<h4 id="5-4-1-服务端协议"><a href="#5-4-1-服务端协议" class="headerlink" title="5.4.1 服务端协议"></a>5.4.1 服务端协议</h4><blockquote>
+<p>教程参考：<a target="_blank" rel="noopener" href="https://www.duruofu.top/2024/03/26/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/05.ESP32WIFI%E5%85%A5%E9%97%A8/5.4-ESP32%E7%BD%91%E7%BB%9C%E5%85%A5%E9%97%A8-HTTP%E5%8D%8F%E8%AE%AE/ESP32%E7%BD%91%E7%BB%9C%E5%85%A5%E9%97%A8-HTTP%E5%8D%8F%E8%AE%AE(%E6%9C%8D%E5%8A%A1%E7%AB%AF)/ESP32%E7%BD%91%E7%BB%9C%E5%85%A5%E9%97%A8-HTTP%E5%8D%8F%E8%AE%AE%EF%BC%88%E6%9C%8D%E5%8A%A1%E7%AB%AF%EF%BC%89/">ESP32网络入门-HTTP协议（服务端）</a><br>官方参考：<a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/protocols/esp_http_server.html">HTTP 服务器</a><br>代码参考： <a target="_blank" rel="noopener" href="https://github.com/DuRuofu/ESP32_Learning/tree/master/05.wifi/http/http_server">https://github.com/DuRuofu/ESP32_Learning/tree/master/05.wifi/http/http_server</a></p>
+</blockquote>
+<h3 id="5-5-webSocket协议"><a href="#5-5-webSocket协议" class="headerlink" title="5.5 webSocket协议"></a>5.5 webSocket协议</h3><blockquote>
+<p>教程参考：<a target="_blank" rel="noopener" href="https://www.duruofu.top/2024/03/27/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/05.ESP32WIFI%E5%85%A5%E9%97%A8/5.5-ESP32%E7%BD%91%E7%BB%9C%E5%85%A5%E9%97%A8-WebSocket%E5%8D%8F%E8%AE%AE/ESP32%E7%BD%91%E7%BB%9C%E5%85%A5%E9%97%A8-WebSocket%E5%8D%8F%E8%AE%AE/">ESP32网络入门-WebSocket协议</a><br>官方参考：<a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-protocols/esp_websocket_client/docs/latest/index.html#">ESP WebSocket</a><br>代码参考： <a target="_blank" rel="noopener" href="https://github.com/DuRuofu/ESP32_Learning/tree/master/05.wifi/websocket">https://github.com/DuRuofu/ESP32_Learning/tree/master/05.wifi/websocket</a></p>
+</blockquote>
+<h3 id="5-6-MQTT协议"><a href="#5-6-MQTT协议" class="headerlink" title="5.6 MQTT协议"></a>5.6 MQTT协议</h3><blockquote>
+<p>教程参考：<a target="_blank" rel="noopener" href="https://www.duruofu.top/2024/03/27/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/05.ESP32WIFI%E5%85%A5%E9%97%A8/5.6-ESP32%E7%BD%91%E7%BB%9C%E5%85%A5%E9%97%A8-MQTT%E5%8D%8F%E8%AE%AE/ESP32%E7%BD%91%E7%BB%9C%E5%85%A5%E9%97%A8-MQTT%E5%8D%8F%E8%AE%AE/">ESP32网络入门-MQTT协议</a><br>官方参考：<br>代码参考： </p>
+</blockquote>
+<h3 id="5-7-ESP-NOW协议"><a href="#5-7-ESP-NOW协议" class="headerlink" title="5.7 ESP-NOW协议"></a>5.7 ESP-NOW协议</h3><blockquote>
+<p>教程参考：<a target="_blank" rel="noopener" href="https://www.duruofu.top/2024/03/27/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/05.ESP32WIFI%E5%85%A5%E9%97%A8/5.7-ESP32%E7%BD%91%E7%BB%9C%E5%85%A5%E9%97%A8-ESP-NOW%E5%8D%8F%E8%AE%AE/ESP32%E7%BD%91%E7%BB%9C%E5%85%A5%E9%97%A8-ESP-NOW%E5%8D%8F%E8%AE%AE/">ESP32网络入门-ESP-NOW协议</a><br>官方参考：<br>代码参考： </p>
+</blockquote>
+<h3 id="5-8-SNTP校时"><a href="#5-8-SNTP校时" class="headerlink" title="5.8 SNTP校时"></a>5.8 SNTP校时</h3><blockquote>
+<p>教程参考：<a target="_blank" rel="noopener" href="https://www.duruofu.top/2024/04/12/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/05.ESP32WIFI%E5%85%A5%E9%97%A8/5.8-ESP32%E7%BD%91%E7%BB%9C%E5%85%A5%E9%97%A8-SNTP%E6%A0%A1%E6%97%B6/ESP32%E7%BD%91%E7%BB%9C%E5%85%A5%E9%97%A8-SNTP%E6%A0%A1%E6%97%B6/">ESP32网络入门-SNTP校时</a><br>官方参考：<br>代码参考： </p>
+</blockquote>
+<h2 id="六、ESP32-蓝牙学习📌"><a href="#六、ESP32-蓝牙学习📌" class="headerlink" title="六、ESP32 蓝牙学习📌"></a>六、ESP32 蓝牙学习📌</h2><h2 id="七、ESP32其他系统API学习📌"><a href="#七、ESP32其他系统API学习📌" class="headerlink" title="七、ESP32其他系统API学习📌"></a>七、ESP32其他系统API学习📌</h2><h3 id="7-1-软件定时器"><a href="#7-1-软件定时器" class="headerlink" title="7.1 软件定时器"></a>7.1 软件定时器</h3><blockquote>
+<p>教程参考：<a target="_blank" rel="noopener" href="https://www.duruofu.top/2024/03/04/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/07.ESP32%E7%B3%BB%E7%BB%9FAPI%E5%85%A5%E9%97%A8/7.1-%E8%BD%AF%E4%BB%B6%E5%AE%9A%E6%97%B6%E5%99%A8/ESP32%E7%B3%BB%E7%BB%9FAPI-%E8%BD%AF%E4%BB%B6%E5%AE%9A%E6%97%B6%E5%99%A8/">ESP32系统API-软件定时器</a><br>官方参考：<a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/system/esp_timer.html">ESP 定时器</a><br>代码参考： <a target="_blank" rel="noopener" href="https://github.com/DuRuofu/ESP32_Learning/tree/master/07.system/esp_timer">https://github.com/DuRuofu/ESP32_Learning/tree/master/07.system/esp_timer</a></p>
+</blockquote>
+<h3 id="7-2-控制台终端"><a href="#7-2-控制台终端" class="headerlink" title="7.2 控制台终端"></a>7.2 控制台终端</h3><blockquote>
+<p>教程参考：<br>官方参考：<a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/system/console.html">控制台终端</a><br>代码参考： </p>
+</blockquote>
+<h2 id="八、ESP32FreeRTOS📌"><a href="#八、ESP32FreeRTOS📌" class="headerlink" title="八、ESP32FreeRTOS📌"></a>八、ESP32FreeRTOS📌</h2><p>8.1 FreeRTOS基础<br>8.2 ESP32中FreeRTOS启动过程<br> 8.3 任务（task）<br>8.4 队列传递数据<br>8.5 定时器&amp;信号量<br>8.6 事件组<br>8.7 任务通知<br>8.8 流数据&#x2F;消息</p>
+<h2 id="九、GUI学习📌"><a href="#九、GUI学习📌" class="headerlink" title="九、GUI学习📌"></a>九、GUI学习📌</h2><h3 id="9-1-LVGL的移植"><a href="#9-1-LVGL的移植" class="headerlink" title="9.1 LVGL的移植"></a>9.1 LVGL的移植</h3><h4 id="9-1-1-以GC9A01为例（SPI）"><a href="#9-1-1-以GC9A01为例（SPI）" class="headerlink" title="9.1.1 以GC9A01为例（SPI）"></a>9.1.1 以GC9A01为例（SPI）</h4><blockquote>
+<p>教程参考：<a href="08.ESP32GUI%E5%85%A5%E9%97%A8/8.1-%E4%BD%BF%E7%94%A8%E7%BB%84%E4%BB%B6%E7%AE%A1%E7%90%86%E5%99%A8%E7%A7%BB%E6%A4%8DLVGL/%E5%9F%BA%E4%BA%8EESP-IDF%E5%AE%98%E6%96%B9%E7%BB%84%E4%BB%B6%E7%A7%BB%E6%A4%8DLVGL(%E4%BB%A5GC9A01%E4%B8%BA%E4%BE%8B)/%E5%9F%BA%E4%BA%8EESP-IDF%E5%AE%98%E6%96%B9%E7%BB%84%E4%BB%B6%E7%A7%BB%E6%A4%8DLVGL(GC9A01%E6%97%A0%E8%A7%A6%E6%91%B8).md">基于ESP-IDF官方组件移植LVGL(GC9A01无触摸)</a><br>代码参考： <a target="_blank" rel="noopener" href="https://github.com/DuRuofu/ESP32_Learning/tree/master/08.gui/lvgl_component">https://github.com/DuRuofu/ESP32_Learning/tree/master/08.gui/lvgl_component</a></p>
+</blockquote>
+<h4 id="9-1-2-以SPD2010-带触摸-为例（QSPI-I2C）"><a href="#9-1-2-以SPD2010-带触摸-为例（QSPI-I2C）" class="headerlink" title="9.1.2 以SPD2010(带触摸)为例（QSPI +I2C）"></a>9.1.2 以SPD2010(带触摸)为例（QSPI +I2C）</h4><blockquote>
+<p>教程参考：<a href="08.ESP32GUI%E5%85%A5%E9%97%A8/8.1-%E4%BD%BF%E7%94%A8%E7%BB%84%E4%BB%B6%E7%AE%A1%E7%90%86%E5%99%A8%E7%A7%BB%E6%A4%8DLVGL/%E5%9F%BA%E4%BA%8EESP-IDF%E5%AE%98%E6%96%B9%E7%BB%84%E4%BB%B6%E7%A7%BB%E6%A4%8DLVGL(SPD2010%E5%B8%A6%E8%A7%A6%E6%91%B8)/%E5%9F%BA%E4%BA%8EESP-IDF%E5%AE%98%E6%96%B9%E7%BB%84%E4%BB%B6%E7%A7%BB%E6%A4%8DLVGL(SPD2010%E5%B8%A6%E8%A7%A6%E6%91%B8).md">基于ESP-IDF官方组件移植LVGL(SPD2010带触摸)</a><br>代码参考： <a target="_blank" rel="noopener" href="https://github.com/DuRuofu/ESP32_Learning/tree/master/08.gui/lvgl_component">https://github.com/DuRuofu/ESP32_Learning/tree/master/08.gui/lvgl_component</a></p>
+</blockquote>
+<h3 id="9-2-GUI绘制"><a href="#9-2-GUI绘制" class="headerlink" title="9.2 GUI绘制"></a>9.2 GUI绘制</h3><h4 id="9-2-1-使用SquareLine-Studio设计LVGL页面"><a href="#9-2-1-使用SquareLine-Studio设计LVGL页面" class="headerlink" title="9.2.1 使用SquareLine_Studio设计LVGL页面"></a>9.2.1 使用SquareLine_Studio设计LVGL页面</h4><blockquote>
+<p>教程参考：<a target="_blank" rel="noopener" href="https://www.duruofu.top/2024/06/04/4.%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/08.ESP32GUI%E5%85%A5%E9%97%A8/8.3-%E4%BD%BF%E7%94%A8SquareLine_Studio%E8%AE%BE%E8%AE%A1LVGL%E9%A1%B5%E9%9D%A2/%E4%BD%BF%E7%94%A8SquareLine_Studio%E8%AE%BE%E8%AE%A1LVGL%E9%A1%B5%E9%9D%A2/">ESP32GUI入门-使用SquareLine_Studio设计LVGL页面_</a><br>代码参考： </p>
+</blockquote>
+<h2 id="十、其他外部硬件demo"><a href="#十、其他外部硬件demo" class="headerlink" title="十、其他外部硬件demo"></a>十、其他外部硬件demo</h2><h1 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h1><ul>
+<li>孤独的二进制：<a target="_blank" rel="noopener" href="https://space.bilibili.com/1375767826">https://space.bilibili.com/1375767826</a></li>
+<li>Augtons正(单片机)：<a target="_blank" rel="noopener" href="https://blog.csdn.net/m0_50064262/article/details/120250151">https://blog.csdn.net/m0_50064262/article/details/120250151</a></li>
+<li>乐鑫文档：<a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/release-v4.4/esp32c3/index.html">https://docs.espressif.com/projects/esp-idf/zh_CN/release-v4.4/esp32c3/index.html</a></li>
+<li>第九个下弦月：<a target="_blank" rel="noopener" href="https://space.bilibili.com/34165842?spm_id_from=333.999.0.0">https://space.bilibili.com/34165842?spm_id_from=333.999.0.0</a></li>
+<li><strong>Michael_ee</strong>：<a target="_blank" rel="noopener" href="https://space.bilibili.com/505630520/fans/follow?tagid=529812">https://space.bilibili.com/505630520/fans/follow?tagid=529812</a></li>
+</ul>
+<h1 id="常用指令"><a href="#常用指令" class="headerlink" title="常用指令"></a>常用指令</h1><p>ESP-IDF:</p>
+<ul>
+<li><p>创建工程：<code>idf.py create-project main</code> </p>
+</li>
+<li><p>新建组件<code>idf.py -C components create-component &#123;componentName&#125;</code></p>
+</li>
+<li><p>清除之前的编译：<code> idf.py fullclean</code>           </p>
+</li>
+<li><p>编译:  <code>idf.py build</code>          </p>
+</li>
+<li><p>向串口烧录固件: <code>idf.py  -p  /dev/ttyUSB0  flash</code>    （<code>/dev/ttyUSB0</code>  为目标串口参数，根据实际填写）            </p>
+</li>
+<li><p>打开串口监视器:<code>idf.py  -p  /dev/ttyUSB0  monitor</code>   （<code>/dev/ttyUSB0</code>  为目标串口参数，根据实际填写）   </p>
+</li>
+<li><p>配置菜单 :<code>idf.py  menuconfig  </code>             </p>
+</li>
+<li><p>选择芯片型号：<code>idf.py set-target esp32</code>  不输入参数的话，会列出所有可用型号</p>
+</li>
+<li><p>一次性执行构建、烧录和监视过程：<code>idf.py -p /dev/ttyUSB0 flash monitor</code>  （<code>/dev/ttyUSB0</code>  为目标串口参数，根据实际填写）   </p>
+</li>
+<li><p>获取ADC基准值：<code>espefuse.py  -p /dev/ttyUSB0 adc_info</code><br>其他:</p>
+</li>
+<li><p>查询可用串口:<code>ls /dev/ttyUSB*</code></p>
+</li>
+<li><p>添加串口权限(需重启)：<code>sudo usermod -aG dialout username</code></p>
+</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%94%B5%E5%AD%90%E4%BF%A1%E6%81%AF%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/" class="category-chain-item">电子信息硬件相关</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E7%94%B5%E5%AD%90%E4%BF%A1%E6%81%AF%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/" class="category-chain-item">MCU</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E7%94%B5%E5%AD%90%E4%BF%A1%E6%81%AF%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/" class="category-chain-item">ESP32</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E7%94%B5%E5%AD%90%E4%BF%A1%E6%81%AF%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/ESP32%E5%AD%A6%E4%B9%A0%E8%AE%A1%E5%88%92/" class="category-chain-item">ESP32学习计划</a>
+  
+  
+
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/MCU/" class="print-no-link">#MCU</a>
+      
+        <a href="/tags/ESP32/" class="print-no-link">#ESP32</a>
+      
+        <a href="/tags/ESP32%E5%AD%A6%E4%B9%A0%E8%AE%A1%E5%88%92/" class="print-no-link">#ESP32学习计划</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>ESP32学习路线</div>
+      <div>https://www.duruofu.xyz/posts/58874/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>DuRuofu</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年1月30日</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>更新于</div>
+          <div>2025年1月10日</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
+                    <i class="iconfont icon-cc-nc"></i>
+                  </span>
+                </a>
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="SA - 相同方式共享">
+                    <i class="iconfont icon-cc-sa"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/52481/" title="FPGA实现硬件频率计">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">FPGA实现硬件频率计</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/28021/" title="vscdoe+虚拟机开发ESP32">
+                        <span class="hidden-mobile">vscdoe+虚拟机开发ESP32</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#gitalk-container', function() {
+      Fluid.utils.createCssLink('/css/gitalk.css')
+      Fluid.utils.createScript('https://lib.baomitu.com/gitalk/1.8.0/gitalk.min.js', function() {
+        var options = Object.assign(
+          {"clientID":"c9ac06d5413a9d613a1e","clientSecret":"a44f5c72589eb090876cc64067db28fbfdf4747c","repo":"Blog-comments-gitalk","owner":"DuRuofu","admin":["DuRuofu"],"language":"zh-CN","labels":["Gitalk"],"perPage":15,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":false,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token"},
+          {
+            id: '49987de28602688b05584fe5a03c5e79'
+          }
+        )
+        var gitalk = new Gitalk(options);
+        gitalk.render('gitalk-container');
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <br><span id="timeDate">天数载入中</span><span id="times">...</span><br> <span>总有读不懂的诗和到达不了的远方</span> <p>Copyright © 2023 - <span id="currentYear"></span> All Rights Reserved.</p>
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      陕ICP备2022007454号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=2022007454"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>陕ICP备2022007454号-2</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":true,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  var relativeDate = function() {
+    var updatedTime = document.getElementById('updated-time');
+    if (updatedTime) {
+      var text = updatedTime.textContent;
+      var reg = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:Z|[+-]\d{2}:\d{2})/;
+      var matchs = text.match(reg);
+      if (matchs) {
+        var relativeTime = moment(matchs[0]).fromNow();
+        updatedTime.textContent = text.replace(reg, relativeTime);
+      }
+      updatedTime.style.display = '';
+    }
+  };
+  Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/moment.min.js', function() {
+    if (!'zh-cn'.startsWith('en')) {
+      Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/locale/zh-cn.min.js', function() {
+        relativeDate();
+      });
+    } else {
+      relativeDate();
+    }
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/cust/custom.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

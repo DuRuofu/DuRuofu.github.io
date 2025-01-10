@@ -1,0 +1,1040 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/%E4%B8%AA%E4%BA%BA%E5%A4%B4%E5%83%8F%E6%97%A0%E8%83%8C%E6%99%AF.png">
+  <link rel="icon" href="https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/%E4%B8%AA%E4%BA%BA%E5%A4%B4%E5%83%8F%E6%97%A0%E8%83%8C%E6%99%AF.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="DuRuofu">
+  <meta name="keywords" content="嵌入式,个人博客,个人测试">
+  
+    <meta name="description" content="ESP-IDF项目配置">
+<meta property="og:type" content="article">
+<meta property="og:title" content="IDF开发入门-2.ESP-IDF项目配置">
+<meta property="og:url" content="https://www.duruofu.xyz/posts/51172/index.html">
+<meta property="og:site_name" content="Duruofu&#39;s 个人测试">
+<meta property="og:description" content="ESP-IDF项目配置">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.duruofu.xyz/img/index_img/espidf.png">
+<meta property="article:published_time" content="2024-02-18T06:41:53.000Z">
+<meta property="article:modified_time" content="2025-01-10T14:20:34.057Z">
+<meta property="article:author" content="DuRuofu">
+<meta property="article:tag" content="MCU">
+<meta property="article:tag" content="ESP32">
+<meta property="article:tag" content="IDF开发入门">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://www.duruofu.xyz/img/index_img/espidf.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>IDF开发入门-2.ESP-IDF项目配置 - Duruofu&#39;s 个人测试</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/cust/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"www.duruofu.xyz","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":80,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":true,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":5},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null},"gtag":null,"woyaola":null,"cnzz":null},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>DuRuofu</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/2020/06/06/1.%E9%98%85%E8%AF%BB%E5%86%99%E4%BD%9C/%E5%8E%9F%E5%88%9B%E8%AF%97%E8%AF%8D/%E8%AF%97%E8%AF%8D/" target="_self">
+                <i class="iconfont icon-books"></i>
+                <span>诗词</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                <span>ESP32教程</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/posts/58874/" target="_self">
+                    
+                    <span>ESP32教程-2024</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/posts/58875/" target="_self">
+                    
+                    <span>ESP32教程-2025</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="IDF开发入门-2.ESP-IDF项目配置"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        DuRuofu
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-02-18 14:41" pubdate>
+          2024年2月18日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.1k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          2 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">IDF开发入门-2.ESP-IDF项目配置</h1>
+            
+              <p id="updated-time" class="note note-info" style="display: none">
+                
+                  
+                    本文最后更新于 2025-01-10T22:20:34+08:00
+                  
+                  
+
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <h3 id="说明："><a href="#说明：" class="headerlink" title="说明："></a>说明：</h3><ol>
+<li>本文档由DuRuofu撰写，由DuRuofu负责解释及执行。</li>
+</ol>
+<h3 id="修订历史："><a href="#修订历史：" class="headerlink" title="修订历史："></a>修订历史：</h3><table>
+<thead>
+<tr>
+<th>文档名称</th>
+<th>版本</th>
+<th>作者</th>
+<th>时间</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ESP-IDF项目配置</td>
+<td>v1.0.0</td>
+<td>DuRuofu</td>
+<td>2024-02-18</td>
+<td>首次建立</td>
+</tr>
+</tbody></table>
+<div STYLE="page-break-after: always;"></div>
+
+<h1 id="ESP-IDF项目配置-组件配置"><a href="#ESP-IDF项目配置-组件配置" class="headerlink" title="ESP-IDF项目配置(组件配置)"></a>ESP-IDF项目配置(组件配置)</h1><h2 id="一、Menuconfig的使用"><a href="#一、Menuconfig的使用" class="headerlink" title="一、Menuconfig的使用"></a>一、Menuconfig的使用</h2><p>打开示例工程：esp-idf&#x2F;examples&#x2F;get-started&#x2F;blink</p>
+<p>这个历程是用来实现LED闪烁的程序，这个工程使用了一个叫<code>led_strip</code>的组件，所以代码稍显复杂，但这并不重要，我们的重点不再这里。</p>
+<p>编译代码，烧录，发现并没有现象。（哈哈，这是由于我们并没有配置LED的引脚）</p>
+<p>下面使用<code>idf.py  menuconfig </code>  命令打开 <code>Menuconfig</code> (配置菜单)：</p>
+<p><img src="/posts/51172/20240218212849.png" srcset="/img/loading.gif" lazyload></p>
+<p>运行命令后，我们得到了一个位于终端的可视化配置菜单。</p>
+<p>选择 <code>Example Configuration</code> 选项：</p>
+<p><img src="/posts/51172/20240218212956.png" srcset="/img/loading.gif" lazyload></p>
+<p>会看到两个选项，修改Blink GPIO为自己开发板上的引脚，我这里是2号。</p>
+<p><img src="/posts/51172/20240218213211.png" srcset="/img/loading.gif" lazyload></p>
+<p>重新编译工程，烧录代码。</p>
+<p><img src="/posts/51172/20240218213648.png" srcset="/img/loading.gif" lazyload></p>
+<p>成功点亮LED(😊)，相信通过这一番操作，我们对menuconfig有了基本的认识，说人话就是这玩意可以方便的帮助我们修改程序里的参数，在不修改代码的情况下。</p>
+<h2 id="二、为什么要用组件配置（Menuconfig）"><a href="#二、为什么要用组件配置（Menuconfig）" class="headerlink" title="二、为什么要用组件配置（Menuconfig）"></a>二、为什么要用组件配置（Menuconfig）</h2><ol>
+<li>组件配置可以将相关配置常量移出代码，增强配置的可复用度</li>
+<li>组件配置变量也可以被CMake访问，可以通过手写逻辑实现根据配置执行不同的构建方案。（如某个源文件要不要添加到构建系统）</li>
+<li>组件配置生成的宏定义，配合C语言的预处理语句，可以针对不同的配置改变代码解结构。</li>
+<li>组件配置生成的宏定义在C语言中是全局的宏定义，可以在任意处访问配置项。只需要#include “sdkconfig.h”即可。</li>
+</ol>
+<h2 id="三、组件配置相关文件"><a href="#三、组件配置相关文件" class="headerlink" title="三、组件配置相关文件"></a>三、组件配置相关文件</h2><p>在 ESP-IDF 构建系统中，有这么几种文件和组件配置相关。它们分别是：</p>
+<ol>
+<li>Kconfig文件</li>
+<li>Kconfig.projbuild文件</li>
+<li>sdkconfig文件</li>
+<li>sdkconfig.default文件</li>
+<li>sdkconfig.old文件</li>
+<li>sdkconfig.ci文件</li>
+<li>sdkconfig.old文件</li>
+</ol>
+<blockquote>
+<p><code>sdkconfig.default</code>文件还可以针对某种设备单独添加，例如：<br>   对于<code>ESP32</code>和<code>ESP32-S3</code>，则分别对应<code>sdkconfig.default.esp32</code>和<code>sdkconfig.default.esp32s3</code>。</p>
+</blockquote>
+<p>在详细讲解组件配置之前，先分别概括这几个文件的作用分别是什么：</p>
+<table>
+<thead>
+<tr>
+<th>文件名</th>
+<th>位置</th>
+<th>作用</th>
+<th>概述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Kconfig</td>
+<td>组件目录</td>
+<td>用于生成menuconfig中的菜单项</td>
+<td>菜单模板</td>
+</tr>
+<tr>
+<td>Kconfig.projbuild</td>
+<td>组件目录</td>
+<td>用于生成menuconfig中的顶层菜单</td>
+<td>菜单模板</td>
+</tr>
+<tr>
+<td>sdkconfig</td>
+<td>项目根目录</td>
+<td>用于保存 Kconfig 设置的键值对形式，手动更改无效</td>
+<td>保存设置</td>
+</tr>
+<tr>
+<td>sdkconfig.default</td>
+<td>项目根目录</td>
+<td>自定义 sdkconfig 的默认值，不会被构建系统更改，格式与 sdkconfig 相同</td>
+<td>缺省值清单</td>
+</tr>
+<tr>
+<td>sdkconfig.old</td>
+<td>项目根目录</td>
+<td>当保存旧的 menuconfig 设置时，自动备份原来的 sdkconfig 文件</td>
+<td>备份</td>
+</tr>
+<tr>
+<td>其中<code>Kconfig</code> 和 <code>Kconfig.projbuild</code> 文件用于定义菜单，其余文件用于保存我们配置的值。</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<p>查看main组件文件夹，我们可以发现这个工程里的 <code>Kconfig.projbuild</code> 文件：</p>
+<p><img src="/posts/51172/20240218215404.png" srcset="/img/loading.gif" lazyload></p>
+<p>文件内容如下：</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm"><br>menu <span class="hljs-string">&quot;Example Configuration&quot;</span><br><br>    <span class="hljs-keyword">orsource </span><span class="hljs-string">&quot;$IDF_PATH/examples/common_components/env_caps/$IDF_TARGET/Kconfig.env_caps&quot;</span><br><br>    choice <span class="hljs-keyword">BLINK_LED</span><br><span class="hljs-keyword"></span>        prompt <span class="hljs-string">&quot;Blink LED type&quot;</span><br>        default <span class="hljs-keyword">BLINK_LED_GPIO </span>if IDF_TARGET_ESP32 <span class="hljs-title">||</span> !SOC_RMT_SUPPORTED<br>        default <span class="hljs-keyword">BLINK_LED_RMT</span><br><span class="hljs-keyword"></span>        help<br>            Defines the default peripheral for <span class="hljs-keyword">blink </span>example<br><br>        <span class="hljs-built_in">config</span> <span class="hljs-keyword">BLINK_LED_GPIO</span><br><span class="hljs-keyword"></span>            <span class="hljs-keyword">bool </span><span class="hljs-string">&quot;GPIO&quot;</span><br>        <span class="hljs-built_in">config</span> <span class="hljs-keyword">BLINK_LED_RMT</span><br><span class="hljs-keyword"></span>            <span class="hljs-keyword">bool </span><span class="hljs-string">&quot;RMT - Addressable LED&quot;</span><br>    endchoice<br><br>    <span class="hljs-built_in">config</span> <span class="hljs-keyword">BLINK_GPIO</span><br><span class="hljs-keyword"></span>        int <span class="hljs-string">&quot;Blink GPIO number&quot;</span><br>        range ENV_GPIO_RANGE_MIN ENV_GPIO_OUT_RANGE_MAX<br>        default <span class="hljs-number">5</span> if IDF_TARGET_ESP32<br>        default <span class="hljs-number">18</span> if IDF_TARGET_ESP32S2<br>        default <span class="hljs-number">48</span> if IDF_TARGET_ESP32S3<br>        default <span class="hljs-number">8</span><br>        help<br>            GPIO number (IOxx) to <span class="hljs-keyword">blink </span>on <span class="hljs-keyword">and </span>off <span class="hljs-keyword">or </span>the RMT signal for the <span class="hljs-keyword">addressable </span>LED.<br>            Some GPIOs are used for other purposes (flash connections, etc.) <span class="hljs-keyword">and </span>cannot <span class="hljs-keyword">be </span>used to <span class="hljs-keyword">blink.</span><br><span class="hljs-keyword"></span><br>    <span class="hljs-built_in">config</span> <span class="hljs-keyword">BLINK_PERIOD</span><br><span class="hljs-keyword"></span>        int <span class="hljs-string">&quot;Blink period in ms&quot;</span><br>        range <span class="hljs-number">10</span> <span class="hljs-number">3600000</span><br>        default <span class="hljs-number">1000</span><br>        help<br>            Define the <span class="hljs-keyword">blinking </span>period in milliseconds.<br><br>endmenu<br><br></code></pre></td></tr></table></figure>
+
+<p>不难发现，下面这部分就和我们刚才见到的配置项有关：</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">config BLINK_GPIO<br>    <span class="hljs-type">int</span> &quot;Blink GPIO number&quot;<br>    range ENV_GPIO_RANGE_MIN ENV_GPIO_OUT_RANGE_MAX<br>    <span class="hljs-keyword">default</span> <span class="hljs-number">5</span> <span class="hljs-keyword">if</span> IDF_TARGET_ESP32<br>    <span class="hljs-keyword">default</span> <span class="hljs-number">18</span> <span class="hljs-keyword">if</span> IDF_TARGET_ESP32S2<br>    <span class="hljs-keyword">default</span> <span class="hljs-number">48</span> <span class="hljs-keyword">if</span> IDF_TARGET_ESP32S3<br>    <span class="hljs-keyword">default</span> <span class="hljs-number">8</span><br>    help<br>        GPIO number (IOxx) <span class="hljs-keyword">to</span> blink <span class="hljs-keyword">on</span> <span class="hljs-keyword">and</span> <span class="hljs-keyword">off</span> <span class="hljs-keyword">or</span> the RMT signal <span class="hljs-keyword">for</span> the addressable LED.<br>        <span class="hljs-keyword">Some</span> GPIOs are used <span class="hljs-keyword">for</span> other purposes (flash connections, etc.) <span class="hljs-keyword">and</span> cannot be used <span class="hljs-keyword">to</span> blink.<br><br>config BLINK_PERIOD<br>    <span class="hljs-type">int</span> &quot;Blink period in ms&quot;<br>    <span class="hljs-keyword">range</span> <span class="hljs-number">10</span> <span class="hljs-number">3600000</span><br>    <span class="hljs-keyword">default</span> <span class="hljs-number">1000</span><br>    help<br>        Define the blinking period <span class="hljs-keyword">in</span> milliseconds.<br><br></code></pre></td></tr></table></figure>
+
+<p>即使不了解 Kconfig （ps： Kconfig 上面这些就是依赖Kconfig写的），我们也能猜出这几行代码干了啥： 定义了两个配置项，<code>BLINK_GPIO</code> 和 <code>BLINK_PERIOD</code> ,  然后添加默认值，添加说明等。</p>
+<p>关于 Kconfig 的写法随便搜索一下就能学会，这里不在赘述。</p>
+<h2 id="四、创建组件配置"><a href="#四、创建组件配置" class="headerlink" title="四、创建组件配置"></a>四、创建组件配置</h2><p>下面我们试着自己写一个组件配置，复制<code>blink</code>历程到自己的目录，重命名为 <code>blink_menuconfig</code></p>
+<p><img src="/posts/51172/20240218221414.png" srcset="/img/loading.gif" lazyload></p>
+<p>我们删除原有的 <code>Kconfig.projbuild</code> 文件，自己重新写一个，原来的<code>Kconfig.projbuild</code>里有三个配置项：分别是：</p>
+<ul>
+<li><code>BLINK_LED</code>: 控制LED模式（选项）</li>
+<li><code>BLINK_GPIO</code>：LED连接的引脚</li>
+<li><code>BLINK_PERIOD</code>：LED闪烁的时间</li>
+</ul>
+<h3 id="创建框架（menu）"><a href="#创建框架（menu）" class="headerlink" title="创建框架（menu）"></a>创建框架（menu）</h3><p>我们先创建个框架：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Kconfig">menu &quot;点灯配置&quot;<br><br>endmenu<br><br></code></pre></td></tr></table></figure>
+
+<p>这里菜单项可以使用中文，打开配置菜单可以看到：</p>
+<p><img src="/posts/51172/20240218222722.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="创建单选选项（choice）"><a href="#创建单选选项（choice）" class="headerlink" title="### 创建单选选项（choice）"></a>### 创建单选选项（choice）</h3><figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm">menu <span class="hljs-string">&quot;点灯配置&quot;</span><br>    choice <span class="hljs-keyword">BLINK_LED</span><br><span class="hljs-keyword"></span>        prompt <span class="hljs-string">&quot;LED模式&quot;</span><br>        default <span class="hljs-keyword">BLINK_LED_GPIO</span><br><span class="hljs-keyword"></span><br>        <span class="hljs-built_in">config</span> <span class="hljs-keyword">BLINK_LED_GPIO</span><br><span class="hljs-keyword"></span>            <span class="hljs-keyword">bool </span><span class="hljs-string">&quot;GPIO&quot;</span><br>        <span class="hljs-built_in">config</span> <span class="hljs-keyword">BLINK_LED_RMT</span><br><span class="hljs-keyword"></span>            <span class="hljs-keyword">bool </span><span class="hljs-string">&quot;RMT - Addressable LED&quot;</span><br>    endchoice<br>endmenu<br><br></code></pre></td></tr></table></figure>
+
+<p>效果：<br><img src="/posts/51172/20240218223154.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/posts/51172/20240218223205.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="创建菜单项目（config）"><a href="#创建菜单项目（config）" class="headerlink" title="创建菜单项目（config）"></a>创建菜单项目（config）</h3><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs arduino">config BLINK_GPIO<br>    <span class="hljs-type">int</span> <span class="hljs-string">&quot;LED引脚&quot;</span><br>    <span class="hljs-keyword">default</span> <span class="hljs-number">2</span><br>    help<br>        This is an <span class="hljs-type">int</span> BLINK_GPIO.<br>	<br>config BLINK_PERIOD<br>    <span class="hljs-type">int</span> <span class="hljs-string">&quot;LED周期&quot;</span><br>    <span class="hljs-keyword">default</span> <span class="hljs-number">1000</span><br>    help<br>        This is a <span class="hljs-type">int</span> BLINK_GPIO.<br></code></pre></td></tr></table></figure>
+
+<p>效果：</p>
+<p><img src="/posts/51172/20240218224055.png" srcset="/img/loading.gif" lazyload></p>
+<h1 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h1><ol>
+<li><a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/kconfig.html">https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/kconfig.html</a></li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%94%B5%E5%AD%90%E4%BF%A1%E6%81%AF%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/" class="category-chain-item">电子信息硬件相关</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E7%94%B5%E5%AD%90%E4%BF%A1%E6%81%AF%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/" class="category-chain-item">MCU</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E7%94%B5%E5%AD%90%E4%BF%A1%E6%81%AF%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/" class="category-chain-item">ESP32</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E7%94%B5%E5%AD%90%E4%BF%A1%E6%81%AF%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/IDF%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8/" class="category-chain-item">IDF开发入门</a>
+  
+  
+
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/MCU/" class="print-no-link">#MCU</a>
+      
+        <a href="/tags/ESP32/" class="print-no-link">#ESP32</a>
+      
+        <a href="/tags/IDF%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8/" class="print-no-link">#IDF开发入门</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>IDF开发入门-2.ESP-IDF项目配置</div>
+      <div>https://www.duruofu.xyz/posts/51172/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>DuRuofu</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年2月18日</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>更新于</div>
+          <div>2025年1月10日</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
+                    <i class="iconfont icon-cc-nc"></i>
+                  </span>
+                </a>
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="SA - 相同方式共享">
+                    <i class="iconfont icon-cc-sa"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/32489/" title="IDF开发入门-3.ESP-IDF自定义组件">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">IDF开发入门-3.ESP-IDF自定义组件</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/920/" title="IDF开发入门-1.ESP32工程结构及构建">
+                        <span class="hidden-mobile">IDF开发入门-1.ESP32工程结构及构建</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#gitalk-container', function() {
+      Fluid.utils.createCssLink('/css/gitalk.css')
+      Fluid.utils.createScript('https://lib.baomitu.com/gitalk/1.8.0/gitalk.min.js', function() {
+        var options = Object.assign(
+          {"clientID":"c9ac06d5413a9d613a1e","clientSecret":"a44f5c72589eb090876cc64067db28fbfdf4747c","repo":"Blog-comments-gitalk","owner":"DuRuofu","admin":["DuRuofu"],"language":"zh-CN","labels":["Gitalk"],"perPage":15,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":false,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token"},
+          {
+            id: '2aeae1a03ef26442cec59bd47cd692d0'
+          }
+        )
+        var gitalk = new Gitalk(options);
+        gitalk.render('gitalk-container');
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <br><span id="timeDate">天数载入中</span><span id="times">...</span><br> <span>总有读不懂的诗和到达不了的远方</span> <p>Copyright © 2023 - <span id="currentYear"></span> All Rights Reserved.</p>
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      陕ICP备2022007454号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=2022007454"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>陕ICP备2022007454号-2</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":true,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  var relativeDate = function() {
+    var updatedTime = document.getElementById('updated-time');
+    if (updatedTime) {
+      var text = updatedTime.textContent;
+      var reg = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:Z|[+-]\d{2}:\d{2})/;
+      var matchs = text.match(reg);
+      if (matchs) {
+        var relativeTime = moment(matchs[0]).fromNow();
+        updatedTime.textContent = text.replace(reg, relativeTime);
+      }
+      updatedTime.style.display = '';
+    }
+  };
+  Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/moment.min.js', function() {
+    if (!'zh-cn'.startsWith('en')) {
+      Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/locale/zh-cn.min.js', function() {
+        relativeDate();
+      });
+    } else {
+      relativeDate();
+    }
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/cust/custom.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

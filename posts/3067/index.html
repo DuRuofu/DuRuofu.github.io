@@ -1,0 +1,1020 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/%E4%B8%AA%E4%BA%BA%E5%A4%B4%E5%83%8F%E6%97%A0%E8%83%8C%E6%99%AF.png">
+  <link rel="icon" href="https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/%E4%B8%AA%E4%BA%BA%E5%A4%B4%E5%83%8F%E6%97%A0%E8%83%8C%E6%99%AF.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="DuRuofu">
+  <meta name="keywords" content="嵌入式,个人博客,个人测试">
+  
+    <meta name="description" content="本文档介绍ESP32存储-VFS虚拟文件系统 的相关知识">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ESP32存储-3.VFS虚拟文件系统">
+<meta property="og:url" content="https://www.duruofu.xyz/posts/3067/index.html">
+<meta property="og:site_name" content="Duruofu&#39;s 个人测试">
+<meta property="og:description" content="本文档介绍ESP32存储-VFS虚拟文件系统 的相关知识">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.duruofu.xyz/img/index_img/espidf.png">
+<meta property="article:published_time" content="2024-03-06T06:21:53.000Z">
+<meta property="article:modified_time" content="2025-01-10T14:20:34.047Z">
+<meta property="article:author" content="DuRuofu">
+<meta property="article:tag" content="MCU">
+<meta property="article:tag" content="ESP32">
+<meta property="article:tag" content="VFS虚拟文件系统">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://www.duruofu.xyz/img/index_img/espidf.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>ESP32存储-3.VFS虚拟文件系统 - Duruofu&#39;s 个人测试</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/cust/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"www.duruofu.xyz","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":80,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":true,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":5},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null},"gtag":null,"woyaola":null,"cnzz":null},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>DuRuofu</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/2020/06/06/1.%E9%98%85%E8%AF%BB%E5%86%99%E4%BD%9C/%E5%8E%9F%E5%88%9B%E8%AF%97%E8%AF%8D/%E8%AF%97%E8%AF%8D/" target="_self">
+                <i class="iconfont icon-books"></i>
+                <span>诗词</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                <span>ESP32教程</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/posts/58874/" target="_self">
+                    
+                    <span>ESP32教程-2024</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/posts/58875/" target="_self">
+                    
+                    <span>ESP32教程-2025</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="ESP32存储-3.VFS虚拟文件系统"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        DuRuofu
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-03-06 14:21" pubdate>
+          2024年3月6日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.5k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          5 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">ESP32存储-3.VFS虚拟文件系统</h1>
+            
+              <p id="updated-time" class="note note-info" style="display: none">
+                
+                  
+                    本文最后更新于 2025-01-10T22:20:34+08:00
+                  
+                  
+
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <h3 id="说明："><a href="#说明：" class="headerlink" title="说明："></a>说明：</h3><ol>
+<li>本文档由DuRuofu撰写，由DuRuofu负责解释及执行。</li>
+<li>本文档主要介绍ESP32的FAT （虚拟文件系统）</li>
+</ol>
+<h3 id="修订历史："><a href="#修订历史：" class="headerlink" title="修订历史："></a>修订历史：</h3><table>
+<thead>
+<tr>
+<th>文档名称</th>
+<th>版本</th>
+<th>作者</th>
+<th>时间</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ESP32存储-FAT 文件系统</td>
+<td>v1.0.0</td>
+<td>DuRuofu</td>
+<td>2024-03-06</td>
+<td>首次建立</td>
+</tr>
+</tbody></table>
+<div STYLE="page-break-after: always;"></div>
+
+<h1 id="ESP32存储-VFS虚拟文件系统"><a href="#ESP32存储-VFS虚拟文件系统" class="headerlink" title="ESP32存储-VFS虚拟文件系统"></a>ESP32存储-VFS虚拟文件系统</h1><h2 id="一、介绍"><a href="#一、介绍" class="headerlink" title="一、介绍"></a>一、介绍</h2><h4 id="1-1-什么是VFS"><a href="#1-1-什么是VFS" class="headerlink" title="1.1 什么是VFS"></a>1.1 什么是VFS</h4><p>虚拟文件系统的作用是：使得计算机上层的软件，能够用单一的方式，来跟底层不同的文件系统沟通（无论是真实的文件系统还是虚拟的文件系统）。在操作系统与之下的各种文件系统之间，虚拟文件系统提供了标准的操作接口，将所有不同种类的文件系统统一起来。</p>
+<p>我们常说”Linux下一切皆文件“，指的就是Linux通过VFS把一切设备都抽象成一个统一的文件系统，从设备读取数据视为向“文件”读取数据，向设备发送数据视为写数据到“文件”。并且不同的“文件”之间读写方式相同。</p>
+<p>Linux这时候不再需要关注这个设备具体读写方式的区别，而直接使用相同的高层操作完成与外设的数据交互。</p>
+<h4 id="1-2-ESP32的VFS"><a href="#1-2-ESP32的VFS" class="headerlink" title="1.2 ESP32的VFS"></a>1.2 ESP32的VFS</h4><p>ESP32借助这种概念，设计了虚拟文件系统 (VFS) 组件，为驱动程序提供一个统一接口，可以操作类文件对象。这类驱动程序可以是 FAT、SPIFFS 等真实文件系统，也可以是提供文件类接口的设备驱动程序。</p>
+<p>ESP32的VFS支持<code>fprintf</code> <code>fopen</code>等标准C库函数，调用这个函数本质上就是对VFS的访问。并提供了“路径”“文件描述符”等概念。不同的文件系统通过文件路劲来区分。</p>
+<p>如，可以使用 &#x2F;fat 前缀注册 FAT 文件系统驱动程序，并调用 <code>fopen(“/fat/file.txt”，“w”)</code>。然后，VFS 组件将调用 FAT 驱动程序的 <code>open</code> 函数并将 <code>/file.txt</code> 参数传递给它(以及适当的模式标志)。对返回的 <code>FILE *</code> 流的所有后续 C 库函数调用也将被转发到 FAT 驱动程序。</p>
+<p>对于VFS，我们可以通过手动实现读与写来挂载文件系统。除此之外，ESP-IDF提供了大量简化API为开发者实现了挂载常用的文件系统，如：</p>
+<ul>
+<li>挂载ESP32或模组内部<code>flash</code>为<code>Fat</code>文件系统</li>
+<li>挂载SD卡为<code>Fat</code>文件系统</li>
+<li>·······</li>
+</ul>
+<h5 id="1-2-1-VFS的挂载点和路径"><a href="#1-2-1-VFS的挂载点和路径" class="headerlink" title="1.2.1 VFS的挂载点和路径"></a>1.2.1 VFS的挂载点和路径</h5><p>一个标准ESP32 VFS路径如下所示</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs gradle"><span class="hljs-regexp">/挂载点/</span><span class="hljs-keyword">static</span>/index.html<br></code></pre></td></tr></table></figure>
+<p>上面的示例包含了“挂载点”和“路径”</p>
+<ul>
+<li><strong>挂载点名称必须以路径分隔符 (<code>/</code>) 开头，且分隔符后至少包含一个字符</strong>，一个挂载点被认为成一个文件系统，<code>/</code>不是根文件系统。</li>
+<li>VFS允许多层挂载点，可以将 <code>/storage/sdcard</code>作为挂载点</li>
+</ul>
+<h5 id="1-2-2-文件描述符"><a href="#1-2-2-文件描述符" class="headerlink" title="1.2.2 文件描述符"></a>1.2.2 文件描述符</h5><p>文件描述符是一组很小的正整数，从 <code>0</code> 到 <code>FD_SETSIZE - 1</code>，<code>FD_SETSIZE</code> 定义在 <code>sys/select.h</code>。最大文件描述符由 <code>CONFIG_LWIP_MAX_SOCKETS</code> 定义，且为套接字保留。VFS 中包含一个名为 <code>s_fd_table</code> 的查找表，用于将全局文件描述符映射至 <code>s_vfs</code> 数组中注册的 VFS 驱动索引。</p>
+<h5 id="1-2-3-标准IO流-stdin、stdout、stderr"><a href="#1-2-3-标准IO流-stdin、stdout、stderr" class="headerlink" title="1.2.3 标准IO流: stdin、stdout、stderr"></a>1.2.3 标准IO流: <code>stdin</code>、<code>stdout</code>、<code>stderr</code></h5><p>如果 menuconfig 中 <code>UART for console output</code> 选项没有设置为 <code>None</code>，则 <code>stdin</code>、 <code>stdout</code> 和 <code>stderr</code> 将默认从 UART 读取或写入。UART0 或 UART1 可用作标准 IO。默认情况下，UART0 使用 115200 波特率，TX 管脚为 GPIO1，RX 管脚为 GPIO3。上述参数可以在 menuconfig 中更改。</p>
+<h2 id="二、使用VFS虚拟文件系统-FatFs"><a href="#二、使用VFS虚拟文件系统-FatFs" class="headerlink" title="二、使用VFS虚拟文件系统( FatFs)"></a>二、使用VFS虚拟文件系统( FatFs)</h2><h3 id="将内部flash挂载为Fat文件系统"><a href="#将内部flash挂载为Fat文件系统" class="headerlink" title="将内部flash挂载为Fat文件系统"></a>将内部flash挂载为Fat文件系统</h3><h5 id="2-1-新建工程，准备自定义分区表"><a href="#2-1-新建工程，准备自定义分区表" class="headerlink" title="2.1 新建工程，准备自定义分区表"></a>2.1 新建工程，准备自定义分区表</h5><p>在分区表里添加 fat 文件系统的分区</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs c"># ESP-IDF Partition Table<br># Name,   Type, SubType, Offset,  Size, Flags<br>nvs,      data, nvs,     <span class="hljs-number">0x9000</span>,  <span class="hljs-number">0x4000</span>,<br>phy_init, data, phy,     <span class="hljs-number">0xf000</span>,  <span class="hljs-number">0x1000</span>,<br>factory,  app,  factory, <span class="hljs-number">0x10000</span>,  <span class="hljs-number">1</span>M,<br>storage,  data, fat,     <span class="hljs-number">0x110000</span>, <span class="hljs-number">1</span>M,<br><br></code></pre></td></tr></table></figure>
+
+<p>选择自定义分区表：</p>
+<p><img src="/posts/3067/20240306124810.png" srcset="/img/loading.gif" lazyload></p>
+<p>配置好可以使用<code>idf.py partition_table</code>生成二进制分区表</p>
+<p><img src="/posts/3067/20240306125408.png" srcset="/img/loading.gif" lazyload></p>
+<h5 id="2-2-挂载文件系统"><a href="#2-2-挂载文件系统" class="headerlink" title="2.2 挂载文件系统"></a>2.2 挂载文件系统</h5><p>使用<code>esp_vfs_fat_spiflash_mount_rw_wl()</code>在SPI闪存中初始化FAT文件系统并在VFS中注册。</p>
+<ul>
+<li><strong>base_path:</strong> FATFS 分区应该挂载的路径（例如 “&#x2F;spiflash”）。</li>
+<li><strong>partition_label:</strong> 应该使用的分区标签。</li>
+<li><strong>mount_config:</strong> 针对挂载 FATFS 的额外参数结构体指针。</li>
+<li><strong>wl_handle:</strong> [输出] 磨损平衡驱动程序句柄。<br><strong>返回值:</strong></li>
+<li><strong>ESP_OK:</strong> 成功。</li>
+<li><strong>ESP_ERR_NOT_FOUND:</strong> 如果分区表中不包含具有给定标签的 FATFS 分区。</li>
+<li><strong>ESP_ERR_INVALID_STATE:</strong> 如果已经调用了 esp_vfs_fat_spiflash_mount_rw_wl。</li>
+<li><strong>ESP_ERR_NO_MEM:</strong> 如果无法分配内存。</li>
+<li><strong>ESP_FAIL:</strong> 如果无法挂载分区。</li>
+</ul>
+<p><code>mount_config</code>是一个针对挂载 FATFS 的额外参数配置结构体，原形为<code>esp_vfs_fat_mount_config_t</code>,参数如下：</p>
+<ul>
+<li><strong>format_if_mount_failed:</strong> 如果 FAT 分区无法挂载，且此参数为 true，则创建分区表并格式化文件系统。</li>
+<li><strong>max_files:</strong> 最大打开文件数。</li>
+<li><strong>allocation_unit_size:</strong> 如果设置了 format_if_mount_failed 并且挂载失败，使用给定的分配单元大小格式化卡。必须是2的幂，在扇区大小和128*扇区大小之间。对于 SD 卡，扇区大小始终为512字节。对于磨损平衡，扇区大小由 CONFIG_WL_SECTOR_SIZE 选项确定。使用较大的分配单元大小将导致更高的读&#x2F;写性能和在存储小文件时更高的开销。</li>
+<li><strong>disk_status_check_enable:</strong> 启用真实的 ff_disk_status 函数实现以用于 SD 卡（ff_sdmmc_status）。可能会降低 IO 性能。如果需要处理 SD 卡未正确卸载就物理移除或者遇到 SD 卡问题的情况，请尝试启用。对于其他存储介质则不起作用。</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// Mount FATFS partition</span><br><span class="hljs-type">static</span> <span class="hljs-type">bool</span> <span class="hljs-title function_">mount_fatfs</span><span class="hljs-params">(<span class="hljs-type">const</span> <span class="hljs-type">char</span>* partition_label)</span><br>&#123;<br>    ESP_LOGI(TAG, <span class="hljs-string">&quot;Mounting FAT filesystem&quot;</span>);<br>    <span class="hljs-type">const</span> <span class="hljs-type">esp_vfs_fat_mount_config_t</span> mount_config = &#123;<br>            .max_files = <span class="hljs-number">4</span>,<br>            .format_if_mount_failed = <span class="hljs-literal">true</span>,<br>            .allocation_unit_size = CONFIG_WL_SECTOR_SIZE<br>    &#125;;<br>    <span class="hljs-type">esp_err_t</span> err = esp_vfs_fat_spiflash_mount_rw_wl(base_path, partition_label, &amp;mount_config, &amp;s_wl_handle);<br>    <span class="hljs-keyword">if</span> (err != ESP_OK) &#123;<br>        ESP_LOGE(TAG, <span class="hljs-string">&quot;Failed to mount FATFS (%s)&quot;</span>, esp_err_to_name(err));<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<h3 id="使用标准C库读写文件"><a href="#使用标准C库读写文件" class="headerlink" title="使用标准C库读写文件"></a>使用标准C库读写文件</h3><p>示例：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// Create a file in FAT FS</span><br>ESP_LOGI(TAG, <span class="hljs-string">&quot;Opening file&quot;</span>);<br>FILE *f = fopen(<span class="hljs-string">&quot;/flash/hello.txt&quot;</span>, <span class="hljs-string">&quot;wb&quot;</span>);<br><span class="hljs-keyword">if</span> (f == <span class="hljs-literal">NULL</span>) &#123;<br>    ESP_LOGE(TAG, <span class="hljs-string">&quot;Failed to open file for writing&quot;</span>);<br>    <span class="hljs-keyword">return</span>;<br>&#125;<br><span class="hljs-built_in">fprintf</span>(f, <span class="hljs-string">&quot;fat文件系统测试 %s\n&quot;</span>, <span class="hljs-string">&quot;hollo world!&quot;</span>);<br>fclose(f);<br>ESP_LOGI(TAG, <span class="hljs-string">&quot;File written&quot;</span>);<br><br><span class="hljs-comment">// Open file for reading</span><br>ESP_LOGI(TAG, <span class="hljs-string">&quot;Reading file&quot;</span>);<br>f = fopen(<span class="hljs-string">&quot;/flash/hello.txt&quot;</span>, <span class="hljs-string">&quot;rb&quot;</span>);<br><span class="hljs-keyword">if</span> (f == <span class="hljs-literal">NULL</span>) &#123;<br>    ESP_LOGE(TAG, <span class="hljs-string">&quot;Failed to open file for reading&quot;</span>);<br>    <span class="hljs-keyword">return</span>;<br>&#125;<br><span class="hljs-type">char</span> line[<span class="hljs-number">128</span>];<br>fgets(line, <span class="hljs-keyword">sizeof</span>(line), f);<br>fclose(f);<br><span class="hljs-comment">// strip newline</span><br><span class="hljs-type">char</span> *pos = <span class="hljs-built_in">strchr</span>(line, <span class="hljs-string">&#x27;\n&#x27;</span>);<br><span class="hljs-keyword">if</span> (pos) &#123;<br>    *pos = <span class="hljs-string">&#x27;\0&#x27;</span>;<br>&#125;<br>ESP_LOGI(TAG, <span class="hljs-string">&quot;Read from file: &#x27;%s&#x27;&quot;</span>, line);<br></code></pre></td></tr></table></figure>
+
+<ol>
+<li><p><code>fopen</code> 函数：用于打开一个文件，并返回一个指向该文件的文件指针。在这段代码中，它被用于打开 “&#x2F;flash&#x2F;hello.txt” 文件，以便进行写入和读取操作。第二个参数 “wb” 表示以写入模式打开文件，”rb” 表示以读取模式打开文件。</p>
+</li>
+<li><p><code>fprintf</code> 函数：用于把格式化的数据写入文件中。在这段代码中，它被用于向文件中写入一行格式化的文本内容。</p>
+</li>
+<li><p><code>fclose</code> 函数：用于关闭先前通过 <code>fopen</code> 打开的文件。在这段代码中，它被用于关闭文件句柄，确保文件被正确地写入到存储介质中。</p>
+</li>
+<li><p><code>fgets</code> 函数：用于从文件中读取一行数据。在这段代码中，它被用于读取 “&#x2F;flash&#x2F;hello.txt” 文件中的内容。</p>
+</li>
+</ol>
+<h3 id="卸载文件系统"><a href="#卸载文件系统" class="headerlink" title="卸载文件系统"></a>卸载文件系统</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c">ESP_LOGI(TAG, <span class="hljs-string">&quot;Unmounting FAT filesystem&quot;</span>);<br><span class="hljs-type">esp_err_t</span> unmount_err = esp_vfs_fat_spiflash_unmount_rw_wl(base_path, s_wl_handle);<br><span class="hljs-keyword">if</span> (unmount_err != ESP_OK) &#123;<br>	ESP_LOGE(TAG, <span class="hljs-string">&quot;Failed to unmount FATFS (%s)&quot;</span>, esp_err_to_name(unmount_err));<br>	<span class="hljs-keyword">return</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="三、示例"><a href="#三、示例" class="headerlink" title="三、示例"></a>三、示例</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><code class="hljs c"><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdlib.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;string.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;esp_flash.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;esp_vfs.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;esp_vfs_fat.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;esp_system.h&quot;</span></span><br><br><span class="hljs-type">static</span> <span class="hljs-type">const</span> <span class="hljs-type">char</span> *TAG = <span class="hljs-string">&quot;FAT&quot;</span>;<br><br><span class="hljs-comment">// Handle of the wear levelling library instance</span><br><span class="hljs-type">static</span> <span class="hljs-type">wl_handle_t</span> s_wl_handle = WL_INVALID_HANDLE;<br><br><span class="hljs-comment">// Mount path for the partition</span><br><span class="hljs-type">const</span> <span class="hljs-type">char</span> *base_path = <span class="hljs-string">&quot;/flash&quot;</span>;<br><br><span class="hljs-comment">// Mount FATFS partition</span><br><span class="hljs-type">static</span> <span class="hljs-type">bool</span> <span class="hljs-title function_">mount_fatfs</span><span class="hljs-params">(<span class="hljs-type">const</span> <span class="hljs-type">char</span>* partition_label)</span><br>&#123;<br>    ESP_LOGI(TAG, <span class="hljs-string">&quot;Mounting FAT filesystem&quot;</span>);<br>    <span class="hljs-type">const</span> <span class="hljs-type">esp_vfs_fat_mount_config_t</span> mount_config = &#123;<br>            .max_files = <span class="hljs-number">4</span>,<br>            .format_if_mount_failed = <span class="hljs-literal">true</span>,<br>            .allocation_unit_size = CONFIG_WL_SECTOR_SIZE<br>    &#125;;<br>    <span class="hljs-type">esp_err_t</span> err = esp_vfs_fat_spiflash_mount_rw_wl(base_path, partition_label, &amp;mount_config, &amp;s_wl_handle);<br>    <span class="hljs-keyword">if</span> (err != ESP_OK) &#123;<br>        ESP_LOGE(TAG, <span class="hljs-string">&quot;Failed to mount FATFS (%s)&quot;</span>, esp_err_to_name(err));<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">app_main</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span><br>&#123;<br>  	<span class="hljs-type">const</span> <span class="hljs-type">char</span> *partition_label = <span class="hljs-string">&quot;storage&quot;</span>;<br>    <span class="hljs-comment">// Initialize FAT FS in the partition</span><br>    <span class="hljs-keyword">if</span> (!mount_fatfs(partition_label)) &#123;<br>        <span class="hljs-keyword">return</span>;<br>    &#125;<br><br>    <span class="hljs-comment">// Print FAT FS size information</span><br>    <span class="hljs-type">uint64_t</span> bytes_total, bytes_free;<br>    esp_vfs_fat_info(base_path, &amp;bytes_total, &amp;bytes_free);<br>    ESP_LOGI(TAG, <span class="hljs-string">&quot;FAT FS: %&quot;</span> PRIu64 <span class="hljs-string">&quot; kB total, %&quot;</span> PRIu64 <span class="hljs-string">&quot; kB free&quot;</span>, bytes_total / <span class="hljs-number">1024</span>, bytes_free / <span class="hljs-number">1024</span>);<br><br>    <span class="hljs-comment">// Create a file in FAT FS</span><br>    ESP_LOGI(TAG, <span class="hljs-string">&quot;Opening file&quot;</span>);<br>    FILE *f = fopen(<span class="hljs-string">&quot;/flash/hello.txt&quot;</span>, <span class="hljs-string">&quot;wb&quot;</span>);<br>    <span class="hljs-keyword">if</span> (f == <span class="hljs-literal">NULL</span>) &#123;<br>        ESP_LOGE(TAG, <span class="hljs-string">&quot;Failed to open file for writing&quot;</span>);<br>        <span class="hljs-keyword">return</span>;<br>    &#125;<br>    <span class="hljs-built_in">fprintf</span>(f, <span class="hljs-string">&quot;fat文件系统测试 %s\n&quot;</span>, <span class="hljs-string">&quot;hollo world!&quot;</span>);<br>    fclose(f);<br>    ESP_LOGI(TAG, <span class="hljs-string">&quot;File written&quot;</span>);<br><br>    <span class="hljs-comment">// Open file for reading</span><br>    ESP_LOGI(TAG, <span class="hljs-string">&quot;Reading file&quot;</span>);<br>    f = fopen(<span class="hljs-string">&quot;/flash/hello.txt&quot;</span>, <span class="hljs-string">&quot;rb&quot;</span>);<br>    <span class="hljs-keyword">if</span> (f == <span class="hljs-literal">NULL</span>) &#123;<br>        ESP_LOGE(TAG, <span class="hljs-string">&quot;Failed to open file for reading&quot;</span>);<br>        <span class="hljs-keyword">return</span>;<br>    &#125;<br>    <span class="hljs-type">char</span> line[<span class="hljs-number">128</span>];<br>    fgets(line, <span class="hljs-keyword">sizeof</span>(line), f);<br>    fclose(f);<br>    <span class="hljs-comment">// strip newline</span><br>    <span class="hljs-type">char</span> *pos = <span class="hljs-built_in">strchr</span>(line, <span class="hljs-string">&#x27;\n&#x27;</span>);<br>    <span class="hljs-keyword">if</span> (pos) &#123;<br>        *pos = <span class="hljs-string">&#x27;\0&#x27;</span>;<br>    &#125;<br>    ESP_LOGI(TAG, <span class="hljs-string">&quot;Read from file: &#x27;%s&#x27;&quot;</span>, line);<br>	<span class="hljs-comment">// Unmount FAT FS</span><br>	ESP_LOGI(TAG, <span class="hljs-string">&quot;Unmounting FAT filesystem&quot;</span>);<br>	<span class="hljs-type">esp_err_t</span> unmount_err = esp_vfs_fat_spiflash_unmount_rw_wl(base_path, s_wl_handle);<br>	<span class="hljs-keyword">if</span> (unmount_err != ESP_OK) &#123;<br>		ESP_LOGE(TAG, <span class="hljs-string">&quot;Failed to unmount FATFS (%s)&quot;</span>, esp_err_to_name(unmount_err));<br>		<span class="hljs-keyword">return</span>;<br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>效果：</p>
+<p><img src="/posts/3067/20240306135406.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="四、补充：从本地文件创建-FATFS-文件系统映像"><a href="#四、补充：从本地文件创建-FATFS-文件系统映像" class="headerlink" title="四、补充：从本地文件创建 FATFS 文件系统映像"></a>四、补充：从本地文件创建 FATFS 文件系统映像</h2><p>可以使用FatFs 分区生成器工具：</p>
+<p>通过调用 <code>fatfs_create_partition_image</code> 可以直接从 CMake 构建系统中调用 FatFs 分区生成器:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c">fatfs_create_spiflash_image(&lt;partition&gt; &lt;base_dir&gt; [FLASH_IN_PROJECT])<br></code></pre></td></tr></table></figure>
+
+<p>参考：</p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/stable/esp32/api-reference/storage/fatfs.html">https://docs.espressif.com/projects/esp-idf/zh_CN/stable/esp32/api-reference/storage/fatfs.html</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/espressif/esp-idf/tree/v5.2.1/examples/storage/fatfsgen">https://github.com/espressif/esp-idf/tree/v5.2.1/examples/storage/fatfsgen</a></li>
+</ol>
+<p>根目录新建一个<code>fatfs_image</code>目录存放我们的文件镜像，</p>
+<p><img src="/posts/3067/20240306143748.png" srcset="/img/loading.gif" lazyload></p>
+<p>新建hello.txt 写上内容</p>
+<p>然后在下面main组件的<code>CMakeLists</code>文件添加：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs c">idf_component_register(SRCS <span class="hljs-string">&quot;flash_fatfs.c&quot;</span><br>                    INCLUDE_DIRS <span class="hljs-string">&quot;.&quot;</span>)<br><br><span class="hljs-built_in">set</span>(image ../fatfs_image)<br>fatfs_create_spiflash_image(storage $&#123;image&#125; FLASH_IN_PROJECT)<br></code></pre></td></tr></table></figure>
+
+<p>然后修改主程序：</p>
+<p>尝试读取刚才烧录的文件：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdlib.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;string.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;esp_flash.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;esp_vfs.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;esp_vfs_fat.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;esp_system.h&quot;</span></span><br><br><span class="hljs-type">static</span> <span class="hljs-type">const</span> <span class="hljs-type">char</span> *TAG = <span class="hljs-string">&quot;FAT&quot;</span>;<br><br><span class="hljs-comment">// Handle of the wear levelling library instance</span><br><span class="hljs-type">static</span> <span class="hljs-type">wl_handle_t</span> s_wl_handle = WL_INVALID_HANDLE;<br><br><span class="hljs-comment">// Mount path for the partition</span><br><span class="hljs-type">const</span> <span class="hljs-type">char</span> *base_path = <span class="hljs-string">&quot;/fatfs_image&quot;</span>;<br><br><span class="hljs-comment">// Mount FATFS partition</span><br><span class="hljs-type">static</span> <span class="hljs-type">bool</span> <span class="hljs-title function_">mount_fatfs</span><span class="hljs-params">(<span class="hljs-type">const</span> <span class="hljs-type">char</span>* partition_label)</span><br>&#123;<br>    ESP_LOGI(TAG, <span class="hljs-string">&quot;Mounting FAT filesystem&quot;</span>);<br>    <span class="hljs-type">const</span> <span class="hljs-type">esp_vfs_fat_mount_config_t</span> mount_config = &#123;<br>            .max_files = <span class="hljs-number">4</span>,<br>            .format_if_mount_failed = <span class="hljs-literal">true</span>,<br>            .allocation_unit_size = CONFIG_WL_SECTOR_SIZE<br>    &#125;;<br>    <span class="hljs-type">esp_err_t</span> err = esp_vfs_fat_spiflash_mount_rw_wl(base_path, partition_label, &amp;mount_config, &amp;s_wl_handle);<br>    <span class="hljs-keyword">if</span> (err != ESP_OK) &#123;<br>        ESP_LOGE(TAG, <span class="hljs-string">&quot;Failed to mount FATFS (%s)&quot;</span>, esp_err_to_name(err));<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">app_main</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span><br>&#123;<br>  	<span class="hljs-type">const</span> <span class="hljs-type">char</span> *partition_label = <span class="hljs-string">&quot;storage&quot;</span>;<br>    <span class="hljs-comment">// Initialize FAT FS in the partition</span><br>    <span class="hljs-keyword">if</span> (!mount_fatfs(partition_label)) &#123;<br>        <span class="hljs-keyword">return</span>;<br>    &#125;<br><br>    <span class="hljs-comment">// Print FAT FS size information</span><br>    <span class="hljs-type">uint64_t</span> bytes_total, bytes_free;<br>    esp_vfs_fat_info(base_path, &amp;bytes_total, &amp;bytes_free);<br>    ESP_LOGI(TAG, <span class="hljs-string">&quot;FAT FS: %&quot;</span> PRIu64 <span class="hljs-string">&quot; kB total, %&quot;</span> PRIu64 <span class="hljs-string">&quot; kB free&quot;</span>, bytes_total / <span class="hljs-number">1024</span>, bytes_free / <span class="hljs-number">1024</span>);<br><br>	<span class="hljs-comment">// 读取写入的镜像文件</span><br>    <span class="hljs-comment">// Open file for reading</span><br>    ESP_LOGI(TAG, <span class="hljs-string">&quot;Reading file&quot;</span>);<br>    FILE *f = fopen(<span class="hljs-string">&quot;/fatfs_image/hello.txt&quot;</span>, <span class="hljs-string">&quot;rb&quot;</span>);<br>    <span class="hljs-keyword">if</span> (f == <span class="hljs-literal">NULL</span>) &#123;<br>        ESP_LOGE(TAG, <span class="hljs-string">&quot;Failed to open file for reading&quot;</span>);<br>        <span class="hljs-keyword">return</span>;<br>    &#125;<br>    <span class="hljs-type">char</span> line[<span class="hljs-number">128</span>];<br>    fgets(line, <span class="hljs-keyword">sizeof</span>(line), f);<br>    fclose(f);<br>    <span class="hljs-comment">// strip newline</span><br>    <span class="hljs-type">char</span> *pos = <span class="hljs-built_in">strchr</span>(line, <span class="hljs-string">&#x27;\n&#x27;</span>);<br>    <span class="hljs-keyword">if</span> (pos) &#123;<br>        *pos = <span class="hljs-string">&#x27;\0&#x27;</span>;<br>    &#125;<br>    ESP_LOGI(TAG, <span class="hljs-string">&quot;Read from file: &#x27;%s&#x27;&quot;</span>, line);<br>	<span class="hljs-comment">// Unmount FAT FS</span><br>	ESP_LOGI(TAG, <span class="hljs-string">&quot;Unmounting FAT filesystem&quot;</span>);<br>	<span class="hljs-type">esp_err_t</span> unmount_err = esp_vfs_fat_spiflash_unmount_rw_wl(base_path, s_wl_handle);<br>	<span class="hljs-keyword">if</span> (unmount_err != ESP_OK) &#123;<br>		ESP_LOGE(TAG, <span class="hljs-string">&quot;Failed to unmount FATFS (%s)&quot;</span>, esp_err_to_name(unmount_err));<br>		<span class="hljs-keyword">return</span>;<br>	&#125;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<h1 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h1><ol>
+<li><a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/release-v5.2/esp32/api-reference/storage/vfs.html">https://docs.espressif.com/projects/esp-idf/zh_CN/release-v5.2/esp32/api-reference/storage/vfs.html</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/m0_51518255/article/details/112253634">https://blog.csdn.net/m0_51518255/article/details/112253634</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/espressif/esp-idf/tree/v5.2.1/examples/storage/fatfsgen">https://github.com/espressif/esp-idf/tree/v5.2.1/examples/storage/fatfsgen</a></li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%94%B5%E5%AD%90%E4%BF%A1%E6%81%AF%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/" class="category-chain-item">电子信息硬件相关</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E7%94%B5%E5%AD%90%E4%BF%A1%E6%81%AF%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/" class="category-chain-item">MCU</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E7%94%B5%E5%AD%90%E4%BF%A1%E6%81%AF%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/" class="category-chain-item">ESP32</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E7%94%B5%E5%AD%90%E4%BF%A1%E6%81%AF%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/%E5%AD%98%E5%82%A8API/" class="category-chain-item">存储API</a>
+  
+  
+
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/MCU/" class="print-no-link">#MCU</a>
+      
+        <a href="/tags/ESP32/" class="print-no-link">#ESP32</a>
+      
+        <a href="/tags/VFS%E8%99%9A%E6%8B%9F%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/" class="print-no-link">#VFS虚拟文件系统</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>ESP32存储-3.VFS虚拟文件系统</div>
+      <div>https://www.duruofu.xyz/posts/3067/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>DuRuofu</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年3月6日</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>更新于</div>
+          <div>2025年1月10日</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
+                    <i class="iconfont icon-cc-nc"></i>
+                  </span>
+                </a>
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="SA - 相同方式共享">
+                    <i class="iconfont icon-cc-sa"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/62664/" title="ESP32存储-4.SPIFFS文件系统">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">ESP32存储-4.SPIFFS文件系统</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/57604/" title="ESP32存储-2.非易失性存储 (NVS)">
+                        <span class="hidden-mobile">ESP32存储-2.非易失性存储 (NVS)</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#gitalk-container', function() {
+      Fluid.utils.createCssLink('/css/gitalk.css')
+      Fluid.utils.createScript('https://lib.baomitu.com/gitalk/1.8.0/gitalk.min.js', function() {
+        var options = Object.assign(
+          {"clientID":"c9ac06d5413a9d613a1e","clientSecret":"a44f5c72589eb090876cc64067db28fbfdf4747c","repo":"Blog-comments-gitalk","owner":"DuRuofu","admin":["DuRuofu"],"language":"zh-CN","labels":["Gitalk"],"perPage":15,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":false,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token"},
+          {
+            id: '6306f6ce75600d1929857d2cdb1c0deb'
+          }
+        )
+        var gitalk = new Gitalk(options);
+        gitalk.render('gitalk-container');
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <br><span id="timeDate">天数载入中</span><span id="times">...</span><br> <span>总有读不懂的诗和到达不了的远方</span> <p>Copyright © 2023 - <span id="currentYear"></span> All Rights Reserved.</p>
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      陕ICP备2022007454号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=2022007454"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>陕ICP备2022007454号-2</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":true,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  var relativeDate = function() {
+    var updatedTime = document.getElementById('updated-time');
+    if (updatedTime) {
+      var text = updatedTime.textContent;
+      var reg = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:Z|[+-]\d{2}:\d{2})/;
+      var matchs = text.match(reg);
+      if (matchs) {
+        var relativeTime = moment(matchs[0]).fromNow();
+        updatedTime.textContent = text.replace(reg, relativeTime);
+      }
+      updatedTime.style.display = '';
+    }
+  };
+  Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/moment.min.js', function() {
+    if (!'zh-cn'.startsWith('en')) {
+      Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/locale/zh-cn.min.js', function() {
+        relativeDate();
+      });
+    } else {
+      relativeDate();
+    }
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/cust/custom.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

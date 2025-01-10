@@ -1,0 +1,977 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/%E4%B8%AA%E4%BA%BA%E5%A4%B4%E5%83%8F%E6%97%A0%E8%83%8C%E6%99%AF.png">
+  <link rel="icon" href="https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/%E4%B8%AA%E4%BA%BA%E5%A4%B4%E5%83%8F%E6%97%A0%E8%83%8C%E6%99%AF.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="DuRuofu">
+  <meta name="keywords" content="嵌入式,个人博客,个人测试">
+  
+    <meta name="description" content="本文档介绍ESP32存储-SPIFFS文件系统 的相关知识">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ESP32存储-4.SPIFFS文件系统">
+<meta property="og:url" content="https://www.duruofu.xyz/posts/62664/index.html">
+<meta property="og:site_name" content="Duruofu&#39;s 个人测试">
+<meta property="og:description" content="本文档介绍ESP32存储-SPIFFS文件系统 的相关知识">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.duruofu.xyz/img/index_img/espidf.png">
+<meta property="article:published_time" content="2024-03-06T09:21:53.000Z">
+<meta property="article:modified_time" content="2025-01-10T14:20:34.038Z">
+<meta property="article:author" content="DuRuofu">
+<meta property="article:tag" content="MCU">
+<meta property="article:tag" content="ESP32">
+<meta property="article:tag" content="SPIFFS文件系统">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://www.duruofu.xyz/img/index_img/espidf.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>ESP32存储-4.SPIFFS文件系统 - Duruofu&#39;s 个人测试</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/cust/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"www.duruofu.xyz","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":80,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":true,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":5},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null},"gtag":null,"woyaola":null,"cnzz":null},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>DuRuofu</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/2020/06/06/1.%E9%98%85%E8%AF%BB%E5%86%99%E4%BD%9C/%E5%8E%9F%E5%88%9B%E8%AF%97%E8%AF%8D/%E8%AF%97%E8%AF%8D/" target="_self">
+                <i class="iconfont icon-books"></i>
+                <span>诗词</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                <span>ESP32教程</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/posts/58874/" target="_self">
+                    
+                    <span>ESP32教程-2024</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/posts/58875/" target="_self">
+                    
+                    <span>ESP32教程-2025</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="ESP32存储-4.SPIFFS文件系统"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        DuRuofu
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-03-06 17:21" pubdate>
+          2024年3月6日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.3k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          3 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">ESP32存储-4.SPIFFS文件系统</h1>
+            
+              <p id="updated-time" class="note note-info" style="display: none">
+                
+                  
+                    本文最后更新于 2025-01-10T22:20:34+08:00
+                  
+                  
+
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <h3 id="说明："><a href="#说明：" class="headerlink" title="说明："></a>说明：</h3><ol>
+<li>本文档由DuRuofu撰写，由DuRuofu负责解释及执行。</li>
+<li>本文档主要介绍，ESP32 flash SPIFFS文件系统的使用.</li>
+</ol>
+<h3 id="修订历史："><a href="#修订历史：" class="headerlink" title="修订历史："></a>修订历史：</h3><table>
+<thead>
+<tr>
+<th>文档名称</th>
+<th>版本</th>
+<th>作者</th>
+<th>时间</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ESP32存储-SPIFFS文件系统</td>
+<td>v1.0.0</td>
+<td>DuRuofu</td>
+<td>2024-03-06</td>
+<td>首次建立</td>
+</tr>
+</tbody></table>
+<div STYLE="page-break-after: always;"></div>
+
+<h1 id="ESP32存储-SPIFFS文件系统"><a href="#ESP32存储-SPIFFS文件系统" class="headerlink" title="ESP32存储-SPIFFS文件系统"></a>ESP32存储-SPIFFS文件系统</h1><h2 id="一、介绍"><a href="#一、介绍" class="headerlink" title="一、介绍"></a>一、介绍</h2><p>关于<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=esp32&spm=1001.2101.3001.7020">esp32</a>的spiffs文件系统的详细内容，请看esp32官网的介绍：<a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/release-v4.1/api-reference/storage/spiffs.html">espidf编程指南-spiffs</a></p>
+<ul>
+<li>SPIFFS是一种专门为像ESP32&#x2F;8266这种嵌入式设备而开发的微型文件系统，SPIFFS是设置在Flash中的一块空间，可以用来存放如网页、图片等体积小的静态资源，而无需采用存储于外部SD卡的方式。</li>
+<li>SPIFFS中的数据不会因为断电而丢失</li>
+</ul>
+<p>对于spiffs，乐鑫提供了很好的支持，专门提供了工具（spiffsgen.py，mkspiffs）用于对实现spiffs 在esp32 上的创建、格式化等操作。</p>
+<p>注意：</p>
+<blockquote>
+<ol>
+<li>目前，SPIFFS 尚不支持目录，但可以生成扁平结构。如果 SPIFFS 挂载在 <code>/spiffs</code> 下，在 <code>/spiffs/tmp/myfile.txt</code> 路径下创建一个文件则会在 SPIFFS 中生成一个名为 <code>/tmp/myfile.txt</code> 的文件，而不是在 <code>/spiffs/tmp</code> 下生成名为 <code>myfile.txt</code> 的文件；</li>
+<li>SPIFFS 并非实时栈，每次写操作耗时不等；</li>
+<li>目前，SPIFFS 尚不支持检测或处理已损坏的块。</li>
+<li>SPIFFS 只能稳定地使用约 75% 的指定分区容量。</li>
+<li>当文件系统空间不足时，垃圾收集器会尝试多次扫描文件系统来寻找可用空间。根据所需空间的不同，写操作会被调用多次，每次函数调用将花费几秒</li>
+<li>被删除文件通常不会被完全清除，会在文件系统中遗留下无法使用的部分</li>
+<li>如果 ESP32 在文件系统操作期间断电，可能会导致 SPIFFS 损坏。但是仍可通过 <code>esp_spiffs_check</code> 函数恢复文件系统。</li>
+</ol>
+</blockquote>
+<h2 id="二、SPIFFS文件系统使用"><a href="#二、SPIFFS文件系统使用" class="headerlink" title="二、SPIFFS文件系统使用"></a>二、SPIFFS文件系统使用</h2><h5 id="2-1-新建工程，准备自定义分区表"><a href="#2-1-新建工程，准备自定义分区表" class="headerlink" title="2.1 新建工程，准备自定义分区表"></a>2.1 新建工程，准备自定义分区表</h5><p>在分区表里添加 soiffs 文件系统的分区</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c"># ESP-IDF Partition Table<br># Name,   Type, SubType, Offset,  Size, Flags<br>nvs,      data, nvs,     <span class="hljs-number">0x9000</span>,  <span class="hljs-number">0x4000</span>,<br>phy_init, data, phy,     <span class="hljs-number">0xf000</span>,  <span class="hljs-number">0x1000</span>,<br>factory,  app,  factory, <span class="hljs-number">0x10000</span>,  <span class="hljs-number">1</span>M,<br>storage,  data, spiffs,  ,        <span class="hljs-number">0xF0000</span>,<br></code></pre></td></tr></table></figure>
+
+<p>选择自定义分区表：</p>
+<p><img src="/posts/62664/20240306141136.png" srcset="/img/loading.gif" lazyload></p>
+<h5 id="2-2-建立soiffs镜像"><a href="#2-2-建立soiffs镜像" class="headerlink" title="2.2 建立soiffs镜像"></a>2.2 建立soiffs镜像</h5><p>在项目根目录建立soiffs镜像文件夹<code>spiffs_image</code></p>
+<p>在项目mian组件cmarklist文件添加镜像构建工具相关代码：<br><code>spiffs_create_partition_image(my_spiffs_partition my_folder FLASH_IN_PROJECT)</code></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs c">idf_component_register(SRCS <span class="hljs-string">&quot;flash_spiffs.c&quot;</span><br>                    INCLUDE_DIRS <span class="hljs-string">&quot;.&quot;</span>)<br><br># Create a SPIFFS image from the contents of the <span class="hljs-string">&#x27;spiffs_image&#x27;</span> directory<br><br><span class="hljs-meta"># that fits the partition named <span class="hljs-string">&#x27;storage&#x27;</span>. FLASH_IN_PROJECT indicates that</span><br><br><span class="hljs-meta"># the generated image should be flashed when the entire project is flashed to</span><br><br><span class="hljs-meta"># the target with <span class="hljs-string">&#x27;idf.py -p PORT flash&#x27;</span>.</span><br><br>spiffs_create_partition_image(storage ../spiffs_image FLASH_IN_PROJECT)<br></code></pre></td></tr></table></figure>
+
+<h5 id="2-3-码里挂载文件系统"><a href="#2-3-码里挂载文件系统" class="headerlink" title="2.3 码里挂载文件系统"></a>2.3 码里挂载文件系统</h5><p>然后在代码里挂载文件系统即可：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs c">ESP_LOGI(TAG, <span class="hljs-string">&quot;Initializing SPIFFS&quot;</span>);<br><br><span class="hljs-type">esp_vfs_spiffs_conf_t</span> conf = &#123;<br>  .base_path = <span class="hljs-string">&quot;/spiffs&quot;</span>,<br>  .partition_label = <span class="hljs-literal">NULL</span>,<br>  .max_files = <span class="hljs-number">5</span>,<br>  .format_if_mount_failed = <span class="hljs-literal">false</span><br>&#125;;<br><br><span class="hljs-comment">// Use settings defined above to initialize and mount SPIFFS filesystem.</span><br><span class="hljs-comment">// Note: esp_vfs_spiffs_register is an all-in-one convenience function.</span><br><span class="hljs-type">esp_err_t</span> ret = esp_vfs_spiffs_register(&amp;conf);<br><br><span class="hljs-keyword">if</span> (ret != ESP_OK) &#123;<br>	<span class="hljs-keyword">if</span> (ret == ESP_FAIL) &#123;<br>		ESP_LOGE(TAG, <span class="hljs-string">&quot;Failed to mount or format filesystem&quot;</span>);<br>	&#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (ret == ESP_ERR_NOT_FOUND) &#123;<br>		ESP_LOGE(TAG, <span class="hljs-string">&quot;Failed to find SPIFFS partition&quot;</span>);<br>	&#125; <span class="hljs-keyword">else</span> &#123;<br>		ESP_LOGE(TAG, <span class="hljs-string">&quot;Failed to initialize SPIFFS (%s)&quot;</span>, esp_err_to_name(ret));<br>	&#125;<br>	<span class="hljs-keyword">return</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><code>esp_vfs_spiffs_register</code>用于将SPIFFS注册并挂载到虚拟文件系统（VFS）中，并指定路径前缀。</p>
+<p>函数参数中的conf是一个指向<code>esp_vfs_spiffs_conf_t</code>配置结构体的指针。</p>
+<p><code>esp_vfs_spiffs_conf_t</code>参数：</p>
+<ul>
+<li><strong>base_path:</strong> 文件系统关联的文件路径前缀。</li>
+<li><strong>partition_label:</strong> 可选项，要使用的 SPIFFS 分区的标签。如果设置为 NULL，则将使用 subtype&#x3D;spiffs 的第一个分区。</li>
+<li><strong>max_files:</strong> 可同时打开的最大文件数。</li>
+<li><strong>format_if_mount_failed:</strong> 如果为 true，在挂载失败时将格式化文件系统。</li>
+</ul>
+<h2 id="三、案例"><a href="#三、案例" class="headerlink" title="三、案例"></a>三、案例</h2><p>下面的示例程序来自：<a target="_blank" rel="noopener" href="https://github.com/espressif/esp-idf/tree/v5.2.1/examples/storage/spiffsgen">https://github.com/espressif/esp-idf/tree/v5.2.1/examples/storage/spiffsgen</a></p>
+<p>主要功能包括初始化 SPIFFS、读取文件内容以及计算文件的 MD5 哈希值。</p>
+<p>在 <code>app_main</code> 函数中，首先初始化 SPIFFS 文件系统，然后获取文件系统的信息，接着依次调用 <code>read_hello_txt</code> 和 <code>compute_alice_txt_md5</code> 函数来读取 <code>hello.txt</code> 文件的内容和计算 <code>alice.txt</code> 文件的 MD5 哈希值。最后，取消挂载 SPIFFS 文件系统并结束程序。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br></pre></td><td class="code"><pre><code class="hljs c"><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;string.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;sys/unistd.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;sys/stat.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;esp_err.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;esp_log.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;esp_spiffs.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;mbedtls/md5.h&quot;</span></span><br><br><span class="hljs-type">static</span> <span class="hljs-type">const</span> <span class="hljs-type">char</span> *TAG = <span class="hljs-string">&quot;example&quot;</span>;<br><br><span class="hljs-type">static</span> <span class="hljs-type">void</span> <span class="hljs-title function_">read_hello_txt</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span><br>&#123;<br>    ESP_LOGI(TAG, <span class="hljs-string">&quot;Reading hello.txt&quot;</span>);<br><br>    <span class="hljs-comment">// Open for reading hello.txt</span><br>    FILE* f = fopen(<span class="hljs-string">&quot;/spiffs/hello.txt&quot;</span>, <span class="hljs-string">&quot;r&quot;</span>);<br>    <span class="hljs-keyword">if</span> (f == <span class="hljs-literal">NULL</span>) &#123;<br>        ESP_LOGE(TAG, <span class="hljs-string">&quot;Failed to open hello.txt&quot;</span>);<br>        <span class="hljs-keyword">return</span>;<br>    &#125;<br><br>    <span class="hljs-type">char</span> buf[<span class="hljs-number">64</span>];<br>    <span class="hljs-built_in">memset</span>(buf, <span class="hljs-number">0</span>, <span class="hljs-keyword">sizeof</span>(buf));<br>    fread(buf, <span class="hljs-number">1</span>, <span class="hljs-keyword">sizeof</span>(buf), f);<br>    fclose(f);<br><br>    <span class="hljs-comment">// Display the read contents from the file</span><br>    ESP_LOGI(TAG, <span class="hljs-string">&quot;Read from hello.txt: %s&quot;</span>, buf);<br>&#125;<br><br><span class="hljs-type">static</span> <span class="hljs-type">void</span> <span class="hljs-title function_">compute_alice_txt_md5</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span><br>&#123;<br>    ESP_LOGI(TAG, <span class="hljs-string">&quot;Computing alice.txt MD5 hash&quot;</span>);<br><br>    <span class="hljs-comment">// The file alice.txt lives under a subdirectory, though SPIFFS itself is flat</span><br>    FILE* f = fopen(<span class="hljs-string">&quot;/spiffs/sub/alice.txt&quot;</span>, <span class="hljs-string">&quot;r&quot;</span>);<br>    <span class="hljs-keyword">if</span> (f == <span class="hljs-literal">NULL</span>) &#123;<br>        ESP_LOGE(TAG, <span class="hljs-string">&quot;Failed to open alice.txt&quot;</span>);<br>        <span class="hljs-keyword">return</span>;<br>    &#125;<br><br>    <span class="hljs-comment">// Read file and compute the digest chunk by chunk</span><br>    <span class="hljs-meta">#<span class="hljs-keyword">define</span> MD5_MAX_LEN 16</span><br><br>    <span class="hljs-type">char</span> buf[<span class="hljs-number">64</span>];<br>    mbedtls_md5_context ctx;<br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">char</span> digest[MD5_MAX_LEN];<br><br>    mbedtls_md5_init(&amp;ctx);<br>    mbedtls_md5_starts(&amp;ctx);<br><br>    <span class="hljs-type">size_t</span> read;<br><br>    <span class="hljs-keyword">do</span> &#123;<br>        read = fread((<span class="hljs-type">void</span>*) buf, <span class="hljs-number">1</span>, <span class="hljs-keyword">sizeof</span>(buf), f);<br>        mbedtls_md5_update(&amp;ctx, (<span class="hljs-type">unsigned</span> <span class="hljs-type">const</span> <span class="hljs-type">char</span>*) buf, read);<br>    &#125; <span class="hljs-keyword">while</span>(read == <span class="hljs-keyword">sizeof</span>(buf));<br><br>    mbedtls_md5_finish(&amp;ctx, digest);<br><br>    <span class="hljs-comment">// Create a string of the digest</span><br>    <span class="hljs-type">char</span> digest_str[MD5_MAX_LEN * <span class="hljs-number">2</span>];<br><br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; MD5_MAX_LEN; i++) &#123;<br>        <span class="hljs-built_in">sprintf</span>(&amp;digest_str[i * <span class="hljs-number">2</span>], <span class="hljs-string">&quot;%02x&quot;</span>, (<span class="hljs-type">unsigned</span> <span class="hljs-type">int</span>)digest[i]);<br>    &#125;<br><br>    <span class="hljs-comment">// For reference, MD5 should be deeb71f585cbb3ae5f7976d5127faf2a</span><br>    ESP_LOGI(TAG, <span class="hljs-string">&quot;Computed MD5 hash of alice.txt: %s&quot;</span>, digest_str);<br><br>    fclose(f);<br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">app_main</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span><br>&#123;<br>    ESP_LOGI(TAG, <span class="hljs-string">&quot;Initializing SPIFFS&quot;</span>);<br><br>    <span class="hljs-type">esp_vfs_spiffs_conf_t</span> conf = &#123;<br>      .base_path = <span class="hljs-string">&quot;/spiffs&quot;</span>,<br>      .partition_label = <span class="hljs-literal">NULL</span>,<br>      .max_files = <span class="hljs-number">5</span>,<br>      .format_if_mount_failed = <span class="hljs-literal">false</span><br>    &#125;;<br><br>    <span class="hljs-comment">// Use settings defined above to initialize and mount SPIFFS filesystem.</span><br>    <span class="hljs-comment">// Note: esp_vfs_spiffs_register is an all-in-one convenience function.</span><br>    <span class="hljs-type">esp_err_t</span> ret = esp_vfs_spiffs_register(&amp;conf);<br><br>    <span class="hljs-keyword">if</span> (ret != ESP_OK) &#123;<br>        <span class="hljs-keyword">if</span> (ret == ESP_FAIL) &#123;<br>            ESP_LOGE(TAG, <span class="hljs-string">&quot;Failed to mount or format filesystem&quot;</span>);<br>        &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (ret == ESP_ERR_NOT_FOUND) &#123;<br>            ESP_LOGE(TAG, <span class="hljs-string">&quot;Failed to find SPIFFS partition&quot;</span>);<br>        &#125; <span class="hljs-keyword">else</span> &#123;<br>            ESP_LOGE(TAG, <span class="hljs-string">&quot;Failed to initialize SPIFFS (%s)&quot;</span>, esp_err_to_name(ret));<br>        &#125;<br>        <span class="hljs-keyword">return</span>;<br>    &#125;<br><br>    <span class="hljs-type">size_t</span> total = <span class="hljs-number">0</span>, used = <span class="hljs-number">0</span>;<br>    ret = esp_spiffs_info(<span class="hljs-literal">NULL</span>, &amp;total, &amp;used);<br>    <span class="hljs-keyword">if</span> (ret != ESP_OK) &#123;<br>        ESP_LOGE(TAG, <span class="hljs-string">&quot;Failed to get SPIFFS partition information (%s)&quot;</span>, esp_err_to_name(ret));<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        ESP_LOGI(TAG, <span class="hljs-string">&quot;Partition size: total: %d, used: %d&quot;</span>, total, used);<br>    &#125;<br><br>    <span class="hljs-comment">/* The following calls demonstrate reading files from the generated SPIFFS</span><br><span class="hljs-comment">     * image. The images should contain the same files and contents as the spiffs_image directory.</span><br><span class="hljs-comment">     */</span><br><br>    <span class="hljs-comment">// Read and display the contents of a small text file (hello.txt)</span><br>    read_hello_txt();<br><br>    <span class="hljs-comment">// Compute and display the MD5 hash of a large text file (alice.txt)</span><br>    compute_alice_txt_md5();<br><br>    <span class="hljs-comment">// All done, unmount partition and disable SPIFFS</span><br>    esp_vfs_spiffs_unregister(<span class="hljs-literal">NULL</span>);<br>    ESP_LOGI(TAG, <span class="hljs-string">&quot;SPIFFS unmounted&quot;</span>);<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<p>效果：</p>
+<p><img src="/posts/62664/20240306142532.png" srcset="/img/loading.gif" lazyload></p>
+<h1 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h1><ol>
+<li><a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/release-v5.2/esp32/api-reference/storage/spiffs.html">https://docs.espressif.com/projects/esp-idf/zh_CN/release-v5.2/esp32/api-reference/storage/spiffs.html</a></li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%94%B5%E5%AD%90%E4%BF%A1%E6%81%AF%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/" class="category-chain-item">电子信息硬件相关</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E7%94%B5%E5%AD%90%E4%BF%A1%E6%81%AF%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/" class="category-chain-item">MCU</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E7%94%B5%E5%AD%90%E4%BF%A1%E6%81%AF%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/" class="category-chain-item">ESP32</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E7%94%B5%E5%AD%90%E4%BF%A1%E6%81%AF%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/%E5%AD%98%E5%82%A8API/" class="category-chain-item">存储API</a>
+  
+  
+
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/MCU/" class="print-no-link">#MCU</a>
+      
+        <a href="/tags/ESP32/" class="print-no-link">#ESP32</a>
+      
+        <a href="/tags/SPIFFS%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/" class="print-no-link">#SPIFFS文件系统</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>ESP32存储-4.SPIFFS文件系统</div>
+      <div>https://www.duruofu.xyz/posts/62664/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>DuRuofu</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年3月6日</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>更新于</div>
+          <div>2025年1月10日</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
+                    <i class="iconfont icon-cc-nc"></i>
+                  </span>
+                </a>
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="SA - 相同方式共享">
+                    <i class="iconfont icon-cc-sa"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/38814/" title="ESP32外设-7.I2C入门">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">ESP32外设-7.I2C入门</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/3067/" title="ESP32存储-3.VFS虚拟文件系统">
+                        <span class="hidden-mobile">ESP32存储-3.VFS虚拟文件系统</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#gitalk-container', function() {
+      Fluid.utils.createCssLink('/css/gitalk.css')
+      Fluid.utils.createScript('https://lib.baomitu.com/gitalk/1.8.0/gitalk.min.js', function() {
+        var options = Object.assign(
+          {"clientID":"c9ac06d5413a9d613a1e","clientSecret":"a44f5c72589eb090876cc64067db28fbfdf4747c","repo":"Blog-comments-gitalk","owner":"DuRuofu","admin":["DuRuofu"],"language":"zh-CN","labels":["Gitalk"],"perPage":15,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":false,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token"},
+          {
+            id: '6346d0c709084a9e61eca2cc1847c096'
+          }
+        )
+        var gitalk = new Gitalk(options);
+        gitalk.render('gitalk-container');
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <br><span id="timeDate">天数载入中</span><span id="times">...</span><br> <span>总有读不懂的诗和到达不了的远方</span> <p>Copyright © 2023 - <span id="currentYear"></span> All Rights Reserved.</p>
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      陕ICP备2022007454号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=2022007454"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>陕ICP备2022007454号-2</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":true,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  var relativeDate = function() {
+    var updatedTime = document.getElementById('updated-time');
+    if (updatedTime) {
+      var text = updatedTime.textContent;
+      var reg = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:Z|[+-]\d{2}:\d{2})/;
+      var matchs = text.match(reg);
+      if (matchs) {
+        var relativeTime = moment(matchs[0]).fromNow();
+        updatedTime.textContent = text.replace(reg, relativeTime);
+      }
+      updatedTime.style.display = '';
+    }
+  };
+  Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/moment.min.js', function() {
+    if (!'zh-cn'.startsWith('en')) {
+      Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/locale/zh-cn.min.js', function() {
+        relativeDate();
+      });
+    } else {
+      relativeDate();
+    }
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/cust/custom.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

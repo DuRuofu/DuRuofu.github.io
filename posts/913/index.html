@@ -1,0 +1,1008 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/%E4%B8%AA%E4%BA%BA%E5%A4%B4%E5%83%8F%E6%97%A0%E8%83%8C%E6%99%AF.png">
+  <link rel="icon" href="https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/%E4%B8%AA%E4%BA%BA%E5%A4%B4%E5%83%8F%E6%97%A0%E8%83%8C%E6%99%AF.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="DuRuofu">
+  <meta name="keywords" content="嵌入式,个人博客,个人测试">
+  
+    <meta name="description" content="布局文档流（normal flow）网页是一个多层结构，一层摞着一层通过css可以分别为每一层来设置样式作为用户来讲只能看见最上面一层(ps图层的概念)这些层中最底下一层称为文档流，文档流是网页的基础，我们创建的元素默认都是在文档流中进行排列的元素有两个状态：在文档流中，和不在文档流中（默认在） 元素在文档流中的特点块元素块元素独占一行（自上向下垂直排列  ）默认宽度是父元素的全部（把父元素盛满）">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HTML+CSS笔记 (11.CSS布局)">
+<meta property="og:url" content="https://www.duruofu.xyz/posts/913/index.html">
+<meta property="og:site_name" content="Duruofu&#39;s 个人测试">
+<meta property="og:description" content="布局文档流（normal flow）网页是一个多层结构，一层摞着一层通过css可以分别为每一层来设置样式作为用户来讲只能看见最上面一层(ps图层的概念)这些层中最底下一层称为文档流，文档流是网页的基础，我们创建的元素默认都是在文档流中进行排列的元素有两个状态：在文档流中，和不在文档流中（默认在） 元素在文档流中的特点块元素块元素独占一行（自上向下垂直排列  ）默认宽度是父元素的全部（把父元素盛满）">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.duruofu.xyz/img/index_img/html.jpg">
+<meta property="article:published_time" content="2023-06-06T03:40:53.000Z">
+<meta property="article:modified_time" content="2025-01-10T14:20:33.969Z">
+<meta property="article:author" content="DuRuofu">
+<meta property="article:tag" content="HTML+CSS">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://www.duruofu.xyz/img/index_img/html.jpg">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>HTML+CSS笔记 (11.CSS布局) - Duruofu&#39;s 个人测试</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/cust/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"www.duruofu.xyz","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":80,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":true,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":5},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null},"gtag":null,"woyaola":null,"cnzz":null},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>DuRuofu</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/2020/06/06/1.%E9%98%85%E8%AF%BB%E5%86%99%E4%BD%9C/%E5%8E%9F%E5%88%9B%E8%AF%97%E8%AF%8D/%E8%AF%97%E8%AF%8D/" target="_self">
+                <i class="iconfont icon-books"></i>
+                <span>诗词</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                <span>ESP32教程</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/posts/58874/" target="_self">
+                    
+                    <span>ESP32教程-2024</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/posts/58875/" target="_self">
+                    
+                    <span>ESP32教程-2025</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/index_img/html.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="HTML+CSS笔记 (11.CSS布局)"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        DuRuofu
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-06-06 11:40" pubdate>
+          2023年6月6日 中午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          8.7k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          15 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">HTML+CSS笔记 (11.CSS布局)</h1>
+            
+              <p id="updated-time" class="note note-info" style="display: none">
+                
+                  
+                    本文最后更新于 2025-01-10T22:20:33+08:00
+                  
+                  
+
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <h3 id="布局"><a href="#布局" class="headerlink" title="布局"></a>布局</h3><h4 id="文档流（normal-flow）"><a href="#文档流（normal-flow）" class="headerlink" title="文档流（normal flow）"></a>文档流（normal flow）</h4><p>网页是一个多层结构，一层摞着一层<br>通过css可以分别为每一层来设置样式<br>作为用户来讲只能看见最上面一层(ps图层的概念)<br>这些层中最底下一层称为文档流，文档流是网页的基础，我们创建的元素默认都是在文档流中进行排列的<br>元素有两个状态：在文档流中，和不在文档流中（默认在）</p>
+<h5 id="元素在文档流中的特点"><a href="#元素在文档流中的特点" class="headerlink" title="元素在文档流中的特点"></a>元素在文档流中的特点</h5><h6 id="块元素"><a href="#块元素" class="headerlink" title="块元素"></a>块元素</h6><p>块元素独占一行（自上向下垂直排列  ）<br>默认宽度是父元素的全部（把父元素盛满）<br>默认高度是被内容撑开（子元素），比如子元素是一行字，那高度默认就是一行字的高度</p>
+<h6 id="行内元素"><a href="#行内元素" class="headerlink" title="行内元素"></a>行内元素</h6><p>行内元素不独占一行，只占自身大小。<br>行内元素在页面中从左往右水平排列，如果一行之中不能全部容纳，就会自动换行继续自左向右排列<br>行元素的默认宽度和高度都是被内容撑开。</p>
+<h4 id="盒模型-框模型（box-model）"><a href="#盒模型-框模型（box-model）" class="headerlink" title="盒模型 框模型（box model）"></a>盒模型 框模型（box model）</h4><p>css将页面中的所有元素设置为了一个矩形的盒子<br>将元素设置为矩形的盒子后，对页面布局就是将不同的盒子摆放到不同的位置<br>每一个盒子都由以下几个部分组成：</p>
+<h5 id="内容区：（content）"><a href="#内容区：（content）" class="headerlink" title="内容区：（content）"></a>内容区：（content）</h5><p>元素中的所有子元素和文本内容都在内容区中排列，内容区的大小由width和height两个属性设置。<br>width:宽度<br>height：高度</p>
+<h5 id="边框（border）-边框的大小会影响到整个盒子的大小"><a href="#边框（border）-边框的大小会影响到整个盒子的大小" class="headerlink" title="边框（border）:边框的大小会影响到整个盒子的大小"></a>边框（border）:边框的大小会影响到整个盒子的大小</h5><p>设置边框，至少需要设置三个样式、</p>
+<h6 id="边框的宽度：border-width"><a href="#边框的宽度：border-width" class="headerlink" title="边框的宽度：border-width"></a>边框的宽度：border-width</h6><p>可以不写，默认是三个像素。用来指定四个方向边框的宽度。<br>可以这么写（四个值）：border-width：10px 20px 30px 40px;<br>三个值：border-width：10px（上） 20px（左右）  40px（下）;<br>两个值：border-width：10px（上下） 20px（左右）；<br>一个值：border-width：10px（上下左右）;<br>除了border-width还有一组：border-XXX-width，XXX可以是top right bottom left；可以分别指定某一个边的宽度。</p>
+<h6 id="边框的颜色：border-color"><a href="#边框的颜色：border-color" class="headerlink" title="边框的颜色：border-color"></a>边框的颜色：border-color</h6><p>用于指定四个边框的颜色：可以写四个值，三个值……和上面的border-width相似<br>也可以不写，默认为color（字体）的颜色</p>
+<h6 id="边框的样式：border-style"><a href="#边框的样式：border-style" class="headerlink" title="边框的样式：border-style"></a>边框的样式：border-style</h6><p>solid：表示实线<br>dotted:表示点状虚线<br>dashed:虚线<br>double：双实线<br>同样有四个值，同样可以具体指定一个边的样式同border-width<br>border-style的默认值为none(没有边框)</p>
+<h6 id="border的简写"><a href="#border的简写" class="headerlink" title="border的简写"></a>border的简写</h6><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs css"><span class="hljs-attribute">border-width</span>: <span class="hljs-number">10px</span>;<br>           <span class="hljs-attribute">border-color</span>: coral;<br>           <span class="hljs-attribute">border-style</span>: solid;<br></code></pre></td></tr></table></figure>
+<p>可简写为：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs css"><span class="hljs-attribute">border</span>:<span class="hljs-number">10px</span> coral solid;<br></code></pre></td></tr></table></figure>
+<p>这三个值的顺序是可以发生变化的，同样border-XXX也可以这么写三个值。</p>
+<h6 id="内边距（padding）"><a href="#内边距（padding）" class="headerlink" title="内边距（padding）"></a>内边距（padding）</h6><p>内容和边框的距离，一共有四个方向的内边距<br>padding-top<br>padding-right<br>padding-bottom<br>padding-left<br>内边距的设置会影响盒子的大小，背景颜色会延伸到内边距上。<br>例子：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">html</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;en&quot;</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">&quot;UTF-8&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">http-equiv</span>=<span class="hljs-string">&quot;X-UA-Compatible&quot;</span> <span class="hljs-attr">content</span>=<span class="hljs-string">&quot;IE=edge&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;viewport&quot;</span> <span class="hljs-attr">content</span>=<span class="hljs-string">&quot;width=device-width, initial-scale=1.0&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>Document<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">style</span>&gt;</span><span class="language-css"></span><br><span class="language-css">      <span class="hljs-selector-class">.box1</span>&#123;</span><br><span class="language-css">          <span class="hljs-attribute">width</span>: <span class="hljs-number">200px</span>;</span><br><span class="language-css">          <span class="hljs-attribute">height</span>: <span class="hljs-number">200px</span>;</span><br><span class="language-css">          <span class="hljs-attribute">background-color</span>: coral;</span><br><span class="language-css">          <span class="hljs-attribute">border</span>: <span class="hljs-built_in">rgb</span>(<span class="hljs-number">200</span>, <span class="hljs-number">206</span>, <span class="hljs-number">117</span>) <span class="hljs-number">10px</span> solid;</span><br><span class="language-css">          <span class="hljs-attribute">padding-top</span>: <span class="hljs-number">20px</span>;</span><br><span class="language-css">          <span class="hljs-attribute">padding-right</span>: <span class="hljs-number">20px</span>;</span><br><span class="language-css">          <span class="hljs-attribute">padding-bottom</span>: <span class="hljs-number">20px</span>;</span><br><span class="language-css">          <span class="hljs-attribute">padding-left</span>: <span class="hljs-number">20px</span>;</span><br><span class="language-css">        &#125;</span><br><span class="language-css">      <span class="hljs-selector-class">.box2</span>&#123;</span><br><span class="language-css">            <span class="hljs-comment">/* 用box2来显示内容真实大小 */</span></span><br><span class="language-css">            <span class="hljs-attribute">width</span>: <span class="hljs-number">100%</span>;</span><br><span class="language-css">            <span class="hljs-attribute">height</span>: <span class="hljs-number">100%</span>;</span><br><span class="language-css">            <span class="hljs-attribute">background-color</span>: darkcyan;</span><br><span class="language-css">        &#125;</span><br><span class="language-css">    </span><span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;box1&quot;</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;box2&quot;</span>&gt;</span>内容部分的真实大小<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span><br></code></pre></td></tr></table></figure>
+<p><strong>一个盒子的可见框大小</strong>：由内容区 内边距 边框共同决定。计算盒子大小时，需要将这三个区域加到一起计算。<br>padding可以简写：<br>padding：20px 30px 40px 50px;(和border的简写相同)</p>
+<h6 id="外边距（margin）"><a href="#外边距（margin）" class="headerlink" title="外边距（margin）"></a>外边距（margin）</h6><p>外边距不会影响可见框的大小。但是会影响盒子实际占地位置。<br>一共有四个方向的外边距<br>margin-top<br>-上外边距：设置一个正直，元素会向下移动<br>margin-right<br>-右外边距（默认情况下设置它不会有任何效果）<br>margin-bottom<br>-下外边距，设置一个正值，元素会向右移动。<br>margin-left<br>-左外边距：设置一个正值，元素会向右移动</p>
+<p>如果是负值则往相反方向走。<br>元素在页面中是按照自左向右的顺序排列<br>所以默认情况下设置左和上外边距则会移动元素自身，<br>margin-top    margin-left<br>而设置下和右边距会移动其他元素（挤别人）<br>margin-right    margin-bottom</p>
+<p>margin同样可以进行简写，和和border的简写相同<br>例：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">html</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;en&quot;</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">&quot;UTF-8&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">http-equiv</span>=<span class="hljs-string">&quot;X-UA-Compatible&quot;</span> <span class="hljs-attr">content</span>=<span class="hljs-string">&quot;IE=edge&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;viewport&quot;</span> <span class="hljs-attr">content</span>=<span class="hljs-string">&quot;width=device-width, initial-scale=1.0&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>Document<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">style</span>&gt;</span><span class="language-css"></span><br><span class="language-css">        <span class="hljs-selector-class">.box1</span>&#123;</span><br><span class="language-css">            <span class="hljs-attribute">width</span>: <span class="hljs-number">200px</span>;</span><br><span class="language-css">            <span class="hljs-attribute">height</span>: <span class="hljs-number">200px</span>;</span><br><span class="language-css">            <span class="hljs-attribute">background-color</span>: darkturquoise;</span><br><span class="language-css">            <span class="hljs-attribute">border</span>: gray <span class="hljs-number">20px</span> solid;</span><br><span class="language-css">            <span class="hljs-attribute">margin-top</span>: <span class="hljs-number">100px</span>;</span><br><span class="language-css">            <span class="hljs-attribute">margin-left</span>: <span class="hljs-number">100px</span>;</span><br><span class="language-css">            <span class="hljs-attribute">margin-bottom</span>: <span class="hljs-number">100px</span>;</span><br><span class="language-css">        &#125;</span><br><span class="language-css">        <span class="hljs-selector-class">.box2</span>&#123;</span><br><span class="language-css">            <span class="hljs-attribute">width</span>: <span class="hljs-number">200px</span>;</span><br><span class="language-css">            <span class="hljs-attribute">height</span>: <span class="hljs-number">200px</span>;</span><br><span class="language-css">            <span class="hljs-attribute">background-color</span>: <span class="hljs-built_in">rgb</span>(<span class="hljs-number">90</span>, <span class="hljs-number">194</span>, <span class="hljs-number">137</span>);</span><br><span class="language-css">            <span class="hljs-attribute">border</span>: <span class="hljs-built_in">rgb</span>(<span class="hljs-number">91</span>, <span class="hljs-number">201</span>, <span class="hljs-number">201</span>) <span class="hljs-number">20px</span> solid;</span><br><span class="language-css"></span><br><span class="language-css">        &#125;</span><br><span class="language-css">    </span><span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;box1&quot;</span>&gt;</span>  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;box2&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>    <br><span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span><br></code></pre></td></tr></table></figure>
+<h5 id="盒子的水平布局"><a href="#盒子的水平布局" class="headerlink" title="盒子的水平布局"></a>盒子的水平布局</h5><p>元素在其父元素中的水平方向位置由以下几个属性共同决定<br>margin-left<br>border-left<br>padding-left<br>width<br>margin-right<br>border-right<br>padding-right<br><strong>一个元素在其父元素中，水平布局必须要满足以下等式：</strong><br>margin-left+border-left+padding-left+width+margin-right+border-right+padding-right&#x3D;其父元素区的宽度（必须满足）<br><strong>如果没满足就称为过渡约束，浏览器会默认进行调整。</strong></p>
+<p>调整规则：如果这七个值里没有为auto的情况，则浏览器会自动调整margin-right（右外边距）到满足等式<br>这七个值里有三个值可以设置为auto：<br>width<br>margin-left<br>margin-right<br>如果某个值为auto，则浏览器自动调整auto的值以使等式满足。(width的值如果不写，默认就是auto)<br>如果将一个一个宽度和一个外边距设置为auto，则宽度自动最大，设置为auto外边距会自动变为0;<br>如果将三个值都设置为auto，则外边距都是0，宽度最大<br>如果将两个外边距设置为auto，宽度值固定，则两外边会相等：利用这个特点给元素水平居中<br>示例：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">html</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;zh&quot;</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">&quot;UTF-8&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">http-equiv</span>=<span class="hljs-string">&quot;X-UA-Compatible&quot;</span> <span class="hljs-attr">content</span>=<span class="hljs-string">&quot;IE=edge&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;viewport&quot;</span> <span class="hljs-attr">content</span>=<span class="hljs-string">&quot;width=device-width, initial-scale=1.0&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>Document<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">style</span>&gt;</span><span class="language-css"></span><br><span class="language-css">        <span class="hljs-selector-class">.outer</span>&#123;</span><br><span class="language-css">            <span class="hljs-attribute">width</span>: <span class="hljs-number">800px</span>;</span><br><span class="language-css">            <span class="hljs-attribute">height</span>: <span class="hljs-number">200px</span>;</span><br><span class="language-css">            <span class="hljs-attribute">border</span>: lightcoral <span class="hljs-number">10px</span> solid;</span><br><span class="language-css"></span><br><span class="language-css">        &#125;</span><br><span class="language-css">        <span class="hljs-selector-class">.inner</span>&#123;</span><br><span class="language-css">            <span class="hljs-attribute">width</span>: <span class="hljs-number">200px</span>;</span><br><span class="language-css">            <span class="hljs-attribute">height</span>: <span class="hljs-number">200px</span>;</span><br><span class="language-css">            <span class="hljs-attribute">background-color</span>: <span class="hljs-built_in">rgb</span>(<span class="hljs-number">73</span>, <span class="hljs-number">126</span>, <span class="hljs-number">59</span>);</span><br><span class="language-css">            <span class="hljs-attribute">margin-left</span>: auto; </span><br><span class="language-css">            <span class="hljs-attribute">margin-right</span>: auto;</span><br><span class="language-css">        &#125;</span><br><span class="language-css">    </span><span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;outer&quot;</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;inner&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span><br></code></pre></td></tr></table></figure>
+<h5 id="盒子垂直方向的布局"><a href="#盒子垂直方向的布局" class="headerlink" title="盒子垂直方向的布局"></a>盒子垂直方向的布局</h5><p>垂直布局比较简单:默认情况下不指定高度父元素的高度会被内容撑开</p>
+<p>子元素是在父元素的内容中排列的<br>如果子元素的大小超过了父元素，则子元素会从父元素中溢出<br>使用overflow来设置父元素如何处理溢出的子元素<br>可选值：<br>visible默认值  会溢出，在父元素外边显示<br>hidden 溢出内容不显示，直接裁剪掉<br>scroll 生成两个滚动条<br>auto   根据需要生成滚动条<br>还可以使用overflow-x 或overflow-y来单独设置x和y 方向的溢出问题</p>
+<h5 id="盒子模型外边距的折叠"><a href="#盒子模型外边距的折叠" class="headerlink" title="盒子模型外边距的折叠"></a>盒子模型外边距的折叠</h5><p>相邻方向垂直外边距会发生重叠现象<br><strong>兄弟元素</strong><br>兄弟元素间的相邻外边距会取两者之间的一个较大值(两者都是正值)<br>特殊情况：相邻的外边距一正一负，取两者的和<br>如果两个外边距都是负值，则取两者中绝对值较大的<br>兄弟元素外边距的重叠对开发是有利的，所以不需要处理<br><strong>父子元素</strong><br>父子元素间相邻外边距，子元素的会传递给父元素（上外边距）<br>父子外边距的折叠会影响到页面的布局，必须要进行处理</p>
+<h5 id="行内元素的盒模型"><a href="#行内元素的盒模型" class="headerlink" title="行内元素的盒模型"></a>行内元素的盒模型</h5><p>行内元素不支持设置宽度和大小<br>可以设置padding，但垂直方向不会影响页面的布局<br>可以设置border，但垂直方向不会影响页面的布局。<br>可以设置margin，但垂直方向的margin不影响页面布局</p>
+<p>例子：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">html</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;zh&quot;</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">&quot;UTF-8&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">http-equiv</span>=<span class="hljs-string">&quot;X-UA-Compatible&quot;</span> <span class="hljs-attr">content</span>=<span class="hljs-string">&quot;IE=edge&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;viewport&quot;</span> <span class="hljs-attr">content</span>=<span class="hljs-string">&quot;width=device-width, initial-scale=1.0&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>Document<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">style</span>&gt;</span><span class="language-css"></span><br><span class="language-css">        <span class="hljs-selector-class">.s1</span>&#123;</span><br><span class="language-css">            <span class="hljs-attribute">background-color</span>: coral;</span><br><span class="language-css">            <span class="hljs-attribute">width</span>: <span class="hljs-number">100px</span>;</span><br><span class="language-css">            <span class="hljs-attribute">height</span>: <span class="hljs-number">100px</span>;</span><br><span class="language-css">            <span class="hljs-comment">/*行内元素不支持设置宽度和大小 */</span></span><br><span class="language-css">            <span class="hljs-attribute">padding</span>: <span class="hljs-number">100px</span>;</span><br><span class="language-css">            <span class="hljs-comment">/* 可以设置padding，但垂直方向不会影响页面的布局 */</span></span><br><span class="language-css">            </span><br><span class="language-css">        &#125;</span><br><span class="language-css">        <span class="hljs-selector-class">.box1</span>&#123;</span><br><span class="language-css">            <span class="hljs-attribute">background-color</span>: cyan;</span><br><span class="language-css">            <span class="hljs-attribute">width</span>: <span class="hljs-number">200px</span>;</span><br><span class="language-css">            <span class="hljs-attribute">height</span>: <span class="hljs-number">200px</span>;</span><br><span class="language-css">        &#125;</span><br><span class="language-css">    </span><span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&#x27;s1&#x27;</span>&gt;</span>This is a span <span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;box1&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>超链接是行内元素，如果要设置它的宽高可以使用display属性（少用）<br>        block   –&gt;将元素设置为块元素<br>        inline-block–&gt;将元素设置为行内块元素（既可以设置宽高，有不会独占一行）<br>        table   –&gt;将元素设置为表格<br>        none    –&gt;元素不在页面里显示       </p>
+<p>visibility属性：可以设置元素的可见状态<br>可选值：visible默认值，元素在页面里正常显示<br>       hidden   元素在页面中隐藏不显示，但依然占据位置</p>
+<h5 id="浏览器的默认样式"><a href="#浏览器的默认样式" class="headerlink" title="浏览器的默认样式"></a>浏览器的默认样式</h5><p>通常情况下，浏览器会为元素设置一些默认样式<br>默认样式会影响到页面的布局，通常情况下编写网页必须要去除浏览器的默认样式（pc端页面）<br>可以具体针对元素进行设置：<br>例如：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">html</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;en&quot;</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">&quot;UTF-8&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">http-equiv</span>=<span class="hljs-string">&quot;X-UA-Compatible&quot;</span> <span class="hljs-attr">content</span>=<span class="hljs-string">&quot;IE=edge&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;viewport&quot;</span> <span class="hljs-attr">content</span>=<span class="hljs-string">&quot;width=device-width, initial-scale=1.0&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>Document<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">style</span>&gt;</span><span class="language-css"></span><br><span class="language-css">        <span class="hljs-selector-class">.box1</span>&#123;</span><br><span class="language-css">            <span class="hljs-attribute">width</span>: <span class="hljs-number">100px</span>;</span><br><span class="language-css">            <span class="hljs-attribute">height</span>: <span class="hljs-number">100px</span>;</span><br><span class="language-css">            <span class="hljs-attribute">border</span>: solid <span class="hljs-number">1px</span> black;</span><br><span class="language-css">        &#125;</span><br><span class="language-css">       </span><br><span class="language-css">        <span class="hljs-selector-tag">body</span>&#123;</span><br><span class="language-css">            <span class="hljs-attribute">margin</span>:<span class="hljs-number">0px</span>;</span><br><span class="language-css">        &#125;</span><br><span class="language-css">        <span class="hljs-selector-tag">p</span>&#123;</span><br><span class="language-css">            <span class="hljs-attribute">margin</span>: <span class="hljs-number">0px</span>;</span><br><span class="language-css">            <span class="hljs-comment">/* 去除p标签之间的外边距 */</span></span><br><span class="language-css">        &#125;</span><br><span class="language-css">        <span class="hljs-selector-tag">ul</span>&#123;</span><br><span class="language-css">            <span class="hljs-attribute">margin</span>: <span class="hljs-number">0px</span>;</span><br><span class="language-css">            <span class="hljs-attribute">padding</span>: <span class="hljs-number">0</span>;</span><br><span class="language-css">            <span class="hljs-attribute">list-style</span>: none;</span><br><span class="language-css">            <span class="hljs-comment">/* 去除项目符号 */</span></span><br><span class="language-css">        &#125;</span><br><span class="language-css">        </span><br><span class="language-css">    </span><span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;box1&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>这是一个段落<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>这是一个段落<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>这是一个段落<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>这是一个段落<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>这是一个段落<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">ul</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>2<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>3<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span><br></code></pre></td></tr></table></figure>
+<p>但简单考虑：一般写为：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs html">*&#123;<br>    margin:0;<br>    padding:0;<br><br>&#125;<br></code></pre></td></tr></table></figure>
+<p>这个方法不够完美，可能去除不干净，所以要把所有的标签都看一遍，都重置一遍，这时候可以引入一个完整的重置样式表的外部CSS文件<br>重置样式表网上很多，现成且可用</p>
+<h5 id="盒子的大小"><a href="#盒子的大小" class="headerlink" title="盒子的大小"></a>盒子的大小</h5><p> 默认情况下，盒子可见框的大小由内容区，内边距和边框共同决定<br>box-sizing: content-box;<br>box-sizing用于设置盒子尺寸的计算方式（width，height的作用）<br>可选值：<br>content-box  默认值，宽度和高度用来设置内容区的大小<br>border-box  宽度，高度用来设置盒子可见框的大小。<br>例子：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">html</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;en&quot;</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">&quot;UTF-8&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">http-equiv</span>=<span class="hljs-string">&quot;X-UA-Compatible&quot;</span> <span class="hljs-attr">content</span>=<span class="hljs-string">&quot;IE=edge&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;viewport&quot;</span> <span class="hljs-attr">content</span>=<span class="hljs-string">&quot;width=device-width, initial-scale=1.0&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>Document<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">style</span>&gt;</span><span class="language-css"></span><br><span class="language-css">        <span class="hljs-selector-class">.box1</span>&#123;</span><br><span class="language-css">            <span class="hljs-attribute">width</span>: <span class="hljs-number">100px</span>;</span><br><span class="language-css">            <span class="hljs-attribute">height</span>: <span class="hljs-number">100px</span>;</span><br><span class="language-css">            <span class="hljs-attribute">background-color</span>: <span class="hljs-number">#bfc</span>;</span><br><span class="language-css">            <span class="hljs-attribute">padding</span>: <span class="hljs-number">10px</span>;</span><br><span class="language-css">            <span class="hljs-attribute">border</span>: <span class="hljs-number">10px</span> red solid;</span><br><span class="language-css">            <span class="hljs-comment">/* 默认情况下，盒子可见框的大小由内容区，内边距和边框共同决定 */</span></span><br><span class="language-css">            <span class="hljs-attribute">box-sizing</span>: content-box;</span><br><span class="language-css">            <span class="hljs-comment">/* </span></span><br><span class="hljs-comment"><span class="language-css">            box-sizing用于设置盒子尺寸的计算方式（width，height的作用）</span></span><br><span class="hljs-comment"><span class="language-css">            可选值：</span></span><br><span class="hljs-comment"><span class="language-css">            content-box  默认值，宽度和高度用来设置内容区的大小</span></span><br><span class="hljs-comment"><span class="language-css">            border-box  宽度，高度用来设置盒子可见框的大小。</span></span><br><span class="hljs-comment"><span class="language-css">             */</span></span><br><span class="language-css">        &#125;</span><br><span class="language-css"></span><br><span class="language-css">    </span><span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;box1&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>    <br><span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span><br></code></pre></td></tr></table></figure>
+<h5 id="轮廓阴影和圆角"><a href="#轮廓阴影和圆角" class="headerlink" title="轮廓阴影和圆角"></a>轮廓阴影和圆角</h5><p>outline用来设置元素的轮廓线，用法和border一样，和边框不同，轮廓不会影响到可见框的大小<br>box-shadow用来设置元素的阴影效果，阴影不会影响页面布局<br>            第一个值：水平偏移量  正值阴影朝右偏移<br>            第二个值：垂直偏移量  正值阴影朝下偏移<br>            第三个值：阴影的模糊半径<br>            第四个值：颜色<br>border-radius用来设置圆角，值为圆角半径大小<br>             border-radius可以分别指定四个角的圆角<br>             四个值：左上 右上 右下 右上<br>             三个值：左上 右上&#x2F;左下 右下<br>             两个值：左上&#x2F;右下 右上&#x2F;左下<br>            还有单独写法<br>            border-top-left-radius:<br>            左上角<br>            border-top-right-radius:<br>            右上角<br>            border-bottom-left-radius:<br>            左下角<br>            border-bottom-right-radius:<br>            右下角<br>            将元素设置为圆形：可以这样写：<br>            border-radius：50%;<br>例子：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">html</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;en&quot;</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">&quot;UTF-8&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">http-equiv</span>=<span class="hljs-string">&quot;X-UA-Compatible&quot;</span> <span class="hljs-attr">content</span>=<span class="hljs-string">&quot;IE=edge&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;viewport&quot;</span> <span class="hljs-attr">content</span>=<span class="hljs-string">&quot;width=device-width, initial-scale=1.0&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>Document<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">style</span>&gt;</span><span class="language-css"></span><br><span class="language-css">        <span class="hljs-selector-class">.box1</span>&#123;</span><br><span class="language-css">            <span class="hljs-attribute">width</span>: <span class="hljs-number">100px</span>;</span><br><span class="language-css">            <span class="hljs-attribute">height</span>: <span class="hljs-number">100px</span>;</span><br><span class="language-css">            <span class="hljs-attribute">background-color</span>: cadetblue;</span><br><span class="language-css">            <span class="hljs-attribute">border</span>: <span class="hljs-number">10px</span> red solid;</span><br><span class="language-css">            <span class="hljs-attribute">outline</span>: solid <span class="hljs-number">10px</span> solid</span><br><span class="language-css">            <span class="hljs-comment">/* outline用来设置元素的轮廓线，用法和border一样，和边框不同，轮廓不会影响到可见框的大小 */</span></span><br><span class="language-css">        &#125;</span><br><span class="language-css">        <span class="hljs-selector-class">.box1</span>&#123;</span><br><span class="language-css">            <span class="hljs-attribute">box-shadow</span>: <span class="hljs-number">10px</span> <span class="hljs-number">10px</span> <span class="hljs-number">10px</span> <span class="hljs-built_in">rgb</span>(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>,<span class="hljs-number">0.4</span>);</span><br><span class="language-css">            <span class="hljs-comment">/*box-shadow用来设置元素的阴影效果，阴影不会影响页面布局</span></span><br><span class="hljs-comment"><span class="language-css">              */</span></span><br><span class="language-css">        &#125;</span><br><span class="language-css">        <span class="hljs-selector-class">.box2</span>&#123;</span><br><span class="language-css">            <span class="hljs-attribute">width</span>: <span class="hljs-number">200px</span>;</span><br><span class="language-css">            <span class="hljs-attribute">height</span>: <span class="hljs-number">200px</span>;</span><br><span class="language-css">            <span class="hljs-attribute">background-color</span>: silver;</span><br><span class="language-css">            <span class="hljs-attribute">border-radius</span>: <span class="hljs-number">20px</span>;</span><br><span class="language-css">        &#125;</span><br><span class="language-css">    </span><span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span><br>    <br><span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;box1&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;box2&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span><br></code></pre></td></tr></table></figure>
+<h4 id="浮动"><a href="#浮动" class="headerlink" title="浮动"></a>浮动</h4><h5 id="浮动的介绍"><a href="#浮动的介绍" class="headerlink" title="浮动的介绍"></a>浮动的介绍</h5><p>CSS 的 Float（浮动），会使元素向其父元素左或向右移动，其周围的元素也会重新排列。<br>使用float:属性来设置元素的浮动<br>可选值：<br>none：默认值，不浮动。<br>left：元素向左浮动<br>right：元素向右浮动<br>元素设置浮动后，元素水平方向布局的等式便不需要强制成立<br>元素设置浮动后，会完全从文档流中脱离，不在占用文档流的位置，所以元素下边的还在文档流中的元素会自动向上移动。<br>浮动特点：<br>1.元素设置浮动后，会完全从文档流中脱离<br>2.元素设置浮动后，会使元素向其父元素左或向右移动<br>3.浮动元素，默认不会从父元素中移出<br>4.一个浮动元素会尽量向左或向右移动，直到它的外边缘碰到包含框或另一个浮动框的边框为止，不会盖住其他浮动元素。<br>5.如果浮动元素的上边是一个没有浮动的块元素，则浮动元素无法上移<br>6.浮动元素不会超过它前一个浮动的兄弟元素，最多最多就是和他一样高。</p>
+<p>浮动的主要作用是让页面中的元素可以水平排列<br>通过浮动可以制作一些水平方向的布局</p>
+<h5 id="浮动的其他特点："><a href="#浮动的其他特点：" class="headerlink" title="浮动的其他特点："></a>浮动的其他特点：</h5><p>浮动元素不会盖住文字，文字会自动环绕在浮动元素的周围，所以可以利用浮动来设置文字环绕图片的效果<br>语速设置浮动，从文档流中脱离，元素的一些特点也会发生改变</p>
+<p>元素脱离文档流的特点：<br>块元素<br>1.块元素不会独占页面的一行<br>2.脱离文档流，块元素的宽度和高度都会被内容撑开<br>行内元素<br>行内文档脱离文档流以后会变为块元素，特点和块元素一样<br>脱离文档流以后，就不需要区分行内和块元素了</p>
+<h4 id="网页的布局"><a href="#网页的布局" class="headerlink" title="网页的布局"></a>网页的布局</h4><p>header网页头部<br>main网页主体<br>footer网页的底部<br>布局示例：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">html</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;zh-CN&quot;</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">&quot;UTF-8&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">http-equiv</span>=<span class="hljs-string">&quot;X-UA-Compatible&quot;</span> <span class="hljs-attr">content</span>=<span class="hljs-string">&quot;IE=edge&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;viewport&quot;</span> <span class="hljs-attr">content</span>=<span class="hljs-string">&quot;width=device-width, initial-scale=1.0&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>网页的布局<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">style</span>&gt;</span><span class="language-css"></span><br><span class="language-css">         *&#123;</span><br><span class="language-css">            <span class="hljs-attribute">margin</span>:<span class="hljs-number">0</span>;</span><br><span class="language-css">            <span class="hljs-attribute">padding</span>:<span class="hljs-number">0</span>;</span><br><span class="language-css">            <span class="hljs-attribute">list-style</span>: none;</span><br><span class="language-css">        &#125;</span><br><span class="language-css">        <span class="hljs-selector-tag">header</span>&#123;</span><br><span class="language-css">            <span class="hljs-attribute">width</span>: <span class="hljs-number">1000px</span>;</span><br><span class="language-css">            <span class="hljs-attribute">height</span>: <span class="hljs-number">200px</span>;</span><br><span class="language-css">            <span class="hljs-attribute">margin</span>: <span class="hljs-number">0px</span> auto;</span><br><span class="language-css">            <span class="hljs-attribute">background-color</span>: chocolate;</span><br><span class="language-css">            </span><br><span class="language-css">        &#125;</span><br><span class="language-css">        <span class="hljs-selector-tag">main</span>&#123;</span><br><span class="language-css">            <span class="hljs-attribute">width</span>: <span class="hljs-number">1000px</span>;</span><br><span class="language-css">            <span class="hljs-attribute">height</span>: <span class="hljs-number">700px</span>;</span><br><span class="language-css">            <span class="hljs-attribute">margin</span>: <span class="hljs-number">10px</span> auto;</span><br><span class="language-css">            <span class="hljs-attribute">background-color</span>: <span class="hljs-built_in">rgb</span>(<span class="hljs-number">160</span>, <span class="hljs-number">32</span>, <span class="hljs-number">28</span>);</span><br><span class="language-css">            </span><br><span class="language-css">        &#125;</span><br><span class="language-css">        <span class="hljs-selector-tag">nav</span>&#123;</span><br><span class="language-css">            <span class="hljs-attribute">width</span>: <span class="hljs-number">200px</span>;</span><br><span class="language-css">            <span class="hljs-attribute">height</span>: <span class="hljs-number">100%</span>;</span><br><span class="language-css">            <span class="hljs-attribute">background-color</span>: cornflowerblue;</span><br><span class="language-css">            <span class="hljs-attribute">float</span>: left;</span><br><span class="language-css">        &#125;</span><br><span class="language-css">        <span class="hljs-selector-tag">article</span>&#123;</span><br><span class="language-css">            <span class="hljs-attribute">width</span>: <span class="hljs-number">580px</span>;</span><br><span class="language-css">            <span class="hljs-attribute">height</span>: <span class="hljs-number">100%</span>;</span><br><span class="language-css">            <span class="hljs-attribute">background-color</span>: darkgoldenrod;</span><br><span class="language-css">            <span class="hljs-attribute">float</span>: left;</span><br><span class="language-css">            <span class="hljs-attribute">margin</span>: <span class="hljs-number">0px</span> <span class="hljs-number">10px</span>;</span><br><span class="language-css">        &#125;</span><br><span class="language-css">        <span class="hljs-selector-tag">aside</span>&#123;</span><br><span class="language-css">            <span class="hljs-attribute">width</span>: <span class="hljs-number">200px</span>;</span><br><span class="language-css">            <span class="hljs-attribute">height</span>: <span class="hljs-number">100%</span>;</span><br><span class="language-css">            <span class="hljs-attribute">background-color</span>: darkkhaki;</span><br><span class="language-css">            <span class="hljs-attribute">float</span>: left;</span><br><span class="language-css">        &#125;</span><br><span class="language-css"></span><br><span class="language-css">        <span class="hljs-selector-tag">footer</span>&#123;</span><br><span class="language-css">            <span class="hljs-attribute">width</span>: <span class="hljs-number">1000px</span>;</span><br><span class="language-css">            <span class="hljs-attribute">height</span>: <span class="hljs-number">200px</span>;</span><br><span class="language-css">            <span class="hljs-attribute">margin</span>: <span class="hljs-number">0px</span> auto;</span><br><span class="language-css">            <span class="hljs-attribute">background-color</span>: <span class="hljs-built_in">rgb</span>(<span class="hljs-number">112</span>, <span class="hljs-number">89</span>, <span class="hljs-number">72</span>);</span><br><span class="language-css">        &#125;</span><br><span class="language-css"></span><br><span class="language-css">    </span><span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">header</span>&gt;</span><br>        <span class="hljs-comment">&lt;!-- 网站的头部 --&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">header</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">main</span>&gt;</span><br>        <span class="hljs-comment">&lt;!-- 网站的主体 --&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">nav</span>&gt;</span><br>            <span class="hljs-comment">&lt;!-- 左边导航栏 --&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">nav</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">article</span>&gt;</span><br>            <span class="hljs-comment">&lt;!-- 中间内容 --&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">article</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">aside</span>&gt;</span><br>            <span class="hljs-comment">&lt;!-- 右边侧栏 --&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">aside</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">main</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">footer</span>&gt;</span><br><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">footer</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span><br></code></pre></td></tr></table></figure>
+<h4 id="高度塌陷问题"><a href="#高度塌陷问题" class="headerlink" title="高度塌陷问题"></a>高度塌陷问题</h4><p>在浮动布局里，父元素的高度是默认被子元素撑开的，<br>当子元素浮动后，会完全脱离文档流，子元素从文档流中脱离<br>将会无法撑起父元素的高度，导致父元素的高度丢失<br>父元素的高度塌陷后其下的元素会自动上移，导致页面布局混乱<br>所以高度塌陷是浮动布局中一个比较常见的问题这个问题必须进行处理</p>
+<h5 id="BFC（块级格式化环境）"><a href="#BFC（块级格式化环境）" class="headerlink" title="BFC（块级格式化环境）"></a>BFC（块级格式化环境）</h5><p>bfc是一个css中的一个隐含的属性，可以为一个元素开启BFC<br>开启BFC该元素会变成一个独立的布局区域<br>元素开启BFC后的特点<br>1.开启BFC的元素不会被浮动元素覆盖<br>2.开启BFC的元素子元素和父元素的外边距不会重叠<br>3.开启BFC的元素可以包含浮动的子元素<br>可以通过一些特殊的方式开启BFC<br>1.设置元素的浮动（不推荐）<br>2.将元素设置为行内块元素（不推荐）<br>3.将元素的overflow设置为非visible的值<br>    常用方式：为元素设置overflow：hidden  开启BFC</p>
+<h5 id="clear"><a href="#clear" class="headerlink" title="clear"></a>clear</h5><p>如果不希望某个元素因为其他浮动元素的影响改变位置，可以通过clear属性清除浮动元素的当前元素所产生的影响<br>clear：清除浮动元素对当前元素的影响<br>可选值：<br>left：清除左侧浮动元素对当前元素的影响<br>right：清除右侧浮动元素对当前元素的影响<br>both:清除两侧影响最大的那侧<br>原理：设置清除浮动后，浏览器会自动为元素设置一个上外边距，以使其位置不受其他元素的影响</p>
+<h5 id="使用after伪类来解决高度塌陷问题"><a href="#使用after伪类来解决高度塌陷问题" class="headerlink" title="使用after伪类来解决高度塌陷问题"></a>使用after伪类来解决高度塌陷问题</h5><p>最好用的方法<br>例子：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">html</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;en&quot;</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">&quot;UTF-8&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">http-equiv</span>=<span class="hljs-string">&quot;X-UA-Compatible&quot;</span> <span class="hljs-attr">content</span>=<span class="hljs-string">&quot;IE=edge&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;viewport&quot;</span> <span class="hljs-attr">content</span>=<span class="hljs-string">&quot;width=, initial-scale=1.0&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>Document<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">style</span>&gt;</span><span class="language-css"></span><br><span class="language-css">        <span class="hljs-selector-class">.box1</span>&#123;</span><br><span class="language-css">            <span class="hljs-attribute">border</span>: chocolate <span class="hljs-number">10px</span> solid;</span><br><span class="language-css">        &#125;</span><br><span class="language-css">        <span class="hljs-selector-class">.box2</span>&#123;</span><br><span class="language-css">            <span class="hljs-attribute">width</span>: <span class="hljs-number">200px</span>;</span><br><span class="language-css">            <span class="hljs-attribute">height</span>: <span class="hljs-number">200px</span>;</span><br><span class="language-css">            <span class="hljs-attribute">background-color</span>: cornflowerblue;</span><br><span class="language-css">            <span class="hljs-attribute">float</span>: left;</span><br><span class="language-css">        &#125;</span><br><span class="language-css">        <span class="hljs-selector-class">.box1</span><span class="hljs-selector-pseudo">::after</span>&#123;</span><br><span class="language-css">            <span class="hljs-attribute">content</span>: <span class="hljs-string">&#x27;&#x27;</span>;</span><br><span class="language-css">            <span class="hljs-attribute">clear</span>: both;</span><br><span class="language-css">            <span class="hljs-attribute">display</span>: block;</span><br><span class="language-css">            <span class="hljs-comment">/* 转换为块元素 */</span></span><br><span class="language-css">        &#125;</span><br><span class="language-css">    </span><span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;box1&quot;</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;box2&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>       <br>    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>    <br><span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span><br></code></pre></td></tr></table></figure>
+<h5 id="clearfix"><a href="#clearfix" class="headerlink" title="clearfix"></a>clearfix</h5><p>最终解决方案：clearfix<br>例子：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">html</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;en&quot;</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">&quot;UTF-8&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">http-equiv</span>=<span class="hljs-string">&quot;X-UA-Compatible&quot;</span> <span class="hljs-attr">content</span>=<span class="hljs-string">&quot;IE=edge&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;viewport&quot;</span> <span class="hljs-attr">content</span>=<span class="hljs-string">&quot;width=device-width, initial-scale=1.0&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>Document<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">style</span>&gt;</span><span class="language-css"></span><br><span class="language-css">        <span class="hljs-selector-class">.box1</span>&#123;</span><br><span class="language-css">            <span class="hljs-attribute">width</span>: <span class="hljs-number">200px</span>;</span><br><span class="language-css">            <span class="hljs-attribute">height</span>: <span class="hljs-number">200px</span>;</span><br><span class="language-css">            <span class="hljs-attribute">background-color</span>: cornflowerblue;</span><br><span class="language-css">        &#125;</span><br><span class="language-css">        <span class="hljs-selector-class">.box2</span>&#123;</span><br><span class="language-css">            <span class="hljs-attribute">width</span>: <span class="hljs-number">100px</span>;</span><br><span class="language-css">            <span class="hljs-attribute">height</span>: <span class="hljs-number">100px</span>;</span><br><span class="language-css">            <span class="hljs-attribute">background-color</span>: darkorange;</span><br><span class="language-css">            <span class="hljs-attribute">margin-top</span>: <span class="hljs-number">100px</span>;</span><br><span class="language-css">        &#125;</span><br><span class="language-css">        <span class="hljs-comment">/* clearfix这个样式可以同时解决高度塌陷和外边距重叠的问题 */</span></span><br><span class="language-css">        <span class="hljs-selector-class">.clearfix</span><span class="hljs-selector-pseudo">::before</span>,<span class="hljs-selector-class">.clearfix</span><span class="hljs-selector-pseudo">::after</span>&#123;</span><br><span class="language-css">            <span class="hljs-attribute">content</span>: <span class="hljs-string">&#x27;&#x27;</span>;</span><br><span class="language-css">            <span class="hljs-attribute">display</span>: table;</span><br><span class="language-css">            <span class="hljs-attribute">clear</span>: both;</span><br><span class="language-css">        &#125;</span><br><span class="language-css">    </span><span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;box1 clearfix&quot;</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;box2&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span><br></code></pre></td></tr></table></figure>
+<h4 id="定位"><a href="#定位" class="headerlink" title="定位"></a>定位</h4><h5 id="定位的介绍"><a href="#定位的介绍" class="headerlink" title="定位的介绍"></a>定位的介绍</h5><p>定位是一种更加高级的布局手段<br>通过定位可以将元素放到页面的任何位置<br>使用position属性来设置定位<br>    可选值：static       默认值，元素是静止的没有开启定位<br>           relative     开启元素的相对定位<br>           absolute     开启元素的绝对定位<br>           fixed        开启元素的固定定位<br>           sticky       开启元素的粘滞定位</p>
+<h5 id="相对定位"><a href="#相对定位" class="headerlink" title="相对定位"></a>相对定位</h5><p>将position属性设置为relative时则开启相对定位</p>
+<p>相对定位特点：<br>        1.如果元素开启相对定位后，如果不设置偏移量则元素不会发生任何的变化<br>        2.相对定位是参照于元素在文档流中的位置进行定位的<br>        3.相对定位会提高元素的层级<br>        4.相对定位不会脱离文档流</p>
+<p>偏移量（offset）<br>    垂直方向：通常情况下使用一种<br>        top：定位元素和定位位置上边的距离。<br>        bottom：定位元素定位位置上边的距离。<br>    水平方向：<br>        lift：定位元素和定位位置左边的距离。<br>        right：定位元素和定位位置右边的距离。<br>例子：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">html</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;zh&quot;</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">&quot;UTF-8&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">http-equiv</span>=<span class="hljs-string">&quot;X-UA-Compatible&quot;</span> <span class="hljs-attr">content</span>=<span class="hljs-string">&quot;IE=edge&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;viewport&quot;</span> <span class="hljs-attr">content</span>=<span class="hljs-string">&quot;width=device-width, initial-scale=1.0&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>Document<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">style</span>&gt;</span><span class="language-css"></span><br><span class="language-css">        <span class="hljs-selector-tag">div</span>&#123;</span><br><span class="language-css">            <span class="hljs-attribute">font-size</span>: <span class="hljs-number">60px</span>;</span><br><span class="language-css">        &#125;</span><br><span class="language-css">        <span class="hljs-selector-class">.box1</span>&#123;</span><br><span class="language-css">            <span class="hljs-attribute">width</span>: <span class="hljs-number">200px</span>;</span><br><span class="language-css">            <span class="hljs-attribute">height</span>: <span class="hljs-number">200px</span>;</span><br><span class="language-css">            <span class="hljs-attribute">background-color</span>: cadetblue;</span><br><span class="language-css">        &#125;</span><br><span class="language-css">        <span class="hljs-selector-class">.box2</span>&#123;</span><br><span class="language-css">            <span class="hljs-attribute">width</span>: <span class="hljs-number">200px</span>;</span><br><span class="language-css">            <span class="hljs-attribute">height</span>: <span class="hljs-number">200px</span>;</span><br><span class="language-css">            <span class="hljs-attribute">background-color</span>: <span class="hljs-built_in">rgb</span>(<span class="hljs-number">95</span>, <span class="hljs-number">160</span>, <span class="hljs-number">106</span>);</span><br><span class="language-css">            <span class="hljs-attribute">position</span>: relative;</span><br><span class="language-css">            <span class="hljs-attribute">bottom</span>: <span class="hljs-number">200px</span>;</span><br><span class="language-css">            <span class="hljs-attribute">left</span>:<span class="hljs-number">200px</span>;</span><br><span class="language-css">        &#125;</span><br><span class="language-css">        <span class="hljs-selector-class">.box3</span>&#123;</span><br><span class="language-css">            <span class="hljs-attribute">width</span>: <span class="hljs-number">200px</span>;</span><br><span class="language-css">            <span class="hljs-attribute">height</span>: <span class="hljs-number">200px</span>;</span><br><span class="language-css">            <span class="hljs-attribute">background-color</span>: <span class="hljs-built_in">rgb</span>(<span class="hljs-number">214</span>, <span class="hljs-number">109</span>, <span class="hljs-number">61</span>);</span><br><span class="language-css">        &#125;</span><br><span class="language-css">    </span><span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;box1&quot;</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;box2&quot;</span>&gt;</span>2<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;box3&quot;</span>&gt;</span>3<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span><br></code></pre></td></tr></table></figure>
+<h5 id="绝对定位"><a href="#绝对定位" class="headerlink" title="绝对定位"></a>绝对定位</h5><p>将position属性设置为absolute时则开启绝对定位<br>绝对定位特点：<br>        1.如果元素开启绝对定位后，如果不设置偏移量则元素位置不会发生变化<br>        2.绝对定位会脱离文档流<br>        3.绝对定位会改变元素的性质，行内变成块，块的宽高被元素撑开<br>        4.绝对定位会使元素提示一个层级<br>        5.是相对于其包含块进行定位的<br>        包含块：（containing block）<br>            正常情况下：<br>                包含块就是当前元素最近的祖先块元素<br>            绝对定位的包含块：<br>            包含块就是离他最近的开启了定位的祖先元素，如果所有祖先元素都没有开启定位，则根元素就是它的包含块。<br>            html（根元素  ，初始包含块）</p>
+<p>偏移量（offset）<br>    垂直方向：通常情况下使用一种<br>        top：定位元素和定位位置上边的距离。<br>        bottom：定位元素定位位置上边的距离。<br>    水平方向：<br>        lift：定位元素和定位位置左边的距离。<br>        right：定位元素和定位位置右边的距离。</p>
+<p>例子：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs css"><span class="hljs-selector-class">.box2</span>&#123;<br>           <span class="hljs-attribute">width</span>: <span class="hljs-number">200px</span>;<br>           <span class="hljs-attribute">height</span>: <span class="hljs-number">200px</span>;<br>           <span class="hljs-attribute">background-color</span>: <span class="hljs-built_in">rgb</span>(<span class="hljs-number">95</span>, <span class="hljs-number">160</span>, <span class="hljs-number">106</span>);<br>           <span class="hljs-attribute">position</span>: absolute;<br>           <span class="hljs-attribute">top</span>: <span class="hljs-number">0px</span>;<br>           <span class="hljs-attribute">left</span>:<span class="hljs-number">0px</span>;<br></code></pre></td></tr></table></figure>
+<h5 id="固定定位"><a href="#固定定位" class="headerlink" title="固定定位"></a>固定定位</h5><p>（网页固定广告，导航栏等）<br>将position属性设置为fixed时则开启绝对定位<br>固定定位也是一种绝对定位，所以固定定位的大部分特点都和绝对定位一样<br>唯一不同是固定定位永远参照浏览器的视口进行定位</p>
+<h5 id="粘滞定位"><a href="#粘滞定位" class="headerlink" title="粘滞定位"></a>粘滞定位</h5><p>(兼容性不好)<br>将position属性设置为sticky时则开启粘滞定位<br>粘滞定位和相对定位的特点基本一致<br>粘滞定位和相对定位可以在元素到达某个位置时将其固定</p>
+<h5 id="绝对定位元素的位置"><a href="#绝对定位元素的位置" class="headerlink" title="绝对定位元素的位置"></a>绝对定位元素的位置</h5><p>开启绝对定位以后：<br>水平方向的布局等式就需要添加left和right两个值<br>        lift+margin-left+border-left+padding-left+width+margin-right+border-right+padding-right+right&#x3D;其父元素区的宽度（必须满足）<br>        和以前一样只是多了两个值<br>        发生过度约束时，没有auto时，则自动调整right值以使等式满足。<br>        如果有auto，则自动调整auto的值以使等式满足<br>        可设置auto的值：<br>            margin width left right<br>            left right 默认为auto，等式不满足优先调整这两个值<br>这样可以写水平方向的居中：（在包含块里居中）<br>        left:0;<br>        right:0;<br>        margin-right:auto;<br>        margin-lift:auto;</p>
+<p>垂直方向的等式也必须要满足：<br>        top+margin-top&#x2F;bottom+padding-top&#x2F;bottom+border-top&#x2F;bottom+bottom&#x3D;父元素高度<br>        同样auto的值会自动调整<br>这样可以写垂直方向的居中：（在包含块里居中）<br>        margin-top:auto;<br>        margin-bottom:auto;<br>        top:0;<br>        bottom:0;<br>例子：水平垂直居中</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">html</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;en&quot;</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">&quot;UTF-8&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">http-equiv</span>=<span class="hljs-string">&quot;X-UA-Compatible&quot;</span> <span class="hljs-attr">content</span>=<span class="hljs-string">&quot;IE=edge&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;viewport&quot;</span> <span class="hljs-attr">content</span>=<span class="hljs-string">&quot;width=device-width, initial-scale=1.0&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>Document<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">style</span>&gt;</span><span class="language-css"></span><br><span class="language-css">        <span class="hljs-selector-class">.box1</span>&#123;</span><br><span class="language-css">            <span class="hljs-attribute">width</span>: <span class="hljs-number">500px</span>;</span><br><span class="language-css">            <span class="hljs-attribute">height</span>: <span class="hljs-number">500px</span>;</span><br><span class="language-css">            <span class="hljs-attribute">background-color</span>: cadetblue;</span><br><span class="language-css">            <span class="hljs-attribute">position</span>: relative;</span><br><span class="language-css">        &#125;</span><br><span class="language-css">        <span class="hljs-selector-class">.box2</span>&#123;</span><br><span class="language-css">            <span class="hljs-attribute">width</span>: <span class="hljs-number">100px</span>;</span><br><span class="language-css">            <span class="hljs-attribute">height</span>: <span class="hljs-number">100px</span>;</span><br><span class="language-css">            <span class="hljs-attribute">background-color</span>: chocolate;</span><br><span class="language-css">            <span class="hljs-attribute">position</span>: absolute;</span><br><span class="language-css">            <span class="hljs-attribute">left</span>: <span class="hljs-number">0</span>;</span><br><span class="language-css">            <span class="hljs-attribute">right</span>:<span class="hljs-number">0</span>;</span><br><span class="language-css">            <span class="hljs-attribute">margin-right</span>:auto;</span><br><span class="language-css">            <span class="hljs-attribute">margin-left</span>:auto;</span><br><span class="language-css">            <span class="hljs-attribute">margin-top</span>:auto;</span><br><span class="language-css">            <span class="hljs-attribute">margin-bottom</span>:auto;</span><br><span class="language-css">            <span class="hljs-attribute">top</span>:<span class="hljs-number">0</span>;</span><br><span class="language-css">            <span class="hljs-attribute">bottom</span>:<span class="hljs-number">0</span>;</span><br><span class="language-css">        &#125;</span><br><span class="language-css"></span><br><span class="language-css">    </span><span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;box1&quot;</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;box2&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span><br></code></pre></td></tr></table></figure>
+<h4 id="元素的层级"><a href="#元素的层级" class="headerlink" title="元素的层级"></a>元素的层级</h4><p>对于开启了定位的元素，可以通过z-index属性来指定元素的层级<br>    z-index需要一个整数做参数，数值越大元素的层级越高<br>        元素的层级越优先显示<br>    没有参数（参数相同）优先显示结构里最下面的元素。<br>祖先元素的层级再高，也不会遮盖住后代元素<br>例子：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">html</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;zh&quot;</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">&quot;UTF-8&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">http-equiv</span>=<span class="hljs-string">&quot;X-UA-Compatible&quot;</span> <span class="hljs-attr">content</span>=<span class="hljs-string">&quot;IE=edge&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;viewport&quot;</span> <span class="hljs-attr">content</span>=<span class="hljs-string">&quot;width=device-width, initial-scale=1.0&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>Document<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">style</span>&gt;</span><span class="language-css"></span><br><span class="language-css">        <span class="hljs-selector-tag">div</span>&#123;</span><br><span class="language-css">            <span class="hljs-attribute">font-size</span>: <span class="hljs-number">60px</span>;</span><br><span class="language-css">        &#125;</span><br><span class="language-css">        <span class="hljs-selector-class">.box1</span>&#123;</span><br><span class="language-css">            <span class="hljs-attribute">width</span>: <span class="hljs-number">200px</span>;</span><br><span class="language-css">            <span class="hljs-attribute">height</span>: <span class="hljs-number">200px</span>;</span><br><span class="language-css">            <span class="hljs-attribute">background-color</span>: cadetblue;</span><br><span class="language-css">            <span class="hljs-attribute">position</span>: absolute;</span><br><span class="language-css">            <span class="hljs-attribute">z-index</span>: <span class="hljs-number">1</span>;</span><br><span class="language-css">        &#125;</span><br><span class="language-css">        <span class="hljs-selector-class">.box2</span>&#123;</span><br><span class="language-css">            <span class="hljs-attribute">width</span>: <span class="hljs-number">200px</span>;</span><br><span class="language-css">            <span class="hljs-attribute">height</span>: <span class="hljs-number">200px</span>;</span><br><span class="language-css">            <span class="hljs-attribute">background-color</span>: <span class="hljs-built_in">rgba</span>(<span class="hljs-number">209</span>, <span class="hljs-number">196</span>, <span class="hljs-number">73</span>, <span class="hljs-number">0.5</span>);</span><br><span class="language-css">            <span class="hljs-attribute">position</span>: absolute;</span><br><span class="language-css">            <span class="hljs-attribute">top</span>: <span class="hljs-number">50px</span>;</span><br><span class="language-css">            <span class="hljs-attribute">left</span>: <span class="hljs-number">50px</span>;</span><br><span class="language-css">            <span class="hljs-attribute">z-index</span>: <span class="hljs-number">2</span>;</span><br><span class="language-css">        &#125;</span><br><span class="language-css">        <span class="hljs-selector-class">.box3</span>&#123;</span><br><span class="language-css">            <span class="hljs-attribute">width</span>: <span class="hljs-number">200px</span>;</span><br><span class="language-css">            <span class="hljs-attribute">height</span>: <span class="hljs-number">200px</span>;</span><br><span class="language-css">            <span class="hljs-attribute">background-color</span>: <span class="hljs-built_in">rgb</span>(<span class="hljs-number">214</span>, <span class="hljs-number">109</span>, <span class="hljs-number">61</span>);</span><br><span class="language-css">            <span class="hljs-attribute">position</span>: absolute;</span><br><span class="language-css">            <span class="hljs-attribute">top</span>: <span class="hljs-number">100px</span>;</span><br><span class="language-css">            <span class="hljs-attribute">left</span>: <span class="hljs-number">100px</span>;</span><br><span class="language-css">            <span class="hljs-attribute">z-index</span>: <span class="hljs-number">3</span>;</span><br><span class="language-css">        &#125;</span><br><span class="language-css">        <span class="hljs-selector-class">.box4</span>&#123;</span><br><span class="language-css">            <span class="hljs-attribute">width</span>: <span class="hljs-number">100px</span>;</span><br><span class="language-css">            <span class="hljs-attribute">height</span>: <span class="hljs-number">100px</span>;</span><br><span class="language-css">            <span class="hljs-attribute">background-color</span>: <span class="hljs-built_in">rgb</span>(<span class="hljs-number">88</span>, <span class="hljs-number">76</span>, <span class="hljs-number">70</span>);</span><br><span class="language-css">            <span class="hljs-attribute">position</span>: absolute;</span><br><span class="language-css">            <span class="hljs-attribute">z-index</span>: <span class="hljs-number">100</span>;</span><br><span class="language-css">        &#125;</span><br><span class="language-css">    </span><span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;box1&quot;</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;box2&quot;</span>&gt;</span>2<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;box3&quot;</span>&gt;</span>3<br>        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;box4&quot;</span>&gt;</span>4<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span><br></code></pre></td></tr></table></figure>
+<h4 id="font"><a href="#font" class="headerlink" title="font"></a>font</h4><h5 id="字体相关样式："><a href="#字体相关样式：" class="headerlink" title="字体相关样式："></a>字体相关样式：</h5><p>color  用来设置字体颜色<br>font-size  用来设置字体大小<br>    font-size相关单位：<br>        em相对于当前元素的一个font-size<br>        rem相当于根元素的一个font-size<br>font-family字体族（字体的格式）<br>        可选值： serif（衬线字体）<br>                sans-serif（非衬线字体）<br>                monospace（等宽字体）<br>                    指定字体的类别，可以指定多种字体，使用，隔开，浏览器会自己按顺序选择其中电脑上有的字体显示<br>font-face可以将服务器中的字体直接提供给用户去使用 问题：1.加载可能比较慢  2.版权<br>例子：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs css"><span class="hljs-keyword">@font-face</span> &#123;<br>           <span class="hljs-attribute">font-family</span>:这是字体名字;<br>           <span class="hljs-comment">/*   font-family 字体名字 */</span><br>           <span class="hljs-attribute">src</span>: <span class="hljs-built_in">url</span>(<span class="hljs-string">路径</span>) format（<span class="hljs-string">&quot;格式声明&quot;</span>）;<br>           <span class="hljs-comment">/* 服务器上字体的路径 */</span><br></code></pre></td></tr></table></figure>
+<h5 id="图标字体"><a href="#图标字体" class="headerlink" title="图标字体"></a>图标字体</h5><pre><code class="hljs">网页里经常使用一些图标，可以通过图片来引入图标
+但是图片大小本身太大，并且非常不灵活
+-所以在使用图标时，我们可以将图标直接设置为字体
+然后通过font-size的形式来引入
+这样我们就可以通过字体的形式来使用图标
+
+Font Awesome：
+    免费的字体图标库https://fontawesome.com/
+    下载解压后
+    将css文件和webfonts移动到项目中（这两必须在同一级目录）
+    将CSS文件引入到网页中
+    使用图标字体：
+        直接通过使用类名来使用图标字体（通常使用i标签来表示字体图标）
+
+    其他用法，可以通过伪元素来设置字体图标：
+    <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs html"> li::before&#123;<br>    content: &#x27;\f1b0&#x27;;<br>    font-family: &#x27;Font Awesome 5 Free&#x27;;<br>    font-weight: 900;<br>&#125;<br></code></pre></td></tr></table></figure>
+    也可以通过实体来引入符号
+    <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;fas&quot;</span>&gt;</span> <span class="hljs-symbol">&amp;#xf0f3;</span> <span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span><br></code></pre></td></tr></table></figure>
+</code></pre>
+<h5 id="行高（line-height）"><a href="#行高（line-height）" class="headerlink" title="行高（line height）"></a>行高（line height）</h5><p>行高是文字占有的实际的高度<br>可以通过line height设置行高<br>    行高可以指定大小（px em），也可以为行高设置一个整数,行高会是字体大小的指定倍数（默认行高1.33）</p>
+<p>字体框：字体框就是字体存在的格子，设置font-size就是在设置字体框的高度</p>
+<p>行高会在字体框里平均分配<br>    可以将行高设置为与元素高度一样，使得单行文字在元素中垂直居中<br>    行高还可以用来设置文字的行间距<br>        行间距&#x3D;行高-字体的大小</p>
+<h5 id="字体的简写属性"><a href="#字体的简写属性" class="headerlink" title="字体的简写属性"></a>字体的简写属性</h5><p>font可以设置字体相关的所有属性<br>    格式：<br>        font：字体大小&#x2F;行高  字体族<br>        行高可以省略。不写则使用默认值</p>
+<p>font-weight  字重  字体的加粗<br>    可选值：normal 默认值<br>            bold  加粗<br>            100-900（九个级别，没啥用）<br>font-style：  字体样式<br>    可选值：normal 正常的<br>           italic 斜体</p>
+<h5 id="文本的样式"><a href="#文本的样式" class="headerlink" title="文本的样式"></a>文本的样式</h5><p>text-align  文本的水平对齐<br>    可选值:<br>            left 左侧对齐<br>            right 右对齐<br>            center 居中对齐<br>            justify两端对齐</p>
+<p>vertical-align：元素的垂直对齐<br>    可选值：<br>            baseline(基线对齐)<br>            top    顶部对齐<br>            bottom  底部对齐<br>            center  居中对齐</p>
+<p>text-decoration可以用来设置文本的修饰<br>    可选值：<br>        none：默认值，不添加任何修饰，正常显示<br>        underline 为文本添加下划线<br>        overline 为文本添加上划线<br>        line-through 为文本添加删除线</p>
+<p>white-space:设置网页如何处理空白<br>    可选值：<br>        normal  正常<br>        nowrap  不换行<br>        pre 保留空白</p>
+<h4 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h4><p>设置背景样式</p>
+<h5 id="设置背景颜色："><a href="#设置背景颜色：" class="headerlink" title="设置背景颜色："></a>设置背景颜色：</h5><p>background-color: #bfa;</p>
+<h5 id="设置背景图片："><a href="#设置背景图片：" class="headerlink" title="设置背景图片："></a>设置背景图片：</h5><p>使用background-image来设置背景图片<br>    - 语法：background-image:url(相对路径);<br>    - 如果背景图片大于元素，默认会显示图片的左上角<br>    - 如果背景图片和元素一样大，则会将背景图片全部显示<br>    - 如果背景图片小于元素大小，则会默认将背景图片平铺以充满元素<br>background-image:url(img&#x2F;1.png);<br>可以同时为一个元素指定背景颜色和背景图片，<br>这样背景颜色将会作为背景图片的底色<br>一般情况下设置背景图片时都会同时指定一个背景颜色</p>
+<h5 id="设置背景图片的重复方式"><a href="#设置背景图片的重复方式" class="headerlink" title="设置背景图片的重复方式"></a>设置背景图片的重复方式</h5><p>background-repeat用于设置背景图片的重复方式<br>可选值：<br>    repeat，默认值，背景图片会双方向重复（平铺）<br>    no-repeat ，背景图片不会重复，有多大就显示多大<br>    repeat-x， 背景图片沿水平方向重复<br>    repeat-y， 背景图片沿垂直方向重复</p>
+<h5 id="设置背景图片的位置"><a href="#设置背景图片的位置" class="headerlink" title="设置背景图片的位置"></a>设置背景图片的位置</h5><p>background-position 用来设置背景图片的位置<br>设置方式：<br>        通过top bottom left right center几个方位来设置图片的位置<br>例子：background-position： bottom left;（至少两个值）</p>
+<p>也可以直接指定两个偏移量，<br>第一个值是水平偏移量<br>    - 如果指定的是一个正值，则图片会向右移动指定的像素<br>    - 如果指定的是一个负值，则图片会向左移动指定的像素<br>第二个是垂直偏移量	<br>    - 如果指定的是一个正值，则图片会向下移动指定的像素<br>    - 如果指定的是一个负值，则图片会向上移动指定的像素<br>例子：background-position: -80px -40px;</p>
+<h5 id="设置背景的范围"><a href="#设置背景的范围" class="headerlink" title="设置背景的范围"></a>设置背景的范围</h5><p>background-clip用于设置背景的范围<br>可选值： border-box  默认值，背景会出现在边框的下边<br>        padding-box 背景不会出现在边框，只出现在内容区和内边距<br>        content-box 背景只会出现在内容区<br>background-origin 背景图片的偏移量计算的原点<br>        padding-box  默认值background-position从内边距开始算<br>        content-box  background-position从内容区开始算<br>        border-box   background-position从边框开始算</p>
+<h5 id="背景图片的尺寸"><a href="#背景图片的尺寸" class="headerlink" title="背景图片的尺寸"></a>背景图片的尺寸</h5><p>background-size来设置背景图片的尺寸<br>第一个值表示宽度<br>第二个值表示高度<br>-如果只写一个，则第二个默认为auto</p>
+<p>写cover可以让图片比例不变，将元素铺满<br>contain图片比例不变，将图片在元素中完整显示</p>
+<h5 id="背景图片的滚动"><a href="#背景图片的滚动" class="headerlink" title="背景图片的滚动"></a>背景图片的滚动</h5><p>background-attachment用来设置背景图片是否随页面一起滚动（很少用）<br>         可选值：<br>             scroll，默认值，背景图片随着窗口滚动<br>              fixed，背景图片会固定在某一位置，不随页面滚动</p>
+<p> 不随窗口滚动的图片，我们一般都是设置给body，而不设置给其他元素</p>
+<h5 id="背景属性的简写"><a href="#背景属性的简写" class="headerlink" title="背景属性的简写"></a>背景属性的简写</h5><p>  background(还是不简写的好，具体查文档)<br>      - 通过该属性可以同时设置所有背景相关的样式<br>      - 没有顺序的要求，谁在前睡在后都行<br>         也没有数量的要求，不写的样式就使用默认值<br>例子：<br>background: #bfa url(img&#x2F;3.png) center center no-repeat fixed;</p>
+<h5 id="雪碧图"><a href="#雪碧图" class="headerlink" title="雪碧图"></a>雪碧图</h5><p>为了解决图片闪烁和加载问题<br>    可以将多个小图片统一保存到一个大图片中，然后通过调整background-position来调整显示位置<br>    这样图片可以同时加载到网页中，可以有效避免出现闪烁问题<br>    这个技术在网页运用十分广泛，称为CSS-sprite（现在在减少使用）<br>    使用：<br>    1.确定要使用的图标<br>    2.测量图标大小<br>    3.根据测量创建元素<br>    4.将图设置为元素的背景图片<br>    5.设置偏移量以显示对应图标</p>
+<pre><code class="hljs">特点：
+一次性加载多个图片，减少服务器请求，加快访问速度
+</code></pre>
+<h5 id="渐变"><a href="#渐变" class="headerlink" title="渐变"></a>渐变</h5><p>通过渐变可以设置一些复杂的背景颜色，可以实现一个颜色向其他颜色过渡的效果<br>    渐变是图片，需要使用background-image来设置<br>    （用法太多了）<br>线性渐变<br>   background-image: linear-gradient(to left ,red,yellow);<br>   三个值是渐变方向，开头颜色 ，结尾颜色<br>  （也可以同时指定多个颜色，多个颜色默认情况下平均分配）<br>径向渐变<br>    background-image: radial-gradient(red,yellow);<br>    从中间向西周散射，默认情况下，径向渐变的形状由元素形状决定<br>    可以手动指定方向：<br>        circle  正圆<br>        ellipse 椭圆</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%8F%8A%E5%B5%8C%E5%85%A5%E5%BC%8F%E8%BD%AF%E4%BB%B6/" class="category-chain-item">计算机及嵌入式软件</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%8F%8A%E5%B5%8C%E5%85%A5%E5%BC%8F%E8%BD%AF%E4%BB%B6/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%89%8D%E7%AB%AF/" class="category-chain-item">计算机前端</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%8F%8A%E5%B5%8C%E5%85%A5%E5%BC%8F%E8%BD%AF%E4%BB%B6/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%89%8D%E7%AB%AF/HTML-CSS/" class="category-chain-item">HTML+CSS</a>
+  
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/HTML-CSS/" class="print-no-link">#HTML+CSS</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>HTML+CSS笔记 (11.CSS布局)</div>
+      <div>https://www.duruofu.xyz/posts/913/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>DuRuofu</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年6月6日</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>更新于</div>
+          <div>2025年1月10日</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
+                    <i class="iconfont icon-cc-nc"></i>
+                  </span>
+                </a>
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="SA - 相同方式共享">
+                    <i class="iconfont icon-cc-sa"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/61018/" title="HTML+CSS笔记 (9.像素和百分比)">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">HTML+CSS笔记 (9.像素和百分比)</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/10610/" title="HTML+CSS笔记 (10.颜色单位)">
+                        <span class="hidden-mobile">HTML+CSS笔记 (10.颜色单位)</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#gitalk-container', function() {
+      Fluid.utils.createCssLink('/css/gitalk.css')
+      Fluid.utils.createScript('https://lib.baomitu.com/gitalk/1.8.0/gitalk.min.js', function() {
+        var options = Object.assign(
+          {"clientID":"c9ac06d5413a9d613a1e","clientSecret":"a44f5c72589eb090876cc64067db28fbfdf4747c","repo":"Blog-comments-gitalk","owner":"DuRuofu","admin":["DuRuofu"],"language":"zh-CN","labels":["Gitalk"],"perPage":15,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":false,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token"},
+          {
+            id: 'c1e757f9fd8482d06d974329863c1f57'
+          }
+        )
+        var gitalk = new Gitalk(options);
+        gitalk.render('gitalk-container');
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <br><span id="timeDate">天数载入中</span><span id="times">...</span><br> <span>总有读不懂的诗和到达不了的远方</span> <p>Copyright © 2023 - <span id="currentYear"></span> All Rights Reserved.</p>
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      陕ICP备2022007454号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=2022007454"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>陕ICP备2022007454号-2</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":true,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  var relativeDate = function() {
+    var updatedTime = document.getElementById('updated-time');
+    if (updatedTime) {
+      var text = updatedTime.textContent;
+      var reg = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:Z|[+-]\d{2}:\d{2})/;
+      var matchs = text.match(reg);
+      if (matchs) {
+        var relativeTime = moment(matchs[0]).fromNow();
+        updatedTime.textContent = text.replace(reg, relativeTime);
+      }
+      updatedTime.style.display = '';
+    }
+  };
+  Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/moment.min.js', function() {
+    if (!'zh-cn'.startsWith('en')) {
+      Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/locale/zh-cn.min.js', function() {
+        relativeDate();
+      });
+    } else {
+      relativeDate();
+    }
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/cust/custom.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

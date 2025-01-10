@@ -1,0 +1,1051 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/%E4%B8%AA%E4%BA%BA%E5%A4%B4%E5%83%8F%E6%97%A0%E8%83%8C%E6%99%AF.png">
+  <link rel="icon" href="https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/%E4%B8%AA%E4%BA%BA%E5%A4%B4%E5%83%8F%E6%97%A0%E8%83%8C%E6%99%AF.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="DuRuofu">
+  <meta name="keywords" content="嵌入式,个人博客,个人测试">
+  
+    <meta name="description" content="本文主要记录STM32串口的进阶使用。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="STM32串口进阶(HAL)">
+<meta property="og:url" content="https://www.duruofu.xyz/posts/25840/index.html">
+<meta property="og:site_name" content="Duruofu&#39;s 个人测试">
+<meta property="og:description" content="本文主要记录STM32串口的进阶使用。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.duruofu.xyz/img/index_img/STM32.jpg">
+<meta property="article:published_time" content="2024-02-13T04:40:53.000Z">
+<meta property="article:modified_time" content="2025-01-10T14:20:33.992Z">
+<meta property="article:author" content="DuRuofu">
+<meta property="article:tag" content="STM32">
+<meta property="article:tag" content="STM32串口">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://www.duruofu.xyz/img/index_img/STM32.jpg">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>STM32串口进阶(HAL) - Duruofu&#39;s 个人测试</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/cust/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"www.duruofu.xyz","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":80,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":true,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":5},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null},"gtag":null,"woyaola":null,"cnzz":null},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>DuRuofu</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/2020/06/06/1.%E9%98%85%E8%AF%BB%E5%86%99%E4%BD%9C/%E5%8E%9F%E5%88%9B%E8%AF%97%E8%AF%8D/%E8%AF%97%E8%AF%8D/" target="_self">
+                <i class="iconfont icon-books"></i>
+                <span>诗词</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                <span>ESP32教程</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/posts/58874/" target="_self">
+                    
+                    <span>ESP32教程-2024</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/posts/58875/" target="_self">
+                    
+                    <span>ESP32教程-2025</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="STM32串口进阶(HAL)"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        DuRuofu
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-02-13 12:40" pubdate>
+          2024年2月13日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.8k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          5 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">STM32串口进阶(HAL)</h1>
+            
+              <p id="updated-time" class="note note-info" style="display: none">
+                
+                  
+                    本文最后更新于 2025-01-10T22:20:33+08:00
+                  
+                  
+
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <h3 id="说明："><a href="#说明：" class="headerlink" title="说明："></a>说明：</h3><ol>
+<li>本文档由DuRuofu撰写，由DuRuofu负责解释及执行。</li>
+</ol>
+<h3 id="修订历史："><a href="#修订历史：" class="headerlink" title="修订历史："></a>修订历史：</h3><table>
+<thead>
+<tr>
+<th>文档名称</th>
+<th>版本</th>
+<th>作者</th>
+<th>时间</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>STM32串口进阶</td>
+<td>v1.0.0</td>
+<td>DuRuofu</td>
+<td>2024-02-12</td>
+<td>已同步至博客</td>
+</tr>
+</tbody></table>
+<div STYLE="page-break-after: always;"></div>
+
+<h1 id="STM32串口进阶"><a href="#STM32串口进阶" class="headerlink" title="STM32串口进阶"></a>STM32串口进阶</h1><h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><p>我们使用基本的串口接收中断配合回调函数，已经可以完成很多功能。详见<a href="../STM32%E5%A4%96%E8%AE%BE%E4%BD%BF%E7%94%A8/STM32%E4%B8%B2%E5%8F%A3%E4%BD%BF%E7%94%A8%EF%BC%88HAL%E5%BA%93%EF%BC%89.md">STM32串口使用（HAL库）</a>一文。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs c"><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;uart_it_config.h&quot;</span></span><br><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * @description: 串口接收中断初始化(总)</span><br><span class="hljs-comment"> * @return &#123;*&#125;Debug_Init</span><br><span class="hljs-comment"> */</span><br><span class="hljs-type">void</span> <span class="hljs-title function_">UART_IT_Init</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span><br>&#123;<br>    <span class="hljs-comment">//串口1接收中断初始化</span><br>    <span class="hljs-comment">//USART1_Init();</span><br>    <span class="hljs-comment">//串口2接收中断初始化</span><br>    <span class="hljs-comment">//USART2_Init();</span><br>    <span class="hljs-comment">//串口3接收中断初始化</span><br>    UART3_Init();<br>&#125;<br><br><span class="hljs-comment">// 串口接收完成回调函数</span><br><span class="hljs-type">void</span> <span class="hljs-title function_">HAL_UART_RxCpltCallback</span><span class="hljs-params">(UART_HandleTypeDef *huart)</span><br>&#123;<br>    <span class="hljs-keyword">if</span>(huart-&gt;Instance == USART1)<br>    &#123;<br>        <span class="hljs-comment">//UART1_RxCpltCallback(huart);</span><br>    &#125;<br>    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(huart-&gt;Instance == USART2)<br>    &#123;<br>        <span class="hljs-comment">//UART2_RxCpltCallback();</span><br>    &#125;<br>    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(huart-&gt;Instance == USART3)<br>    &#123;<br>        UART3_RxCpltCallback(huart);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>我们使用<code>uart_it_config</code>模块代理全局的串口接收数据非空中断<code>HAL_UART_RxCpltCallback</code>，然后在内部实现各个串口的逻辑，以<code>UART3</code>为例：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;uart_3.h&quot;</span></span><br><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> RXBUFFERSIZE_3 256 <span class="hljs-comment">// 最大接收字节数</span></span><br><br><span class="hljs-comment">// 定义串口句柄,使用串口1</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> UART_HANDLE huart3</span><br><br><br><span class="hljs-type">uint8_t</span> RxBuffer_3[RXBUFFERSIZE_3];  <span class="hljs-comment">// 定义数据缓冲区</span><br><span class="hljs-type">uint8_t</span> Uart_RxBuffer_3;             <span class="hljs-comment">// 接收中断缓冲</span><br><span class="hljs-type">uint8_t</span> Uart_Rx_Cnt_3 = <span class="hljs-number">0</span>;           <span class="hljs-comment">// 接收缓冲计数</span><br><br><span class="hljs-type">void</span> <span class="hljs-title function_">UART3_Init</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span><br>&#123;<br>  <span class="hljs-comment">/*串口硬件配置代码(使用cudeMX则不需要此部分)</span><br><span class="hljs-comment">  Init the GPIO of USART1</span><br><span class="hljs-comment">  */</span><br>  <span class="hljs-comment">// 使能 USART1 的接收中断</span><br>  __HAL_UART_ENABLE_IT(&amp;UART_HANDLE, UART_IT_RXNE);<br>  <span class="hljs-comment">// 开启 USART1 的连续接收中断，并指定接收缓冲区的地址和长度</span><br>  HAL_UART_Receive_IT(&amp;UART_HANDLE, &amp;Uart_RxBuffer_3, <span class="hljs-number">1</span>);<br>&#125;<br><br><span class="hljs-comment">// 串口3接收完成回调函数</span><br><span class="hljs-type">void</span> <span class="hljs-title function_">UART3_RxCpltCallback</span><span class="hljs-params">(UART_HandleTypeDef *huart)</span><br>&#123;<br>  <span class="hljs-comment">/* Prevent unused argument(s) compilation warning */</span><br>  UNUSED(huart);<br>  <span class="hljs-comment">/* <span class="hljs-doctag">NOTE:</span> This function Should not be modified, when the callback is needed,</span><br><span class="hljs-comment">           the HAL_UART_TxCpltCallback could be implemented in the user file</span><br><span class="hljs-comment">   */</span><br><br>  <span class="hljs-keyword">if</span> (Uart_Rx_Cnt_3 &gt;= <span class="hljs-number">255</span>) <span class="hljs-comment">// 溢出判断</span><br>  &#123;<br>    Uart_Rx_Cnt_3 = <span class="hljs-number">0</span>;<br>    <span class="hljs-built_in">memset</span>(RxBuffer_3, <span class="hljs-number">0x00</span>, <span class="hljs-keyword">sizeof</span>(RxBuffer_3));<br>    HAL_UART_Transmit(&amp;UART_HANDLE, (<span class="hljs-type">uint8_t</span> *)<span class="hljs-string">&quot;数据溢出&quot;</span>, <span class="hljs-number">10</span>, <span class="hljs-number">0xFFFF</span>);<br>  &#125;<br>  <span class="hljs-keyword">else</span><br>  &#123;<br>    RxBuffer_3[Uart_Rx_Cnt_3++] = Uart_RxBuffer_3;<br>    <span class="hljs-comment">// 单字符判断</span><br><br>    <span class="hljs-keyword">if</span> ((RxBuffer_3[Uart_Rx_Cnt_3 - <span class="hljs-number">1</span>] == <span class="hljs-number">0x0A</span>) &amp;&amp; (RxBuffer_3[Uart_Rx_Cnt_3 - <span class="hljs-number">2</span>] == <span class="hljs-number">0x0D</span>)) <span class="hljs-comment">// 判断结束位</span><br>    &#123;<br>      <span class="hljs-comment">// 这里可以写多字节消息的判断</span><br>      HAL_UART_Transmit(&amp;UART_HANDLE, (<span class="hljs-type">uint8_t</span> *)&amp;RxBuffer_3, Uart_Rx_Cnt_3, <span class="hljs-number">0xFFFF</span>); <span class="hljs-comment">// 将收到的信息发送出去</span><br>      <span class="hljs-keyword">while</span> (HAL_UART_GetState(&amp;UART_HANDLE) == HAL_UART_STATE_BUSY_TX); <span class="hljs-comment">// 检测UART发送结束</span><br><br>      <span class="hljs-comment">// 复位</span><br>      Uart_Rx_Cnt_3 = <span class="hljs-number">0</span>;<br>      <span class="hljs-built_in">memset</span>(RxBuffer_3, <span class="hljs-number">0x00</span>, <span class="hljs-keyword">sizeof</span>(RxBuffer_3)); <span class="hljs-comment">// 清空数组</span><br>    &#125;<br>  &#125;<br><br>  <span class="hljs-comment">// 重新使能串口接收中断</span><br>  HAL_UART_Receive_IT(&amp;UART_HANDLE, (<span class="hljs-type">uint8_t</span> *)&amp;Uart_RxBuffer_3, <span class="hljs-number">1</span>); <span class="hljs-comment">// 因为接收中断使用了一次即关闭，所以在最后加入这行代码即可实现无限使用</span><br>&#125;<br><br><span class="hljs-comment">// 串口3错误回调函数(主要用来清除溢出中断)</span><br><span class="hljs-comment">//  void UART3_ErrorCallback(UART_HandleTypeDef *huart)</span><br><span class="hljs-comment">//  &#123;</span><br><span class="hljs-comment">//    if(HAL_UART_ERROR_ORE)</span><br><span class="hljs-comment">//    &#123;</span><br><span class="hljs-comment">//       uint32_t temp = huart-&gt;Instance-&gt;SR;</span><br><span class="hljs-comment">//       temp = huart-&gt;Instance-&gt;DR;</span><br><span class="hljs-comment">//    &#125;</span><br><span class="hljs-comment">//  &#125;</span><br><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 函数功能: 重定向c库函数printf到DEBUG_USARTx</span><br><span class="hljs-comment"> * 输入参数: 无</span><br><span class="hljs-comment"> * 返 回 值: 无</span><br><span class="hljs-comment"> * 说    明：无</span><br><span class="hljs-comment"> */</span><br><span class="hljs-type">int</span> <span class="hljs-title function_">fputc</span><span class="hljs-params">(<span class="hljs-type">int</span> ch, FILE *f)</span><br>&#123;<br>  HAL_UART_Transmit(&amp;UART_HANDLE, (<span class="hljs-type">uint8_t</span> *)&amp;ch, <span class="hljs-number">1</span>, <span class="hljs-number">0xffff</span>);<br>  <span class="hljs-keyword">return</span> ch;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><code>UART3_RxCpltCallback</code>函数通过判断接收计数器<code>Uart_Rx_Cnt_3</code>的值是否达到上限255，来检测是否发生了溢出。如果没有溢出，将接收到的数据存储到接收缓冲区<code>RxBuffer_3</code>中，并进行结束位的判断。这里只给出了单字符结束位的判断，即判断收到的字符是否是0x0D和0x0A（对应回车换行）。如果满足结束位的条件，则将接收到的信息通过串口发送出去，并等待发送结束。最后，重新使能串口接收中断，以便继续接收后续的数据。</p>
+<p>这样就可以实现结尾为<code>\r\n</code>，的不定长数据接收，但 并不是真正的接收不定长数据，只能算是”伪不定长”(但实际上也能满足业务需求)。</p>
+<h2 id="二、串口单字节连续接收数据-DMA"><a href="#二、串口单字节连续接收数据-DMA" class="headerlink" title="二、串口单字节连续接收数据+DMA"></a>二、串口单字节连续接收数据+DMA</h2><p>上面这样一个字节一个字节的处理，频繁中断会占用cpu时间，我们可以引入DMA代替cpu搬运数据。</p>
+<p>为串口添加DMA通道：</p>
+<p><img src="/posts/25840/20240213105705.png" srcset="/img/loading.gif" lazyload></p>
+<p>为UART_TX,UART_RX分别创建DMA通道。</p>
+<p><img src="/posts/25840/20240213105900.png" srcset="/img/loading.gif" lazyload></p>
+<p>其余的变化不大，只需要再前言的代码基础上将<code>HAL_UART_Receive_IT</code>改为<code>HAL_UART_Receive_DMA</code><br>将<code>HAL_UART_Transmit</code>改为<code>HAL_UART_Transmit_DMA</code>,</p>
+<p><strong>串口DMA方式接收函数：<code>HAL_UART_Receive_DMA</code></strong></p>
+<table>
+<thead>
+<tr>
+<th>函数原型</th>
+<th>HAL_StatusTypeDef HAL_UART_Receive_DMA(UART_Handle TypeDef *huart, uint 8_t *pData, uint 16_t Size)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>功能描述</td>
+<td>在DMA方式下接收一定数量的数据</td>
+</tr>
+<tr>
+<td>入口参数1</td>
+<td>huart：串口句柄的地址</td>
+</tr>
+<tr>
+<td>入口参数</td>
+<td>pData：待接收数据的首地址</td>
+</tr>
+<tr>
+<td>入口参数3</td>
+<td>Size：待接收数据的个数</td>
+</tr>
+<tr>
+<td>返回值</td>
+<td>HAL状态值：HAL_OK表示发送成功；HAL_ERROR表示参数错误；HAL_BUSY表示串口被占用；</td>
+</tr>
+<tr>
+<td>注意事项</td>
+<td>1. 该函数将启动DMA方式的串口数据接收2. 完成指定数量的数据接收后，可以触发DMA中断，在中断中将调用接收中断回调函数HAL_UART_ExCpltCallback进行后续处理3. 该函数由用户调用户调用</td>
+</tr>
+</tbody></table>
+<p><strong>串口DMA方式发送函数：<code>HAL_UART_Transmit_DMA</code></strong></p>
+<table>
+<thead>
+<tr>
+<th>函数原型</th>
+<th>HAL_StatusTypeDef HAL_UART_Transmit_DMA(UART_Handle TypeDef *huart, uint 8_t *pData, uint 16_t Size)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>功能描述</td>
+<td>在DMA方式下发送一定数量的数据</td>
+</tr>
+<tr>
+<td>入口参数1</td>
+<td>huart：串口句柄的地址</td>
+</tr>
+<tr>
+<td>入口参数</td>
+<td>pData：待发送数据的首地址</td>
+</tr>
+<tr>
+<td>入口参数3</td>
+<td>Size：待发送数据的个数</td>
+</tr>
+<tr>
+<td>返回值</td>
+<td>HAL状态值：HAL_OK表示发送成功；HAL_ERROR表示参数错误；HAL_BUSY表示串口被占用；</td>
+</tr>
+<tr>
+<td>注意事项</td>
+<td>1. 该函数将启动DMA方式的串口数据发送2. 完成指定数量的数据发送后，可以触发DMA中断，在中断中将调用发送中断回调函数HAL_UART_TxCpltCallback进行后续处理3. 该函数由用户调用户调用</td>
+</tr>
+</tbody></table>
+<p>这里有一点值得注意：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs c"><br><span class="hljs-comment">// 这里可以写多字节消息的判断</span><br>HAL_UART_Transmit_DMA(&amp;UART_HANDLE, (<span class="hljs-type">uint8_t</span> *)&amp;RxBuffer_3, Uart_Rx_Cnt_3, <span class="hljs-number">0xFFFF</span>); <span class="hljs-comment">// 将收到的信息发送出去</span><br><span class="hljs-keyword">while</span> (HAL_UART_GetState(&amp;UART_HANDLE) == HAL_UART_STATE_BUSY_TX); <span class="hljs-comment">// 检测UART发送结束</span><br></code></pre></td></tr></table></figure>
+
+<p>修改为DMA后，这里判断发送结束的函数将失去作用，因此要去掉这句。</p>
+<p>还有就是STM32以DMA方式实现printf函数和普通中断方式不一样。<br>实现printf函数主要就是要改写fputc函数</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> <span class="hljs-title function_">fputc</span><span class="hljs-params">(<span class="hljs-type">int</span> ch, FILE *f)</span><br></code></pre></td></tr></table></figure>
+
+<p>但是fputc函数每次只能发送一个字节，如果我们把fputc函数直接改成：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> <span class="hljs-title function_">fputc</span><span class="hljs-params">(<span class="hljs-type">int</span> ch, FILE *f)</span><br>&#123;<br>  HAL_UART_Transmit_DMA(&amp;PrintUartHandle, (<span class="hljs-type">uint8_t</span> *)&amp;ch, <span class="hljs-number">1</span>); <br>  <span class="hljs-keyword">return</span> (ch);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>那么至少存在两个问题：<br>1、DMA每次都发送一个字节，效率比较低。<br>2、频繁调用fputc，可能DMA上一次的数据还没有发送完，导致这次发送失败。<br>例如：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;HelloWorld\r\n&quot;</span>);<br></code></pre></td></tr></table></figure>
+
+<p>printf先发送H,调用fputc函数，此时DMA开始工作。由之前的分析可知，对于9600bps来说，需要1ms才能把字符H发送完成。在这1ms之内elloWolrd\r\n都会调用fputc函数，但由于DMA还没有发送完成，会导致其他的字符发送失败。最终成功发出去的只有第一个字符H。</p>
+<p>如果想用调用DMA，就要想其他的办法。</p>
+<p>简单起见，我们自定义一个使用DMA的打印函数：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// 发送缓冲区</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> UART_TX_BUF_SIZE 256</span><br><span class="hljs-type">uint8_t</span> UartTxBuf[UART_TX_BUF_SIZE];<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">Usart3DmaPrintf</span><span class="hljs-params">(<span class="hljs-type">const</span> <span class="hljs-type">char</span> *format,...)</span><br>&#123;<br>	<span class="hljs-type">uint16_t</span> len;<br>	va_list args;	<br>	va_start(args,format);<br>	len = vsnprintf((<span class="hljs-type">char</span>*)UartTxBuf,<span class="hljs-keyword">sizeof</span>(UartTxBuf)+<span class="hljs-number">1</span>,(<span class="hljs-type">char</span>*)format,args);<br>	va_end(args);<br>	HAL_UART_Transmit_DMA(&amp;huart3, UartTxBuf, len);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>在函数开始时，使用 va_start 宏初始化了一个 va_list args 变量，以便访问可变数量的参数。</li>
+<li>然后，使用 vsnprintf 函数将格式化后的字符串写入到 UartTxBuf 缓冲区中，并返回生成的字符串长度 len。vsnprintf 函数的第一个参数是目标缓冲区的地址，第二个参数是缓冲区大小，第三个参数是格式化字符串，最后一个参数是一个 va_list 变量，用于获取可变数量的参数列表。</li>
+<li>在调用 vsnprintf 函数之后，使用 va_end 宏清理 va_list 变量，并结束对可变数量参数的访问。</li>
+<li>最后，使用 HAL 库函数 HAL_UART_Transmit_DMA 发送数据。该函数的参数包括串口句柄 huart3、待发送数据的缓冲区 UartTxBuf，以及数据长度 len（注意：在代码中，len 实际上比 UartTxBuf 的大小小 1，因为 vsnprintf 已经将字符串末尾的 ‘\0’ 字符计算在内了）。</li>
+</ul>
+<p>修改后的代码如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;uart_3.h&quot;</span></span><br><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> RXBUFFERSIZE_3 256 <span class="hljs-comment">// 最大接收字节数</span></span><br><br><span class="hljs-comment">// 定义串口句柄,使用串口1</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> UART_HANDLE huart3</span><br><br><span class="hljs-comment">// 定义数据缓冲区</span><br><span class="hljs-type">uint8_t</span> RxBuffer_3[RXBUFFERSIZE_3];<br><span class="hljs-type">uint8_t</span> Uart_RxBuffer_3;   <span class="hljs-comment">// 接收中断缓冲</span><br><span class="hljs-type">uint8_t</span> Uart_Rx_Cnt_3 = <span class="hljs-number">0</span>; <span class="hljs-comment">// 接收缓冲计数</span><br><br><span class="hljs-comment">// 发送缓冲区</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> UART_TX_BUF_SIZE 256</span><br><span class="hljs-type">uint8_t</span> UartTxBuf[UART_TX_BUF_SIZE];<br><br><br><span class="hljs-type">void</span> <span class="hljs-title function_">UART3_Init</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span><br>&#123;<br>  <span class="hljs-comment">/*串口硬件配置代码(使用cudeMX则不需要此部分)</span><br><span class="hljs-comment">  Init the GPIO of USART1</span><br><span class="hljs-comment">  */</span><br>  <span class="hljs-comment">// 使能 USART1 的接收中断</span><br>  __HAL_UART_ENABLE_IT(&amp;UART_HANDLE, UART_IT_RXNE);<br>  <span class="hljs-comment">// 开启 USART1 的连续接收中断，并指定接收缓冲区的地址和长度</span><br>  HAL_UART_Receive_DMA(&amp;UART_HANDLE, &amp;Uart_RxBuffer_3, <span class="hljs-number">1</span>);<br>&#125;<br><br><span class="hljs-comment">// 串口3接收完成回调函数</span><br><span class="hljs-type">void</span> <span class="hljs-title function_">UART3_RxCpltCallback</span><span class="hljs-params">(UART_HandleTypeDef *huart)</span><br>&#123;<br>  <span class="hljs-comment">/* Prevent unused argument(s) compilation warning */</span><br>  UNUSED(huart);<br>  <span class="hljs-comment">/* <span class="hljs-doctag">NOTE:</span> This function Should not be modified, when the callback is needed,</span><br><span class="hljs-comment">           the HAL_UART_TxCpltCallback could be implemented in the user file</span><br><span class="hljs-comment">   */</span><br><br>  <span class="hljs-keyword">if</span> (Uart_Rx_Cnt_3 &gt;= <span class="hljs-number">255</span>) <span class="hljs-comment">// 溢出判断</span><br>  &#123;<br>    Uart_Rx_Cnt_3 = <span class="hljs-number">0</span>;<br>    <span class="hljs-built_in">memset</span>(RxBuffer_3, <span class="hljs-number">0x00</span>, <span class="hljs-keyword">sizeof</span>(RxBuffer_3));<br>    Usart3DmaPrintf(<span class="hljs-string">&quot;数据溢出&quot;</span>);<br>  &#125;<br>  <span class="hljs-keyword">else</span><br>  &#123;<br>    RxBuffer_3[Uart_Rx_Cnt_3++] = Uart_RxBuffer_3;<br>    <span class="hljs-comment">// 单字符判断</span><br><br>    <span class="hljs-keyword">if</span> ((RxBuffer_3[Uart_Rx_Cnt_3 - <span class="hljs-number">1</span>] == <span class="hljs-number">0x0A</span>) &amp;&amp; (RxBuffer_3[Uart_Rx_Cnt_3 - <span class="hljs-number">2</span>] == <span class="hljs-number">0x0D</span>)) <span class="hljs-comment">// 判断结束位</span><br>    &#123;<br>        <span class="hljs-type">char</span> str[<span class="hljs-number">256</span>];<br>        <span class="hljs-built_in">sprintf</span>(str, <span class="hljs-string">&quot;%s&quot;</span>, RxBuffer_3);<br>        Usart3DmaPrintf(str); <span class="hljs-comment">//将收到的信息发送出去</span><br><br>        <span class="hljs-comment">// 复位</span><br>        Uart_Rx_Cnt_3 = <span class="hljs-number">0</span>;<br>        <span class="hljs-built_in">memset</span>(RxBuffer_3, <span class="hljs-number">0x00</span>, <span class="hljs-keyword">sizeof</span>(RxBuffer_3)); <span class="hljs-comment">// 清空数组</span><br>    &#125;<br>  &#125;<br><br>  HAL_UART_Receive_DMA(&amp;UART_HANDLE, (<span class="hljs-type">uint8_t</span> *)&amp;Uart_RxBuffer_3, <span class="hljs-number">1</span>); <span class="hljs-comment">// 因为接收中断使用了一次即关闭，所以在最后加入这行代码即可实现无限使用</span><br>&#125;<br><br><span class="hljs-comment">// 串口3错误回调函数(主要用来清除溢出中断)</span><br><span class="hljs-comment">//  void UART3_ErrorCallback(UART_HandleTypeDef *huart)</span><br><span class="hljs-comment">//  &#123;</span><br><span class="hljs-comment">//    if(HAL_UART_ERROR_ORE)</span><br><span class="hljs-comment">//    &#123;</span><br><span class="hljs-comment">//       uint32_t temp = huart-&gt;Instance-&gt;SR;</span><br><span class="hljs-comment">//       temp = huart-&gt;Instance-&gt;DR;</span><br><span class="hljs-comment">//    &#125;</span><br><span class="hljs-comment">//  &#125;</span><br><br><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * @description: 串口3发送函数</span><br><span class="hljs-comment"> * @param &#123;char&#125; *format</span><br><span class="hljs-comment"> * @return &#123;*&#125;</span><br><span class="hljs-comment"> */</span><br><span class="hljs-type">void</span> <span class="hljs-title function_">Usart3DmaPrintf</span><span class="hljs-params">(<span class="hljs-type">const</span> <span class="hljs-type">char</span> *format,...)</span><br>&#123;<br>	<span class="hljs-type">uint16_t</span> len;<br>	va_list args;	<br>	va_start(args,format);<br>	len = vsnprintf((<span class="hljs-type">char</span>*)UartTxBuf,<span class="hljs-keyword">sizeof</span>(UartTxBuf),(<span class="hljs-type">char</span>*)format,args);<br>	va_end(args);<br>	HAL_UART_Transmit_DMA(&amp;huart3, UartTxBuf, len);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>值得注意的是，发送部分使用了自己封装的<code> Usart3DmaPrintf(str);</code>函数。</p>
+<p>效果如下：</p>
+<p><img src="/posts/25840/20240213114553.png" srcset="/img/loading.gif" lazyload></p>
+<p>使用DMA进一步减轻了CPU的负担，但是这样依旧只能一个字节一个字节接收。不是真正的不定长数据接收。</p>
+<h2 id="三、串口空闲中断接收不定长数据"><a href="#三、串口空闲中断接收不定长数据" class="headerlink" title="三、串口空闲中断接收不定长数据"></a>三、串口空闲中断接收不定长数据</h2><p>为了完成接收真正的不定长数据，我们可以使用串口空闲中断，在一帧数据接收完再进行处理，而不是上面这样一个字节一个字节的处理。</p>
+<p>空闲中断是串口RX总线上在一个字节的时间内没有再接收到数据的时候发生的。</p>
+<p>对于HAL库，使用空闲中断接收，只需要在上面的代码基础上将<code>HAL_UART_Receive_DMA</code>改为<code>HAL_UARTEx_ReceiveToIdle_DMA</code> 当然，对于空闲中断也可以不使用DMA，这里我们直接使用DMA。</p>
+<p>如何将串口接收寄存器非空回调更改为：<code>HAL_UARTEx_RxEventCallback</code>串口空闲中断回调函数</p>
+<p>对几个串口的空闲中断进行代理：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// 串口空闲中断回调函数</span><br><span class="hljs-type">void</span> <span class="hljs-title function_">HAL_UARTEx_RxEventCallback</span><span class="hljs-params">(UART_HandleTypeDef *huart, <span class="hljs-type">uint16_t</span> Size)</span><br>&#123;<br>    <span class="hljs-keyword">if</span>(huart-&gt;Instance == USART1)<br>    &#123;<br>        <span class="hljs-comment">//UARTx1_RxEventCallback(huart);</span><br>    &#125;<br>    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(huart-&gt;Instance == USART2)<br>    &#123;<br>        <span class="hljs-comment">//UARTx2_RxEventCallback();</span><br>    &#125;<br>    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(huart-&gt;Instance == USART3)<br>    &#123;<br>        UARTx3_RxEventCallback(huart,Size);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>在串口模块自行实现逻辑</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// 串口3空闲中断回调函数</span><br><span class="hljs-type">void</span> <span class="hljs-title function_">UARTx3_RxEventCallback</span><span class="hljs-params">(UART_HandleTypeDef *huart, <span class="hljs-type">uint16_t</span> Size)</span><br>&#123;<br>  <span class="hljs-comment">/* Prevent unused argument(s) compilation warning */</span><br>  UNUSED(huart);<br>  UNUSED(Size);<br>  <span class="hljs-comment">/* <span class="hljs-doctag">NOTE:</span> This function Should not be modified, when the callback is needed,</span><br><span class="hljs-comment">           the HAL_UART_TxCpltCallback could be implemented in the user file</span><br><span class="hljs-comment">   */</span><br>  <br>  <span class="hljs-comment">// 将数据发送回去</span><br>  HAL_UART_Transmit_DMA(&amp;UART_HANDLE, RxBuffer_3,Size );<br>  HAL_UARTEx_ReceiveToIdle_DMA(&amp;UART_HANDLE, RxBuffer_3, RXBUFFERSIZE_3);<br>    <br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>这样就真正实现了任意长度数据接收，并且没有任何格式要求了。</p>
+<p><img src="/posts/25840/20240213121756.png" srcset="/img/loading.gif" lazyload></p>
+<p>值得注意的是，DMA的传输过半中断也会触发HAL_UARTEx_RxEventCallback回调函数，在目前的例子里是不需要的，反而会造成问题。所以我们要手动关闭DMA的传输过半中断。</p>
+<p>在开启接收中断的同时关闭DMA的传输过半中断。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c">HAL_UARTEx_ReceiveToIdle_DMA(&amp;UART_HANDLE, RxBuffer_3, RXBUFFERSIZE_3);<br>__HAL_DMA_DISABLE_IT(&amp;hdma_usart3_rx, DMA_IT_HT);<br></code></pre></td></tr></table></figure>
+<p>如果报错需要在模块前面添加：<code>extern DMA_HandleTypeDef hdma_usart3_rx;</code></p>
+<p>这样就完成了串口模块的进阶。</p>
+<h1 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h1><ol>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/soledade/article/details/129030082">https://blog.csdn.net/soledade/article/details/129030082</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/622278829">https://zhuanlan.zhihu.com/p/622278829</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/youmeichifan/article/details/103133537">https://blog.csdn.net/youmeichifan/article/details/103133537</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1do4y1F7wt/?spm_id_from=333.1007.top_right_bar_window_history.content.click&vd_source=ef5a0ab0106372751602034cdd9ab98e">https://www.bilibili.com/video/BV1do4y1F7wt/?spm_id_from=333.1007.top_right_bar_window_history.content.click&amp;vd_source=ef5a0ab0106372751602034cdd9ab98e</a></li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%94%B5%E5%AD%90%E4%BF%A1%E6%81%AF%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/" class="category-chain-item">电子信息硬件相关</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E7%94%B5%E5%AD%90%E4%BF%A1%E6%81%AF%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/" class="category-chain-item">MCU</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E7%94%B5%E5%AD%90%E4%BF%A1%E6%81%AF%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/STM32/" class="category-chain-item">STM32</a>
+  
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/STM32/" class="print-no-link">#STM32</a>
+      
+        <a href="/tags/STM32%E4%B8%B2%E5%8F%A3/" class="print-no-link">#STM32串口</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>STM32串口进阶(HAL)</div>
+      <div>https://www.duruofu.xyz/posts/25840/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>DuRuofu</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年2月13日</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>更新于</div>
+          <div>2025年1月10日</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
+                    <i class="iconfont icon-cc-nc"></i>
+                  </span>
+                </a>
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="SA - 相同方式共享">
+                    <i class="iconfont icon-cc-sa"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/920/" title="IDF开发入门-1.ESP32工程结构及构建">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">IDF开发入门-1.ESP32工程结构及构建</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/32250/" title="STM32CubeMX项目标准化">
+                        <span class="hidden-mobile">STM32CubeMX项目标准化</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#gitalk-container', function() {
+      Fluid.utils.createCssLink('/css/gitalk.css')
+      Fluid.utils.createScript('https://lib.baomitu.com/gitalk/1.8.0/gitalk.min.js', function() {
+        var options = Object.assign(
+          {"clientID":"c9ac06d5413a9d613a1e","clientSecret":"a44f5c72589eb090876cc64067db28fbfdf4747c","repo":"Blog-comments-gitalk","owner":"DuRuofu","admin":["DuRuofu"],"language":"zh-CN","labels":["Gitalk"],"perPage":15,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":false,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token"},
+          {
+            id: '6e12b8e904bd6450e4472f0a3d5683fd'
+          }
+        )
+        var gitalk = new Gitalk(options);
+        gitalk.render('gitalk-container');
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <br><span id="timeDate">天数载入中</span><span id="times">...</span><br> <span>总有读不懂的诗和到达不了的远方</span> <p>Copyright © 2023 - <span id="currentYear"></span> All Rights Reserved.</p>
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      陕ICP备2022007454号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=2022007454"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>陕ICP备2022007454号-2</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":true,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  var relativeDate = function() {
+    var updatedTime = document.getElementById('updated-time');
+    if (updatedTime) {
+      var text = updatedTime.textContent;
+      var reg = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:Z|[+-]\d{2}:\d{2})/;
+      var matchs = text.match(reg);
+      if (matchs) {
+        var relativeTime = moment(matchs[0]).fromNow();
+        updatedTime.textContent = text.replace(reg, relativeTime);
+      }
+      updatedTime.style.display = '';
+    }
+  };
+  Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/moment.min.js', function() {
+    if (!'zh-cn'.startsWith('en')) {
+      Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/locale/zh-cn.min.js', function() {
+        relativeDate();
+      });
+    } else {
+      relativeDate();
+    }
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/cust/custom.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

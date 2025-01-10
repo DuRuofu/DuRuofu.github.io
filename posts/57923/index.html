@@ -1,0 +1,1030 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/%E4%B8%AA%E4%BA%BA%E5%A4%B4%E5%83%8F%E6%97%A0%E8%83%8C%E6%99%AF.png">
+  <link rel="icon" href="https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/%E4%B8%AA%E4%BA%BA%E5%A4%B4%E5%83%8F%E6%97%A0%E8%83%8C%E6%99%AF.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="DuRuofu">
+  <meta name="keywords" content="嵌入式,个人博客,个人测试">
+  
+    <meta name="description" content="本文档记录ESP32WebSocket协议的使用。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ESP32网络入门-WebSocket协议">
+<meta property="og:url" content="https://www.duruofu.xyz/posts/57923/index.html">
+<meta property="og:site_name" content="Duruofu&#39;s 个人测试">
+<meta property="og:description" content="本文档记录ESP32WebSocket协议的使用。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.duruofu.xyz/img/index_img/esp_wifi.png">
+<meta property="article:published_time" content="2024-03-27T03:30:53.000Z">
+<meta property="article:modified_time" content="2025-01-10T14:20:34.097Z">
+<meta property="article:author" content="DuRuofu">
+<meta property="article:tag" content="MCU">
+<meta property="article:tag" content="ESP32">
+<meta property="article:tag" content="WebSocket">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://www.duruofu.xyz/img/index_img/esp_wifi.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>ESP32网络入门-WebSocket协议 - Duruofu&#39;s 个人测试</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/cust/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"www.duruofu.xyz","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":80,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":true,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":5},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null},"gtag":null,"woyaola":null,"cnzz":null},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>DuRuofu</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/2020/06/06/1.%E9%98%85%E8%AF%BB%E5%86%99%E4%BD%9C/%E5%8E%9F%E5%88%9B%E8%AF%97%E8%AF%8D/%E8%AF%97%E8%AF%8D/" target="_self">
+                <i class="iconfont icon-books"></i>
+                <span>诗词</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                <span>ESP32教程</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/posts/58874/" target="_self">
+                    
+                    <span>ESP32教程-2024</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/posts/58875/" target="_self">
+                    
+                    <span>ESP32教程-2025</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="ESP32网络入门-WebSocket协议"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        DuRuofu
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-03-27 11:30" pubdate>
+          2024年3月27日 中午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.7k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          8 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">ESP32网络入门-WebSocket协议</h1>
+            
+              <p id="updated-time" class="note note-info" style="display: none">
+                
+                  
+                    本文最后更新于 2025-01-10T22:20:34+08:00
+                  
+                  
+
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <h3 id="说明："><a href="#说明：" class="headerlink" title="说明："></a>说明：</h3><ol>
+<li>本文档由DuRuofu撰写，由DuRuofu负责解释及执行。</li>
+<li>本文档记录ESP32WebSocket协议的使用。</li>
+</ol>
+<h3 id="修订历史："><a href="#修订历史：" class="headerlink" title="修订历史："></a>修订历史：</h3><table>
+<thead>
+<tr>
+<th>文档名称</th>
+<th>版本</th>
+<th>作者</th>
+<th>时间</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ESP32网络入门-WebSocket协议</td>
+<td>v1.0.0</td>
+<td>DuRuofu</td>
+<td>2024-03-26</td>
+<td>首次建立</td>
+</tr>
+</tbody></table>
+<div STYLE="page-break-after: always;"></div>
+
+<h1 id="ESP32网络入门-WebSocket协议"><a href="#ESP32网络入门-WebSocket协议" class="headerlink" title="ESP32网络入门-WebSocket协议"></a>ESP32网络入门-WebSocket协议</h1><h2 id="一、介绍"><a href="#一、介绍" class="headerlink" title="一、介绍"></a>一、介绍</h2><h3 id="1-1-WebSocket介绍"><a href="#1-1-WebSocket介绍" class="headerlink" title="1.1 WebSocket介绍"></a>1.1 WebSocket介绍</h3><blockquote>
+<p>详细介绍可以参考: <a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1887095">万字长文，一篇吃透WebSocket：概念、原理、易错常识、动手实践</a></p>
+</blockquote>
+<p>WebSocket 是一种在单个 TCP 连接上进行全双工通信的协议。它的主要特点是可以实现实时双向通信，并且可以在客户端和服务器之间传输任意数据，而不受 HTTP 语义限制。</p>
+<p><img src="/posts/57923/20240326100058.png" srcset="/img/loading.gif" lazyload></p>
+<p>与传统的 HTTP 请求-响应模式不同，WebSocket 采用了类似握手的方法来建立连接。客户端向服务器发送一个 HTTP 请求头，其中包含 Upgrade、Connection、Sec-WebSocket-Key 等字段，通知服务器要进行连接升级。服务器返回一个 HTTP 响应头，其中也包含 Upgrade、Connection 和 Sec-WebSocket-Accept 等字段，表示已同意升级连接。之后，客户端和服务器之间的数据就可以以帧为单位进行传输，每个帧包含一个信息片段，可以是文本也可以是二进制。</p>
+<p><img src="/posts/57923/20240326100128.png" srcset="/img/loading.gif" lazyload></p>
+<p>WebSocket 协议的优点是支持实时通信，具有较低的延迟，可减少网络传输的开销，有助于提高应用程序的性能。常见的应用场景包括聊天应用、在线游戏、实时数据监控等。</p>
+<h3 id="webSocket数据帧格式"><a href="#webSocket数据帧格式" class="headerlink" title="webSocket数据帧格式"></a>webSocket数据帧格式</h3><p>WebSocket 数据帧是 WebSocket 协议中传输数据的基本单位，每个帧可以包含一个或多个信息片段（Message Fragment），可以是文本也可以是二进制，由 Header 和 Payload 两部分组成。</p>
+<p><img src="/posts/57923/20240326100219.png" srcset="/img/loading.gif" lazyload></p>
+<p>Header 一般包括了以下几个字段：</p>
+<ol>
+<li>FIN：1 位，表示当前帧是否为消息的最后一帧，值为 1 表示是，值为 0 表示不是。</li>
+<li>RSV1、RSV2、RSV3：各占 1 位，用于扩展协议。通常情况下，这三位都被置为 0。</li>
+<li>Opcode：4 位，用于表示消息类型，如 0x1 表示文本消息，0x2 表示二进制消息，0x8 表示关闭连接等。</li>
+<li>Mask：1 位，表示负载数据是否被掩码处理过，值为 1 表示被掩码处理，值为 0 表示未被掩码处理。</li>
+<li>Payload length：7 位或 7+16 位或 7+64 位，表示负载数据的长度。当值为 0~126 时，表示负载数据的长度就是该值；当值为 127 时，额外有两个字节表示长度，当值大于等于 2^16 时，额外有 4 个字节表示长度。<br>如果 Mask 位被设置为 1，则 Header 中还要包含一个 4 字节的掩码码值（Masking Key），用于对负载数据进行反掩码操作。<br>Payload 是实际的数据内容，长度由 Header 中的 Payload length 字段表示，可能是文本也可能是二进制。<br>在整个 WebSocket 连接过程中，客户端和服务器会相互发送一些数据帧，包括握手请求、握手响应、消息片段等，根据不同的功能要求分别使用不同的 Opcode 来表示。</li>
+</ol>
+<h2 id="二、使用"><a href="#二、使用" class="headerlink" title="二、使用"></a>二、使用</h2><h3 id="2-1-服务端"><a href="#2-1-服务端" class="headerlink" title="2.1 服务端"></a>2.1 服务端</h3><p>下面我们参考：<a target="_blank" rel="noopener" href="https://github.com/espressif/esp-idf/tree/be06a6f5ffe36f9554cfc91fe2036e0fc85fea60/examples/protocols/http_server/ws_echo_server"> Websocket echo server</a>这个历程来学习WebSocket服务端程序</p>
+<h4 id="2-1-1-创建服务实例"><a href="#2-1-1-创建服务实例" class="headerlink" title="2.1.1 创建服务实例"></a>2.1.1 创建服务实例</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">static</span> <span class="hljs-type">httpd_handle_t</span> <span class="hljs-title function_">start_webserver</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span><br>&#123;<br>	<span class="hljs-type">httpd_handle_t</span> server = <span class="hljs-literal">NULL</span>;<br>	<span class="hljs-type">httpd_config_t</span> config = HTTPD_DEFAULT_CONFIG();<br><br>	<span class="hljs-comment">// Start the httpd server</span><br>	ESP_LOGI(TAG, <span class="hljs-string">&quot;Starting server on port: &#x27;%d&#x27;&quot;</span>, config.server_port);<br>	<span class="hljs-keyword">if</span> (httpd_start(&amp;server, &amp;config) == ESP_OK)<br>	&#123;<br>		<span class="hljs-comment">// Registering the ws handler</span><br>		ESP_LOGI(TAG, <span class="hljs-string">&quot;Registering URI handlers&quot;</span>);<br>		httpd_register_uri_handler(server, &amp;ws);<br>		<span class="hljs-keyword">return</span> server;<br>	&#125;<br><br>	ESP_LOGI(TAG, <span class="hljs-string">&quot;Error starting server!&quot;</span>);<br>	<span class="hljs-keyword">return</span> <span class="hljs-literal">NULL</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>这段代码用于启动 HTTP 服务器。它首先创建一个 HTTP 服务器实例，并使用默认配置进行初始化。然后尝试启动 HTTP 服务器，如果启动成功则打印服务器监听的端口号，并注册 WebSocket 处理器（ws handler）。</p>
+<h4 id="2-1-2-注册路由"><a href="#2-1-2-注册路由" class="headerlink" title="2.1.2 注册路由"></a>2.1.2 注册路由</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">static</span> <span class="hljs-type">const</span> <span class="hljs-type">httpd_uri_t</span> ws = &#123;<br>		.uri = <span class="hljs-string">&quot;/ws&quot;</span>,<br>		.method = HTTP_GET,<br>		.handler = echo_handler,<br>		.user_ctx = <span class="hljs-literal">NULL</span>,<br>		.is_websocket = <span class="hljs-literal">true</span>&#125;;<br><br></code></pre></td></tr></table></figure>
+<h4 id="2-1-3-路由处理"><a href="#2-1-3-路由处理" class="headerlink" title="2.1.3 路由处理"></a>2.1.3 路由处理</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">/*</span><br><span class="hljs-comment"> * This handler echos back the received ws data</span><br><span class="hljs-comment"> * and triggers an async send if certain message received</span><br><span class="hljs-comment"> */</span><br><span class="hljs-type">static</span> <span class="hljs-type">esp_err_t</span> <span class="hljs-title function_">echo_handler</span><span class="hljs-params">(<span class="hljs-type">httpd_req_t</span> *req)</span><br>&#123;<br>	<span class="hljs-keyword">if</span> (req-&gt;method == HTTP_GET)<br>	&#123;<br>		ESP_LOGI(TAG, <span class="hljs-string">&quot;Handshake done, the new connection was opened&quot;</span>);<br>		<span class="hljs-keyword">return</span> ESP_OK;<br>	&#125;<br>	<span class="hljs-type">httpd_ws_frame_t</span> ws_pkt;<br>	<span class="hljs-type">uint8_t</span> *buf = <span class="hljs-literal">NULL</span>;<br>	<span class="hljs-built_in">memset</span>(&amp;ws_pkt, <span class="hljs-number">0</span>, <span class="hljs-keyword">sizeof</span>(<span class="hljs-type">httpd_ws_frame_t</span>));<br>	ws_pkt.type = HTTPD_WS_TYPE_TEXT;<br>	<span class="hljs-comment">/* Set max_len = 0 to get the frame len */</span><br>	<span class="hljs-comment">// 读取数据</span><br>	<span class="hljs-type">esp_err_t</span> ret = httpd_ws_recv_frame(req, &amp;ws_pkt, <span class="hljs-number">0</span>);<br>	<span class="hljs-keyword">if</span> (ret != ESP_OK)<br>	&#123;<br>		ESP_LOGE(TAG, <span class="hljs-string">&quot;httpd_ws_recv_frame failed to get frame len with %d&quot;</span>, ret);<br>		<span class="hljs-keyword">return</span> ret;<br>	&#125;<br>	ESP_LOGI(TAG, <span class="hljs-string">&quot;frame len is %d&quot;</span>, ws_pkt.len);<br>	<span class="hljs-keyword">if</span> (ws_pkt.len)<br>	&#123;<br>		<span class="hljs-comment">/* ws_pkt.len + 1 is for NULL termination as we are expecting a string */</span><br>		buf = <span class="hljs-built_in">calloc</span>(<span class="hljs-number">1</span>, ws_pkt.len + <span class="hljs-number">1</span>);<br>		<span class="hljs-keyword">if</span> (buf == <span class="hljs-literal">NULL</span>)<br>		&#123;<br>			ESP_LOGE(TAG, <span class="hljs-string">&quot;Failed to calloc memory for buf&quot;</span>);<br>			<span class="hljs-keyword">return</span> ESP_ERR_NO_MEM;<br>		&#125;<br>		ws_pkt.payload = buf;<br>		<span class="hljs-comment">/* Set max_len = ws_pkt.len to get the frame payload */</span><br>		ret = httpd_ws_recv_frame(req, &amp;ws_pkt, ws_pkt.len);<br>		<span class="hljs-keyword">if</span> (ret != ESP_OK)<br>		&#123;<br>			ESP_LOGE(TAG, <span class="hljs-string">&quot;httpd_ws_recv_frame failed with %d&quot;</span>, ret);<br>			<span class="hljs-built_in">free</span>(buf);<br>			<span class="hljs-keyword">return</span> ret;<br>		&#125;<br>		ESP_LOGI(TAG, <span class="hljs-string">&quot;Got packet with message: %s&quot;</span>, ws_pkt.payload);<br>	&#125;<br>	ESP_LOGI(TAG, <span class="hljs-string">&quot;Packet type: %d&quot;</span>, ws_pkt.type);<br>	<span class="hljs-keyword">if</span> (ws_pkt.type == HTTPD_WS_TYPE_TEXT &amp;&amp;<br>			<span class="hljs-built_in">strcmp</span>((<span class="hljs-type">char</span> *)ws_pkt.payload, <span class="hljs-string">&quot;Trigger async&quot;</span>) == <span class="hljs-number">0</span>)<br>	&#123;<br>		<span class="hljs-built_in">free</span>(buf);<br>		<span class="hljs-keyword">return</span> trigger_async_send(req-&gt;handle, req);<br>	&#125;<br><br>	ret = httpd_ws_send_frame(req, &amp;ws_pkt);<br>	<span class="hljs-keyword">if</span> (ret != ESP_OK)<br>	&#123;<br>		ESP_LOGE(TAG, <span class="hljs-string">&quot;httpd_ws_send_frame failed with %d&quot;</span>, ret);<br>	&#125;<br>	<span class="hljs-built_in">free</span>(buf);<br>	<span class="hljs-keyword">return</span> ret;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>这段代码用于处理通过 WebSocket 接收到的数据并作出相应的响应。</p>
+<ol>
+<li>当接收到 HTTP GET 请求时，打印日志并返回 ESP_OK，表示握手成功，连接已打开。</li>
+<li>当接收到 WebSocket 数据帧时，首先获取帧的长度，并根据长度分配内存。</li>
+<li>再次接收 WebSocket 数据帧，获取帧的有效载荷（payload），并将其打印出来。</li>
+<li>根据接收到的数据帧类型，如果是文本类型且内容为 “Trigger async”，则调用 <code>trigger_async_send</code> 函数进行异步发送处理，并释放内存。</li>
+<li>否则，将接收到的数据帧原样返回给客户端，并释放内存。</li>
+</ol>
+<h4 id="2-1-4-服务器发送数据"><a href="#2-1-4-服务器发送数据" class="headerlink" title="2.1.4 服务器发送数据"></a>2.1.4 服务器发送数据</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">/*</span><br><span class="hljs-comment"> * Structure holding server handle</span><br><span class="hljs-comment"> * and internal socket fd in order</span><br><span class="hljs-comment"> * to use out of request send</span><br><span class="hljs-comment"> */</span><br><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">async_resp_arg</span></span><br><span class="hljs-class">&#123;</span><br>	<span class="hljs-type">httpd_handle_t</span> hd;<br>	<span class="hljs-type">int</span> fd;<br>&#125;;<br><br><span class="hljs-comment">/*</span><br><span class="hljs-comment"> * async send function, which we put into the httpd work queue</span><br><span class="hljs-comment"> */</span><br><span class="hljs-type">static</span> <span class="hljs-type">void</span> <span class="hljs-title function_">ws_async_send</span><span class="hljs-params">(<span class="hljs-type">void</span> *arg)</span><br>&#123;<br>	<span class="hljs-type">static</span> <span class="hljs-type">const</span> <span class="hljs-type">char</span> *data = <span class="hljs-string">&quot;Async data&quot;</span>;<br>	<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">async_resp_arg</span> *<span class="hljs-title">resp_arg</span> =</span> arg;<br>	<span class="hljs-type">httpd_handle_t</span> hd = resp_arg-&gt;hd;<br>	<span class="hljs-type">int</span> fd = resp_arg-&gt;fd;<br>	<span class="hljs-type">httpd_ws_frame_t</span> ws_pkt;<br>	<span class="hljs-built_in">memset</span>(&amp;ws_pkt, <span class="hljs-number">0</span>, <span class="hljs-keyword">sizeof</span>(<span class="hljs-type">httpd_ws_frame_t</span>));<br>	ws_pkt.payload = (<span class="hljs-type">uint8_t</span> *)data;<br>	ws_pkt.len = <span class="hljs-built_in">strlen</span>(data);<br>	ws_pkt.type = HTTPD_WS_TYPE_TEXT;<br><br>	httpd_ws_send_frame_async(hd, fd, &amp;ws_pkt);<br>	<span class="hljs-built_in">free</span>(resp_arg);<br>&#125;<br><br><span class="hljs-type">static</span> <span class="hljs-type">esp_err_t</span> <span class="hljs-title function_">trigger_async_send</span><span class="hljs-params">(<span class="hljs-type">httpd_handle_t</span> handle, <span class="hljs-type">httpd_req_t</span> *req)</span><br>&#123;<br>	<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">async_resp_arg</span> *<span class="hljs-title">resp_arg</span> =</span> <span class="hljs-built_in">malloc</span>(<span class="hljs-keyword">sizeof</span>(<span class="hljs-keyword">struct</span> async_resp_arg));<br>	<span class="hljs-keyword">if</span> (resp_arg == <span class="hljs-literal">NULL</span>)<br>	&#123;<br>		<span class="hljs-keyword">return</span> ESP_ERR_NO_MEM;<br>	&#125;<br>	resp_arg-&gt;hd = req-&gt;handle;<br>	resp_arg-&gt;fd = httpd_req_to_sockfd(req);<br>	<span class="hljs-type">esp_err_t</span> ret = httpd_queue_work(handle, ws_async_send, resp_arg);<br>	<span class="hljs-keyword">if</span> (ret != ESP_OK)<br>	&#123;<br>		<span class="hljs-built_in">free</span>(resp_arg);<br>	&#125;<br>	<span class="hljs-keyword">return</span> ret;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>异步发送</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c">trigger_async_send(req-&gt;handle, req);<br></code></pre></td></tr></table></figure>
+
+<p>同步发送：</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">httpd<span class="hljs-constructor">_ws_send_frame(<span class="hljs-params">req</span>, &amp;<span class="hljs-params">ws_pkt</span>)</span>;<br></code></pre></td></tr></table></figure>
+
+<p>这两个函数都调用<code>esp_err_t httpd_ws_send_frame_async(httpd_handle_t hd, int fd, httpd_ws_frame_t *frame)</code></p>
+<p><code>httpd_ws_send_frame_async</code>的内容如下：</p>
+<blockquote>
+<p>了解即可：</p>
+</blockquote>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">esp_err_t</span> <span class="hljs-title function_">httpd_ws_send_frame_async</span><span class="hljs-params">(<span class="hljs-type">httpd_handle_t</span> hd, <span class="hljs-type">int</span> fd, <span class="hljs-type">httpd_ws_frame_t</span> *frame)</span><br>&#123;<br>    <span class="hljs-keyword">if</span> (!frame) &#123;<br>        ESP_LOGW(TAG, LOG_FMT(<span class="hljs-string">&quot;Argument is invalid&quot;</span>));<br>        <span class="hljs-keyword">return</span> ESP_ERR_INVALID_ARG;<br>    &#125;<br>    <span class="hljs-comment">/* Prepare Tx buffer - maximum length is 14, which includes 2 bytes header, 8 bytes length, 4 bytes mask key */</span><br>    <span class="hljs-type">uint8_t</span> tx_len = <span class="hljs-number">0</span>;<br>    <span class="hljs-type">uint8_t</span> header_buf[<span class="hljs-number">10</span>] = &#123;<span class="hljs-number">0</span> &#125;;<br>    <span class="hljs-comment">/* Set the `FIN` bit by default if message is not fragmented. Else, set it as per the `final` field */</span><br>    header_buf[<span class="hljs-number">0</span>] |= (!frame-&gt;fragmented) ? HTTPD_WS_FIN_BIT : (frame-&gt;final? HTTPD_WS_FIN_BIT: HTTPD_WS_CONTINUE);<br>    header_buf[<span class="hljs-number">0</span>] |= frame-&gt;type; <span class="hljs-comment">/* Type (opcode): 4 bits */</span><br>    <span class="hljs-keyword">if</span> (frame-&gt;len &lt;= <span class="hljs-number">125</span>) &#123;<br>        header_buf[<span class="hljs-number">1</span>] = frame-&gt;len &amp; <span class="hljs-number">0x7f</span>U; <span class="hljs-comment">/* Length for 7 bits */</span><br>        tx_len = <span class="hljs-number">2</span>;<br>    &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (frame-&gt;len &gt; <span class="hljs-number">125</span> &amp;&amp; frame-&gt;len &lt; UINT16_MAX) &#123;<br>        header_buf[<span class="hljs-number">1</span>] = <span class="hljs-number">126</span>;                <span class="hljs-comment">/* Length for 16 bits */</span><br>        header_buf[<span class="hljs-number">2</span>] = (frame-&gt;len &gt;&gt; <span class="hljs-number">8U</span>) &amp; <span class="hljs-number">0xff</span>U;<br>        header_buf[<span class="hljs-number">3</span>] = frame-&gt;len &amp; <span class="hljs-number">0xff</span>U;<br>        tx_len = <span class="hljs-number">4</span>;<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        header_buf[<span class="hljs-number">1</span>] = <span class="hljs-number">127</span>;                <span class="hljs-comment">/* Length for 64 bits */</span><br>        <span class="hljs-type">uint8_t</span> shift_idx = <span class="hljs-keyword">sizeof</span>(<span class="hljs-type">uint64_t</span>) - <span class="hljs-number">1</span>; <span class="hljs-comment">/* Shift index starts at 7 */</span><br>        <span class="hljs-type">uint64_t</span> len64 = frame-&gt;len; <span class="hljs-comment">/* Raise variable size to make sure we won&#x27;t shift by more bits</span><br><span class="hljs-comment">                                      * than the length has (to avoid undefined behaviour) */</span><br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int8_t</span> idx = <span class="hljs-number">2</span>; idx &lt;= <span class="hljs-number">9</span>; idx++) &#123;<br>            <span class="hljs-comment">/* Now do shifting (be careful of endianness, i.e. when buffer index is 2, frame length shift index is 7) */</span><br>            header_buf[idx] = (len64 &gt;&gt; (shift_idx * <span class="hljs-number">8</span>)) &amp; <span class="hljs-number">0xff</span>U;<br>            shift_idx--;<br>        &#125;<br>        tx_len = <span class="hljs-number">10</span>;<br>    &#125;<br>    <span class="hljs-comment">/* WebSocket server does not required to mask response payload, so leave the MASK bit as 0. */</span><br>    header_buf[<span class="hljs-number">1</span>] &amp;= (~HTTPD_WS_MASK_BIT);<br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">sock_db</span> *<span class="hljs-title">sess</span> =</span> httpd_sess_get(hd, fd);<br>    <span class="hljs-keyword">if</span> (!sess) &#123;<br>        <span class="hljs-keyword">return</span> ESP_ERR_INVALID_ARG;<br>    &#125;<br>    <span class="hljs-comment">/* Send off header */</span><br>    <span class="hljs-keyword">if</span> (sess-&gt;send_fn(hd, fd, (<span class="hljs-type">const</span> <span class="hljs-type">char</span> *)header_buf, tx_len, <span class="hljs-number">0</span>) &lt; <span class="hljs-number">0</span>) &#123;<br>        ESP_LOGW(TAG, LOG_FMT(<span class="hljs-string">&quot;Failed to send WS header&quot;</span>));<br>        <span class="hljs-keyword">return</span> ESP_FAIL;<br>    &#125;  <br>    <span class="hljs-comment">/* Send off payload */</span><br>    <span class="hljs-keyword">if</span>(frame-&gt;len &gt; <span class="hljs-number">0</span> &amp;&amp; frame-&gt;payload != <span class="hljs-literal">NULL</span>) &#123;<br>        <span class="hljs-keyword">if</span> (sess-&gt;send_fn(hd, fd, (<span class="hljs-type">const</span> <span class="hljs-type">char</span> *)frame-&gt;payload, frame-&gt;len, <span class="hljs-number">0</span>) &lt; <span class="hljs-number">0</span>) &#123;<br>            ESP_LOGW(TAG, LOG_FMT(<span class="hljs-string">&quot;Failed to send WS payload&quot;</span>));<br>            <span class="hljs-keyword">return</span> ESP_FAIL;<br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">return</span> ESP_OK;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+<p>这是一段 ESP32 上通过 WebSocket 发送帧的代码，该函数会向指定的 WebSocket 连接发送加密后的帧数据。主要实现如下：</p>
+<ol>
+<li>首先对 frame 参数进行校验，如果为空则返回 ESP_ERR_INVALID_ARG 错误。</li>
+<li>根据 WebSocket 数据帧格式，设置 Header 的 FIN、Opcode 以及 Payload length 字段。同时根据负载长度的大小决定 Header 的长度，最多为 10 个字节，包括了 2 个字节的 Header，2 个字节的 Payload length，4 个字节的 Masking key（在此代码中未使用，因为 WebSocket Server 不需要对 Payload 进行掩码处理）。</li>
+<li>通过 httpd_sess_get() 函数获取对应 WebSocket 连接的套接字描述符（socket descriptor），若获取失败则返回 ESP_ERR_INVALID_ARG 错误。</li>
+<li>调用 socket 的 send_fn() 函数，将 Header 和 Payload 发送给客户端。</li>
+<li>函数返回 ESP_OK 表示发送数据成功，返回 ESP_FAIL 表示发送数据失败。</li>
+</ol>
+<h3 id="2-2-客户端"><a href="#2-2-客户端" class="headerlink" title="2.2 客户端"></a>2.2 客户端</h3><blockquote>
+<p>5.0以上的IDF里，客户端程序以扩展组件包的形式存在,需要使用组件管理器</p>
+</blockquote>
+<p>使用下面的命令将客户端组件添加到工程：</p>
+<figure class="highlight smali"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs smali">idf.py<span class="hljs-built_in"> add-dependency </span>&#x27;espressif/esp_websocket_client^1.2.2&#x27;<br></code></pre></td></tr></table></figure>
+
+<p>文档连接：<a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-protocols/esp_websocket_client/docs/latest/index.html#esp-websocket-client" title="Permalink to this headline"> ESP WebSocket 客户端</a></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">static</span> <span class="hljs-type">void</span> <span class="hljs-title function_">log_error_if_nonzero</span><span class="hljs-params">(<span class="hljs-type">const</span> <span class="hljs-type">char</span> *message, <span class="hljs-type">int</span> error_code)</span><br>&#123;<br>	<span class="hljs-keyword">if</span> (error_code != <span class="hljs-number">0</span>)<br>	&#123;<br>		ESP_LOGE(TAG, <span class="hljs-string">&quot;Last error %s: 0x%x&quot;</span>, message, error_code);<br>	&#125;<br>&#125;<br><br><span class="hljs-type">static</span> <span class="hljs-type">void</span> <span class="hljs-title function_">shutdown_signaler</span><span class="hljs-params">(TimerHandle_t xTimer)</span><br>&#123;<br>	ESP_LOGI(TAG, <span class="hljs-string">&quot;No data received for %d seconds, signaling shutdown&quot;</span>, NO_DATA_TIMEOUT_SEC);<br>	xSemaphoreGive(shutdown_sema);<br>&#125;<br><br><span class="hljs-comment">// WebSocket客户端事件处理</span><br><span class="hljs-type">static</span> <span class="hljs-type">void</span> <span class="hljs-title function_">websocket_event_handler</span><span class="hljs-params">(<span class="hljs-type">void</span> *handler_args, <span class="hljs-type">esp_event_base_t</span> base, <span class="hljs-type">int32_t</span> event_id, <span class="hljs-type">void</span> *event_data)</span><br>&#123;<br>	<span class="hljs-type">esp_websocket_event_data_t</span> *data = (<span class="hljs-type">esp_websocket_event_data_t</span> *)event_data;<br>	<span class="hljs-keyword">switch</span> (event_id)<br>	&#123;<br>	<span class="hljs-comment">// 连接成功</span><br>	<span class="hljs-keyword">case</span> WEBSOCKET_EVENT_CONNECTED:<br>		ESP_LOGI(TAG, <span class="hljs-string">&quot;WEBSOCKET_EVENT_CONNECTED&quot;</span>);<br>		<span class="hljs-keyword">break</span>;<br>	<span class="hljs-comment">// 连接断开</span><br>	<span class="hljs-keyword">case</span> WEBSOCKET_EVENT_DISCONNECTED:<br>		ESP_LOGI(TAG, <span class="hljs-string">&quot;WEBSOCKET_EVENT_DISCONNECTED&quot;</span>);<br>		log_error_if_nonzero(<span class="hljs-string">&quot;HTTP status code&quot;</span>, data-&gt;error_handle.esp_ws_handshake_status_code);<br>		<span class="hljs-keyword">if</span> (data-&gt;error_handle.error_type == WEBSOCKET_ERROR_TYPE_TCP_TRANSPORT)<br>		&#123;<br>			log_error_if_nonzero(<span class="hljs-string">&quot;reported from esp-tls&quot;</span>, data-&gt;error_handle.esp_tls_last_esp_err);<br>			log_error_if_nonzero(<span class="hljs-string">&quot;reported from tls stack&quot;</span>, data-&gt;error_handle.esp_tls_stack_err);<br>			log_error_if_nonzero(<span class="hljs-string">&quot;captured as transport&#x27;s socket errno&quot;</span>, data-&gt;error_handle.esp_transport_sock_errno);<br>		&#125;<br>		<span class="hljs-keyword">break</span>;<br>	<span class="hljs-comment">// 收到数据</span><br>	<span class="hljs-keyword">case</span> WEBSOCKET_EVENT_DATA:<br>		ESP_LOGI(TAG, <span class="hljs-string">&quot;WEBSOCKET_EVENT_DATA&quot;</span>);<br>		ESP_LOGI(TAG, <span class="hljs-string">&quot;Received opcode=%d&quot;</span>, data-&gt;op_code);<br>		<span class="hljs-keyword">if</span> (data-&gt;op_code == <span class="hljs-number">0x08</span> &amp;&amp; data-&gt;data_len == <span class="hljs-number">2</span>)<br>		&#123;<br>			ESP_LOGW(TAG, <span class="hljs-string">&quot;Received closed message with code=%d&quot;</span>, <span class="hljs-number">256</span> * data-&gt;data_ptr[<span class="hljs-number">0</span>] + data-&gt;data_ptr[<span class="hljs-number">1</span>]);<br>		&#125;<br>		<span class="hljs-keyword">else</span><br>		&#123;<br>			ESP_LOGW(TAG, <span class="hljs-string">&quot;Received=%.*s\n\n&quot;</span>, data-&gt;data_len, (<span class="hljs-type">char</span> *)data-&gt;data_ptr);<br>		&#125;<br><br>		<span class="hljs-comment">// If received data contains json structure it succeed to parse</span><br>		cJSON *root = cJSON_Parse(data-&gt;data_ptr);<br>		<span class="hljs-keyword">if</span> (root)<br>		&#123;<br>			<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; cJSON_GetArraySize(root); i++)<br>			&#123;<br>				cJSON *elem = cJSON_GetArrayItem(root, i);<br>				cJSON *id = cJSON_GetObjectItem(elem, <span class="hljs-string">&quot;id&quot;</span>);<br>				cJSON *name = cJSON_GetObjectItem(elem, <span class="hljs-string">&quot;name&quot;</span>);<br>				ESP_LOGW(TAG, <span class="hljs-string">&quot;Json=&#123;&#x27;id&#x27;: &#x27;%s&#x27;, &#x27;name&#x27;: &#x27;%s&#x27;&#125;&quot;</span>, id-&gt;valuestring, name-&gt;valuestring);<br>			&#125;<br>			cJSON_Delete(root);<br>		&#125;<br><br>		ESP_LOGW(TAG, <span class="hljs-string">&quot;Total payload length=%d, data_len=%d, current payload offset=%d\r\n&quot;</span>, data-&gt;payload_len, data-&gt;data_len, data-&gt;payload_offset);<br><br>	  <span class="hljs-comment">// 定时器复位</span><br>		xTimerReset(shutdown_signal_timer, portMAX_DELAY);<br>		<span class="hljs-keyword">break</span>;<br>	<span class="hljs-comment">// 错误</span><br>	<span class="hljs-keyword">case</span> WEBSOCKET_EVENT_ERROR:<br>		ESP_LOGI(TAG, <span class="hljs-string">&quot;WEBSOCKET_EVENT_ERROR&quot;</span>);<br>		log_error_if_nonzero(<span class="hljs-string">&quot;HTTP status code&quot;</span>, data-&gt;error_handle.esp_ws_handshake_status_code);<br>		<span class="hljs-keyword">if</span> (data-&gt;error_handle.error_type == WEBSOCKET_ERROR_TYPE_TCP_TRANSPORT)<br>		&#123;<br>			log_error_if_nonzero(<span class="hljs-string">&quot;reported from esp-tls&quot;</span>, data-&gt;error_handle.esp_tls_last_esp_err);<br>			log_error_if_nonzero(<span class="hljs-string">&quot;reported from tls stack&quot;</span>, data-&gt;error_handle.esp_tls_stack_err);<br>			log_error_if_nonzero(<span class="hljs-string">&quot;captured as transport&#x27;s socket errno&quot;</span>, data-&gt;error_handle.esp_transport_sock_errno);<br>		&#125;<br>		<span class="hljs-keyword">break</span>;<br>	&#125;<br>&#125;<br><br><span class="hljs-comment">// WebSocket客户端</span><br><span class="hljs-type">static</span> <span class="hljs-type">void</span> <span class="hljs-title function_">websocket_app_start</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span><br>&#123;<br>	<span class="hljs-type">esp_websocket_client_config_t</span> websocket_cfg = &#123;&#125;;<br><br>  <span class="hljs-comment">// 创建定时器</span><br>	shutdown_signal_timer = xTimerCreate(<span class="hljs-string">&quot;Websocket shutdown timer&quot;</span>, NO_DATA_TIMEOUT_SEC * <span class="hljs-number">1000</span> / portTICK_PERIOD_MS,<br>																			 pdFALSE, <span class="hljs-literal">NULL</span>, shutdown_signaler);<br>	<span class="hljs-comment">// 创建信号量</span><br>	shutdown_sema = xSemaphoreCreateBinary();<br><br>	<span class="hljs-comment">// 配置目标服务器</span><br>	websocket_cfg.uri = CONFIG_WEBSOCKET_URI;<br><br>	ESP_LOGI(TAG, <span class="hljs-string">&quot;Connecting to %s...&quot;</span>, websocket_cfg.uri);<br><br>	<span class="hljs-comment">// 创建WebSocket客户端</span><br>	<span class="hljs-type">esp_websocket_client_handle_t</span> client = esp_websocket_client_init(&amp;websocket_cfg);<br>	<span class="hljs-comment">// 注册事件</span><br>	esp_websocket_register_events(client, WEBSOCKET_EVENT_ANY, websocket_event_handler, (<span class="hljs-type">void</span> *)client);<br>	<span class="hljs-comment">// 启动WebSocket客户端</span><br>	esp_websocket_client_start(client);<br>	xTimerStart(shutdown_signal_timer, portMAX_DELAY);<br>	<span class="hljs-type">char</span> data[<span class="hljs-number">32</span>];<br>	<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>;<br>	<span class="hljs-comment">// 发送5次数据</span><br>	<span class="hljs-keyword">while</span> (i &lt; <span class="hljs-number">5</span>)<br>	&#123;<br>		<span class="hljs-keyword">if</span> (esp_websocket_client_is_connected(client))<br>		&#123;<br>			<span class="hljs-type">int</span> len = <span class="hljs-built_in">sprintf</span>(data, <span class="hljs-string">&quot;hello %04d&quot;</span>, i++);<br>			ESP_LOGI(TAG, <span class="hljs-string">&quot;Sending %s&quot;</span>, data);<br>			<span class="hljs-comment">// 发送文本数据</span><br>			esp_websocket_client_send_text(client, data, len, portMAX_DELAY);<br>		&#125;<br>		vTaskDelay(<span class="hljs-number">1000</span> / portTICK_PERIOD_MS);<br>	&#125;<br><br>	ESP_LOGI(TAG, <span class="hljs-string">&quot;Sending fragmented message&quot;</span>);<br>	vTaskDelay(<span class="hljs-number">1000</span> / portTICK_PERIOD_MS);<br>	<span class="hljs-built_in">memset</span>(data, <span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-keyword">sizeof</span>(data));<br>	esp_websocket_client_send_text_partial(client, data, <span class="hljs-keyword">sizeof</span>(data), portMAX_DELAY);<br>	<span class="hljs-built_in">memset</span>(data, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-keyword">sizeof</span>(data));<br>	esp_websocket_client_send_cont_msg(client, data, <span class="hljs-keyword">sizeof</span>(data), portMAX_DELAY);<br>	esp_websocket_client_send_fin(client, portMAX_DELAY);<br><br>	<span class="hljs-comment">// 等待信号量</span><br>	xSemaphoreTake(shutdown_sema, portMAX_DELAY);<br>	<span class="hljs-comment">// 关闭WebSocket客户端</span><br>	esp_websocket_client_close(client, portMAX_DELAY);<br>	ESP_LOGI(TAG, <span class="hljs-string">&quot;Websocket Stopped&quot;</span>);<br>	<span class="hljs-comment">// 销毁WebSocket客户端</span><br>	esp_websocket_client_destroy(client);<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><code>websocket_app_start</code>函数初始化WebSocket客户端配置，并设置要连接的WebSocket服务器的URI。然后使用<code>esp_websocket_client_init</code>初始化WebSocket客户端，并使用<code>esp_websocket_register_events</code>注册事件处理程序。最后，启动WebSocket客户端。</li>
+<li><code>websocket_event_handler</code>函数处理各种WebSocket事件，如连接、断开连接、接收数据和错误。它为每个事件记录相关信息，并在接收数据时重置一个定时器以防止由于不活动而关闭连接。</li>
+</ul>
+<p>程序流程可以总结为下图（图源：Michael_ee）：</p>
+<p><img src="/posts/57923/20240327102246.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="三、示例"><a href="#三、示例" class="headerlink" title="三、示例"></a>三、示例</h2><h3 id="3-1-服务端"><a href="#3-1-服务端" class="headerlink" title="3.1 服务端"></a>3.1 服务端</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;string.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;freertos/FreeRTOS.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;freertos/event_groups.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;esp_wifi.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;esp_log.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;esp_event.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;nvs_flash.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;esp_mac.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;esp_netif.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;sys/socket.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;esp_http_server.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;esp_eth.h&quot;</span></span><br><br><span class="hljs-comment">// 要连接的WIFI</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ESP_WIFI_STA_SSID <span class="hljs-string">&quot;duruofu_win10&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ESP_WIFI_STA_PASSWD <span class="hljs-string">&quot;1234567890&quot;</span></span><br><br><span class="hljs-type">static</span> <span class="hljs-type">const</span> <span class="hljs-type">char</span> *TAG = <span class="hljs-string">&quot;main&quot;</span>;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">WIFI_CallBack</span><span class="hljs-params">(<span class="hljs-type">void</span> *event_handler_arg, <span class="hljs-type">esp_event_base_t</span> event_base, <span class="hljs-type">int32_t</span> event_id, <span class="hljs-type">void</span> *event_data)</span><br>&#123;<br>	<span class="hljs-type">static</span> <span class="hljs-type">uint8_t</span> connect_count = <span class="hljs-number">0</span>;<br>	<span class="hljs-comment">// WIFI 启动成功</span><br>	<span class="hljs-keyword">if</span> (event_base == WIFI_EVENT &amp;&amp; event_id == WIFI_EVENT_STA_START)<br>	&#123;<br>		ESP_LOGI(<span class="hljs-string">&quot;WIFI_EVENT&quot;</span>, <span class="hljs-string">&quot;WIFI_EVENT_STA_START&quot;</span>);<br>		ESP_ERROR_CHECK(esp_wifi_connect());<br>	&#125;<br>	<span class="hljs-comment">// WIFI 连接失败</span><br>	<span class="hljs-keyword">if</span> (event_base == WIFI_EVENT &amp;&amp; event_id == WIFI_EVENT_STA_DISCONNECTED)<br>	&#123;<br>		ESP_LOGI(<span class="hljs-string">&quot;WIFI_EVENT&quot;</span>, <span class="hljs-string">&quot;WIFI_EVENT_STA_DISCONNECTED&quot;</span>);<br>		connect_count++;<br>		<span class="hljs-keyword">if</span> (connect_count &lt; <span class="hljs-number">6</span>)<br>		&#123;<br>			vTaskDelay(<span class="hljs-number">1000</span> / portTICK_PERIOD_MS);<br>			ESP_ERROR_CHECK(esp_wifi_connect());<br>		&#125;<br>		<span class="hljs-keyword">else</span><br>		&#123;<br>			ESP_LOGI(<span class="hljs-string">&quot;WIFI_EVENT&quot;</span>, <span class="hljs-string">&quot;WIFI_EVENT_STA_DISCONNECTED 10 times&quot;</span>);<br>		&#125;<br>	&#125;<br>	<span class="hljs-comment">// WIFI 连接成功(获取到了IP)</span><br>	<span class="hljs-keyword">if</span> (event_base == IP_EVENT &amp;&amp; event_id == IP_EVENT_STA_GOT_IP)<br>	&#123;<br>		ESP_LOGI(<span class="hljs-string">&quot;WIFI_EVENT&quot;</span>, <span class="hljs-string">&quot;WIFI_EVENT_STA_GOT_IP&quot;</span>);<br>		<span class="hljs-type">ip_event_got_ip_t</span> *info = (<span class="hljs-type">ip_event_got_ip_t</span> *)event_data;<br>		ESP_LOGI(<span class="hljs-string">&quot;WIFI_EVENT&quot;</span>, <span class="hljs-string">&quot;got ip:&quot;</span> IPSTR <span class="hljs-string">&quot;&quot;</span>, IP2STR(&amp;info-&gt;ip_info.ip));<br>	&#125;<br>&#125;<br><br><span class="hljs-comment">// wifi初始化</span><br><span class="hljs-type">static</span> <span class="hljs-type">void</span> <span class="hljs-title function_">wifi_sta_init</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span><br>&#123;<br>	ESP_ERROR_CHECK(esp_netif_init());<br><br>	<span class="hljs-comment">// 注册事件(wifi启动成功)</span><br>	ESP_ERROR_CHECK(esp_event_handler_instance_register(WIFI_EVENT, WIFI_EVENT_STA_START, WIFI_CallBack, <span class="hljs-literal">NULL</span>, <span class="hljs-literal">NULL</span>));<br>	<span class="hljs-comment">// 注册事件(wifi连接失败)</span><br>	ESP_ERROR_CHECK(esp_event_handler_instance_register(WIFI_EVENT, WIFI_EVENT_STA_DISCONNECTED, WIFI_CallBack, <span class="hljs-literal">NULL</span>, <span class="hljs-literal">NULL</span>));<br>	<span class="hljs-comment">// 注册事件(wifi连接失败)</span><br>	ESP_ERROR_CHECK(esp_event_handler_instance_register(IP_EVENT, IP_EVENT_STA_GOT_IP, WIFI_CallBack, <span class="hljs-literal">NULL</span>, <span class="hljs-literal">NULL</span>));<br><br>	<span class="hljs-comment">// 初始化STA设备</span><br>	esp_netif_create_default_wifi_sta();<br><br>	<span class="hljs-comment">/*Initialize WiFi */</span><br>	<span class="hljs-type">wifi_init_config_t</span> cfg = WIFI_INIT_CONFIG_DEFAULT();<br>	<span class="hljs-comment">// WIFI_INIT_CONFIG_DEFAULT 是一个默认配置的宏</span><br><br>	ESP_ERROR_CHECK(esp_wifi_init(&amp;cfg));<br><br>	<span class="hljs-comment">//----------------配置阶段-------------------</span><br>	<span class="hljs-comment">// 初始化WIFI设备( 为 WiFi 驱动初始化 WiFi 分配资源，如 WiFi 控制结构、RX/TX 缓冲区、WiFi NVS 结构等，这个 WiFi 也启动 WiFi 任务。必须先调用此API，然后才能调用所有其他WiFi API)</span><br>	ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_STA));<br><br>	<span class="hljs-comment">// STA详细配置</span><br>	<span class="hljs-type">wifi_config_t</span> sta_config = &#123;<br>			.sta = &#123;<br>					.ssid = ESP_WIFI_STA_SSID,<br>					.password = ESP_WIFI_STA_PASSWD,<br>					.bssid_set = <span class="hljs-literal">false</span>,<br>			&#125;,<br>	&#125;;<br>	ESP_ERROR_CHECK(esp_wifi_set_config(WIFI_IF_STA, &amp;sta_config));<br><br>	<span class="hljs-comment">//----------------启动阶段-------------------</span><br>	ESP_ERROR_CHECK(esp_wifi_start());<br><br>	<span class="hljs-comment">//----------------配置省电模式-------------------</span><br>	<span class="hljs-comment">// 不省电(数据传输会更快)</span><br>	ESP_ERROR_CHECK(esp_wifi_set_ps(WIFI_PS_NONE));<br>&#125;<br><br><span class="hljs-comment">/*</span><br><span class="hljs-comment"> * Structure holding server handle</span><br><span class="hljs-comment"> * and internal socket fd in order</span><br><span class="hljs-comment"> * to use out of request send</span><br><span class="hljs-comment"> */</span><br><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">async_resp_arg</span></span><br><span class="hljs-class">&#123;</span><br>	<span class="hljs-type">httpd_handle_t</span> hd;<br>	<span class="hljs-type">int</span> fd;<br>&#125;;<br><br><span class="hljs-comment">/*</span><br><span class="hljs-comment"> * async send function, which we put into the httpd work queue</span><br><span class="hljs-comment"> */</span><br><span class="hljs-type">static</span> <span class="hljs-type">void</span> <span class="hljs-title function_">ws_async_send</span><span class="hljs-params">(<span class="hljs-type">void</span> *arg)</span><br>&#123;<br>	<span class="hljs-type">static</span> <span class="hljs-type">const</span> <span class="hljs-type">char</span> *data = <span class="hljs-string">&quot;Async data&quot;</span>;<br>	<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">async_resp_arg</span> *<span class="hljs-title">resp_arg</span> =</span> arg;<br>	<span class="hljs-type">httpd_handle_t</span> hd = resp_arg-&gt;hd;<br>	<span class="hljs-type">int</span> fd = resp_arg-&gt;fd;<br>	<span class="hljs-type">httpd_ws_frame_t</span> ws_pkt;<br>	<span class="hljs-built_in">memset</span>(&amp;ws_pkt, <span class="hljs-number">0</span>, <span class="hljs-keyword">sizeof</span>(<span class="hljs-type">httpd_ws_frame_t</span>));<br>	ws_pkt.payload = (<span class="hljs-type">uint8_t</span> *)data;<br>	ws_pkt.len = <span class="hljs-built_in">strlen</span>(data);<br>	ws_pkt.type = HTTPD_WS_TYPE_TEXT;<br><br>	httpd_ws_send_frame_async(hd, fd, &amp;ws_pkt);<br>	<span class="hljs-built_in">free</span>(resp_arg);<br>&#125;<br><br><span class="hljs-type">static</span> <span class="hljs-type">esp_err_t</span> <span class="hljs-title function_">trigger_async_send</span><span class="hljs-params">(<span class="hljs-type">httpd_handle_t</span> handle, <span class="hljs-type">httpd_req_t</span> *req)</span><br>&#123;<br>	<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">async_resp_arg</span> *<span class="hljs-title">resp_arg</span> =</span> <span class="hljs-built_in">malloc</span>(<span class="hljs-keyword">sizeof</span>(<span class="hljs-keyword">struct</span> async_resp_arg));<br>	<span class="hljs-keyword">if</span> (resp_arg == <span class="hljs-literal">NULL</span>)<br>	&#123;<br>		<span class="hljs-keyword">return</span> ESP_ERR_NO_MEM;<br>	&#125;<br>	resp_arg-&gt;hd = req-&gt;handle;<br>	resp_arg-&gt;fd = httpd_req_to_sockfd(req);<br>	<span class="hljs-type">esp_err_t</span> ret = httpd_queue_work(handle, ws_async_send, resp_arg);<br>	<span class="hljs-keyword">if</span> (ret != ESP_OK)<br>	&#123;<br>		<span class="hljs-built_in">free</span>(resp_arg);<br>	&#125;<br>	<span class="hljs-keyword">return</span> ret;<br>&#125;<br><br><span class="hljs-comment">/*</span><br><span class="hljs-comment"> * This handler echos back the received ws data</span><br><span class="hljs-comment"> * and triggers an async send if certain message received</span><br><span class="hljs-comment"> */</span><br><span class="hljs-type">static</span> <span class="hljs-type">esp_err_t</span> <span class="hljs-title function_">echo_handler</span><span class="hljs-params">(<span class="hljs-type">httpd_req_t</span> *req)</span><br>&#123;<br>	<span class="hljs-keyword">if</span> (req-&gt;method == HTTP_GET)<br>	&#123;<br>		ESP_LOGI(TAG, <span class="hljs-string">&quot;Handshake done, the new connection was opened&quot;</span>);<br>		<span class="hljs-keyword">return</span> ESP_OK;<br>	&#125;<br>	<span class="hljs-type">httpd_ws_frame_t</span> ws_pkt;<br>	<span class="hljs-type">uint8_t</span> *buf = <span class="hljs-literal">NULL</span>;<br>	<span class="hljs-built_in">memset</span>(&amp;ws_pkt, <span class="hljs-number">0</span>, <span class="hljs-keyword">sizeof</span>(<span class="hljs-type">httpd_ws_frame_t</span>));<br>	ws_pkt.type = HTTPD_WS_TYPE_TEXT;<br>	<span class="hljs-comment">/* Set max_len = 0 to get the frame len */</span><br>	<span class="hljs-comment">// 读取数据</span><br>	<span class="hljs-type">esp_err_t</span> ret = httpd_ws_recv_frame(req, &amp;ws_pkt, <span class="hljs-number">0</span>);<br>	<span class="hljs-keyword">if</span> (ret != ESP_OK)<br>	&#123;<br>		ESP_LOGE(TAG, <span class="hljs-string">&quot;httpd_ws_recv_frame failed to get frame len with %d&quot;</span>, ret);<br>		<span class="hljs-keyword">return</span> ret;<br>	&#125;<br>	ESP_LOGI(TAG, <span class="hljs-string">&quot;frame len is %d&quot;</span>, ws_pkt.len);<br>	<span class="hljs-keyword">if</span> (ws_pkt.len)<br>	&#123;<br>		<span class="hljs-comment">/* ws_pkt.len + 1 is for NULL termination as we are expecting a string */</span><br>		buf = <span class="hljs-built_in">calloc</span>(<span class="hljs-number">1</span>, ws_pkt.len + <span class="hljs-number">1</span>);<br>		<span class="hljs-keyword">if</span> (buf == <span class="hljs-literal">NULL</span>)<br>		&#123;<br>			ESP_LOGE(TAG, <span class="hljs-string">&quot;Failed to calloc memory for buf&quot;</span>);<br>			<span class="hljs-keyword">return</span> ESP_ERR_NO_MEM;<br>		&#125;<br>		ws_pkt.payload = buf;<br>		<span class="hljs-comment">/* Set max_len = ws_pkt.len to get the frame payload */</span><br>		ret = httpd_ws_recv_frame(req, &amp;ws_pkt, ws_pkt.len);<br>		<span class="hljs-keyword">if</span> (ret != ESP_OK)<br>		&#123;<br>			ESP_LOGE(TAG, <span class="hljs-string">&quot;httpd_ws_recv_frame failed with %d&quot;</span>, ret);<br>			<span class="hljs-built_in">free</span>(buf);<br>			<span class="hljs-keyword">return</span> ret;<br>		&#125;<br>		ESP_LOGI(TAG, <span class="hljs-string">&quot;Got packet with message: %s&quot;</span>, ws_pkt.payload);<br>	&#125;<br>	ESP_LOGI(TAG, <span class="hljs-string">&quot;Packet type: %d&quot;</span>, ws_pkt.type);<br>	<span class="hljs-comment">// 发送数据</span><br>	<span class="hljs-keyword">if</span> (ws_pkt.type == HTTPD_WS_TYPE_TEXT &amp;&amp;<br>			<span class="hljs-built_in">strcmp</span>((<span class="hljs-type">char</span> *)ws_pkt.payload, <span class="hljs-string">&quot;Trigger async&quot;</span>) == <span class="hljs-number">0</span>)<br>	&#123;<br>		<span class="hljs-built_in">free</span>(buf);<br>		<span class="hljs-keyword">return</span> trigger_async_send(req-&gt;handle, req);<br>	&#125;<br><br>	ret = httpd_ws_send_frame(req, &amp;ws_pkt);<br>	<span class="hljs-keyword">if</span> (ret != ESP_OK)<br>	&#123;<br>		ESP_LOGE(TAG, <span class="hljs-string">&quot;httpd_ws_send_frame failed with %d&quot;</span>, ret);<br>	&#125;<br>	<span class="hljs-built_in">free</span>(buf);<br>	<span class="hljs-keyword">return</span> ret;<br>&#125;<br><br><span class="hljs-type">static</span> <span class="hljs-type">const</span> <span class="hljs-type">httpd_uri_t</span> ws = &#123;<br>		.uri = <span class="hljs-string">&quot;/ws&quot;</span>,<br>		.method = HTTP_GET,<br>		.handler = echo_handler,<br>		.user_ctx = <span class="hljs-literal">NULL</span>,<br>		.is_websocket = <span class="hljs-literal">true</span>&#125;;<br>		<br><span class="hljs-type">static</span> <span class="hljs-type">httpd_handle_t</span> <span class="hljs-title function_">start_webserver</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span><br>&#123;<br>	<span class="hljs-type">httpd_handle_t</span> server = <span class="hljs-literal">NULL</span>;<br>	<span class="hljs-type">httpd_config_t</span> config = HTTPD_DEFAULT_CONFIG();<br><br>	<span class="hljs-comment">// Start the httpd server</span><br>	ESP_LOGI(TAG, <span class="hljs-string">&quot;Starting server on port: &#x27;%d&#x27;&quot;</span>, config.server_port);<br>	<span class="hljs-keyword">if</span> (httpd_start(&amp;server, &amp;config) == ESP_OK)<br>	&#123;<br>		<span class="hljs-comment">// Registering the ws handler</span><br>		ESP_LOGI(TAG, <span class="hljs-string">&quot;Registering URI handlers&quot;</span>);<br>		httpd_register_uri_handler(server, &amp;ws);<br>		<span class="hljs-keyword">return</span> server;<br>	&#125;<br><br>	ESP_LOGI(TAG, <span class="hljs-string">&quot;Error starting server!&quot;</span>);<br>	<span class="hljs-keyword">return</span> <span class="hljs-literal">NULL</span>;<br>&#125;<br><br><span class="hljs-type">static</span> <span class="hljs-type">esp_err_t</span> <span class="hljs-title function_">stop_webserver</span><span class="hljs-params">(<span class="hljs-type">httpd_handle_t</span> server)</span><br>&#123;<br>	<span class="hljs-comment">// Stop the httpd server</span><br>	<span class="hljs-keyword">return</span> httpd_stop(server);<br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">app_main</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span><br>&#123;<br>	<span class="hljs-type">static</span> <span class="hljs-type">httpd_handle_t</span> server = <span class="hljs-literal">NULL</span>;<br><br>	<span class="hljs-comment">// Initialize NVS</span><br>	<span class="hljs-type">esp_err_t</span> ret = nvs_flash_init();<br>	<span class="hljs-keyword">if</span> (ret == ESP_ERR_NVS_NO_FREE_PAGES || ret == ESP_ERR_NVS_NEW_VERSION_FOUND)<br>	&#123;<br>		ESP_ERROR_CHECK(nvs_flash_erase());<br>		ret = nvs_flash_init();<br>	&#125;<br>	ESP_ERROR_CHECK(ret);<br><br>	<span class="hljs-comment">// 创建默认事件循环</span><br>	ESP_ERROR_CHECK(esp_event_loop_create_default());<br><br>	<span class="hljs-comment">// 配置启动WIFI</span><br>	wifi_sta_init();<br><br>	<span class="hljs-comment">// 等待wifi连接成功(暂时这样处理)</span><br>	vTaskDelay(<span class="hljs-number">5000</span> / portTICK_PERIOD_MS);<br><br>	<span class="hljs-comment">// 创建WebSocket服务器</span><br>	server = start_webserver();<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意需要设置项目HTTP组件的下面两项配置</p>
+</blockquote>
+<p><img src="/posts/57923/20240327095321.png" srcset="/img/loading.gif" lazyload></p>
+<p>然后随便打开一个WebSocket测试网站：<a target="_blank" rel="noopener" href="http://www.jsons.cn/websocket/">http://www.jsons.cn/websocket/</a></p>
+<p><img src="/posts/57923/20240327095439.png" srcset="/img/loading.gif" lazyload></p>
+<p>服务器程序正常。</p>
+<h3 id="3-2-客户端"><a href="#3-2-客户端" class="headerlink" title="3.2 客户端"></a>3.2 客户端</h3><p>我们使用python编写一个简单的回声服务器程序：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> flask <span class="hljs-keyword">import</span> Flask<br><span class="hljs-keyword">from</span> flask_sock <span class="hljs-keyword">import</span> Sock<br><br>app = Flask(__name__)<br>sock = Sock(app)<br><br><span class="hljs-meta">@sock.route(<span class="hljs-params"><span class="hljs-string">&#x27;/&#x27;</span></span>)</span><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">echo</span>(<span class="hljs-params">ws</span>):<br>    <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:<br>        data = ws.receive()<br>        ws.send(data)<br><br><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&#x27;__main__&#x27;</span>:<br>    <span class="hljs-comment"># To run your Flask + WebSocket server in production you can use Gunicorn:</span><br>    <span class="hljs-comment"># gunicorn -b 0.0.0.0:5000 --workers 4 --threads 100 module:app</span><br>    app.run(host=<span class="hljs-string">&quot;0.0.0.0&quot;</span>, debug=<span class="hljs-literal">True</span>)<br></code></pre></td></tr></table></figure>
+
+<p>下载依赖：</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmake">pip <span class="hljs-keyword">install</span> flask-sock<br></code></pre></td></tr></table></figure>
+
+<p>运行程序：</p>
+<p><img src="/posts/57923/20240327111836.png" srcset="/img/loading.gif" lazyload></p>
+<p>在代码里定义目标服务器（写自己电脑的ip）：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// 目标服务器</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> CONFIG_WEBSOCKET_URI <span class="hljs-string">&quot;ws://192.168.137.1:5000&quot;</span></span><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;string.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;freertos/FreeRTOS.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;freertos/event_groups.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;esp_wifi.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;esp_log.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;esp_event.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;nvs_flash.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;esp_mac.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;esp_netif.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;sys/socket.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;esp_eth.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;esp_websocket_client.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;cJSON.h&gt;</span></span><br><br><span class="hljs-comment">// 要连接的WIFI</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ESP_WIFI_STA_SSID <span class="hljs-string">&quot;duruofu_win10&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ESP_WIFI_STA_PASSWD <span class="hljs-string">&quot;1234567890&quot;</span></span><br><br><span class="hljs-comment">// 目标服务器</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> CONFIG_WEBSOCKET_URI <span class="hljs-string">&quot;ws://demo.piesocket.com/v3/channel_123?api_key=VCXCEuvhGcBDP7XhiJJUDvR1e1D3eiVjgZ9VRiaV&amp;notify_self&quot;</span></span><br><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> NO_DATA_TIMEOUT_SEC 5</span><br><br><span class="hljs-type">static</span> <span class="hljs-type">const</span> <span class="hljs-type">char</span> *TAG = <span class="hljs-string">&quot;main&quot;</span>;<br><br><span class="hljs-type">static</span> TimerHandle_t shutdown_signal_timer;<br><span class="hljs-type">static</span> SemaphoreHandle_t shutdown_sema;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">WIFI_CallBack</span><span class="hljs-params">(<span class="hljs-type">void</span> *event_handler_arg, <span class="hljs-type">esp_event_base_t</span> event_base, <span class="hljs-type">int32_t</span> event_id, <span class="hljs-type">void</span> *event_data)</span><br>&#123;<br>	<span class="hljs-type">static</span> <span class="hljs-type">uint8_t</span> connect_count = <span class="hljs-number">0</span>;<br>	<span class="hljs-comment">// WIFI 启动成功</span><br>	<span class="hljs-keyword">if</span> (event_base == WIFI_EVENT &amp;&amp; event_id == WIFI_EVENT_STA_START)<br>	&#123;<br>		ESP_LOGI(<span class="hljs-string">&quot;WIFI_EVENT&quot;</span>, <span class="hljs-string">&quot;WIFI_EVENT_STA_START&quot;</span>);<br>		ESP_ERROR_CHECK(esp_wifi_connect());<br>	&#125;<br>	<span class="hljs-comment">// WIFI 连接失败</span><br>	<span class="hljs-keyword">if</span> (event_base == WIFI_EVENT &amp;&amp; event_id == WIFI_EVENT_STA_DISCONNECTED)<br>	&#123;<br>		ESP_LOGI(<span class="hljs-string">&quot;WIFI_EVENT&quot;</span>, <span class="hljs-string">&quot;WIFI_EVENT_STA_DISCONNECTED&quot;</span>);<br>		connect_count++;<br>		<span class="hljs-keyword">if</span> (connect_count &lt; <span class="hljs-number">6</span>)<br>		&#123;<br>			vTaskDelay(<span class="hljs-number">1000</span> / portTICK_PERIOD_MS);<br>			ESP_ERROR_CHECK(esp_wifi_connect());<br>		&#125;<br>		<span class="hljs-keyword">else</span><br>		&#123;<br>			ESP_LOGI(<span class="hljs-string">&quot;WIFI_EVENT&quot;</span>, <span class="hljs-string">&quot;WIFI_EVENT_STA_DISCONNECTED 10 times&quot;</span>);<br>		&#125;<br>	&#125;<br>	<span class="hljs-comment">// WIFI 连接成功(获取到了IP)</span><br>	<span class="hljs-keyword">if</span> (event_base == IP_EVENT &amp;&amp; event_id == IP_EVENT_STA_GOT_IP)<br>	&#123;<br>		ESP_LOGI(<span class="hljs-string">&quot;WIFI_EVENT&quot;</span>, <span class="hljs-string">&quot;WIFI_EVENT_STA_GOT_IP&quot;</span>);<br>		<span class="hljs-type">ip_event_got_ip_t</span> *info = (<span class="hljs-type">ip_event_got_ip_t</span> *)event_data;<br>		ESP_LOGI(<span class="hljs-string">&quot;WIFI_EVENT&quot;</span>, <span class="hljs-string">&quot;got ip:&quot;</span> IPSTR <span class="hljs-string">&quot;&quot;</span>, IP2STR(&amp;info-&gt;ip_info.ip));<br>	&#125;<br>&#125;<br><br><span class="hljs-comment">// wifi初始化</span><br><span class="hljs-type">static</span> <span class="hljs-type">void</span> <span class="hljs-title function_">wifi_sta_init</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span><br>&#123;<br>	ESP_ERROR_CHECK(esp_netif_init());<br><br>	<span class="hljs-comment">// 注册事件(wifi启动成功)</span><br>	ESP_ERROR_CHECK(esp_event_handler_instance_register(WIFI_EVENT, WIFI_EVENT_STA_START, WIFI_CallBack, <span class="hljs-literal">NULL</span>, <span class="hljs-literal">NULL</span>));<br>	<span class="hljs-comment">// 注册事件(wifi连接失败)</span><br>	ESP_ERROR_CHECK(esp_event_handler_instance_register(WIFI_EVENT, WIFI_EVENT_STA_DISCONNECTED, WIFI_CallBack, <span class="hljs-literal">NULL</span>, <span class="hljs-literal">NULL</span>));<br>	<span class="hljs-comment">// 注册事件(wifi连接失败)</span><br>	ESP_ERROR_CHECK(esp_event_handler_instance_register(IP_EVENT, IP_EVENT_STA_GOT_IP, WIFI_CallBack, <span class="hljs-literal">NULL</span>, <span class="hljs-literal">NULL</span>));<br><br>	<span class="hljs-comment">// 初始化STA设备</span><br>	esp_netif_create_default_wifi_sta();<br><br>	<span class="hljs-comment">/*Initialize WiFi */</span><br>	<span class="hljs-type">wifi_init_config_t</span> cfg = WIFI_INIT_CONFIG_DEFAULT();<br>	<span class="hljs-comment">// WIFI_INIT_CONFIG_DEFAULT 是一个默认配置的宏</span><br><br>	ESP_ERROR_CHECK(esp_wifi_init(&amp;cfg));<br><br>	<span class="hljs-comment">//----------------配置阶段-------------------</span><br>	<span class="hljs-comment">// 初始化WIFI设备( 为 WiFi 驱动初始化 WiFi 分配资源，如 WiFi 控制结构、RX/TX 缓冲区、WiFi NVS 结构等，这个 WiFi 也启动 WiFi 任务。必须先调用此API，然后才能调用所有其他WiFi API)</span><br>	ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_STA));<br><br>	<span class="hljs-comment">// STA详细配置</span><br>	<span class="hljs-type">wifi_config_t</span> sta_config = &#123;<br>			.sta = &#123;<br>					.ssid = ESP_WIFI_STA_SSID,<br>					.password = ESP_WIFI_STA_PASSWD,<br>					.bssid_set = <span class="hljs-literal">false</span>,<br>			&#125;,<br>	&#125;;<br>	ESP_ERROR_CHECK(esp_wifi_set_config(WIFI_IF_STA, &amp;sta_config));<br><br>	<span class="hljs-comment">//----------------启动阶段-------------------</span><br>	ESP_ERROR_CHECK(esp_wifi_start());<br><br>	<span class="hljs-comment">//----------------配置省电模式-------------------</span><br>	<span class="hljs-comment">// 不省电(数据传输会更快)</span><br>	ESP_ERROR_CHECK(esp_wifi_set_ps(WIFI_PS_NONE));<br>&#125;<br><br><span class="hljs-type">static</span> <span class="hljs-type">void</span> <span class="hljs-title function_">log_error_if_nonzero</span><span class="hljs-params">(<span class="hljs-type">const</span> <span class="hljs-type">char</span> *message, <span class="hljs-type">int</span> error_code)</span><br>&#123;<br>	<span class="hljs-keyword">if</span> (error_code != <span class="hljs-number">0</span>)<br>	&#123;<br>		ESP_LOGE(TAG, <span class="hljs-string">&quot;Last error %s: 0x%x&quot;</span>, message, error_code);<br>	&#125;<br>&#125;<br><br><span class="hljs-type">static</span> <span class="hljs-type">void</span> <span class="hljs-title function_">shutdown_signaler</span><span class="hljs-params">(TimerHandle_t xTimer)</span><br>&#123;<br>	ESP_LOGI(TAG, <span class="hljs-string">&quot;No data received for %d seconds, signaling shutdown&quot;</span>, NO_DATA_TIMEOUT_SEC);<br>	xSemaphoreGive(shutdown_sema);<br>&#125;<br><br><span class="hljs-comment">// WebSocket客户端事件处理</span><br><span class="hljs-type">static</span> <span class="hljs-type">void</span> <span class="hljs-title function_">websocket_event_handler</span><span class="hljs-params">(<span class="hljs-type">void</span> *handler_args, <span class="hljs-type">esp_event_base_t</span> base, <span class="hljs-type">int32_t</span> event_id, <span class="hljs-type">void</span> *event_data)</span><br>&#123;<br>	<span class="hljs-type">esp_websocket_event_data_t</span> *data = (<span class="hljs-type">esp_websocket_event_data_t</span> *)event_data;<br>	<span class="hljs-keyword">switch</span> (event_id)<br>	&#123;<br>	<span class="hljs-comment">// 连接成功</span><br>	<span class="hljs-keyword">case</span> WEBSOCKET_EVENT_CONNECTED:<br>		ESP_LOGI(TAG, <span class="hljs-string">&quot;WEBSOCKET_EVENT_CONNECTED&quot;</span>);<br>		<span class="hljs-keyword">break</span>;<br>	<span class="hljs-comment">// 连接断开</span><br>	<span class="hljs-keyword">case</span> WEBSOCKET_EVENT_DISCONNECTED:<br>		ESP_LOGI(TAG, <span class="hljs-string">&quot;WEBSOCKET_EVENT_DISCONNECTED&quot;</span>);<br>		log_error_if_nonzero(<span class="hljs-string">&quot;HTTP status code&quot;</span>, data-&gt;error_handle.esp_ws_handshake_status_code);<br>		<span class="hljs-keyword">if</span> (data-&gt;error_handle.error_type == WEBSOCKET_ERROR_TYPE_TCP_TRANSPORT)<br>		&#123;<br>			log_error_if_nonzero(<span class="hljs-string">&quot;reported from esp-tls&quot;</span>, data-&gt;error_handle.esp_tls_last_esp_err);<br>			log_error_if_nonzero(<span class="hljs-string">&quot;reported from tls stack&quot;</span>, data-&gt;error_handle.esp_tls_stack_err);<br>			log_error_if_nonzero(<span class="hljs-string">&quot;captured as transport&#x27;s socket errno&quot;</span>, data-&gt;error_handle.esp_transport_sock_errno);<br>		&#125;<br>		<span class="hljs-keyword">break</span>;<br>	<span class="hljs-comment">// 收到数据</span><br>	<span class="hljs-keyword">case</span> WEBSOCKET_EVENT_DATA:<br>		ESP_LOGI(TAG, <span class="hljs-string">&quot;WEBSOCKET_EVENT_DATA&quot;</span>);<br>		ESP_LOGI(TAG, <span class="hljs-string">&quot;Received opcode=%d&quot;</span>, data-&gt;op_code);<br>		<span class="hljs-keyword">if</span> (data-&gt;op_code == <span class="hljs-number">0x08</span> &amp;&amp; data-&gt;data_len == <span class="hljs-number">2</span>)<br>		&#123;<br>			ESP_LOGW(TAG, <span class="hljs-string">&quot;Received closed message with code=%d&quot;</span>, <span class="hljs-number">256</span> * data-&gt;data_ptr[<span class="hljs-number">0</span>] + data-&gt;data_ptr[<span class="hljs-number">1</span>]);<br>		&#125;<br>		<span class="hljs-keyword">else</span><br>		&#123;<br>			ESP_LOGW(TAG, <span class="hljs-string">&quot;Received=%.*s\n\n&quot;</span>, data-&gt;data_len, (<span class="hljs-type">char</span> *)data-&gt;data_ptr);<br>		&#125;<br><br>		<span class="hljs-comment">// If received data contains json structure it succeed to parse</span><br>		cJSON *root = cJSON_Parse(data-&gt;data_ptr);<br>		<span class="hljs-keyword">if</span> (root)<br>		&#123;<br>			<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; cJSON_GetArraySize(root); i++)<br>			&#123;<br>				cJSON *elem = cJSON_GetArrayItem(root, i);<br>				cJSON *id = cJSON_GetObjectItem(elem, <span class="hljs-string">&quot;id&quot;</span>);<br>				cJSON *name = cJSON_GetObjectItem(elem, <span class="hljs-string">&quot;name&quot;</span>);<br>				ESP_LOGW(TAG, <span class="hljs-string">&quot;Json=&#123;&#x27;id&#x27;: &#x27;%s&#x27;, &#x27;name&#x27;: &#x27;%s&#x27;&#125;&quot;</span>, id-&gt;valuestring, name-&gt;valuestring);<br>			&#125;<br>			cJSON_Delete(root);<br>		&#125;<br><br>		ESP_LOGW(TAG, <span class="hljs-string">&quot;Total payload length=%d, data_len=%d, current payload offset=%d\r\n&quot;</span>, data-&gt;payload_len, data-&gt;data_len, data-&gt;payload_offset);<br><br>	  <span class="hljs-comment">// 定时器复位</span><br>		xTimerReset(shutdown_signal_timer, portMAX_DELAY);<br>		<span class="hljs-keyword">break</span>;<br>	<span class="hljs-comment">// 错误</span><br>	<span class="hljs-keyword">case</span> WEBSOCKET_EVENT_ERROR:<br>		ESP_LOGI(TAG, <span class="hljs-string">&quot;WEBSOCKET_EVENT_ERROR&quot;</span>);<br>		log_error_if_nonzero(<span class="hljs-string">&quot;HTTP status code&quot;</span>, data-&gt;error_handle.esp_ws_handshake_status_code);<br>		<span class="hljs-keyword">if</span> (data-&gt;error_handle.error_type == WEBSOCKET_ERROR_TYPE_TCP_TRANSPORT)<br>		&#123;<br>			log_error_if_nonzero(<span class="hljs-string">&quot;reported from esp-tls&quot;</span>, data-&gt;error_handle.esp_tls_last_esp_err);<br>			log_error_if_nonzero(<span class="hljs-string">&quot;reported from tls stack&quot;</span>, data-&gt;error_handle.esp_tls_stack_err);<br>			log_error_if_nonzero(<span class="hljs-string">&quot;captured as transport&#x27;s socket errno&quot;</span>, data-&gt;error_handle.esp_transport_sock_errno);<br>		&#125;<br>		<span class="hljs-keyword">break</span>;<br>	&#125;<br>&#125;<br><br><span class="hljs-comment">// WebSocket客户端</span><br><span class="hljs-type">static</span> <span class="hljs-type">void</span> <span class="hljs-title function_">websocket_app_start</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span><br>&#123;<br>	<span class="hljs-type">esp_websocket_client_config_t</span> websocket_cfg = &#123;&#125;;<br><br>  <span class="hljs-comment">// 创建定时器</span><br>	shutdown_signal_timer = xTimerCreate(<span class="hljs-string">&quot;Websocket shutdown timer&quot;</span>, NO_DATA_TIMEOUT_SEC * <span class="hljs-number">1000</span> / portTICK_PERIOD_MS,<br>																			 pdFALSE, <span class="hljs-literal">NULL</span>, shutdown_signaler);<br>	<span class="hljs-comment">// 创建信号量</span><br>	shutdown_sema = xSemaphoreCreateBinary();<br><br>	<span class="hljs-comment">// 配置目标服务器</span><br>	websocket_cfg.uri = CONFIG_WEBSOCKET_URI;<br><br>	ESP_LOGI(TAG, <span class="hljs-string">&quot;Connecting to %s...&quot;</span>, websocket_cfg.uri);<br><br>	<span class="hljs-comment">// 创建WebSocket客户端</span><br>	<span class="hljs-type">esp_websocket_client_handle_t</span> client = esp_websocket_client_init(&amp;websocket_cfg);<br>	<span class="hljs-comment">// 注册事件</span><br>	esp_websocket_register_events(client, WEBSOCKET_EVENT_ANY, websocket_event_handler, (<span class="hljs-type">void</span> *)client);<br>	<span class="hljs-comment">// 启动WebSocket客户端</span><br>	esp_websocket_client_start(client);<br>	xTimerStart(shutdown_signal_timer, portMAX_DELAY);<br>	<span class="hljs-type">char</span> data[<span class="hljs-number">32</span>];<br>	<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>;<br>	<span class="hljs-comment">// 发送5次数据</span><br>	<span class="hljs-keyword">while</span> (i &lt; <span class="hljs-number">5</span>)<br>	&#123;<br>		<span class="hljs-keyword">if</span> (esp_websocket_client_is_connected(client))<br>		&#123;<br>			<span class="hljs-type">int</span> len = <span class="hljs-built_in">sprintf</span>(data, <span class="hljs-string">&quot;hello %04d&quot;</span>, i++);<br>			ESP_LOGI(TAG, <span class="hljs-string">&quot;Sending %s&quot;</span>, data);<br>			<span class="hljs-comment">// 发送文本数据</span><br>			esp_websocket_client_send_text(client, data, len, portMAX_DELAY);<br>		&#125;<br>		vTaskDelay(<span class="hljs-number">1000</span> / portTICK_PERIOD_MS);<br>	&#125;<br><br>	ESP_LOGI(TAG, <span class="hljs-string">&quot;Sending fragmented message&quot;</span>);<br>	vTaskDelay(<span class="hljs-number">1000</span> / portTICK_PERIOD_MS);<br>	<span class="hljs-built_in">memset</span>(data, <span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-keyword">sizeof</span>(data));<br>	esp_websocket_client_send_text_partial(client, data, <span class="hljs-keyword">sizeof</span>(data), portMAX_DELAY);<br>	<span class="hljs-built_in">memset</span>(data, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-keyword">sizeof</span>(data));<br>	esp_websocket_client_send_cont_msg(client, data, <span class="hljs-keyword">sizeof</span>(data), portMAX_DELAY);<br>	esp_websocket_client_send_fin(client, portMAX_DELAY);<br><br>	<span class="hljs-comment">// 等待信号量</span><br>	xSemaphoreTake(shutdown_sema, portMAX_DELAY);<br>	<span class="hljs-comment">// 关闭WebSocket客户端</span><br>	esp_websocket_client_close(client, portMAX_DELAY);<br>	ESP_LOGI(TAG, <span class="hljs-string">&quot;Websocket Stopped&quot;</span>);<br>	<span class="hljs-comment">// 销毁WebSocket客户端</span><br>	esp_websocket_client_destroy(client);<br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">app_main</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span><br>&#123;<br><br>	<span class="hljs-comment">// Initialize NVS</span><br>	<span class="hljs-type">esp_err_t</span> ret = nvs_flash_init();<br>	<span class="hljs-keyword">if</span> (ret == ESP_ERR_NVS_NO_FREE_PAGES || ret == ESP_ERR_NVS_NEW_VERSION_FOUND)<br>	&#123;<br>		ESP_ERROR_CHECK(nvs_flash_erase());<br>		ret = nvs_flash_init();<br>	&#125;<br>	ESP_ERROR_CHECK(ret);<br><br>	<span class="hljs-comment">// 创建默认事件循环</span><br>	ESP_ERROR_CHECK(esp_event_loop_create_default());<br><br>	<span class="hljs-comment">// 配置启动WIFI</span><br>	wifi_sta_init();<br><br>	<span class="hljs-comment">// 等待wifi连接成功(暂时这样处理)</span><br>	vTaskDelay(<span class="hljs-number">5000</span> / portTICK_PERIOD_MS);<br><br>	<span class="hljs-comment">// 创建WebSocket客户端</span><br>	websocket_app_start();<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<p>效果：</p>
+<p><img src="/posts/57923/20240327112254.png" srcset="/img/loading.gif" lazyload></p>
+<p>成功收到回显数据，客户端程序测试完成</p>
+<h1 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h1><ol>
+<li><a target="_blank" rel="noopener" href="https://space.bilibili.com/1338335828">https://space.bilibili.com/1338335828</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/protocols/esp_http_server.html?highlight=websocket">https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/protocols/esp_http_server.html?highlight=websocket</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-protocols/esp_websocket_client/docs/latest/index.html#">https://docs.espressif.com/projects/esp-protocols/esp_websocket_client/docs/latest/index.html#</a></li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%94%B5%E5%AD%90%E4%BF%A1%E6%81%AF%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/" class="category-chain-item">电子信息硬件相关</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E7%94%B5%E5%AD%90%E4%BF%A1%E6%81%AF%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/" class="category-chain-item">MCU</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E7%94%B5%E5%AD%90%E4%BF%A1%E6%81%AF%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/" class="category-chain-item">ESP32</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E7%94%B5%E5%AD%90%E4%BF%A1%E6%81%AF%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/WIFI/" class="category-chain-item">WIFI</a>
+  
+  
+
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/MCU/" class="print-no-link">#MCU</a>
+      
+        <a href="/tags/ESP32/" class="print-no-link">#ESP32</a>
+      
+        <a href="/tags/WebSocket/" class="print-no-link">#WebSocket</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>ESP32网络入门-WebSocket协议</div>
+      <div>https://www.duruofu.xyz/posts/57923/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>DuRuofu</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年3月27日</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>更新于</div>
+          <div>2025年1月10日</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
+                    <i class="iconfont icon-cc-nc"></i>
+                  </span>
+                </a>
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="SA - 相同方式共享">
+                    <i class="iconfont icon-cc-sa"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/33118/" title="ESP32网络入门-MQTT协议">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">ESP32网络入门-MQTT协议</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/58371/" title="ESP32网络入门-HTTP协议(服务端)">
+                        <span class="hidden-mobile">ESP32网络入门-HTTP协议(服务端)</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#gitalk-container', function() {
+      Fluid.utils.createCssLink('/css/gitalk.css')
+      Fluid.utils.createScript('https://lib.baomitu.com/gitalk/1.8.0/gitalk.min.js', function() {
+        var options = Object.assign(
+          {"clientID":"c9ac06d5413a9d613a1e","clientSecret":"a44f5c72589eb090876cc64067db28fbfdf4747c","repo":"Blog-comments-gitalk","owner":"DuRuofu","admin":["DuRuofu"],"language":"zh-CN","labels":["Gitalk"],"perPage":15,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":false,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token"},
+          {
+            id: '6a4620b00c6afb43a299cfc499f16dd1'
+          }
+        )
+        var gitalk = new Gitalk(options);
+        gitalk.render('gitalk-container');
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <br><span id="timeDate">天数载入中</span><span id="times">...</span><br> <span>总有读不懂的诗和到达不了的远方</span> <p>Copyright © 2023 - <span id="currentYear"></span> All Rights Reserved.</p>
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      陕ICP备2022007454号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=2022007454"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>陕ICP备2022007454号-2</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":true,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  var relativeDate = function() {
+    var updatedTime = document.getElementById('updated-time');
+    if (updatedTime) {
+      var text = updatedTime.textContent;
+      var reg = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:Z|[+-]\d{2}:\d{2})/;
+      var matchs = text.match(reg);
+      if (matchs) {
+        var relativeTime = moment(matchs[0]).fromNow();
+        updatedTime.textContent = text.replace(reg, relativeTime);
+      }
+      updatedTime.style.display = '';
+    }
+  };
+  Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/moment.min.js', function() {
+    if (!'zh-cn'.startsWith('en')) {
+      Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/locale/zh-cn.min.js', function() {
+        relativeDate();
+      });
+    } else {
+      relativeDate();
+    }
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/cust/custom.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

@@ -1,0 +1,945 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/%E4%B8%AA%E4%BA%BA%E5%A4%B4%E5%83%8F%E6%97%A0%E8%83%8C%E6%99%AF.png">
+  <link rel="icon" href="https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/%E4%B8%AA%E4%BA%BA%E5%A4%B4%E5%83%8F%E6%97%A0%E8%83%8C%E6%99%AF.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="DuRuofu">
+  <meta name="keywords" content="嵌入式,个人博客,个人测试">
+  
+    <meta name="description" content="频率测量在诸多领域都有广泛的应用，常用的频率测量方法有两种，分别是频率测量 法和周期测量法。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="FPGA实现硬件频率计">
+<meta property="og:url" content="https://www.duruofu.xyz/posts/52481/index.html">
+<meta property="og:site_name" content="Duruofu&#39;s 个人测试">
+<meta property="og:description" content="频率测量在诸多领域都有广泛的应用，常用的频率测量方法有两种，分别是频率测量 法和周期测量法。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.duruofu.xyz/img/index_img/FPGA.jpg">
+<meta property="article:published_time" content="2024-02-05T02:48:19.000Z">
+<meta property="article:modified_time" content="2025-01-10T14:20:33.980Z">
+<meta property="article:author" content="DuRuofu">
+<meta property="article:tag" content="FPGA">
+<meta property="article:tag" content="vivado">
+<meta property="article:tag" content="频率计">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://www.duruofu.xyz/img/index_img/FPGA.jpg">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>FPGA实现硬件频率计 - Duruofu&#39;s 个人测试</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/cust/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"www.duruofu.xyz","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":80,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":true,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":5},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null},"gtag":null,"woyaola":null,"cnzz":null},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>DuRuofu</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/2020/06/06/1.%E9%98%85%E8%AF%BB%E5%86%99%E4%BD%9C/%E5%8E%9F%E5%88%9B%E8%AF%97%E8%AF%8D/%E8%AF%97%E8%AF%8D/" target="_self">
+                <i class="iconfont icon-books"></i>
+                <span>诗词</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                <span>ESP32教程</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/posts/58874/" target="_self">
+                    
+                    <span>ESP32教程-2024</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/posts/58875/" target="_self">
+                    
+                    <span>ESP32教程-2025</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="FPGA实现硬件频率计"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        DuRuofu
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-02-05 10:48" pubdate>
+          2024年2月5日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.5k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          3 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">FPGA实现硬件频率计</h1>
+            
+              <p id="updated-time" class="note note-info" style="display: none">
+                
+                  
+                    本文最后更新于 2025-01-10T22:20:33+08:00
+                  
+                  
+
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <h3 id="说明："><a href="#说明：" class="headerlink" title="说明："></a>说明：</h3><ol>
+<li>本文档由DuRuofu撰写，由DuRuofu负责解释及执行。</li>
+</ol>
+<h3 id="修订历史："><a href="#修订历史：" class="headerlink" title="修订历史："></a>修订历史：</h3><table>
+<thead>
+<tr>
+<th>文档名称</th>
+<th>版本</th>
+<th>作者</th>
+<th>时间</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>FPGA实现硬件频率计</td>
+<td>v1.0.0</td>
+<td>DuRuofu</td>
+<td>2024-02-05</td>
+<td>首次建立</td>
+</tr>
+</tbody></table>
+<div STYLE="page-break-after: always;"></div>
+
+<h1 id="FPGA实现硬件频率计"><a href="#FPGA实现硬件频率计" class="headerlink" title="FPGA实现硬件频率计"></a>FPGA实现硬件频率计</h1><h3 id="一、概述"><a href="#一、概述" class="headerlink" title="一、概述"></a>一、概述</h3><p>频率测量在诸多领域都有广泛的应用，常用的频率测量方法有两种，分别是频率测量 法和周期测量法。 </p>
+<p><strong>频率测量法</strong>：在时间 t 内对被测时钟信号的时钟周期 N 进行计数，然后求出单位时间 内的时钟周期数，即为被测时钟信号的时钟频率。 </p>
+<p><strong>周期测量法</strong>：先测量出被测时钟信号的时钟周期 T，然后根据频率 f &#x3D; 1／T 求出被测 时钟信号的频率。</p>
+<p>但是上述两种方法都会产生±1 个被测时钟周期的误差，在实际应用中有一定的局限 性；而且根据两种方式的测量原理，很容易发现频率测量法适合于测量高频时钟信号，而周期测量法适合于低频时钟信号的测量，但二者都不能兼顾高低频率同样精度的测量要求</p>
+<p>等精度测量法与前两种方式不同，其最大的特点是，测量的实际门控时间不是一个固 定值，它与被测时钟信号相关，是被测时钟信号周期的整数倍。在实际门控信号下，同时 对标准时钟和被测时钟信号的时钟周期进行计数，再通过公式计算得到被测信号的时钟频 率。</p>
+<p><img src="/posts/52481/20240206100927.png" srcset="/img/loading.gif" lazyload></p>
+<p>被测时钟信号的计算方法。<br>首先我们先分别对实际闸门下被测时钟信号和标准时钟信号的时钟周期进行计数。 实际闸门下被测时钟信号周期数为 X，设被测信号时钟周期为 Tfx，它的时钟频率 fx &#x3D; 1&#x2F;Tfx，由此可得等式：X * Tfx &#x3D; X &#x2F; fx &#x3D; Tx(实际闸门)。<br>实际闸门下标准时钟信号周期数为 Y，设被测信号时钟周期为 Tfs，它的时钟频率 fs &#x3D; 1&#x2F;Tfs，由此可得等式：Y * Tfs &#x3D; Y &#x2F; fs &#x3D; Tx(实际闸门)。<br>其次，将两等式结合得到只包含各自时钟周期计数和时钟频率的等式：X &#x2F; fx &#x3D; Y &#x2F; fs &#x3D; Tx(实际闸门)，等式变换，得到被测时钟信号时钟频率计算公式：fx &#x3D; X * fs &#x2F; Y。<br>最后，将已知量标准时钟信号时钟频率 fs 和测量量 X、Y 带入计算公式，得到被测时 钟信号时钟频率 fx。</p>
+<h3 id="二、系统框图"><a href="#二、系统框图" class="headerlink" title="二、系统框图"></a>二、系统框图</h3><p>顶层模块：<br><img src="/posts/52481/%E9%A1%B6%E5%B1%82%E6%A8%A1%E5%9D%97.svg" srcset="/img/loading.gif" lazyload></p>
+<p>子功能模块：<br><img src="/posts/52481/%E5%AD%90%E5%8A%9F%E8%83%BD%E6%A8%A1%E5%9D%97.svg" srcset="/img/loading.gif" lazyload></p>
+<p>整体框图：<br><img src="/posts/52481/%E6%95%B4%E4%BD%93%E6%A1%86%E5%9B%BE.svg" srcset="/img/loading.gif" lazyload></p>
+<h3 id="三、-模块波形图"><a href="#三、-模块波形图" class="headerlink" title="三、 模块波形图"></a>三、 模块波形图</h3><h4 id="频率计算模块：freq-meter-calc"><a href="#频率计算模块：freq-meter-calc" class="headerlink" title="频率计算模块：freq_meter_calc"></a>频率计算模块：freq_meter_calc</h4><p><img src="/posts/52481/%E9%A2%91%E7%8E%87%E8%AE%A1%E7%AE%97%E6%A8%A1%E5%9D%97%E6%B3%A2%E5%BD%A2.svg" srcset="/img/loading.gif" lazyload></p>
+<h3 id="三、-代码实现"><a href="#三、-代码实现" class="headerlink" title="三、 代码实现"></a>三、 代码实现</h3><h4 id="频率计算模块：freq-meter-calc-1"><a href="#频率计算模块：freq-meter-calc-1" class="headerlink" title="频率计算模块：freq_meter_calc"></a>频率计算模块：freq_meter_calc</h4><p>模块代码：</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-meta">`<span class="hljs-keyword">timescale</span> 1ns / 1ns</span><br><br><span class="hljs-keyword">module</span> freq_meter_calc(<br>    <span class="hljs-keyword">input</span> <span class="hljs-keyword">wire</span> sys_clk,<br>    <span class="hljs-keyword">input</span> <span class="hljs-keyword">wire</span> sys_rst_n,<br>    <span class="hljs-keyword">input</span> <span class="hljs-keyword">wire</span> clk_test,<br><br>    <span class="hljs-keyword">output</span> <span class="hljs-keyword">reg</span> [<span class="hljs-number">31</span>:<span class="hljs-number">0</span>] freq<br>    );<br><span class="hljs-comment">// 参数定义：</span><br><span class="hljs-keyword">parameter</span> CNT_GATE_S_MAX = <span class="hljs-number">27&#x27;d74_999_999</span>; <span class="hljs-comment">//闸门计数器最大值(1.5s)</span><br><span class="hljs-keyword">parameter</span> CNT_RISE_MAX = <span class="hljs-number">27&#x27;d12_500_000</span>-<span class="hljs-number">1</span>; <span class="hljs-comment">//闸门计数器最大值(0.25s)</span><br><span class="hljs-keyword">parameter</span> CLK_STAND_FREQ = <span class="hljs-number">27&#x27;d100_000_000</span>; <span class="hljs-comment">//标准参考时钟频率</span><br><br><br><span class="hljs-comment">// 声明变量：</span><br><span class="hljs-keyword">reg</span>  [<span class="hljs-number">26</span>:<span class="hljs-number">0</span>] cnt_gate_s; <span class="hljs-comment">//软件闸门计数器</span><br><span class="hljs-keyword">reg</span> gate_s; <span class="hljs-comment">//软件闸门标志</span><br><span class="hljs-keyword">reg</span> gate_a; <span class="hljs-comment">//实际闸门标志</span><br><span class="hljs-keyword">reg</span>  [<span class="hljs-number">47</span>:<span class="hljs-number">0</span>] cnt_clk_test; <span class="hljs-comment">//软件闸门计数器</span><br><span class="hljs-keyword">reg</span> gate_a_test_reg; <span class="hljs-comment">//实际闸门标志缓冲（延时一拍）</span><br><span class="hljs-keyword">reg</span>  [<span class="hljs-number">47</span>:<span class="hljs-number">0</span>] cnt_clk_test_reg; <span class="hljs-comment">//软件闸门计数器值</span><br><br><span class="hljs-keyword">reg</span> [<span class="hljs-number">47</span>:<span class="hljs-number">0</span>] cnt_clk_stand; <span class="hljs-comment">//标准参考时钟计数器</span><br><span class="hljs-keyword">reg</span> gate_a_stand_reg; <span class="hljs-comment">//实际闸门标志缓冲（延时一拍）</span><br><span class="hljs-keyword">reg</span> [<span class="hljs-number">47</span>:<span class="hljs-number">0</span>] cnt_clk_stand_reg; <span class="hljs-comment">//标准参考时钟计数器值</span><br><br><span class="hljs-keyword">reg</span> calc_flag; <span class="hljs-comment">//计算标志</span><br><span class="hljs-keyword">reg</span> calc_flag_reg; <span class="hljs-comment">//计算标志</span><br><span class="hljs-keyword">reg</span> [<span class="hljs-number">63</span>:<span class="hljs-number">0</span>] freq_reg; <span class="hljs-comment">//软件闸门计数器值</span><br><br><span class="hljs-keyword">wire</span> gate_a_fall_t; <span class="hljs-comment">//实际闸门下降沿标志(test)</span><br><span class="hljs-keyword">wire</span> gate_a_fall_s; <span class="hljs-comment">//实际闸门下降沿标志(stand)</span><br><span class="hljs-keyword">wire</span> clk_stand; <span class="hljs-comment">//标准参考时钟</span><br><br><br><span class="hljs-comment">// 测量X值</span><br><span class="hljs-comment">// 闸门计数器：</span><br><span class="hljs-keyword">always</span> @(<span class="hljs-keyword">posedge</span> sys_clk <span class="hljs-keyword">or</span> <span class="hljs-keyword">negedge</span> sys_rst_n) <span class="hljs-keyword">begin</span><br>    <span class="hljs-keyword">if</span>(~sys_rst_n) <span class="hljs-keyword">begin</span><br>        cnt_gate_s &lt;= <span class="hljs-number">28&#x27;b0</span>;<br>    <span class="hljs-keyword">end</span><br>    <span class="hljs-comment">// 清零条件</span><br>    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(cnt_gate_s == CNT_GATE_S_MAX) <span class="hljs-keyword">begin</span><br>            cnt_gate_s &lt;= <span class="hljs-number">28&#x27;b0</span>;<br>        <span class="hljs-keyword">end</span><br>    <span class="hljs-keyword">else</span> <span class="hljs-keyword">begin</span><br>        cnt_gate_s &lt;= cnt_gate_s + <span class="hljs-number">1</span>;<br>    <span class="hljs-keyword">end</span><br><span class="hljs-keyword">end</span><br><br><span class="hljs-comment">// 闸门标志：</span><br><span class="hljs-keyword">always</span> @(<span class="hljs-keyword">posedge</span> sys_clk <span class="hljs-keyword">or</span> <span class="hljs-keyword">negedge</span> sys_rst_n) <span class="hljs-keyword">begin</span><br>    <span class="hljs-keyword">if</span>(~sys_rst_n) <span class="hljs-keyword">begin</span><br>        gate_s &lt;= <span class="hljs-number">1&#x27;b0</span>;<br>    <span class="hljs-keyword">end</span><br>    <span class="hljs-comment">// 拉高</span><br>    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>((cnt_gate_s &gt; CNT_RISE_MAX) &amp;&amp; (cnt_gate_s &lt;=CNT_GATE_S_MAX-CNT_RISE_MAX)) <span class="hljs-keyword">begin</span><br>        gate_s &lt;= <span class="hljs-number">1&#x27;b1</span>;<br>    <span class="hljs-keyword">end</span><br>    <span class="hljs-comment">// 拉低</span><br>    <span class="hljs-keyword">else</span> <span class="hljs-keyword">begin</span><br>        gate_s &lt;= <span class="hljs-number">1&#x27;b0</span>;<br>    <span class="hljs-keyword">end</span><br><span class="hljs-keyword">end</span><br><br><span class="hljs-comment">// 实际闸门标志：</span><br><span class="hljs-keyword">always</span> @(<span class="hljs-keyword">posedge</span> clk_test <span class="hljs-keyword">or</span> <span class="hljs-keyword">negedge</span> sys_rst_n) <span class="hljs-keyword">begin</span><br>    <span class="hljs-keyword">if</span>(~sys_rst_n) <span class="hljs-keyword">begin</span><br>        gate_a &lt;= <span class="hljs-number">1&#x27;b0</span>;<br>    <span class="hljs-keyword">end</span><br>    <span class="hljs-keyword">else</span> <span class="hljs-keyword">begin</span><br>        gate_a &lt;= gate_s;<br>    <span class="hljs-keyword">end</span><br><span class="hljs-keyword">end</span><br><br><span class="hljs-comment">// 软件闸门计数器</span><br><span class="hljs-keyword">always</span> @(<span class="hljs-keyword">posedge</span> clk_test <span class="hljs-keyword">or</span> <span class="hljs-keyword">negedge</span> sys_rst_n) <span class="hljs-keyword">begin</span><br>    <span class="hljs-keyword">if</span>(~sys_rst_n) <span class="hljs-keyword">begin</span><br>        cnt_clk_test &lt;= <span class="hljs-number">48&#x27;b0</span>;<br>    <span class="hljs-keyword">end</span><br>    <span class="hljs-comment">// 清零条件</span><br>    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(gate_a == <span class="hljs-number">1&#x27;b0</span>) <span class="hljs-keyword">begin</span><br>        cnt_clk_test &lt;= <span class="hljs-number">48&#x27;b0</span>;<br>    <span class="hljs-keyword">end</span><br>    <span class="hljs-comment">// 计数条件</span><br>    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(gate_a == <span class="hljs-number">1&#x27;b1</span>) <span class="hljs-keyword">begin</span><br>        cnt_clk_test &lt;= cnt_clk_test + <span class="hljs-number">1</span>;<br>    <span class="hljs-keyword">end</span><br>    <span class="hljs-keyword">else</span> <br>        cnt_clk_test &lt;= <span class="hljs-number">48&#x27;b0</span>;<br><span class="hljs-keyword">end</span><br><br><span class="hljs-comment">// 实际闸门标志缓冲（延时一拍）</span><br><span class="hljs-keyword">always</span> @(<span class="hljs-keyword">posedge</span> sys_clk <span class="hljs-keyword">or</span> <span class="hljs-keyword">negedge</span> sys_rst_n) <span class="hljs-keyword">begin</span><br>    <span class="hljs-keyword">if</span>(~sys_rst_n) <span class="hljs-keyword">begin</span><br>        gate_a_test_reg &lt;= <span class="hljs-number">1&#x27;b0</span>;<br>    <span class="hljs-keyword">end</span><br>    <span class="hljs-keyword">else</span> <span class="hljs-keyword">begin</span><br>        gate_a_test_reg &lt;= gate_a;<br>    <span class="hljs-keyword">end</span><br><span class="hljs-keyword">end</span><br><br><span class="hljs-comment">// 实际闸门下降沿标志</span><br><span class="hljs-keyword">assign</span> gate_a_fall_t = (gate_a_test_reg == <span class="hljs-number">1&#x27;b1</span>) &amp;&amp; (gate_a == <span class="hljs-number">1&#x27;b0</span>)?<span class="hljs-number">1&#x27;b1</span>:<span class="hljs-number">1&#x27;b0</span>;<br><br><span class="hljs-comment">// 软件闸门计数器值</span><br><span class="hljs-keyword">always</span> @(<span class="hljs-keyword">posedge</span> sys_clk <span class="hljs-keyword">or</span> <span class="hljs-keyword">negedge</span> sys_rst_n) <span class="hljs-keyword">begin</span><br>    <span class="hljs-keyword">if</span>(~sys_rst_n) <span class="hljs-keyword">begin</span><br>        cnt_clk_test_reg &lt;= <span class="hljs-number">48&#x27;d0</span>;<br>    <span class="hljs-keyword">end</span><br>    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(gate_a_fall_t == <span class="hljs-number">1&#x27;b1</span>) <span class="hljs-keyword">begin</span><br>        cnt_clk_test_reg &lt;= cnt_clk_test;<br>    <span class="hljs-keyword">end</span><br><span class="hljs-keyword">end</span><br><br><span class="hljs-comment">// 测量Y值</span><br><span class="hljs-comment">// 实例化倍频模块,产生标准信号</span><br>clk_stand clk_stand_inst<br>(<br><span class="hljs-comment">// Clock out ports</span><br><span class="hljs-variable">.clk_out1</span>(clk_stand),     <span class="hljs-comment">// output clk_out1</span><br><span class="hljs-comment">// Status and control signals</span><br><span class="hljs-variable">.reset</span>(~sys_rst_n), <span class="hljs-comment">// input reset</span><br><span class="hljs-comment">// Clock in ports</span><br><span class="hljs-variable">.clk_in1</span>(sys_clk));      <span class="hljs-comment">// input clk_in1</span><br><br><span class="hljs-comment">// 标准参考时钟计数器</span><br><span class="hljs-keyword">always</span> @(<span class="hljs-keyword">posedge</span> clk_stand <span class="hljs-keyword">or</span> <span class="hljs-keyword">negedge</span> sys_rst_n) <span class="hljs-keyword">begin</span><br>    <span class="hljs-keyword">if</span>(~sys_rst_n) <span class="hljs-keyword">begin</span><br>        cnt_clk_stand &lt;= <span class="hljs-number">48&#x27;d0</span>;<br>    <span class="hljs-keyword">end</span><br>    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(gate_a == <span class="hljs-number">1&#x27;b0</span>)<br>        cnt_clk_stand &lt;= <span class="hljs-number">48&#x27;d0</span>;<br>    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(gate_a == <span class="hljs-number">1&#x27;b1</span>) <span class="hljs-keyword">begin</span><br>        cnt_clk_stand &lt;= cnt_clk_stand + <span class="hljs-number">1</span>;<br>    <span class="hljs-keyword">end</span>    <br><span class="hljs-keyword">end</span><br><br><span class="hljs-comment">// 实际闸门标志缓冲（延时一拍）</span><br><span class="hljs-keyword">always</span> @(<span class="hljs-keyword">posedge</span> clk_stand <span class="hljs-keyword">or</span> <span class="hljs-keyword">negedge</span> sys_rst_n) <span class="hljs-keyword">begin</span><br>    <span class="hljs-keyword">if</span>(~sys_rst_n) <span class="hljs-keyword">begin</span><br>        gate_a_stand_reg &lt;= <span class="hljs-number">1&#x27;b0</span>;<br>    <span class="hljs-keyword">end</span><br>    <span class="hljs-keyword">else</span> <span class="hljs-keyword">begin</span><br>        gate_a_stand_reg &lt;= gate_a;<br>    <span class="hljs-keyword">end</span><br><span class="hljs-keyword">end</span><br><br><span class="hljs-comment">// 实际闸门下降沿标志(stand)</span><br><span class="hljs-keyword">assign</span> gate_a_fall_s = (gate_a_stand_reg == <span class="hljs-number">1&#x27;b1</span>) &amp;&amp; (gate_a == <span class="hljs-number">1&#x27;b0</span>)?<span class="hljs-number">1&#x27;b1</span>:<span class="hljs-number">1&#x27;b0</span>;<br><br><span class="hljs-comment">// 标准参考时钟计数器值</span><br><span class="hljs-keyword">always</span> @(<span class="hljs-keyword">posedge</span> clk_stand <span class="hljs-keyword">or</span> <span class="hljs-keyword">negedge</span> sys_rst_n) <span class="hljs-keyword">begin</span><br>    <span class="hljs-keyword">if</span>(~sys_rst_n) <span class="hljs-keyword">begin</span><br>        cnt_clk_stand_reg &lt;= <span class="hljs-number">48&#x27;d0</span>;<br>    <span class="hljs-keyword">end</span><br>    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(gate_a_fall_s == <span class="hljs-number">1&#x27;b1</span>) <span class="hljs-keyword">begin</span><br>        cnt_clk_stand_reg &lt;= cnt_clk_stand;<br>    <span class="hljs-keyword">end</span><br><span class="hljs-keyword">end</span><br><br><span class="hljs-comment">// 频率计算标志</span><br><span class="hljs-keyword">always</span> @(<span class="hljs-keyword">posedge</span> sys_clk <span class="hljs-keyword">or</span> <span class="hljs-keyword">negedge</span> sys_rst_n) <span class="hljs-keyword">begin</span><br>    <span class="hljs-keyword">if</span>(~sys_rst_n) <span class="hljs-keyword">begin</span><br>        calc_flag &lt;= <span class="hljs-number">1&#x27;b0</span>;<br>    <span class="hljs-keyword">end</span><br>    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(cnt_gate_s == CNT_GATE_S_MAX) <span class="hljs-keyword">begin</span><br>        calc_flag &lt;= <span class="hljs-number">1&#x27;b1</span>;<br>    <span class="hljs-keyword">end</span><br>    <span class="hljs-keyword">else</span> <span class="hljs-keyword">begin</span><br>        calc_flag &lt;= <span class="hljs-number">1&#x27;b0</span>;<br>    <span class="hljs-keyword">end</span><br><span class="hljs-keyword">end</span><br><br><br><span class="hljs-comment">// 频率计算</span><br><span class="hljs-keyword">always</span> @(<span class="hljs-keyword">posedge</span> sys_clk <span class="hljs-keyword">or</span> <span class="hljs-keyword">negedge</span> sys_rst_n) <span class="hljs-keyword">begin</span><br>    <span class="hljs-keyword">if</span>(~sys_rst_n) <span class="hljs-keyword">begin</span><br>        freq_reg &lt;= <span class="hljs-number">32&#x27;d0</span>;<br>    <span class="hljs-keyword">end</span><br>    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(calc_flag == <span class="hljs-number">1&#x27;b1</span>) <span class="hljs-keyword">begin</span><br>        freq_reg &lt;= (cnt_clk_test_reg * CLK_STAND_FREQ) / cnt_clk_stand_reg;<br>    <span class="hljs-keyword">end</span><br><span class="hljs-keyword">end</span><br><br><span class="hljs-comment">// 计算标志信号缓冲</span><br><span class="hljs-keyword">always</span> @(<span class="hljs-keyword">posedge</span> sys_clk <span class="hljs-keyword">or</span> <span class="hljs-keyword">negedge</span> sys_rst_n) <span class="hljs-keyword">begin</span><br>    <span class="hljs-keyword">if</span>(~sys_rst_n) <span class="hljs-keyword">begin</span><br>        calc_flag_reg &lt;= <span class="hljs-number">1&#x27;b0</span>;<br>    <span class="hljs-keyword">end</span><br>    <span class="hljs-keyword">else</span> <span class="hljs-keyword">begin</span><br>        calc_flag_reg &lt;= calc_flag;<br>    <span class="hljs-keyword">end</span><br><span class="hljs-keyword">end</span><br><br><span class="hljs-comment">// 输出频率</span><br><span class="hljs-keyword">always</span> @(<span class="hljs-keyword">posedge</span> sys_clk <span class="hljs-keyword">or</span> <span class="hljs-keyword">negedge</span> sys_rst_n) <span class="hljs-keyword">begin</span><br>    <span class="hljs-keyword">if</span>(~sys_rst_n) <span class="hljs-keyword">begin</span><br>        freq &lt;= <span class="hljs-number">32&#x27;d0</span>;<br>    <span class="hljs-keyword">end</span><br>    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(calc_flag_reg == <span class="hljs-number">1&#x27;b1</span>) <span class="hljs-keyword">begin</span><br>        freq &lt;= freq_reg[<span class="hljs-number">31</span>:<span class="hljs-number">0</span>];<br>    <span class="hljs-keyword">end</span><br><span class="hljs-keyword">end</span><br><br><span class="hljs-keyword">endmodule</span><br><br></code></pre></td></tr></table></figure>
+
+<p>仿真代码：</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-meta">`<span class="hljs-keyword">timescale</span> 1ns / 1ns</span><br><br><span class="hljs-keyword">module</span> freq_meter_tb;<br><br><span class="hljs-keyword">reg</span> sys_clk;<br><span class="hljs-keyword">reg</span> sys_rst_n;<br><span class="hljs-keyword">reg</span> clk_test;<br><br><span class="hljs-keyword">wire</span> [<span class="hljs-number">31</span>:<span class="hljs-number">0</span>] freq;<br><br><br><br><span class="hljs-comment">// 重置</span><br><span class="hljs-keyword">initial</span> <span class="hljs-keyword">begin</span><br>    sys_clk = <span class="hljs-number">0</span>;<br>    sys_rst_n &lt;= <span class="hljs-number">0</span>;<br>    #<span class="hljs-number">100</span>; <span class="hljs-comment">// 等待足够的时间以稳定系统</span><br>    sys_rst_n &lt;= <span class="hljs-number">1</span>;<br>    clk_test =<span class="hljs-number">1</span>;<br><span class="hljs-keyword">end</span><br><br><span class="hljs-comment">// 时钟生成</span><br><span class="hljs-keyword">always</span> #<span class="hljs-number">10</span> sys_clk = ~sys_clk;<br><br><br><span class="hljs-comment">// 待测信号生成</span><br><span class="hljs-keyword">always</span> #<span class="hljs-number">50</span> clk_test = ~clk_test;<br><br><span class="hljs-keyword">defparam</span> freq_meter_calc<span class="hljs-variable">.CNT_GATE_S_MAX</span> = <span class="hljs-number">749</span>;<br><span class="hljs-keyword">defparam</span> freq_meter_calc<span class="hljs-variable">.CNT_RISE_MAX</span> = <span class="hljs-number">124</span>;<br><br><span class="hljs-comment">// 实例化被测模块</span><br>freq_meter_calc freq_meter_calc (<br>    <span class="hljs-variable">.sys_clk</span>(sys_clk),<br>    <span class="hljs-variable">.sys_rst_n</span>(sys_rst_n),<br>    <span class="hljs-variable">.clk_test</span>(clk_test),<br>    <span class="hljs-variable">.freq</span>(freq)<br>);<br><span class="hljs-keyword">endmodule</span><br></code></pre></td></tr></table></figure>
+
+<p>四、效果<br><img src="/posts/52481/20240206152124.png" srcset="/img/loading.gif" lazyload></p>
+<h1 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h1>
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%94%B5%E5%AD%90%E4%BF%A1%E6%81%AF%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/" class="category-chain-item">电子信息硬件相关</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E7%94%B5%E5%AD%90%E4%BF%A1%E6%81%AF%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/FPGA/" class="category-chain-item">FPGA</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E7%94%B5%E5%AD%90%E4%BF%A1%E6%81%AF%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/FPGA/vivado/" class="category-chain-item">vivado</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E7%94%B5%E5%AD%90%E4%BF%A1%E6%81%AF%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/FPGA/vivado/%E9%A2%91%E7%8E%87%E8%AE%A1/" class="category-chain-item">频率计</a>
+  
+  
+
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/FPGA/" class="print-no-link">#FPGA</a>
+      
+        <a href="/tags/vivado/" class="print-no-link">#vivado</a>
+      
+        <a href="/tags/%E9%A2%91%E7%8E%87%E8%AE%A1/" class="print-no-link">#频率计</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>FPGA实现硬件频率计</div>
+      <div>https://www.duruofu.xyz/posts/52481/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>DuRuofu</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年2月5日</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>更新于</div>
+          <div>2025年1月10日</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
+                    <i class="iconfont icon-cc-nc"></i>
+                  </span>
+                </a>
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="SA - 相同方式共享">
+                    <i class="iconfont icon-cc-sa"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/36082/" title="IIC协议解析">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">IIC协议解析</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/58874/" title="ESP32学习路线">
+                        <span class="hidden-mobile">ESP32学习路线</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#gitalk-container', function() {
+      Fluid.utils.createCssLink('/css/gitalk.css')
+      Fluid.utils.createScript('https://lib.baomitu.com/gitalk/1.8.0/gitalk.min.js', function() {
+        var options = Object.assign(
+          {"clientID":"c9ac06d5413a9d613a1e","clientSecret":"a44f5c72589eb090876cc64067db28fbfdf4747c","repo":"Blog-comments-gitalk","owner":"DuRuofu","admin":["DuRuofu"],"language":"zh-CN","labels":["Gitalk"],"perPage":15,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":false,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token"},
+          {
+            id: '4fd772135b7b4c2dacefaa682e4d492b'
+          }
+        )
+        var gitalk = new Gitalk(options);
+        gitalk.render('gitalk-container');
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <br><span id="timeDate">天数载入中</span><span id="times">...</span><br> <span>总有读不懂的诗和到达不了的远方</span> <p>Copyright © 2023 - <span id="currentYear"></span> All Rights Reserved.</p>
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      陕ICP备2022007454号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=2022007454"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>陕ICP备2022007454号-2</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":true,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  var relativeDate = function() {
+    var updatedTime = document.getElementById('updated-time');
+    if (updatedTime) {
+      var text = updatedTime.textContent;
+      var reg = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:Z|[+-]\d{2}:\d{2})/;
+      var matchs = text.match(reg);
+      if (matchs) {
+        var relativeTime = moment(matchs[0]).fromNow();
+        updatedTime.textContent = text.replace(reg, relativeTime);
+      }
+      updatedTime.style.display = '';
+    }
+  };
+  Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/moment.min.js', function() {
+    if (!'zh-cn'.startsWith('en')) {
+      Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/locale/zh-cn.min.js', function() {
+        relativeDate();
+      });
+    } else {
+      relativeDate();
+    }
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/cust/custom.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

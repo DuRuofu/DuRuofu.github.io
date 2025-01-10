@@ -1,0 +1,1013 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/%E4%B8%AA%E4%BA%BA%E5%A4%B4%E5%83%8F%E6%97%A0%E8%83%8C%E6%99%AF.png">
+  <link rel="icon" href="https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/%E4%B8%AA%E4%BA%BA%E5%A4%B4%E5%83%8F%E6%97%A0%E8%83%8C%E6%99%AF.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="DuRuofu">
+  <meta name="keywords" content="嵌入式,个人博客,个人测试">
+  
+    <meta name="description" content="本文档记录ESP32 MQTT协议的使用。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ESP32网络入门-MQTT协议">
+<meta property="og:url" content="https://www.duruofu.xyz/posts/33118/index.html">
+<meta property="og:site_name" content="Duruofu&#39;s 个人测试">
+<meta property="og:description" content="本文档记录ESP32 MQTT协议的使用。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.duruofu.xyz/img/index_img/esp_wifi.png">
+<meta property="article:published_time" content="2024-03-27T04:30:53.000Z">
+<meta property="article:modified_time" content="2025-01-10T14:20:34.105Z">
+<meta property="article:author" content="DuRuofu">
+<meta property="article:tag" content="MQTT">
+<meta property="article:tag" content="MCU">
+<meta property="article:tag" content="ESP32">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://www.duruofu.xyz/img/index_img/esp_wifi.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>ESP32网络入门-MQTT协议 - Duruofu&#39;s 个人测试</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/cust/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"www.duruofu.xyz","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":80,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":true,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":5},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null},"gtag":null,"woyaola":null,"cnzz":null},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>DuRuofu</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/2020/06/06/1.%E9%98%85%E8%AF%BB%E5%86%99%E4%BD%9C/%E5%8E%9F%E5%88%9B%E8%AF%97%E8%AF%8D/%E8%AF%97%E8%AF%8D/" target="_self">
+                <i class="iconfont icon-books"></i>
+                <span>诗词</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                <span>ESP32教程</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/posts/58874/" target="_self">
+                    
+                    <span>ESP32教程-2024</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/posts/58875/" target="_self">
+                    
+                    <span>ESP32教程-2025</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="ESP32网络入门-MQTT协议"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        DuRuofu
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-03-27 12:30" pubdate>
+          2024年3月27日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.8k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          5 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">ESP32网络入门-MQTT协议</h1>
+            
+              <p id="updated-time" class="note note-info" style="display: none">
+                
+                  
+                    本文最后更新于 2025-01-10T22:20:34+08:00
+                  
+                  
+
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <h3 id="说明："><a href="#说明：" class="headerlink" title="说明："></a>说明：</h3><ol>
+<li>本文档由DuRuofu撰写，由DuRuofu负责解释及执行。</li>
+<li>本文档介绍ESP32 MQTT客户端程序</li>
+</ol>
+<h3 id="修订历史："><a href="#修订历史：" class="headerlink" title="修订历史："></a>修订历史：</h3><table>
+<thead>
+<tr>
+<th>文档名称</th>
+<th>版本</th>
+<th>作者</th>
+<th>时间</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ESP32网络入门-MQTT协议</td>
+<td>v1.0.0</td>
+<td>DuRuofu</td>
+<td>2024-03-27</td>
+<td>首次建立</td>
+</tr>
+</tbody></table>
+<div STYLE="page-break-after: always;"></div>
+
+<h1 id="ESP32网络入门-MQTT协议"><a href="#ESP32网络入门-MQTT协议" class="headerlink" title="ESP32网络入门-MQTT协议"></a>ESP32网络入门-MQTT协议</h1><h2 id="一、介绍"><a href="#一、介绍" class="headerlink" title="一、介绍"></a>一、介绍</h2><blockquote>
+<p>MQTT 与 HTTP 一样，MQTT 运行在传输控制协议&#x2F;互联网协议 (TCP&#x2F;IP) 堆栈之上。</p>
+</blockquote>
+<h3 id="1-1-MQTT介绍"><a href="#1-1-MQTT介绍" class="headerlink" title="1.1 MQTT介绍"></a>1.1 MQTT介绍</h3><blockquote>
+<p><a target="_blank" rel="noopener" href="https://mqtt.org/">MQTT官网</a><br><a target="_blank" rel="noopener" href="https://www.emqx.com/zh/blog/the-easiest-guide-to-getting-started-with-mqtt">MQTT 协议入门</a></p>
+</blockquote>
+<p>MQTT（Message Queuing Telemetry Transport）是一种轻量级的、基于发布-订阅模式的通信协议，主要应用于物联网（IoT）领域中设备间的通信。</p>
+<p><img src="/posts/33118/20240327113720.png" srcset="/img/loading.gif" lazyload></p>
+<p>MQTT 协议采用了简单的二进制编码格式，使得它适用于网络带宽较小、延迟较高、网络不稳定的环境下进行通信。同时，MQTT 提供了 QoS（Quality of Service）服务质量保证机制，支持三种不同的 QoS 等级：</p>
+<ul>
+<li>QoS 0：最多发送一次消息，不提供可靠性保证。</li>
+<li>QoS 1：至少发送一次消息，确保消息能到达接收方，但可能会重复。</li>
+<li>QoS 2：恰好发送一次消息，确保消息能到达接收方且只接收一次。</li>
+</ul>
+<p>MQTT 协议的特点包括：可扩展性好、开销小、易于实现、开源、支持多种编程语言等。<br>在 MQTT 协议中，存在两个主要的参与者：发布者和订阅者。发布者将消息发布到一个或多个主题（Topic）中，订阅者可以订阅感兴趣的主题，从而接收到发布者发送的消息。主题可以看作是某一个特定类型的消息的分类标准。<br>MQTT 协议的使用场景包括但不限于：智能家居、智能灯光、智能安防、农业物联网、工业物联网等。</p>
+<h5 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h5><ol>
+<li>轻巧高效: MQTT 客户端非常小，需要的资源最少，因此可以在小型微控制器上使用。MQTT 消息头很小，可以优化网络带宽。</li>
+<li>双向通信:MQTT 允许在设备到云和云到设备之间进行消息传递。这使得向事物组广播消息变得容易。</li>
+<li>扩展到数百万个事物:MQTT 可以扩展以连接数百万个物联网设备。</li>
+<li>可靠的消息传递:消息传递的可靠性对于许多物联网用例都很重要。这就是为什么 MQTT 有 3 个定义的服务质量级别：0 - 最多一次，1 - 至少一次，2 - 恰好一次</li>
+<li>支持不可靠的网络:许多物联网设备通过不可靠的蜂窝网络连接。MQTT 对持久会话的支持减少了将客户端与代理重新连接的时间。</li>
+<li>已启用安全性 :MQTT 使使用 TLS 加密消息和使用现代身份验证协议（如 OAuth）对客户端进行身份验证变得容易。</li>
+</ol>
+<h3 id="1-2-MQTT-数据包结构"><a href="#1-2-MQTT-数据包结构" class="headerlink" title="1.2 MQTT 数据包结构"></a>1.2 MQTT 数据包结构</h3><ul>
+<li><p><code>固定头（Fixed header）</code>，存在于所有<code>MQTT</code>数据包中，表示数据包类型及数据包的分组类标识；</p>
+</li>
+<li><p><code>可变头（Variable header）</code>，存在于部分<code>MQTT</code>数据包中，数据包类型决定了可变头是否存在及其具体内容；</p>
+</li>
+<li><p><code>消息体（Payload）</code>，存在于部分<code>MQTT</code>数据包中，表示客户端收到的具体内容；</p>
+<p><img src="/posts/33118/20240327114242.png" srcset="/img/loading.gif" lazyload></p>
+</li>
+</ul>
+<h3 id="1-3-MQTT-其他概念"><a href="#1-3-MQTT-其他概念" class="headerlink" title="1.3 MQTT 其他概念"></a>1.3 MQTT 其他概念</h3><p><strong>一、订阅（Subscription）</strong></p>
+<p>订阅包含主题筛选器（Topic Filter）和最大服务质量（QoS）。订阅会与一个会话（Session）关联。一个会话可以包含多个订阅。每一个会话中的每个订阅都有一个不同的主题筛选器。</p>
+<p><strong>二、会话（Session）</strong></p>
+<p>每个客户端与服务器建立连接后就是一个会话，客户端和服务器之间有状态交互。会话存在于一个网络之间，也可能在客户端和服务器之间跨越多个连续的网络连接。</p>
+<p><strong>三、主题名（Topic Name）</strong></p>
+<p>连接到一个应用程序消息的标签，该标签与服务器的订阅相匹配。服务器会将消息发送给订阅所匹配标签的每个客户端。</p>
+<p><strong>四、主题筛选器（Topic Filter）</strong></p>
+<p>一个对主题名通配符筛选器，在订阅表达式中使用，表示订阅所匹配到的多个主题。</p>
+<p><strong>五、负载（Payload）</strong></p>
+<p>消息订阅者所具体接收的内容。</p>
+<p>详细内容可以查看MQTT协议文档：<a href="extension://bfdogplmndidlpjfhoijckpakkdjkkil/pdf/viewer.html?file=https%3A%2F%2Fdocs.oasis-open.org%2Fmqtt%2Fmqtt%2Fv5.0%2Fmqtt-v5.0.pdf">MQTT Version 5.0</a></p>
+<h3 id="1-4-ESP32的MQTT支持"><a href="#1-4-ESP32的MQTT支持" class="headerlink" title="1.4 ESP32的MQTT支持"></a>1.4 ESP32的MQTT支持</h3><blockquote>
+<p><a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/v5.1.3/esp32/api-reference/protocols/mqtt.html">https://docs.espressif.com/projects/esp-idf/zh_CN/v5.1.3/esp32/api-reference/protocols/mqtt.html</a></p>
+</blockquote>
+<ul>
+<li>支持基于 TCP 的 MQTT、基于 Mbed TLS 的 SSL、基于 WebSocket 的 MQTT 以及基于 WebSocket Secure 的 MQTT</li>
+<li>通过 URI 简化配置流程</li>
+<li>多个实例（一个应用程序中有多个客户端）</li>
+<li>支持订阅、发布、认证、遗嘱消息、保持连接心跳机制以及 3 个服务质量 (QoS) 级别（组成全功能客户端）</li>
+</ul>
+<h2 id="二、使用"><a href="#二、使用" class="headerlink" title="二、使用"></a>二、使用</h2><blockquote>
+<p>示例代码参考:<a target="_blank" rel="noopener" href="https://github.com/espressif/esp-idf/tree/master/examples/protocols/mqtt/tcp">https://github.com/espressif/esp-idf/tree/master/examples/protocols/mqtt/tcp</a></p>
+</blockquote>
+<h4 id="2-1-创建一个简单的MQTT服务器："><a href="#2-1-创建一个简单的MQTT服务器：" class="headerlink" title="2.1 创建一个简单的MQTT服务器："></a>2.1 创建一个简单的MQTT服务器：</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// MQTT客户端</span><br><span class="hljs-type">static</span> <span class="hljs-type">void</span> <span class="hljs-title function_">mqtt_app_start</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span><br>&#123;<br>	<span class="hljs-type">esp_mqtt_client_config_t</span> mqtt_cfg = &#123;<br>			.broker.address.uri = CONFIG_BROKER_URL,<br>	&#125;;<br><br>	<span class="hljs-type">esp_mqtt_client_handle_t</span> client = esp_mqtt_client_init(&amp;mqtt_cfg);<br>	<span class="hljs-comment">/* The last argument may be used to pass data to the event handler, in this example mqtt_event_handler */</span><br>	<span class="hljs-comment">// 注册事件处理函数</span><br>	esp_mqtt_client_register_event(client, ESP_EVENT_ANY_ID, mqtt_event_handler, <span class="hljs-literal">NULL</span>);<br>	<span class="hljs-comment">// 启动MQTT客户端</span><br>	esp_mqtt_client_start(client);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>代码很简单这里就不展开说了。</p>
+<h4 id="2-2-事件处理"><a href="#2-2-事件处理" class="headerlink" title="2.2 事件处理"></a>2.2 事件处理</h4><p>事件处理部分是重点：</p>
+<p>代码：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// MQTT客户端事件处理</span><br><span class="hljs-comment">/*</span><br><span class="hljs-comment"> * @brief Event handler registered to receive MQTT events</span><br><span class="hljs-comment"> *</span><br><span class="hljs-comment"> *  This function is called by the MQTT client event loop.</span><br><span class="hljs-comment"> *</span><br><span class="hljs-comment"> * @param handler_args user data registered to the event.</span><br><span class="hljs-comment"> * @param base Event base for the handler(always MQTT Base in this example).</span><br><span class="hljs-comment"> * @param event_id The id for the received event.</span><br><span class="hljs-comment"> * @param event_data The data for the event, esp_mqtt_event_handle_t.</span><br><span class="hljs-comment"> */</span><br><span class="hljs-type">static</span> <span class="hljs-type">void</span> <span class="hljs-title function_">mqtt_event_handler</span><span class="hljs-params">(<span class="hljs-type">void</span> *handler_args, <span class="hljs-type">esp_event_base_t</span> base, <span class="hljs-type">int32_t</span> event_id, <span class="hljs-type">void</span> *event_data)</span><br>&#123;<br>	ESP_LOGD(TAG, <span class="hljs-string">&quot;Event dispatched from event loop base=%s, event_id=%&quot;</span> PRIi32 <span class="hljs-string">&quot;&quot;</span>, base, event_id);<br>	<span class="hljs-type">esp_mqtt_event_handle_t</span> event = event_data;<br>	<span class="hljs-type">esp_mqtt_client_handle_t</span> client = event-&gt;client;<br>	<span class="hljs-type">int</span> msg_id;<br>	<span class="hljs-keyword">switch</span> ((<span class="hljs-type">esp_mqtt_event_id_t</span>)event_id)<br>	&#123;<br>	<span class="hljs-comment">// MQTT连接成功</span><br>	<span class="hljs-keyword">case</span> MQTT_EVENT_CONNECTED:<br>		ESP_LOGI(TAG, <span class="hljs-string">&quot;MQTT_EVENT_CONNECTED&quot;</span>);<br>		<span class="hljs-comment">// 发布消息</span><br>		msg_id = esp_mqtt_client_publish(client, <span class="hljs-string">&quot;/topic/qos1&quot;</span>, <span class="hljs-string">&quot;data_3&quot;</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>);<br>		ESP_LOGI(TAG, <span class="hljs-string">&quot;sent publish successful, msg_id=%d&quot;</span>, msg_id);<br>		<span class="hljs-comment">// 订阅消息</span><br>		msg_id = esp_mqtt_client_subscribe(client, <span class="hljs-string">&quot;/topic/qos0&quot;</span>, <span class="hljs-number">0</span>);<br>		ESP_LOGI(TAG, <span class="hljs-string">&quot;sent subscribe successful, msg_id=%d&quot;</span>, msg_id);<br>		msg_id = esp_mqtt_client_subscribe(client, <span class="hljs-string">&quot;/topic/qos1&quot;</span>, <span class="hljs-number">1</span>);<br>		ESP_LOGI(TAG, <span class="hljs-string">&quot;sent subscribe successful, msg_id=%d&quot;</span>, msg_id);<br>		<span class="hljs-comment">// 取消订阅消息</span><br>		msg_id = esp_mqtt_client_unsubscribe(client, <span class="hljs-string">&quot;/topic/qos1&quot;</span>);<br>		ESP_LOGI(TAG, <span class="hljs-string">&quot;sent unsubscribe successful, msg_id=%d&quot;</span>, msg_id);<br>		<span class="hljs-keyword">break</span>;<br>	<span class="hljs-comment">// MQTT连接断开</span><br>	<span class="hljs-keyword">case</span> MQTT_EVENT_DISCONNECTED:<br>		ESP_LOGI(TAG, <span class="hljs-string">&quot;MQTT_EVENT_DISCONNECTED&quot;</span>);<br>		<span class="hljs-keyword">break</span>;<br>	<span class="hljs-comment">// MQTT订阅成功</span><br>	<span class="hljs-keyword">case</span> MQTT_EVENT_SUBSCRIBED:<br>		ESP_LOGI(TAG, <span class="hljs-string">&quot;MQTT_EVENT_SUBSCRIBED, msg_id=%d&quot;</span>, event-&gt;msg_id);<br>		<span class="hljs-comment">// 发布消息</span><br>		msg_id = esp_mqtt_client_publish(client, <span class="hljs-string">&quot;/topic/qos0&quot;</span>, <span class="hljs-string">&quot;data&quot;</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>);<br>		ESP_LOGI(TAG, <span class="hljs-string">&quot;sent publish successful, msg_id=%d&quot;</span>, msg_id);<br>		<span class="hljs-keyword">break</span>;<br>	<span class="hljs-comment">// MQTT取消订阅成功</span><br>	<span class="hljs-keyword">case</span> MQTT_EVENT_UNSUBSCRIBED:<br>		ESP_LOGI(TAG, <span class="hljs-string">&quot;MQTT_EVENT_UNSUBSCRIBED, msg_id=%d&quot;</span>, event-&gt;msg_id);<br>		<span class="hljs-keyword">break</span>;<br>	<span class="hljs-comment">// MQTT发布成功</span><br>	<span class="hljs-keyword">case</span> MQTT_EVENT_PUBLISHED:<br>		ESP_LOGI(TAG, <span class="hljs-string">&quot;MQTT_EVENT_PUBLISHED, msg_id=%d&quot;</span>, event-&gt;msg_id);<br>		<span class="hljs-keyword">break</span>;<br>	<span class="hljs-comment">// MQTT收到数据</span><br>	<span class="hljs-keyword">case</span> MQTT_EVENT_DATA:<br>		ESP_LOGI(TAG, <span class="hljs-string">&quot;MQTT_EVENT_DATA&quot;</span>);<br>		<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;TOPIC=%.*s\r\n&quot;</span>, event-&gt;topic_len, event-&gt;topic);<br>		<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;DATA=%.*s\r\n&quot;</span>, event-&gt;data_len, event-&gt;data);<br>		<span class="hljs-keyword">break</span>;<br>	<span class="hljs-comment">// MQTT错误</span><br>	<span class="hljs-keyword">case</span> MQTT_EVENT_ERROR:<br>		ESP_LOGI(TAG, <span class="hljs-string">&quot;MQTT_EVENT_ERROR&quot;</span>);<br>		<span class="hljs-keyword">if</span> (event-&gt;error_handle-&gt;error_type == MQTT_ERROR_TYPE_TCP_TRANSPORT)<br>		&#123;<br>			log_error_if_nonzero(<span class="hljs-string">&quot;reported from esp-tls&quot;</span>, event-&gt;error_handle-&gt;esp_tls_last_esp_err);<br>			log_error_if_nonzero(<span class="hljs-string">&quot;reported from tls stack&quot;</span>, event-&gt;error_handle-&gt;esp_tls_stack_err);<br>			log_error_if_nonzero(<span class="hljs-string">&quot;captured as transport&#x27;s socket errno&quot;</span>, event-&gt;error_handle-&gt;esp_transport_sock_errno);<br>			ESP_LOGI(TAG, <span class="hljs-string">&quot;Last errno string (%s)&quot;</span>, strerror(event-&gt;error_handle-&gt;esp_transport_sock_errno));<br>		&#125;<br>		<span class="hljs-keyword">break</span>;<br>	<span class="hljs-keyword">default</span>:<br>		ESP_LOGI(TAG, <span class="hljs-string">&quot;Other event id:%d&quot;</span>, event-&gt;event_id);<br>		<span class="hljs-keyword">break</span>;<br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><code>MQTT_EVENT_CONNECTED</code>: 处理MQTT客户端成功连接到代理时的事件。在此情况下，它展示了如何发布、订阅和取消订阅MQTT主题。</li>
+<li><code>MQTT_EVENT_DISCONNECTED</code>: 处理MQTT客户端与代理断开连接时的事件。</li>
+<li><code>MQTT_EVENT_SUBSCRIBED</code>: 处理MQTT客户端成功订阅主题时的事件。</li>
+<li><code>MQTT_EVENT_UNSUBSCRIBED</code>: 处理MQTT客户端成功取消订阅主题时的事件。</li>
+<li><code>MQTT_EVENT_PUBLISHED</code>: 处理MQTT客户端成功发布消息时的事件。</li>
+<li><code>MQTT_EVENT_DATA</code>: 处理收到来自代理的数据时的事件。在此情况下，它打印了主题和数据。</li>
+<li><code>MQTT_EVENT_ERROR</code>: 处理MQTT客户端发生错误时的事件。</li>
+</ul>
+<h2 id="三、实例"><a href="#三、实例" class="headerlink" title="三、实例"></a>三、实例</h2><p>这里使用我自己的MQTT服务器测试：<code>mqtt://www.duruofu.com:1883</code></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdint.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stddef.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;string.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;freertos/FreeRTOS.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;freertos/event_groups.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;esp_wifi.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;esp_log.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;esp_event.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;nvs_flash.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;esp_mac.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;esp_netif.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;sys/socket.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;esp_eth.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;lwip/sockets.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;lwip/dns.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;lwip/netdb.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;mqtt_client.h&quot;</span></span><br><br><br><span class="hljs-comment">// 要连接的WIFI</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ESP_WIFI_STA_SSID <span class="hljs-string">&quot;duruofu_win10&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ESP_WIFI_STA_PASSWD <span class="hljs-string">&quot;1234567890&quot;</span></span><br><br><span class="hljs-type">static</span> <span class="hljs-type">const</span> <span class="hljs-type">char</span> *TAG = <span class="hljs-string">&quot;main&quot;</span>;<br><br><br><br><span class="hljs-type">void</span> <span class="hljs-title function_">WIFI_CallBack</span><span class="hljs-params">(<span class="hljs-type">void</span> *event_handler_arg, <span class="hljs-type">esp_event_base_t</span> event_base, <span class="hljs-type">int32_t</span> event_id, <span class="hljs-type">void</span> *event_data)</span><br>&#123;<br>	<span class="hljs-type">static</span> <span class="hljs-type">uint8_t</span> connect_count = <span class="hljs-number">0</span>;<br>	<span class="hljs-comment">// WIFI 启动成功</span><br>	<span class="hljs-keyword">if</span> (event_base == WIFI_EVENT &amp;&amp; event_id == WIFI_EVENT_STA_START)<br>	&#123;<br>		ESP_LOGI(<span class="hljs-string">&quot;WIFI_EVENT&quot;</span>, <span class="hljs-string">&quot;WIFI_EVENT_STA_START&quot;</span>);<br>		ESP_ERROR_CHECK(esp_wifi_connect());<br>	&#125;<br>	<span class="hljs-comment">// WIFI 连接失败</span><br>	<span class="hljs-keyword">if</span> (event_base == WIFI_EVENT &amp;&amp; event_id == WIFI_EVENT_STA_DISCONNECTED)<br>	&#123;<br>		ESP_LOGI(<span class="hljs-string">&quot;WIFI_EVENT&quot;</span>, <span class="hljs-string">&quot;WIFI_EVENT_STA_DISCONNECTED&quot;</span>);<br>		connect_count++;<br>		<span class="hljs-keyword">if</span> (connect_count &lt; <span class="hljs-number">6</span>)<br>		&#123;<br>			vTaskDelay(<span class="hljs-number">1000</span> / portTICK_PERIOD_MS);<br>			ESP_ERROR_CHECK(esp_wifi_connect());<br>		&#125;<br>		<span class="hljs-keyword">else</span><br>		&#123;<br>			ESP_LOGI(<span class="hljs-string">&quot;WIFI_EVENT&quot;</span>, <span class="hljs-string">&quot;WIFI_EVENT_STA_DISCONNECTED 10 times&quot;</span>);<br>		&#125;<br>	&#125;<br>	<span class="hljs-comment">// WIFI 连接成功(获取到了IP)</span><br>	<span class="hljs-keyword">if</span> (event_base == IP_EVENT &amp;&amp; event_id == IP_EVENT_STA_GOT_IP)<br>	&#123;<br>		ESP_LOGI(<span class="hljs-string">&quot;WIFI_EVENT&quot;</span>, <span class="hljs-string">&quot;WIFI_EVENT_STA_GOT_IP&quot;</span>);<br>		<span class="hljs-type">ip_event_got_ip_t</span> *info = (<span class="hljs-type">ip_event_got_ip_t</span> *)event_data;<br>		ESP_LOGI(<span class="hljs-string">&quot;WIFI_EVENT&quot;</span>, <span class="hljs-string">&quot;got ip:&quot;</span> IPSTR <span class="hljs-string">&quot;&quot;</span>, IP2STR(&amp;info-&gt;ip_info.ip));<br>	&#125;<br>&#125;<br><br><span class="hljs-comment">// wifi初始化</span><br><span class="hljs-type">static</span> <span class="hljs-type">void</span> <span class="hljs-title function_">wifi_sta_init</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span><br>&#123;<br>	ESP_ERROR_CHECK(esp_netif_init());<br><br>	<span class="hljs-comment">// 注册事件(wifi启动成功)</span><br>	ESP_ERROR_CHECK(esp_event_handler_instance_register(WIFI_EVENT, WIFI_EVENT_STA_START, WIFI_CallBack, <span class="hljs-literal">NULL</span>, <span class="hljs-literal">NULL</span>));<br>	<span class="hljs-comment">// 注册事件(wifi连接失败)</span><br>	ESP_ERROR_CHECK(esp_event_handler_instance_register(WIFI_EVENT, WIFI_EVENT_STA_DISCONNECTED, WIFI_CallBack, <span class="hljs-literal">NULL</span>, <span class="hljs-literal">NULL</span>));<br>	<span class="hljs-comment">// 注册事件(wifi连接失败)</span><br>	ESP_ERROR_CHECK(esp_event_handler_instance_register(IP_EVENT, IP_EVENT_STA_GOT_IP, WIFI_CallBack, <span class="hljs-literal">NULL</span>, <span class="hljs-literal">NULL</span>));<br><br>	<span class="hljs-comment">// 初始化STA设备</span><br>	esp_netif_create_default_wifi_sta();<br><br>	<span class="hljs-comment">/*Initialize WiFi */</span><br>	<span class="hljs-type">wifi_init_config_t</span> cfg = WIFI_INIT_CONFIG_DEFAULT();<br>	<span class="hljs-comment">// WIFI_INIT_CONFIG_DEFAULT 是一个默认配置的宏</span><br><br>	ESP_ERROR_CHECK(esp_wifi_init(&amp;cfg));<br><br>	<span class="hljs-comment">//----------------配置阶段-------------------</span><br>	<span class="hljs-comment">// 初始化WIFI设备( 为 WiFi 驱动初始化 WiFi 分配资源，如 WiFi 控制结构、RX/TX 缓冲区、WiFi NVS 结构等，这个 WiFi 也启动 WiFi 任务。必须先调用此API，然后才能调用所有其他WiFi API)</span><br>	ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_STA));<br><br>	<span class="hljs-comment">// STA详细配置</span><br>	<span class="hljs-type">wifi_config_t</span> sta_config = &#123;<br>			.sta = &#123;<br>					.ssid = ESP_WIFI_STA_SSID,<br>					.password = ESP_WIFI_STA_PASSWD,<br>					.bssid_set = <span class="hljs-literal">false</span>,<br>			&#125;,<br>	&#125;;<br>	ESP_ERROR_CHECK(esp_wifi_set_config(WIFI_IF_STA, &amp;sta_config));<br><br>	<span class="hljs-comment">//----------------启动阶段-------------------</span><br>	ESP_ERROR_CHECK(esp_wifi_start());<br><br>	<span class="hljs-comment">//----------------配置省电模式-------------------</span><br>	<span class="hljs-comment">// 不省电(数据传输会更快)</span><br>	ESP_ERROR_CHECK(esp_wifi_set_ps(WIFI_PS_NONE));<br>&#125;<br><br><span class="hljs-type">static</span> <span class="hljs-type">void</span> <span class="hljs-title function_">log_error_if_nonzero</span><span class="hljs-params">(<span class="hljs-type">const</span> <span class="hljs-type">char</span> *message, <span class="hljs-type">int</span> error_code)</span><br>&#123;<br>	<span class="hljs-keyword">if</span> (error_code != <span class="hljs-number">0</span>)<br>	&#123;<br>		ESP_LOGE(TAG, <span class="hljs-string">&quot;Last error %s: 0x%x&quot;</span>, message, error_code);<br>	&#125;<br>&#125;<br><br><br><span class="hljs-comment">// MQTT客户端事件处理</span><br><span class="hljs-comment">/*</span><br><span class="hljs-comment"> * @brief Event handler registered to receive MQTT events</span><br><span class="hljs-comment"> *</span><br><span class="hljs-comment"> *  This function is called by the MQTT client event loop.</span><br><span class="hljs-comment"> *</span><br><span class="hljs-comment"> * @param handler_args user data registered to the event.</span><br><span class="hljs-comment"> * @param base Event base for the handler(always MQTT Base in this example).</span><br><span class="hljs-comment"> * @param event_id The id for the received event.</span><br><span class="hljs-comment"> * @param event_data The data for the event, esp_mqtt_event_handle_t.</span><br><span class="hljs-comment"> */</span><br><span class="hljs-type">static</span> <span class="hljs-type">void</span> <span class="hljs-title function_">mqtt_event_handler</span><span class="hljs-params">(<span class="hljs-type">void</span> *handler_args, <span class="hljs-type">esp_event_base_t</span> base, <span class="hljs-type">int32_t</span> event_id, <span class="hljs-type">void</span> *event_data)</span><br>&#123;<br>	ESP_LOGD(TAG, <span class="hljs-string">&quot;Event dispatched from event loop base=%s, event_id=%&quot;</span> PRIi32 <span class="hljs-string">&quot;&quot;</span>, base, event_id);<br>	<span class="hljs-type">esp_mqtt_event_handle_t</span> event = event_data;<br>	<span class="hljs-type">esp_mqtt_client_handle_t</span> client = event-&gt;client;<br>	<span class="hljs-type">int</span> msg_id;<br>	<span class="hljs-keyword">switch</span> ((<span class="hljs-type">esp_mqtt_event_id_t</span>)event_id)<br>	&#123;<br>	<span class="hljs-comment">// MQTT连接成功</span><br>	<span class="hljs-keyword">case</span> MQTT_EVENT_CONNECTED:<br>		ESP_LOGI(TAG, <span class="hljs-string">&quot;MQTT_EVENT_CONNECTED&quot;</span>);<br>		<span class="hljs-comment">// 发布消息</span><br>		msg_id = esp_mqtt_client_publish(client, <span class="hljs-string">&quot;/topic/qos1&quot;</span>, <span class="hljs-string">&quot;data_3&quot;</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>);<br>		ESP_LOGI(TAG, <span class="hljs-string">&quot;sent publish successful, msg_id=%d&quot;</span>, msg_id);<br>		<span class="hljs-comment">// 订阅消息</span><br>		msg_id = esp_mqtt_client_subscribe(client, <span class="hljs-string">&quot;/topic/qos0&quot;</span>, <span class="hljs-number">0</span>);<br>		ESP_LOGI(TAG, <span class="hljs-string">&quot;sent subscribe successful, msg_id=%d&quot;</span>, msg_id);<br>		msg_id = esp_mqtt_client_subscribe(client, <span class="hljs-string">&quot;/topic/qos1&quot;</span>, <span class="hljs-number">1</span>);<br>		ESP_LOGI(TAG, <span class="hljs-string">&quot;sent subscribe successful, msg_id=%d&quot;</span>, msg_id);<br>		<span class="hljs-comment">// 取消订阅消息</span><br>		msg_id = esp_mqtt_client_unsubscribe(client, <span class="hljs-string">&quot;/topic/qos1&quot;</span>);<br>		ESP_LOGI(TAG, <span class="hljs-string">&quot;sent unsubscribe successful, msg_id=%d&quot;</span>, msg_id);<br>		<span class="hljs-keyword">break</span>;<br>	<span class="hljs-comment">// MQTT连接断开</span><br>	<span class="hljs-keyword">case</span> MQTT_EVENT_DISCONNECTED:<br>		ESP_LOGI(TAG, <span class="hljs-string">&quot;MQTT_EVENT_DISCONNECTED&quot;</span>);<br>		<span class="hljs-keyword">break</span>;<br>	<span class="hljs-comment">// MQTT订阅成功</span><br>	<span class="hljs-keyword">case</span> MQTT_EVENT_SUBSCRIBED:<br>		ESP_LOGI(TAG, <span class="hljs-string">&quot;MQTT_EVENT_SUBSCRIBED, msg_id=%d&quot;</span>, event-&gt;msg_id);<br>		<span class="hljs-comment">// 发布消息</span><br>		msg_id = esp_mqtt_client_publish(client, <span class="hljs-string">&quot;/topic/qos0&quot;</span>, <span class="hljs-string">&quot;data&quot;</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>);<br>		ESP_LOGI(TAG, <span class="hljs-string">&quot;sent publish successful, msg_id=%d&quot;</span>, msg_id);<br>		<span class="hljs-keyword">break</span>;<br>	<span class="hljs-comment">// MQTT取消订阅成功</span><br>	<span class="hljs-keyword">case</span> MQTT_EVENT_UNSUBSCRIBED:<br>		ESP_LOGI(TAG, <span class="hljs-string">&quot;MQTT_EVENT_UNSUBSCRIBED, msg_id=%d&quot;</span>, event-&gt;msg_id);<br>		<span class="hljs-keyword">break</span>;<br>	<span class="hljs-comment">// MQTT发布成功</span><br>	<span class="hljs-keyword">case</span> MQTT_EVENT_PUBLISHED:<br>		ESP_LOGI(TAG, <span class="hljs-string">&quot;MQTT_EVENT_PUBLISHED, msg_id=%d&quot;</span>, event-&gt;msg_id);<br>		<span class="hljs-keyword">break</span>;<br>	<span class="hljs-comment">// MQTT收到数据</span><br>	<span class="hljs-keyword">case</span> MQTT_EVENT_DATA:<br>		ESP_LOGI(TAG, <span class="hljs-string">&quot;MQTT_EVENT_DATA&quot;</span>);<br>		<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;TOPIC=%.*s\r\n&quot;</span>, event-&gt;topic_len, event-&gt;topic);<br>		<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;DATA=%.*s\r\n&quot;</span>, event-&gt;data_len, event-&gt;data);<br>		<span class="hljs-keyword">break</span>;<br>	<span class="hljs-comment">// MQTT错误</span><br>	<span class="hljs-keyword">case</span> MQTT_EVENT_ERROR:<br>		ESP_LOGI(TAG, <span class="hljs-string">&quot;MQTT_EVENT_ERROR&quot;</span>);<br>		<span class="hljs-keyword">if</span> (event-&gt;error_handle-&gt;error_type == MQTT_ERROR_TYPE_TCP_TRANSPORT)<br>		&#123;<br>			log_error_if_nonzero(<span class="hljs-string">&quot;reported from esp-tls&quot;</span>, event-&gt;error_handle-&gt;esp_tls_last_esp_err);<br>			log_error_if_nonzero(<span class="hljs-string">&quot;reported from tls stack&quot;</span>, event-&gt;error_handle-&gt;esp_tls_stack_err);<br>			log_error_if_nonzero(<span class="hljs-string">&quot;captured as transport&#x27;s socket errno&quot;</span>, event-&gt;error_handle-&gt;esp_transport_sock_errno);<br>			ESP_LOGI(TAG, <span class="hljs-string">&quot;Last errno string (%s)&quot;</span>, strerror(event-&gt;error_handle-&gt;esp_transport_sock_errno));<br>		&#125;<br>		<span class="hljs-keyword">break</span>;<br>	<span class="hljs-keyword">default</span>:<br>		ESP_LOGI(TAG, <span class="hljs-string">&quot;Other event id:%d&quot;</span>, event-&gt;event_id);<br>		<span class="hljs-keyword">break</span>;<br>	&#125;<br>&#125;<br><br><span class="hljs-comment">// MQTT客户端</span><br><span class="hljs-type">static</span> <span class="hljs-type">void</span> <span class="hljs-title function_">mqtt_app_start</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span><br>&#123;<br>	<span class="hljs-type">esp_mqtt_client_config_t</span> mqtt_cfg = &#123;<br>			.broker.address.uri = <span class="hljs-string">&quot;mqtt://www.duruofu.top:1883&quot;</span>,<br>	&#125;;<br><br>	<span class="hljs-type">esp_mqtt_client_handle_t</span> client = esp_mqtt_client_init(&amp;mqtt_cfg);<br>	<span class="hljs-comment">/* The last argument may be used to pass data to the event handler, in this example mqtt_event_handler */</span><br>	<span class="hljs-comment">// 注册事件处理函数</span><br>	esp_mqtt_client_register_event(client, ESP_EVENT_ANY_ID, mqtt_event_handler, <span class="hljs-literal">NULL</span>);<br>	<span class="hljs-comment">// 启动MQTT客户端</span><br>	esp_mqtt_client_start(client);<br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">app_main</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span><br>&#123;<br><br>	<span class="hljs-comment">// Initialize NVS</span><br>	<span class="hljs-type">esp_err_t</span> ret = nvs_flash_init();<br>	<span class="hljs-keyword">if</span> (ret == ESP_ERR_NVS_NO_FREE_PAGES || ret == ESP_ERR_NVS_NEW_VERSION_FOUND)<br>	&#123;<br>		ESP_ERROR_CHECK(nvs_flash_erase());<br>		ret = nvs_flash_init();<br>	&#125;<br>	ESP_ERROR_CHECK(ret);<br><br>	<span class="hljs-comment">// 创建默认事件循环</span><br>	ESP_ERROR_CHECK(esp_event_loop_create_default());<br><br>	<span class="hljs-comment">// 配置启动WIFI</span><br>	wifi_sta_init();<br><br>	<span class="hljs-comment">// 等待wifi连接成功(暂时这样处理)</span><br>	vTaskDelay(<span class="hljs-number">5000</span> / portTICK_PERIOD_MS);<br><br>	<span class="hljs-comment">// 创建MQTT客户端</span><br>	mqtt_app_start();<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<p>使用MQTTX来充当另一个客户端:</p>
+<p><img src="/posts/33118/20240327123152.png" srcset="/img/loading.gif" lazyload></p>
+<p>成功收到消息，如上图</p>
+<p>尝试发送数据，ESP会将数据返回：</p>
+<p><img src="/posts/33118/20240327123309.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/posts/33118/20240327123341.png" srcset="/img/loading.gif" lazyload></p>
+<p>这样就完成了简单的MQTT客户端程序。</p>
+<h1 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h1><ol>
+<li><a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/v5.1.3/esp32/api-reference/protocols/mqtt.html">https://docs.espressif.com/projects/esp-idf/zh_CN/v5.1.3/esp32/api-reference/protocols/mqtt.html</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/espressif/esp-idf/blob/master/examples/protocols/mqtt/tcp/main/app_main.c">https://github.com/espressif/esp-idf/blob/master/examples/protocols/mqtt/tcp/main/app_main.c</a></li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%94%B5%E5%AD%90%E4%BF%A1%E6%81%AF%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/" class="category-chain-item">电子信息硬件相关</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E7%94%B5%E5%AD%90%E4%BF%A1%E6%81%AF%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/" class="category-chain-item">MCU</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E7%94%B5%E5%AD%90%E4%BF%A1%E6%81%AF%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/" class="category-chain-item">ESP32</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E7%94%B5%E5%AD%90%E4%BF%A1%E6%81%AF%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/WIFI/" class="category-chain-item">WIFI</a>
+  
+  
+
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/MQTT/" class="print-no-link">#MQTT</a>
+      
+        <a href="/tags/MCU/" class="print-no-link">#MCU</a>
+      
+        <a href="/tags/ESP32/" class="print-no-link">#ESP32</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>ESP32网络入门-MQTT协议</div>
+      <div>https://www.duruofu.xyz/posts/33118/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>DuRuofu</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年3月27日</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>更新于</div>
+          <div>2025年1月10日</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
+                    <i class="iconfont icon-cc-nc"></i>
+                  </span>
+                </a>
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="SA - 相同方式共享">
+                    <i class="iconfont icon-cc-sa"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/33997/" title="ESP32网络入门-ESP-NOW协议">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">ESP32网络入门-ESP-NOW协议</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/57923/" title="ESP32网络入门-WebSocket协议">
+                        <span class="hidden-mobile">ESP32网络入门-WebSocket协议</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#gitalk-container', function() {
+      Fluid.utils.createCssLink('/css/gitalk.css')
+      Fluid.utils.createScript('https://lib.baomitu.com/gitalk/1.8.0/gitalk.min.js', function() {
+        var options = Object.assign(
+          {"clientID":"c9ac06d5413a9d613a1e","clientSecret":"a44f5c72589eb090876cc64067db28fbfdf4747c","repo":"Blog-comments-gitalk","owner":"DuRuofu","admin":["DuRuofu"],"language":"zh-CN","labels":["Gitalk"],"perPage":15,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":false,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token"},
+          {
+            id: '8441ee2cb165a280b0f0d67a0ae86e19'
+          }
+        )
+        var gitalk = new Gitalk(options);
+        gitalk.render('gitalk-container');
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <br><span id="timeDate">天数载入中</span><span id="times">...</span><br> <span>总有读不懂的诗和到达不了的远方</span> <p>Copyright © 2023 - <span id="currentYear"></span> All Rights Reserved.</p>
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      陕ICP备2022007454号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=2022007454"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>陕ICP备2022007454号-2</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":true,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  var relativeDate = function() {
+    var updatedTime = document.getElementById('updated-time');
+    if (updatedTime) {
+      var text = updatedTime.textContent;
+      var reg = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:Z|[+-]\d{2}:\d{2})/;
+      var matchs = text.match(reg);
+      if (matchs) {
+        var relativeTime = moment(matchs[0]).fromNow();
+        updatedTime.textContent = text.replace(reg, relativeTime);
+      }
+      updatedTime.style.display = '';
+    }
+  };
+  Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/moment.min.js', function() {
+    if (!'zh-cn'.startsWith('en')) {
+      Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/locale/zh-cn.min.js', function() {
+        relativeDate();
+      });
+    } else {
+      relativeDate();
+    }
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/cust/custom.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

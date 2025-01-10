@@ -1,0 +1,1125 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/%E4%B8%AA%E4%BA%BA%E5%A4%B4%E5%83%8F%E6%97%A0%E8%83%8C%E6%99%AF.png">
+  <link rel="icon" href="https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/%E4%B8%AA%E4%BA%BA%E5%A4%B4%E5%83%8F%E6%97%A0%E8%83%8C%E6%99%AF.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="DuRuofu">
+  <meta name="keywords" content="嵌入式,个人博客,个人测试">
+  
+    <meta name="description" content="本文档介绍ESP32外设-ADC外设的使用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ESP32外设-4.ADC入门">
+<meta property="og:url" content="https://www.duruofu.xyz/posts/7537/index.html">
+<meta property="og:site_name" content="Duruofu&#39;s 个人测试">
+<meta property="og:description" content="本文档介绍ESP32外设-ADC外设的使用">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.duruofu.xyz/img/index_img/espidf.png">
+<meta property="article:published_time" content="2024-03-04T08:42:53.000Z">
+<meta property="article:modified_time" content="2025-01-10T14:20:34.079Z">
+<meta property="article:author" content="DuRuofu">
+<meta property="article:tag" content="MCU">
+<meta property="article:tag" content="ADC">
+<meta property="article:tag" content="ESP32">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://www.duruofu.xyz/img/index_img/espidf.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>ESP32外设-4.ADC入门 - Duruofu&#39;s 个人测试</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/cust/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"www.duruofu.xyz","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":80,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":true,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":5},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null},"gtag":null,"woyaola":null,"cnzz":null},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>DuRuofu</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/2020/06/06/1.%E9%98%85%E8%AF%BB%E5%86%99%E4%BD%9C/%E5%8E%9F%E5%88%9B%E8%AF%97%E8%AF%8D/%E8%AF%97%E8%AF%8D/" target="_self">
+                <i class="iconfont icon-books"></i>
+                <span>诗词</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                <span>ESP32教程</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/posts/58874/" target="_self">
+                    
+                    <span>ESP32教程-2024</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/posts/58875/" target="_self">
+                    
+                    <span>ESP32教程-2025</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="ESP32外设-4.ADC入门"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        DuRuofu
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-03-04 16:42" pubdate>
+          2024年3月4日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.1k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          7 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">ESP32外设-4.ADC入门</h1>
+            
+              <p id="updated-time" class="note note-info" style="display: none">
+                
+                  
+                    本文最后更新于 2025-01-10T22:20:34+08:00
+                  
+                  
+
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <h3 id="说明："><a href="#说明：" class="headerlink" title="说明："></a>说明：</h3><ol>
+<li>本文档由DuRuofu撰写，由DuRuofu负责解释及执行。</li>
+<li>本文档介绍ADC外设的使用，个人记录使用，如有侵权请联系删除。</li>
+</ol>
+<h3 id="修订历史："><a href="#修订历史：" class="headerlink" title="修订历史："></a>修订历史：</h3><table>
+<thead>
+<tr>
+<th>文档名称</th>
+<th>版本</th>
+<th>作者</th>
+<th>时间</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ESP32外设-ADC入门</td>
+<td>v1.0.0</td>
+<td>DuRuofu</td>
+<td>2024-03-03</td>
+<td>首次建立</td>
+</tr>
+</tbody></table>
+<div STYLE="page-break-after: always;"></div>
+
+<h1 id="ESP32外设-ADC入门"><a href="#ESP32外设-ADC入门" class="headerlink" title="ESP32外设-ADC入门"></a>ESP32外设-ADC入门</h1><blockquote>
+<p>本文档主要转载自<a target="_blank" rel="noopener" href="https://blog.csdn.net/m0_50064262" title="Augtons正(单片机)">Augtons正(单片机)</a>的ESP32系列教程（关于ADC部分的梳理甚至比官方教程都清晰）。</p>
+</blockquote>
+<h2 id="一、介绍"><a href="#一、介绍" class="headerlink" title="一、介绍"></a>一、介绍</h2><p>ESP32(经典版)集成了两个 <code>12</code>位SAR(逐次逼近寄存器)adc，共支持18个测量通道。</p>
+<ul>
+<li>采用 2 个 SAR ADC，可支持同时采样与转换</li>
+<li>采用 5 个专用 ADC 控制器，可支持不同应用场景（比如，高性能、低功耗，或功率检测和峰值检测）</li>
+<li>支持 18 个模拟输入管脚</li>
+<li>可配置 12 位、11 位、10 位、9 位多种分辨率</li>
+<li>支持 DMA（1 个控制器支持）</li>
+<li>支持多通道扫描模式（2 个控制器支持）</li>
+<li>支持 Deep-sleep 模式运行（1 个控制器支持）</li>
+<li>支持 ULP 协处理器控制（2 个控制器支持）</li>
+</ul>
+<h3 id="1-1-ADC通道概览"><a href="#1-1-ADC通道概览" class="headerlink" title="1.1 ADC通道概览"></a>1.1 ADC通道概览</h3><p><strong>ADC1：</strong></p>
+<ul>
+<li><p>支持 8 个通道，包括：GPIO32 - GPIO39（并非按顺序）<br><strong>ADC2：</strong></p>
+</li>
+<li><p>支持 10 个通道，包括：GPIO0, GPIO2, GPIO4, GPIO12 - GPIO15, GOIO25 - GPIO27（并非按顺序）</p>
+</li>
+</ul>
+<p>ESP32 内置霍尔传感器，采用 ADC1 的通道0和3（GPIO36 和 GPIO39）。</p>
+<p><strong>注意</strong>：</p>
+<blockquote>
+<ol>
+<li><code>ADC2</code>模块也被<code>Wi-Fi</code>使用，当它们一起使用时，只有一个会被抢占，这意味着<code>adc2_get_raw()</code>可能会被阻塞，直到<code>Wi-Fi</code>停止，反之亦然。<strong>换言之，ADC2 不能与 WIFI 共用！</strong></li>
+<li>从一个没有连接到任何信号的引脚读取到的 ADC 值是 <strong>随机</strong> 的。</li>
+</ol>
+</blockquote>
+<p>ADC通道对应关系如下(经典模组)：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs c">ADC1_CHANNEL_0	GPIO <span class="hljs-number">36</span><br>ADC1_CHANNEL_1	GPIO <span class="hljs-number">37</span><br>ADC1_CHANNEL_2	GPIO <span class="hljs-number">38</span><br>ADC1_CHANNEL_3	GPIO <span class="hljs-number">39</span><br>ADC1_CHANNEL_4	GPIO <span class="hljs-number">32</span><br>ADC1_CHANNEL_5	GPIO <span class="hljs-number">33</span><br>ADC1_CHANNEL_6	GPIO <span class="hljs-number">34</span><br>ADC1_CHANNEL_7	GPIO <span class="hljs-number">35</span><br><br>ADC2_CHANNEL_0	ESP32:GPIO <span class="hljs-number">4</span>	<br>ADC2_CHANNEL_1	ESP32:GPIO <span class="hljs-number">0</span>	<br>ADC2_CHANNEL_2	ESP32:GPIO <span class="hljs-number">2</span>	<br>ADC2_CHANNEL_3	ESP32:GPIO <span class="hljs-number">15</span>	<br>ADC2_CHANNEL_4	ESP32:GPIO <span class="hljs-number">13</span>	<br>ADC2_CHANNEL_5	ESP32:GPIO <span class="hljs-number">12</span>	<br>ADC2_CHANNEL_6	ESP32:GPIO <span class="hljs-number">14</span>	<br>ADC2_CHANNEL_7	ESP32:GPIO <span class="hljs-number">27</span>	<br>ADC2_CHANNEL_8	ESP32:GPIO <span class="hljs-number">25</span>	<br>ADC2_CHANNEL_9	ESP32:GPIO <span class="hljs-number">26</span>	<br></code></pre></td></tr></table></figure>
+
+
+<h3 id="1-2-ADC-衰减"><a href="#1-2-ADC-衰减" class="headerlink" title="1.2 ADC 衰减"></a>1.2 ADC 衰减</h3><p>ADC模块 能读取电压的范围（量程）有限，因此我们一般给某个 ADC 通道配置一定的衰减，使其读取更大的电压。但更大的量程会导致更小的精度。因此根据 ADC 的应用场景，选择适当的衰减级别十分必要。</p>
+<p>ESP32 的每一个通道都有提供了4个级别的衰减等级，不同的衰减等级对于的量程在下表列出：注意，下表中的 “推荐范围” 并不是量程 ，而是在某衰减等级下测量最精确的推荐测量范围</p>
+<p><img src="/posts/7537/20240303200107.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="1-2-ADC校准与减小测量误差"><a href="#1-2-ADC校准与减小测量误差" class="headerlink" title="1.2 ADC校准与减小测量误差"></a>1.2 ADC校准与减小测量误差</h3><h4 id="减少噪声"><a href="#减少噪声" class="headerlink" title="减少噪声"></a>减少噪声</h4><p>ESP32 ADC 对噪声敏感，可能导致 ADC 读数出现较大偏差。根据不同使用场景，要减少噪声影响，你可能需要将旁路电容（如 100 nF 陶瓷电容）连接到 ADC 使用的输入管脚。此外，也可以通过多次采样，进一步减轻噪声的影响。</p>
+<p><img src="/posts/7537/20240303200300.png" srcset="/img/loading.gif" lazyload></p>
+<p>图中展示了连接电容以及 64 次采样对噪声的抑制效果。其中纵轴(ADC Reading)代表不同方式读取到的ADC值，横轴(Sample Number)是采样次数。</p>
+<h4 id="ADC-校准"><a href="#ADC-校准" class="headerlink" title="ADC 校准"></a>ADC 校准</h4><p>关于ADC校准的库为<code>esp_adc_cal.h</code></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;esp_adc/adc_cali.h&quot;</span></span><br></code></pre></td></tr></table></figure>
+
+<p>个库提供 API 函数用于校正基准ADC 参考电压，ADC参考电压为 1100 m V。<br>对于不同的参考电压，ADC 值与输入电压值（待测电压）的关系不同。关系如下图：<br>​<img src="/posts/7537/20240303200839.png" srcset="/img/loading.gif" lazyload></p>
+<p>上图列出了参考电压分别在：V r e f &#x3D; &#x3D;1070mV(蓝色) 和 V r e f &#x3D; &#x3D;1160mV(橙色) 下的 ADC 值和待测电压 Voltage 的关系。</p>
+<p>我们把这条拟合曲线称为 ADC 模块(在某参考电压下)的 <strong>ADC-Voltage 特征曲线</strong>。</p>
+<p>在实际应用中，我们调用esp_adc_cal.h库提供的 API 函数去求得指定参考电压下的 ADC-Voltage 特征曲线，并利用这一条曲线去将 ADC 测量值转换为欲测量的电压Voltage。开发者可以选择自定义参考电压值，也可以利用ESP32 内部 eFuse（一次性可编程存储器）中储存的出厂参考电压校准值去获取这个曲线。</p>
+<p>使用下面的命令：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">%IDF_PATH%/components/esptool_py/esptool/espefuse.py --port COMx adc_info<br></code></pre></td></tr></table></figure>
+
+<p>效果：</p>
+<p><img src="/posts/7537/20240303201442.png" srcset="/img/loading.gif" lazyload></p>
+<p>除此之外，ESP32 内部的参考电压也可以手动测量，方法是将此电压输出到（路由到）某个GPIO口上，然后手动测量此GPIO口和GND接口之间的电压，就是eFuse内部的参考电压。将参考电压路由到GPIO的方法是调用API函数adc_vref_to_gpio()，参数是想要输出电压的GPIO口编号。必须是ADC2的通道IO口之一，因为ESP32只支持将参考电压路由到 ADC2 上</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">/* 将参考电压路由到GPIO25上 */</span> <br>adc_vref_to_gpio(ADC_UNIT_2, GPIO_NUM_25);<br></code></pre></td></tr></table></figure>
+
+<h2 id="二、使用"><a href="#二、使用" class="headerlink" title="二、使用"></a>二、使用</h2><h3 id="单次转换模式使用"><a href="#单次转换模式使用" class="headerlink" title="单次转换模式使用"></a>单次转换模式使用</h3><h5 id="1、-资源分配-：获取-ADC-句柄，以及回收资源"><a href="#1、-资源分配-：获取-ADC-句柄，以及回收资源" class="headerlink" title="1、 资源分配 ：获取 ADC 句柄，以及回收资源"></a>1、 <a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/adc_oneshot.html#adc-oneshot-resource-allocation">资源分配</a> ：获取 ADC 句柄，以及回收资源</h5><p>需要配置结构体<code> adc_oneshot_unit_init_cfg_t</code></p>
+<p>参数为：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/adc_oneshot.html#_CPPv4N27adc_oneshot_unit_init_cfg_t7unit_idE" title="adc_oneshot_unit_init_cfg_t::unit_id"><code>adc_oneshot_unit_init_cfg_t::unit_id</code></a> 选择 ADC。</li>
+<li><a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/adc_oneshot.html#_CPPv4N27adc_oneshot_unit_init_cfg_t7clk_srcE" title="adc_oneshot_unit_init_cfg_t::clk_src"><code>adc_oneshot_unit_init_cfg_t::clk_src</code></a> 选择 ADC 的时钟源。设置为 0 时，驱动程序将使用默认时钟源，详情请参阅 <a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/adc_oneshot.html#_CPPv421adc_oneshot_clk_src_t" title="adc_oneshot_clk_src_t"><code>adc_oneshot_clk_src_t</code></a>。</li>
+<li><a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/adc_oneshot.html#_CPPv4N27adc_oneshot_unit_init_cfg_t8ulp_modeE" title="adc_oneshot_unit_init_cfg_t::ulp_mode"><code>adc_oneshot_unit_init_cfg_t::ulp_mode</code></a> 设置是否支持 ADC 在 ULP 模式下工作。</li>
+</ul>
+<p>完成 ADC 初始配置后，使用已设置的初始配置结构体 <a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/adc_oneshot.html#_CPPv427adc_oneshot_unit_init_cfg_t" title="adc_oneshot_unit_init_cfg_t"><code>adc_oneshot_unit_init_cfg_t</code></a> 调用 <a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/adc_oneshot.html#_CPPv420adc_oneshot_new_unitPK27adc_oneshot_unit_init_cfg_tP25adc_oneshot_unit_handle_t" title="adc_oneshot_new_unit"><code>adc_oneshot_new_unit()</code></a>。如果分配成功，该函数将返回 ADC 单元实例句柄。</p>
+<p>该函数可能因参数无效、内存不足等原因返回错误代码。比如，当要分配的 ADC 实例已经注册时，该函数会返回 <a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/system/esp_err.html#c.ESP_ERR_NOT_FOUND" title="ESP_ERR_NOT_FOUND"><code>ESP_ERR_NOT_FOUND</code></a> 错误。可用 ADC 数量可通过 <a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/system/soc_caps.html#c.SOC_ADC_PERIPH_NUM" title="SOC_ADC_PERIPH_NUM"><code>SOC_ADC_PERIPH_NUM</code></a> 查看</p>
+<p>如果不再需要先前创建的 ADC 单元实例，请调用 <a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/adc_oneshot.html#_CPPv420adc_oneshot_del_unit25adc_oneshot_unit_handle_t" title="adc_oneshot_del_unit"><code>adc_oneshot_del_unit()</code></a> 回收该实例，相关的硬件和软件资源也会回收。</p>
+<p>创建 ADC 单元实例句柄示例：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">adc_oneshot_unit_handle_t</span> adc1_handle;<br><span class="hljs-type">adc_oneshot_unit_init_cfg_t</span> init_config1 = &#123;<br>    .unit_id = ADC_UNIT_1,<br>    .ulp_mode = ADC_ULP_MODE_DISABLE,<br>&#125;;<br>ESP_ERROR_CHECK(adc_oneshot_new_unit(&amp;init_config1, &amp;adc1_handle));<br></code></pre></td></tr></table></figure>
+
+<p>回收 ADC 单元实例示例</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c">ESP_ERROR_CHECK(adc_oneshot_del_unit(adc1_handle));<br></code></pre></td></tr></table></figure>
+
+<h5 id="2、-配置-ADC-单元实例"><a href="#2、-配置-ADC-单元实例" class="headerlink" title="2、 配置 ADC 单元实例"></a>2、 <a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/adc_oneshot.html#adc-oneshot-unit-configuration">配置 ADC 单元实例</a></h5><p>设置 <a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/adc_oneshot.html#_CPPv422adc_oneshot_chan_cfg_t" title="adc_oneshot_chan_cfg_t"><code>adc_oneshot_chan_cfg_t</code></a> 配置 ADC IO 以测量模拟信号</p>
+<p>参数：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/adc_oneshot.html#_CPPv4N22adc_oneshot_chan_cfg_t5attenE" title="adc_oneshot_chan_cfg_t::atten"><code>adc_oneshot_chan_cfg_t::atten</code></a>，ADC 衰减。</li>
+<li><a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/adc_oneshot.html#_CPPv4N22adc_oneshot_chan_cfg_t8bitwidthE" title="adc_oneshot_chan_cfg_t::bitwidth"><code>adc_oneshot_chan_cfg_t::bitwidth</code></a>，原始转换结果的位宽。</li>
+</ul>
+<p>使用上述配置结构体调用 <a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/adc_oneshot.html#_CPPv426adc_oneshot_config_channel25adc_oneshot_unit_handle_t13adc_channel_tPK22adc_oneshot_chan_cfg_t" title="adc_oneshot_config_channel"><code>adc_oneshot_config_channel()</code></a>，并指定要配置的 ADC 通道。函数 <a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/adc_oneshot.html#_CPPv426adc_oneshot_config_channel25adc_oneshot_unit_handle_t13adc_channel_tPK22adc_oneshot_chan_cfg_t" title="adc_oneshot_config_channel"><code>adc_oneshot_config_channel()</code></a> 支持多次调用，以配置不同的 ADC 通道。驱动程序将在内部保存每个通道的配置。</p>
+<p>示例：配置两个 ADC 通道</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">adc_oneshot_chan_cfg_t</span> config = &#123;<br>    .bitwidth = ADC_BITWIDTH_DEFAULT,<br>    .atten = ADC_ATTEN_DB_12,<br>&#125;;<br>ESP_ERROR_CHECK(adc_oneshot_config_channel(adc1_handle, EXAMPLE_ADC1_CHAN0, &amp;config));<br>ESP_ERROR_CHECK(adc_oneshot_config_channel(adc1_handle, EXAMPLE_ADC1_CHAN1, &amp;config));<br></code></pre></td></tr></table></figure>
+
+<h5 id="3、-读取转换结果"><a href="#3、-读取转换结果" class="headerlink" title="3、 读取转换结果"></a>3、 <a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/adc_oneshot.html#adc-oneshot-read-conversion-result">读取转换结果</a></h5><p>调用 <a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/adc_oneshot.html#_CPPv416adc_oneshot_read25adc_oneshot_unit_handle_t13adc_channel_tPi" title="adc_oneshot_read"><code>adc_oneshot_read()</code></a> 可以获取 ADC 通道的原始转换结果。</p>
+<p>通过该函数获取的 ADC 转换结果为原始数据。可以使用以下公式，根据 ADC 原始结果计算电压：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c">Vout = Dout * Vmax / Dmax       <br></code></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>Vout</th>
+<th>数字输出结果，代表电压。</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Dout</td>
+<td>ADC 原始数字读取结果。</td>
+</tr>
+<tr>
+<td>Vmax</td>
+<td>可测量的最大模拟输入电压，与 ADC 衰减相关，请参考 <a target="_blank" rel="noopener" href="https://www.espressif.com/sites/default/files/documentation/esp32_technical_reference_manual_cn.pdf">技术参考手册</a> &gt; <code>片上传感器与模拟信号处理</code>。</td>
+</tr>
+<tr>
+<td>Dmax</td>
+<td>输出 ADC 原始数字读取结果的最大值，即 2^位宽，位宽即之前配置的 <a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/adc_oneshot.html#_CPPv4N25adc_digi_pattern_config_t9bit_widthE" title="adc_digi_pattern_config_t::bit_width"><code>adc_digi_pattern_config_t::bit_width</code></a>。</td>
+</tr>
+<tr>
+<td>读取原始结果示例：</td>
+<td></td>
+</tr>
+</tbody></table>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs c">ESP_ERROR_CHECK(adc_oneshot_read(adc1_handle, EXAMPLE_ADC1_CHAN0, &amp;adc_raw[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>]));<br>ESP_LOGI(TAG, <span class="hljs-string">&quot;ADC%d Channel[%d] Raw Data: %d&quot;</span>, ADC_UNIT_1 + <span class="hljs-number">1</span>, EXAMPLE_ADC1_CHAN0, adc_raw[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>]);<br><br>ESP_ERROR_CHECK(adc_oneshot_read(adc1_handle, EXAMPLE_ADC1_CHAN1, &amp;adc_raw[<span class="hljs-number">0</span>][<span class="hljs-number">1</span>]));<br>ESP_LOGI(TAG, <span class="hljs-string">&quot;ADC%d Channel[%d] Raw Data: %d&quot;</span>, ADC_UNIT_1 + <span class="hljs-number">1</span>, EXAMPLE_ADC1_CHAN1, adc_raw[<span class="hljs-number">0</span>][<span class="hljs-number">1</span>]);<br></code></pre></td></tr></table></figure>
+
+<p>注：</p>
+<blockquote>
+<ul>
+<li>随机数生成器 (RNG) 以 ADC 为输入源。使用 ADC 单次转换模式驱动从 RNG 生成随机数时，随机性会减弱。</li>
+<li>一个 ADC 单元每次只能在一种操作模式下运行，可以是连续模式或单次模式。<code>adc_oneshot_start()</code> 提供了保护措施。</li>
+<li>Wi-Fi 也使用 ADC2，<a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/adc_oneshot.html#_CPPv416adc_oneshot_read25adc_oneshot_unit_handle_t13adc_channel_tPi" title="adc_oneshot_read"><code>adc_oneshot_read()</code></a> 提供了 Wi-Fi 驱动与 ADC 单次转换模式驱动间的保护。</li>
+<li>ESP32-DevKitC：GPIO0 已用于自动烧录功能，不能用于 ADC 单次转换模式。</li>
+<li>ESP-WROVER-KIT：GPIO0、GPIO2、GPIO4 和 GPIO15 已有其他用途，不能用于 ADC 单次转换模式。</li>
+</ul>
+</blockquote>
+<h3 id="连续转换模式使用"><a href="#连续转换模式使用" class="headerlink" title="连续转换模式使用"></a>连续转换模式使用</h3><p>ADC 连续转换模式驱动由多个转换帧组成。</p>
+<ul>
+<li>转换帧：一个转换帧包含多个转换结果。转换帧大小以字节为单位，在 <a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/adc_continuous.html#_CPPv425adc_continuous_new_handlePK27adc_continuous_handle_cfg_tP23adc_continuous_handle_t" title="adc_continuous_new_handle"><code>adc_continuous_new_handle()</code></a> 中配置。</li>
+<li>转换结果：一个转换结果包含多个字节，即 <a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/system/soc_caps.html#c.SOC_ADC_DIGI_RESULT_BYTES" title="SOC_ADC_DIGI_RESULT_BYTES"><code>SOC_ADC_DIGI_RESULT_BYTES</code></a>。转换结果的数据结构由 <a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/adc_oneshot.html#_CPPv422adc_digi_output_data_t" title="adc_digi_output_data_t"><code>adc_digi_output_data_t</code></a> 定义，包括 ADC 单元、ADC 通道以及原始数据。</li>
+</ul>
+<p><img src="/posts/7537/20240303211254.png" srcset="/img/loading.gif" lazyload></p>
+<h5 id="1、-资源分配："><a href="#1、-资源分配：" class="headerlink" title="1、 资源分配："></a>1、 <a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/adc_continuous.html#adc-continuous-resource-allocation">资源分配</a>：</h5><p>首先设置配置结构体 <a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/adc_continuous.html#_CPPv427adc_continuous_handle_cfg_t" title="adc_continuous_handle_cfg_t"><code>adc_continuous_handle_cfg_t</code></a>，创建 ADC 连续转换模式驱动的句柄，参数如下：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/adc_continuous.html#_CPPv4N27adc_continuous_handle_cfg_t18max_store_buf_sizeE" title="adc_continuous_handle_cfg_t::max_store_buf_size"><code>adc_continuous_handle_cfg_t::max_store_buf_size</code></a>：以字节为单位设置最大缓冲池的大小，驱动程序将 ADC 转换结果保存到该缓冲池中。缓冲池已满时，新的转换将丢失。</li>
+<li><a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/adc_continuous.html#_CPPv4N27adc_continuous_handle_cfg_t15conv_frame_sizeE" title="adc_continuous_handle_cfg_t::conv_frame_size"><code>adc_continuous_handle_cfg_t::conv_frame_size</code></a>：以字节为单位设置 ADC 转换帧大小。</li>
+<li><a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/adc_continuous.html#_CPPv4N27adc_continuous_handle_cfg_t5flagsE" title="adc_continuous_handle_cfg_t::flags"><code>adc_continuous_handle_cfg_t::flags</code></a>：设置可以改变驱动程序行为的标志。（<code>flush_pool</code>：缓冲池满时自动清空缓冲池。）</li>
+</ul>
+<p>完成以上 ADC 配置后，使用已设置的配置结构体 <a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/adc_continuous.html#_CPPv427adc_continuous_handle_cfg_t" title="adc_continuous_handle_cfg_t"><code>adc_continuous_handle_cfg_t</code></a> 调用 <a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/adc_continuous.html#_CPPv425adc_continuous_new_handlePK27adc_continuous_handle_cfg_tP23adc_continuous_handle_t" title="adc_continuous_new_handle"><code>adc_continuous_new_handle()</code></a>来分配资源。</p>
+<p>如果不再使用 ADC 连续转换模式驱动，请调用 <a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/adc_continuous.html#_CPPv421adc_continuous_deinit23adc_continuous_handle_t" title="adc_continuous_deinit"><code>adc_continuous_deinit()</code></a> 将驱动去初始化。</p>
+<p>配置示例：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">adc_continuous_handle_t</span> handle = <span class="hljs-literal">NULL</span>;<br><span class="hljs-type">adc_continuous_handle_cfg_t</span> adc_config = &#123;<br>    .max_store_buf_size = <span class="hljs-number">1024</span>,<br>    .conv_frame_size = <span class="hljs-number">100</span>,<br>&#125;;<br>ESP_ERROR_CHECK(adc_continuous_new_handle(&amp;adc_config));<br></code></pre></td></tr></table></figure>
+
+
+<h5 id="2、-配置-ADC："><a href="#2、-配置-ADC：" class="headerlink" title="2、 配置 ADC："></a>2、 <a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/adc_continuous.html#adc-continuous-adc-configurations">配置 ADC</a>：</h5><p>初始化 ADC 连续转换模式驱动后，设置 <a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/adc_continuous.html#_CPPv423adc_continuous_config_t" title="adc_continuous_config_t"><code>adc_continuous_config_t</code></a> 配置 ADC IO，测量模拟信号：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/adc_continuous.html#_CPPv4N23adc_continuous_config_t11pattern_numE" title="adc_continuous_config_t::pattern_num"><code>adc_continuous_config_t::pattern_num</code></a>：要使用的 ADC 通道数量。</li>
+<li><a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/adc_continuous.html#_CPPv4N23adc_continuous_config_t11adc_patternE" title="adc_continuous_config_t::adc_pattern"><code>adc_continuous_config_t::adc_pattern</code></a>：每个要使用的 ADC 通道的配置列表，请参阅下文描述。</li>
+<li><a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/adc_continuous.html#_CPPv4N23adc_continuous_config_t14sample_freq_hzE" title="adc_continuous_config_t::sample_freq_hz"><code>adc_continuous_config_t::sample_freq_hz</code></a>：期望的 ADC 采样频率，单位为 Hz。</li>
+<li><a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/adc_continuous.html#_CPPv4N23adc_continuous_config_t9conv_modeE" title="adc_continuous_config_t::conv_mode"><code>adc_continuous_config_t::conv_mode</code></a>：连续转换模式。</li>
+<li><a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/adc_continuous.html#_CPPv4N23adc_continuous_config_t6formatE" title="adc_continuous_config_t::format"><code>adc_continuous_config_t::format</code></a>：转换模式结果的输出格式。</li>
+</ul>
+<p>设置 <a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/adc_oneshot.html#_CPPv425adc_digi_pattern_config_t" title="adc_digi_pattern_config_t"><code>adc_digi_pattern_config_t</code></a>：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/adc_oneshot.html#_CPPv4N25adc_digi_pattern_config_t5attenE" title="adc_digi_pattern_config_t::atten"><code>adc_digi_pattern_config_t::atten</code></a>：ADC 衰减。请参阅 <a target="_blank" rel="noopener" href="https://www.espressif.com/sites/default/files/documentation/esp32_technical_reference_manual_cn.pdf#sensor">技术参考手册</a> 中的片上传感器与模拟信号处理章节。</li>
+<li><a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/adc_oneshot.html#_CPPv4N25adc_digi_pattern_config_t7channelE" title="adc_digi_pattern_config_t::channel"><code>adc_digi_pattern_config_t::channel</code></a>：IO 对应的 ADC 通道号，请参阅下文注意事项。</li>
+<li><a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/adc_oneshot.html#_CPPv4N25adc_digi_pattern_config_t4unitE" title="adc_digi_pattern_config_t::unit"><code>adc_digi_pattern_config_t::unit</code></a>：IO 所属的 ADC 单元。</li>
+<li><a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/adc_oneshot.html#_CPPv4N25adc_digi_pattern_config_t9bit_widthE" title="adc_digi_pattern_config_t::bit_width"><code>adc_digi_pattern_config_t::bit_width</code></a>：原始转换结果的位宽。</li>
+</ul>
+<p>最后，使用上述配置结构体，调用 <a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/adc_continuous.html#_CPPv421adc_continuous_config23adc_continuous_handle_tPK23adc_continuous_config_t" title="adc_continuous_config"><code>adc_continuous_config()</code></a>。</p>
+<p>配置示例：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs c">   <span class="hljs-comment">//  ADC IO</span><br>   <span class="hljs-type">adc_continuous_config_t</span> dig_cfg = &#123;<br>       .sample_freq_hz = <span class="hljs-number">20</span> * <span class="hljs-number">1000</span>,         <span class="hljs-comment">// 采样频率</span><br>       .conv_mode = ADC_CONV_SINGLE_UNIT_1,  <span class="hljs-comment">// 转换模式</span><br>       .format = ADC_DIGI_OUTPUT_FORMAT_TYPE1,    <span class="hljs-comment">// 输出格式</span><br>   &#125;;<br><br>   <span class="hljs-type">adc_digi_pattern_config_t</span> adc_pattern[SOC_ADC_PATT_LEN_MAX] = &#123;<span class="hljs-number">0</span>&#125;;<br>   dig_cfg.pattern_num = channel_num;   <span class="hljs-comment">// 通道数量</span><br>   <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; channel_num; i++) &#123;<br>       adc_pattern[i].atten = ADC_ATTEN_DB_0;  <span class="hljs-comment">// ADC 衰减</span><br>       adc_pattern[i].channel = channel[i] &amp; <span class="hljs-number">0x7</span>;  <span class="hljs-comment">// 通道</span><br>       adc_pattern[i].unit = ADC_UNIT_1;			<span class="hljs-comment">// ADC单元</span><br>       adc_pattern[i].bit_width = SOC_ADC_DIGI_MAX_BITWIDTH; <span class="hljs-comment">// 位宽</span><br><br>	<span class="hljs-comment">// 打印配置信息</span><br>       ESP_LOGI(TAG, <span class="hljs-string">&quot;adc_pattern[%d].atten is :%&quot;</span>PRIx8, i, adc_pattern[i].atten);<br>       ESP_LOGI(TAG, <span class="hljs-string">&quot;adc_pattern[%d].channel is :%&quot;</span>PRIx8, i, adc_pattern[i].channel);<br>       ESP_LOGI(TAG, <span class="hljs-string">&quot;adc_pattern[%d].unit is :%&quot;</span>PRIx8, i, adc_pattern[i].unit);<br>   &#125;<br><br><span class="hljs-comment">// 要使用的 ADC 通道的配置列表</span><br>   dig_cfg.adc_pattern = adc_pattern;<br><br></code></pre></td></tr></table></figure>
+
+<h5 id="3、-ADC-控制："><a href="#3、-ADC-控制：" class="headerlink" title="3、 ADC 控制："></a>3、 <a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/adc_continuous.html#adc-continuous-adc-control">ADC 控制</a>：</h5><p>调用 <a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/adc_continuous.html#_CPPv420adc_continuous_start23adc_continuous_handle_t" title="adc_continuous_start"><code>adc_continuous_start()</code></a>，将使 ADC 开始从配置好的 ADC 通道测量模拟信号，并生成转换结果。</p>
+<p>调用 <a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/adc_continuous.html#_CPPv419adc_continuous_stop23adc_continuous_handle_t" title="adc_continuous_stop"><code>adc_continuous_stop()</code></a> 则会停止 ADC 转换。</p>
+<h5 id="4、注册事件回调："><a href="#4、注册事件回调：" class="headerlink" title="4、注册事件回调："></a>4、<a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/adc_continuous.html#adc-continuous-register-event-callbacks">注册事件回调</a>：</h5><p>调用 <a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/adc_continuous.html#_CPPv439adc_continuous_register_event_callbacks23adc_continuous_handle_tPK24adc_continuous_evt_cbs_tPv" title="adc_continuous_register_event_callbacks"><code>adc_continuous_register_event_callbacks()</code></a>，可以将自己的函数链接到驱动程序的 ISR 中。通过 <a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/adc_continuous.html#_CPPv424adc_continuous_evt_cbs_t" title="adc_continuous_evt_cbs_t"><code>adc_continuous_evt_cbs_t</code></a> 可查看所有支持的事件回调。</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/adc_continuous.html#_CPPv4N24adc_continuous_evt_cbs_t12on_conv_doneE" title="adc_continuous_evt_cbs_t::on_conv_done"><code>adc_continuous_evt_cbs_t::on_conv_done</code></a>：当一个转换帧完成时，触发此事件。</li>
+<li><a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/adc_continuous.html#_CPPv4N24adc_continuous_evt_cbs_t11on_pool_ovfE" title="adc_continuous_evt_cbs_t::on_pool_ovf"><code>adc_continuous_evt_cbs_t::on_pool_ovf</code></a>：当内部缓冲池已满时，触发此事件，新的转换结果将丢失。</li>
+</ul>
+<h6 id="转换完成事件"><a href="#转换完成事件" class="headerlink" title="转换完成事件"></a>转换完成事件</h6><p>当驱动程序完成一次转换后，会触发 <a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/adc_continuous.html#_CPPv4N24adc_continuous_evt_cbs_t12on_conv_doneE" title="adc_continuous_evt_cbs_t::on_conv_done"><code>adc_continuous_evt_cbs_t::on_conv_done</code></a> 事件，并填充事件数据。事件数据包含一个指向转换帧缓冲区的指针，以及转换帧缓冲区大小。要了解事件数据结构，请参阅 <a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/adc_continuous.html#_CPPv425adc_continuous_evt_data_t" title="adc_continuous_evt_data_t"><code>adc_continuous_evt_data_t</code></a>。</p>
+<h5 id="5、读取转换结果："><a href="#5、读取转换结果：" class="headerlink" title="5、读取转换结果："></a>5、<a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/adc_continuous.html#adc-continuous-read-conversion-result">读取转换结果</a>：</h5><p>调用 <a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/adc_continuous.html#_CPPv420adc_continuous_start23adc_continuous_handle_t" title="adc_continuous_start"><code>adc_continuous_start()</code></a> 启动 ADC 连续转换，调用 <a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/adc_continuous.html#_CPPv419adc_continuous_read23adc_continuous_handle_tP7uint8_t8uint32_tP8uint32_t8uint32_t" title="adc_continuous_read"><code>adc_continuous_read()</code></a> 可以获取 ADC 通道的转换结果。注意提供缓冲区，获取原始结果。</p>
+<p>函数 <a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/adc_continuous.html#_CPPv419adc_continuous_read23adc_continuous_handle_tP7uint8_t8uint32_tP8uint32_t8uint32_t" title="adc_continuous_read"><code>adc_continuous_read()</code></a> 每次都会尝试以期望长度读取转换结果。<br>参数：</p>
+<ul>
+<li><strong>handle</strong> – <strong>[in]</strong> ADC连续模式驱动句柄</li>
+<li><strong>buf</strong> – **[out]**要从ADC读取的转换结果缓冲区。</li>
+<li><strong>length_max</strong> – <strong>[in]</strong> 从ADC读取的转换结果的预期长度（以字节为单位）。</li>
+<li><strong>out_length</strong> – <strong>[out]</strong> 通过此API从ADC读取的转换结果的实际长度（以字节为单位）。</li>
+<li><strong>timeout_ms</strong> – <strong>[in]</strong> 通过此API等待数据的时间（以毫秒为单位）。</li>
+</ul>
+<h2 id="六、ADC-示例"><a href="#六、ADC-示例" class="headerlink" title="六、ADC 示例"></a>六、ADC 示例</h2><h4 id="单次转换示例程序："><a href="#单次转换示例程序：" class="headerlink" title="单次转换示例程序："></a>单次转换示例程序：</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;freertos/FreeRTOS.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;freertos/task.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;esp_system.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;esp_log.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;esp_adc/adc_oneshot.h&quot;</span></span><br><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> EXAMPLE_ADC1_CHAN0 ADC_CHANNEL_6  <span class="hljs-comment">// 根据您的硬件配置选择合适的通道</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> EXAMPLE_ADC1_CHAN1 ADC_CHANNEL_7  <span class="hljs-comment">// 根据您的硬件配置选择合适的通道</span></span><br><br><span class="hljs-type">static</span> <span class="hljs-type">const</span> <span class="hljs-type">char</span>* TAG = <span class="hljs-string">&quot;ADC_ONESHOT_EXAMPLE&quot;</span>;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">app_main</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span><br>&#123;<br>    <span class="hljs-type">adc_oneshot_unit_handle_t</span> adc1_handle;<br>    <span class="hljs-type">adc_oneshot_unit_init_cfg_t</span> init_config1 = &#123;<br>        .unit_id = ADC_UNIT_1,<br>        .ulp_mode = ADC_ULP_MODE_DISABLE,<br>    &#125;;<br>    ESP_ERROR_CHECK(adc_oneshot_new_unit(&amp;init_config1, &amp;adc1_handle));<br><br>    <span class="hljs-type">adc_oneshot_chan_cfg_t</span> config = &#123;<br>        .bitwidth = ADC_BITWIDTH_DEFAULT,<br>        .atten = ADC_ATTEN_DB_11,  <span class="hljs-comment">// 设置适当的衰减以匹配您的输入电压范围</span><br>    &#125;;<br><br>    <span class="hljs-comment">// 配置两个通道</span><br>    ESP_ERROR_CHECK(adc_oneshot_config_channel(adc1_handle, EXAMPLE_ADC1_CHAN0, &amp;config));<br>    ESP_ERROR_CHECK(adc_oneshot_config_channel(adc1_handle, EXAMPLE_ADC1_CHAN1, &amp;config));<br><br>    <span class="hljs-type">int</span> adc_raw[<span class="hljs-number">2</span>];<br><br>    <span class="hljs-comment">// 对每个通道进行单次转换并读取结果</span><br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">10</span>; i++) &#123;<br>        ESP_ERROR_CHECK(adc_oneshot_read(adc1_handle, EXAMPLE_ADC1_CHAN0, &amp;adc_raw[<span class="hljs-number">0</span>]));<br>        ESP_LOGI(TAG, <span class="hljs-string">&quot;ADC1 Channel[%d] Raw Data: %d&quot;</span>, EXAMPLE_ADC1_CHAN0, adc_raw[<span class="hljs-number">0</span>]);<br><br>        ESP_ERROR_CHECK(adc_oneshot_read(adc1_handle, EXAMPLE_ADC1_CHAN1, &amp;adc_raw[<span class="hljs-number">1</span>]));<br>        ESP_LOGI(TAG, <span class="hljs-string">&quot;ADC1 Channel[%d] Raw Data: %d&quot;</span>, EXAMPLE_ADC1_CHAN1, adc_raw[<span class="hljs-number">1</span>]);<br><br>        vTaskDelay(pdMS_TO_TICKS(<span class="hljs-number">1000</span>));  <span class="hljs-comment">// 等待1秒再次读取</span><br>    &#125;<br><br>    <span class="hljs-comment">// 回收资源</span><br>    ESP_ERROR_CHECK(adc_oneshot_del_unit(adc1_handle));<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+
+<p>为通道6接上1V电压：</p>
+<p><img src="/posts/7537/1e135337569c82f7be09abf554e49c5.jpg" srcset="/img/loading.gif" lazyload></p>
+<p>串口输出结果：</p>
+<p><img src="/posts/7537/20240303210953.png" srcset="/img/loading.gif" lazyload></p>
+<h4 id="连续转换示例程序："><a href="#连续转换示例程序：" class="headerlink" title="连续转换示例程序："></a>连续转换示例程序：</h4><blockquote>
+<p>参考:<a target="_blank" rel="noopener" href="https://github.com/espressif/esp-idf/blob/fdb7a43752633560c73ee079d512c0c13808456f/examples/peripherals/adc/continuous_read/main/continuous_read_main.c">https://github.com/espressif/esp-idf/blob/fdb7a43752633560c73ee079d512c0c13808456f/examples/peripherals/adc/continuous_read/main/continuous_read_main.c</a></p>
+</blockquote>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br></pre></td><td class="code"><pre><code class="hljs c"><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;string.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;sdkconfig.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;esp_log.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;freertos/FreeRTOS.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;freertos/task.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;freertos/semphr.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;esp_adc/adc_continuous.h&quot;</span></span><br><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> _EXAMPLE_ADC_UNIT_STR(unit)         #unit   </span><br><span class="hljs-comment">// C预处理器的字符串化操作符 #，它可以将宏参数转换为字符串常量。如果传递 ADC_UNIT 给 _EXAMPLE_ADC_UNIT_STR，它会生成字符串 &quot;ADC_UNIT&quot;。</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> EXAMPLE_ADC_UNIT_STR(unit)          _EXAMPLE_ADC_UNIT_STR(unit)</span><br><span class="hljs-comment">// 宏嵌套</span><br><br><span class="hljs-comment">// 用于从 adc_digi_output_data_t 结构体中提取通道号和数据值。</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> EXAMPLE_ADC_GET_CHANNEL(p_data)     ((p_data)-&gt;type1.channel)</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> EXAMPLE_ADC_GET_DATA(p_data)        ((p_data)-&gt;type1.data)</span><br><br><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ADC_UNIT                    ADC_UNIT_1</span><br><br><br><span class="hljs-comment">// ADC通道</span><br><span class="hljs-comment">//static adc_channel_t channel[2] = &#123;ADC_CHANNEL_6, ADC_CHANNEL_7&#125;;</span><br><span class="hljs-type">static</span> <span class="hljs-type">adc_channel_t</span> channel[<span class="hljs-number">1</span>] = &#123;ADC_CHANNEL_6&#125;;<br><br><br><span class="hljs-type">static</span> TaskHandle_t s_task_handle;<br><span class="hljs-type">static</span> <span class="hljs-type">const</span> <span class="hljs-type">char</span> *TAG = <span class="hljs-string">&quot;ADC_CONTINUOUS&quot;</span>;<br><br><span class="hljs-comment">// ADC连续模式的事件回调(一个转换帧完成时)</span><br><span class="hljs-type">static</span> <span class="hljs-type">bool</span> IRAM_ATTR <span class="hljs-title function_">s_conv_done_cb</span><span class="hljs-params">(<span class="hljs-type">adc_continuous_handle_t</span> handle, <span class="hljs-type">const</span> <span class="hljs-type">adc_continuous_evt_data_t</span> *edata, <span class="hljs-type">void</span> *user_data)</span><br>&#123;<br>    BaseType_t mustYield = pdFALSE;<br>    <span class="hljs-comment">//Notify that ADC continuous driver has done enough number of conversions</span><br>	<span class="hljs-comment">//vTaskNotifyGiveFromISR 是 FreeRTOS 提供的一个函数，它允许从中断服务例程（ISR）安全地向任务发送通知</span><br>    vTaskNotifyGiveFromISR(s_task_handle, &amp;mustYield);<br><br>    <span class="hljs-keyword">return</span> (mustYield == pdTRUE);<br>&#125;<br><br><span class="hljs-comment">// adc初始化</span><br><span class="hljs-type">static</span> <span class="hljs-type">void</span> <span class="hljs-title function_">continuous_adc_init</span><span class="hljs-params">(<span class="hljs-type">adc_channel_t</span> *channel, <span class="hljs-type">uint8_t</span> channel_num, <span class="hljs-type">adc_continuous_handle_t</span> *out_handle)</span><br>&#123;<br>	<span class="hljs-comment">// 创建一个ADC连续模式的句柄</span><br>    <span class="hljs-type">adc_continuous_handle_t</span> handle = <span class="hljs-literal">NULL</span>;<br><br>	<span class="hljs-comment">// 配置ADC连续模式的参数</span><br>    <span class="hljs-type">adc_continuous_handle_cfg_t</span> adc_config = &#123;<br>        .max_store_buf_size = <span class="hljs-number">1024</span>,  			<span class="hljs-comment">// 最大存储缓冲区大小</span><br>        .conv_frame_size = <span class="hljs-number">256</span>,	<span class="hljs-comment">// 转换帧大小</span><br>    &#125;;<br>    ESP_ERROR_CHECK(adc_continuous_new_handle(&amp;adc_config, &amp;handle));<br><br>    <span class="hljs-comment">//  ADC IO</span><br>    <span class="hljs-type">adc_continuous_config_t</span> dig_cfg = &#123;<br>        .sample_freq_hz = <span class="hljs-number">20</span> * <span class="hljs-number">1000</span>,         <span class="hljs-comment">// 采样频率</span><br>        .conv_mode = ADC_CONV_SINGLE_UNIT_1,  <span class="hljs-comment">// 转换模式</span><br>        .format = ADC_DIGI_OUTPUT_FORMAT_TYPE1,    <span class="hljs-comment">// 输出格式</span><br>    &#125;;<br><br>    <span class="hljs-type">adc_digi_pattern_config_t</span> adc_pattern[SOC_ADC_PATT_LEN_MAX] = &#123;<span class="hljs-number">0</span>&#125;;<br>    dig_cfg.pattern_num = channel_num;   <span class="hljs-comment">// 通道数量</span><br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; channel_num; i++) &#123;<br>        adc_pattern[i].atten = ADC_ATTEN_DB_11;  <span class="hljs-comment">// ADC 衰减</span><br>        adc_pattern[i].channel = channel[i] &amp; <span class="hljs-number">0x7</span>;  <span class="hljs-comment">// 通道</span><br>        adc_pattern[i].unit = ADC_UNIT;			<span class="hljs-comment">// ADC单元</span><br>        adc_pattern[i].bit_width = SOC_ADC_DIGI_MAX_BITWIDTH; <span class="hljs-comment">// 位宽</span><br><br>		<span class="hljs-comment">// 打印配置信息</span><br>		<span class="hljs-comment">// - PRIx8 是一个预处理宏，定义在 C 语言的标准库头文件 &lt;inttypes.h&gt; 中。它用于以可移植的方式格式化输出 uint8_t 类型的数据为十六进制形式。</span><br>        ESP_LOGI(TAG, <span class="hljs-string">&quot;adc_pattern[%d].atten is :%&quot;</span>PRIx8, i, adc_pattern[i].atten);<br>        ESP_LOGI(TAG, <span class="hljs-string">&quot;adc_pattern[%d].channel is :%&quot;</span>PRIx8, i, adc_pattern[i].channel);<br>        ESP_LOGI(TAG, <span class="hljs-string">&quot;adc_pattern[%d].unit is :%&quot;</span>PRIx8, i, adc_pattern[i].unit);<br>    &#125;<br><br>	<span class="hljs-comment">// 要使用的 ADC 通道的配置列表</span><br>    dig_cfg.adc_pattern = adc_pattern;<br>    ESP_ERROR_CHECK(adc_continuous_config(handle, &amp;dig_cfg));<br><br>    *out_handle = handle;<br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">app_main</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span><br>&#123;<br>    <span class="hljs-type">esp_err_t</span> ret; <span class="hljs-comment">// 返回状态</span><br>    <span class="hljs-type">uint32_t</span> ret_num = <span class="hljs-number">0</span>;  <span class="hljs-comment">// 转换完成的数据数量</span><br>	<span class="hljs-comment">// 定义接收数组</span><br>    <span class="hljs-type">uint8_t</span> result[<span class="hljs-number">256</span>] = &#123;<span class="hljs-number">0</span>&#125;;<br>	<span class="hljs-comment">// 初始化数组,填充为0xcc</span><br>    <span class="hljs-built_in">memset</span>(result, <span class="hljs-number">0xcc</span>, <span class="hljs-number">256</span>);<br><br>	<span class="hljs-comment">//获取app_mian任务的句柄。</span><br>    s_task_handle = xTaskGetCurrentTaskHandle();<br><br>	<span class="hljs-comment">// 初始化ADC</span><br>    <span class="hljs-type">adc_continuous_handle_t</span> handle = <span class="hljs-literal">NULL</span>;<br>    continuous_adc_init(channel, <span class="hljs-keyword">sizeof</span>(channel) / <span class="hljs-keyword">sizeof</span>(<span class="hljs-type">adc_channel_t</span>), &amp;handle);<br><br>	<span class="hljs-comment">// 事件回调</span><br>    <span class="hljs-type">adc_continuous_evt_cbs_t</span> cbs = &#123;<br>		<span class="hljs-comment">// 当一个转换帧完成时，触发此事件:s_conv_done_cb</span><br>        .on_conv_done = s_conv_done_cb,<br>    &#125;;<br><br>	<span class="hljs-comment">// 注册事件回调</span><br>    ESP_ERROR_CHECK(adc_continuous_register_event_callbacks(handle, &amp;cbs, <span class="hljs-literal">NULL</span>));<br>	<span class="hljs-comment">// 启动ADC连续模式</span><br>    ESP_ERROR_CHECK(adc_continuous_start(handle));<br><br>    <span class="hljs-keyword">while</span> (<span class="hljs-number">1</span>) &#123;<br><br>        <span class="hljs-comment">/**</span><br><span class="hljs-comment">         * This is to show you the way to use the ADC continuous mode driver event callback.</span><br><span class="hljs-comment">         * This `ulTaskNotifyTake` will block when the data processing in the task is fast.</span><br><span class="hljs-comment">         * However in this example, the data processing (print) is slow, so you barely block here.</span><br><span class="hljs-comment">         *</span><br><span class="hljs-comment">         * Without using this event callback (to notify this task), you can still just call</span><br><span class="hljs-comment">         * `adc_continuous_read()` here in a loop, with/without a certain block timeout.</span><br><span class="hljs-comment">         */</span><br>		<span class="hljs-comment">//  ulTaskNotifyTake() 等待通知</span><br>        ulTaskNotifyTake(pdTRUE, portMAX_DELAY);<br><br>		<span class="hljs-comment">//	生成字符串</span><br>        <span class="hljs-type">char</span> unit[] = EXAMPLE_ADC_UNIT_STR(ADC_UNIT);<br><br>        <span class="hljs-keyword">while</span> (<span class="hljs-number">1</span>) &#123;<br>			<span class="hljs-comment">// 读取ADC数据</span><br>            ret = adc_continuous_read(handle, result, <span class="hljs-number">256</span>, &amp;ret_num, <span class="hljs-number">0</span>);<br>			<span class="hljs-comment">// 读取成功</span><br>            <span class="hljs-keyword">if</span> (ret == ESP_OK) &#123;<br>				<span class="hljs-comment">// 显示读取操作的返回状态和实际读取到的数据字节数</span><br>                ESP_LOGI(<span class="hljs-string">&quot;TASK&quot;</span>, <span class="hljs-string">&quot;ret is %x, ret_num is %&quot;</span>PRIu32<span class="hljs-string">&quot; bytes&quot;</span>, ret, ret_num);<br>				<span class="hljs-comment">// 循环遍历读取到的数据，解析每个ADC数据项，并打印出来</span><br>				<span class="hljs-comment">// - 循环以 SOC_ADC_DIGI_RESULT_BYTES 为步长迭代，这个常量定义了每个ADC数据项的字节大小。</span><br>				<span class="hljs-comment">// - adc_digi_output_data_t 是一个结构体类型，用于解析ADC数据项。</span><br>				<span class="hljs-comment">// - EXAMPLE_ADC_GET_CHANNEL(p) 和 EXAMPLE_ADC_GET_DATA(p) 是宏，用于从 adc_digi_output_data_t 结构体中提取通道号和数据值。</span><br>                <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; ret_num; i += SOC_ADC_DIGI_RESULT_BYTES) &#123;<br>                    <span class="hljs-type">adc_digi_output_data_t</span> *p = (<span class="hljs-type">adc_digi_output_data_t</span>*)&amp;result[i];<br>                    <span class="hljs-type">uint32_t</span> chan_num = EXAMPLE_ADC_GET_CHANNEL(p);<br>                    <span class="hljs-type">uint32_t</span> data = EXAMPLE_ADC_GET_DATA(p);<br>                    <span class="hljs-comment">/*检查通道编号验证，如果通道编号超过最大通道，则数据无效 */</span><br>					<span class="hljs-comment">// - PRIu32 是 C 语言标准库中的宏，它用于以可移植的方式格式化输出 uint32_t 类型的数据。</span><br>                    <span class="hljs-keyword">if</span> (chan_num &lt; SOC_ADC_CHANNEL_NUM(ADC_UNIT)) &#123;<br>                        ESP_LOGI(TAG, <span class="hljs-string">&quot;Unit: %s, Channel: %&quot;</span>PRIu32<span class="hljs-string">&quot;, Value: %&quot;</span>PRIu32, unit, chan_num, data);<br>                    &#125; <span class="hljs-keyword">else</span> &#123;<br>                        ESP_LOGW(TAG, <span class="hljs-string">&quot;Invalid data [%s_%&quot;</span>PRIu32<span class="hljs-string">&quot;_%&quot;</span>PRIu32<span class="hljs-string">&quot;]&quot;</span>, unit, chan_num, data);<br>                    &#125;<br>                &#125;<br>                <span class="hljs-comment">/**</span><br><span class="hljs-comment">                 * Because printing is slow, so every time you call `ulTaskNotifyTake`, it will immediately return.</span><br><span class="hljs-comment">                 * To avoid a task watchdog timeout, add a delay here. When you replace the way you process the data,</span><br><span class="hljs-comment">                 * usually you don&#x27;t need this delay (as this task will block for a while).</span><br><span class="hljs-comment">                 */</span><br>                vTaskDelay(<span class="hljs-number">1</span>);<br>            &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (ret == ESP_ERR_TIMEOUT) &#123;<br>                <span class="hljs-comment">//We try to read `EXAMPLE_READ_LEN` until API returns timeout, which means there&#x27;s no available data</span><br>                <span class="hljs-keyword">break</span>;<br>            &#125;<br>        &#125;<br>    &#125;<br>	<span class="hljs-comment">// 停止ADC连续模式</span><br>    ESP_ERROR_CHECK(adc_continuous_stop(handle));<br>    ESP_ERROR_CHECK(adc_continuous_deinit(handle));<br>&#125;<br><br><br><br></code></pre></td></tr></table></figure>
+
+
+<p>接线：</p>
+<p><img src="/posts/7537/1e135337569c82f7be09abf554e49c5.jpg" srcset="/img/loading.gif" lazyload></p>
+<p>效果：</p>
+<p><img src="/posts/7537/20240303222750.png" srcset="/img/loading.gif" lazyload></p>
+<h1 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h1><ol>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/m0_50064262/article/details/118817032">https://blog.csdn.net/m0_50064262/article/details/118817032</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/adc_oneshot.html#_CPPv427adc_oneshot_unit_init_cfg_t">https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/adc_oneshot.html#_CPPv427adc_oneshot_unit_init_cfg_t</a></li>
+<li>extension:&#x2F;&#x2F;bfdogplmndidlpjfhoijckpakkdjkkil&#x2F;pdf&#x2F;viewer.html?file&#x3D;https%3A%2F%2F<a href="http://www.espressif.com%2Fsites%2Fdefault%2Ffiles%2Fdocumentation%2Fesp32_technical_reference_manual_cn.pdf">www.espressif.com%2Fsites%2Fdefault%2Ffiles%2Fdocumentation%2Fesp32_technical_reference_manual_cn.pdf</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/espressif/esp-idf/tree/fdb7a43/examples/peripherals/adc/oneshot_read">https://github.com/espressif/esp-idf/tree/fdb7a43/examples/peripherals/adc/oneshot_read</a></li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%94%B5%E5%AD%90%E4%BF%A1%E6%81%AF%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/" class="category-chain-item">电子信息硬件相关</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E7%94%B5%E5%AD%90%E4%BF%A1%E6%81%AF%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/" class="category-chain-item">MCU</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E7%94%B5%E5%AD%90%E4%BF%A1%E6%81%AF%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/" class="category-chain-item">ESP32</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E7%94%B5%E5%AD%90%E4%BF%A1%E6%81%AF%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/MCU/ESP32/%E5%9F%BA%E7%A1%80%E5%A4%96%E8%AE%BE/" class="category-chain-item">基础外设</a>
+  
+  
+
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/MCU/" class="print-no-link">#MCU</a>
+      
+        <a href="/tags/ADC/" class="print-no-link">#ADC</a>
+      
+        <a href="/tags/ESP32/" class="print-no-link">#ESP32</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>ESP32外设-4.ADC入门</div>
+      <div>https://www.duruofu.xyz/posts/7537/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>DuRuofu</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年3月4日</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>更新于</div>
+          <div>2025年1月10日</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
+                    <i class="iconfont icon-cc-nc"></i>
+                  </span>
+                </a>
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="SA - 相同方式共享">
+                    <i class="iconfont icon-cc-sa"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/64736/" title="ESP32系统API-1.软件定时器">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">ESP32系统API-1.软件定时器</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/17429/" title="ESP32外设-3.硬件定时器入门">
+                        <span class="hidden-mobile">ESP32外设-3.硬件定时器入门</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#gitalk-container', function() {
+      Fluid.utils.createCssLink('/css/gitalk.css')
+      Fluid.utils.createScript('https://lib.baomitu.com/gitalk/1.8.0/gitalk.min.js', function() {
+        var options = Object.assign(
+          {"clientID":"c9ac06d5413a9d613a1e","clientSecret":"a44f5c72589eb090876cc64067db28fbfdf4747c","repo":"Blog-comments-gitalk","owner":"DuRuofu","admin":["DuRuofu"],"language":"zh-CN","labels":["Gitalk"],"perPage":15,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":false,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token"},
+          {
+            id: '92a80a2ee9f81dac868742624e19901b'
+          }
+        )
+        var gitalk = new Gitalk(options);
+        gitalk.render('gitalk-container');
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <br><span id="timeDate">天数载入中</span><span id="times">...</span><br> <span>总有读不懂的诗和到达不了的远方</span> <p>Copyright © 2023 - <span id="currentYear"></span> All Rights Reserved.</p>
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      陕ICP备2022007454号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=2022007454"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>陕ICP备2022007454号-2</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":true,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  var relativeDate = function() {
+    var updatedTime = document.getElementById('updated-time');
+    if (updatedTime) {
+      var text = updatedTime.textContent;
+      var reg = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:Z|[+-]\d{2}:\d{2})/;
+      var matchs = text.match(reg);
+      if (matchs) {
+        var relativeTime = moment(matchs[0]).fromNow();
+        updatedTime.textContent = text.replace(reg, relativeTime);
+      }
+      updatedTime.style.display = '';
+    }
+  };
+  Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/moment.min.js', function() {
+    if (!'zh-cn'.startsWith('en')) {
+      Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/locale/zh-cn.min.js', function() {
+        relativeDate();
+      });
+    } else {
+      relativeDate();
+    }
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/cust/custom.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
